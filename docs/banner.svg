@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#14110f"/>
+      <stop offset="1" stop-color="#241d16"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#f4a91b" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#f4a91b" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowR" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e8431c" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#e8431c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1280" height="400" rx="0" fill="url(#bg)"/>
+  <circle cx="1050" cy="120" r="320" fill="url(#glowA)"/>
+  <circle cx="1180" cy="360" r="300" fill="url(#glowR)"/>
+
+  <!-- constellation -->
+  <g stroke="#f7f3ec" stroke-opacity="0.14" stroke-width="1">
+    <line x1="760" y1="80" x2="900" y2="150"/>
+    <line x1="900" y1="150" x2="1010" y2="90"/>
+    <line x1="900" y1="150" x2="980" y2="250"/>
+    <line x1="980" y1="250" x2="1110" y2="210"/>
+    <line x1="980" y1="250" x2="1040" y2="340"/>
+    <line x1="1110" y1="210" x2="1190" y2="300"/>
+    <line x1="760" y1="80" x2="820" y2="210"/>
+    <line x1="820" y1="210" x2="980" y2="250"/>
+    <line x1="1010" y1="90" x2="1150" y2="130"/>
+    <line x1="820" y1="210" x2="720" y2="300"/>
+  </g>
+  <g>
+    <circle cx="760" cy="80" r="4" fill="#f4a91b"/>
+    <circle cx="900" cy="150" r="3.5" fill="#f7f3ec" opacity="0.5"/>
+    <circle cx="1010" cy="90" r="5" fill="#e8431c"/>
+    <circle cx="980" cy="250" r="4" fill="#f4a91b"/>
+    <circle cx="1110" cy="210" r="3.5" fill="#f7f3ec" opacity="0.5"/>
+    <circle cx="1190" cy="300" r="5" fill="#e8431c"/>
+    <circle cx="820" cy="210" r="3.5" fill="#f7f3ec" opacity="0.5"/>
+    <circle cx="1040" cy="340" r="4" fill="#f4a91b"/>
+    <circle cx="1150" cy="130" r="3.5" fill="#f7f3ec" opacity="0.5"/>
+    <circle cx="720" cy="300" r="4" fill="#e8431c"/>
+  </g>
+
+  <!-- logo mark -->
+  <g transform="translate(80,150)">
+    <rect width="74" height="74" rx="12" fill="#f4a91b"/>
+    <text x="37" y="52" text-anchor="middle" font-size="44" font-weight="800" fill="#14110f">IT</text>
+  </g>
+
+  <!-- wordmark -->
+  <text x="176" y="208" font-size="68" font-weight="800" letter-spacing="-2" fill="#f7f3ec">IT<tspan fill="#e8431c">-RAT</tspan></text>
+
+  <!-- amber underline -->
+  <rect x="178" y="220" width="196" height="10" rx="3" fill="#f4a91b" opacity="0.9"/>
+
+  <!-- tagline -->
+  <text x="80" y="290" font-size="26" font-weight="600" fill="#f7f3ec">Secure your cloud. Control your spend.</text>
+  <text x="80" y="324" font-size="17" fill="#cfc8bc">Boutique cloud consultancy · Cloud Security &amp; IAM · FinOps &amp; Cost Governance</text>
+
+  <!-- chips -->
+  <g font-size="14" font-weight="600">
+    <g transform="translate(80,348)">
+      <rect width="150" height="34" rx="17" fill="none" stroke="#f7f3ec" stroke-opacity="0.3"/>
+      <text x="75" y="22" text-anchor="middle" fill="#f7f3ec">Zero Trust &amp; IAM</text>
+    </g>
+    <g transform="translate(242,348)">
+      <rect width="120" height="34" rx="17" fill="none" stroke="#f7f3ec" stroke-opacity="0.3"/>
+      <text x="60" y="22" text-anchor="middle" fill="#f7f3ec">FinOps for AI</text>
+    </g>
+    <g transform="translate(374,348)">
+      <rect width="150" height="34" rx="17" fill="none" stroke="#f7f3ec" stroke-opacity="0.3"/>
+      <text x="75" y="22" text-anchor="middle" fill="#f7f3ec">AWS · GCP · K8s</text>
+    </g>
+  </g>
+</svg>
