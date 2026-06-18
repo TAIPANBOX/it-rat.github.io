@@ -1,562 +1,584 @@
 <!doctype html>
-<html>
-    <head> 
-        <meta charset="utf-8"> 
-        <meta name="keywords" content="Cloud Solution Development"> 
-        <meta name="description" content=""> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0"> 
-        <link rel="shortcut icon" type="image/png" href="favicon.png"> 
-        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="style.css">
-        <link rel="stylesheet" type="text/css" href="./css/animate.min.css">
-        <link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="./css/ionicons.min.css">
-        <link href='https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=SF+UI+Text+Regular,+Helvetica,+Arial,+sans-serif&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Josefin+Sans&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'> 
-        <script src="./js/jquery-2.1.0.min.js"></script>
-        <script src="./js/bootstrap.min.js"></script>
-        <script src="./js/blocs.min.js"></script>
-        <script src="./js/jquery.touchSwipe.min.js" defer></script> 
-        <title>IT-RAT Cloud Development Solutions</title> 
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>document.documentElement.className += ' js';</script>
+    <title>IT-RAT — Cloud Security &amp; FinOps for Enterprise</title>
+    <meta name="description" content="IT-RAT is a boutique cloud consultancy. We secure enterprise identity and infrastructure and take control of cloud and AI spend — Zero Trust, IAM, FinOps and platform engineering across AWS and GCP.">
+    <meta name="keywords" content="Cloud Security, IAM, Zero Trust, FinOps, FinOps for AI, Cloud Cost Optimization, DevSecOps, AWS, GCP, Kubernetes, Terraform">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <meta property="og:title" content="IT-RAT — Cloud Security &amp; FinOps for Enterprise">
+    <meta property="og:description" content="Secure your cloud. Control your spend. Architects who do this at NatWest, Okta and PETRONAS.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
 
-      <!--Header-->  
-    </head>
-    <body>
-        <!-- Main container -->
-        <div class="page-container"> 
-        <!-- bloc-0 Logo-->
-        <div class="bloc bgc-black bloc-bg-texture texture-darken-strong b-parallax bg-1200px-Apple-Logo-svg d-bloc" id="bloc-0">
-        <div class="container b-divider">
-        <nav class="navbar row">
-        <div class="navbar-header">
-        <a class="navbar-brand animated fadeInUp animSpeedSlow animDelay2" href="index.html">
-        <img src="img/29.png" alt="logo" width="46" height="41" />- RAT</a>
-        <button id="nav-toggle" type="button" class="ui-navbar-toggle navbar-toggle menu-icon-squares" data-toggle="collapse" data-target=".navbar-1">
-        </div>
-        <div class="collapse navbar-collapse navbar-1 special-dropdown-nav">
-        
-                </li></ul></div></div></div>
-    <!-- bloc-0 END -->
-    <!-- bloc-1 FeedBack-->
-    <div class="bloc built-with-blocs-bloc bgc-black d-bloc" id="bloc-1">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <p class="text-center animated fadeInUp animSpeedLazy animDelay2"><a href="#13">F E E D B A C K</a></p></div></div></div></div>
-    <!-- bloc-1 END -->
-    <!-- bloc-2 Social Connections-->
-    <div class="bloc bgc-white l-bloc" id="bloc-2">
-        <div class="container">
-            <div class="row animated fadeInUp">
-                <div class="col-sm-12 col-md-6 col-md-offset-3">
-        <div class="col-xs-3">
-            <div class="text-center">
-            <a class="social" href="https://twitter.com/ITRatSoftDev" target="_blank">
-                <span class="fa fa-twitter icon-md animSpeedLazy animDelay2 animated fadeInUp">
-                </span>
-            </a>
-        </div>
-    </div>
-            <div class="col-xs-3">
-            <div class="text-center">
-            <a class="social" href="https://www.facebook.com/ItRatSoftDev/" target="_blank">
-                <span class="fa fa-facebook-square icon-md animSpeedLazy animDelay1 animated fadeInUp">
-            </span>
+<div class="scrollbar" id="scrollbar"></div>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+    <div class="wrap nav__inner">
+        <a class="brand" href="#top" aria-label="IT-RAT home">
+            <img src="img/29.png" alt="IT-RAT logo"><span class="brand__txt">IT<i>-RAT</i></span>
         </a>
+        <nav class="nav__links" id="navlinks">
+            <a href="#services">Services</a>
+            <a href="#ai">FinOps for AI</a>
+            <a href="#capabilities">Capabilities</a>
+            <a href="#team">Team</a>
+            <a class="btn btn--primary nav__cta" href="#contact">Book a call</a>
+        </nav>
+        <button class="nav__toggle" id="navtoggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
     </div>
-</div>
-<div class="col-xs-3">
-            <div class="text-center">
-            <a class="social" href="https://www.linkedin.com/in/it-rat-117084146/" target="_blank">
-                <span class="fa fa-linkedin-square icon-md animSpeedLazy animDelay06 animated fadeInUp">
-            </span>
-        </a>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO (Attention) ============ -->
+<section class="hero">
+    <canvas class="hero__fx" id="heroFx" aria-hidden="true"></canvas>
+    <div class="wrap hero__grid">
+        <div class="hero__copy reveal">
+            <span class="eyebrow">Cloud Security · FinOps · Platform Engineering</span>
+            <h1>Secure your cloud.<br><span class="hl">Control</span> your spend.</h1>
+            <p class="lede">IT-RAT is a boutique cloud consultancy. We lock down enterprise identity and infrastructure, and put cloud and AI costs back under control — with architects who do this every day at NatWest, Okta and PETRONAS.</p>
+            <div class="hero__cta">
+                <a class="btn btn--primary" href="#contact">Book a discovery call <span class="arr">&rarr;</span></a>
+                <a class="btn btn--ghost" href="#services">What we do</a>
+            </div>
+            <div class="hero__trust">
+                <span>AWS Community Builder</span>
+                <span>FinOps for AI</span>
+                <span>Zero Trust &amp; IAM</span>
+                <span>ISO 27001 / SOC 2 / NIST aligned</span>
+            </div>
+        </div>
+        <div class="hero__art reveal">
+            <span class="hero__badge hero__badge--1">- 30% cloud spend</span>
+            <span class="hero__badge hero__badge--2">Zero Trust</span>
+            <img src="img/Yuriy.gif" alt="Cloud architect at work">
+        </div>
     </div>
-</div
-><div class="col-xs-3">
-    <div class="text-center">
-        <a class="social" href="https://www.instagram.com/itratsoftdev/" target="_blank">
-            <span class="ion ion-social-instagram icon-md animSpeedLazy animDelay04 animated fadeInUp">
-            </span></a></div></div></div></div></div></div>
-    <!-- bloc-2 END -->
+</section>
 
-    <br><br><br><br>
-
-    <!-- bloc-3 Main-->
-    <div class="bloc b-parallax bgc-white l-bloc" id="bloc-3"><div class="container bloc-sm"><div class="row row-no-gutters"><div class="col-sm-7"> 
-        <div class="blocsapp-device center-block blocsapp-device- iphone-silver animated vanishIn animSpeedLazy"><img src="img/prog.gif" class="img-responsive" /></div></div>
-    <div class="col-sm-5">
-        <h1 class="valley-hero-text  text-center  mg-clear tc-davys-grey animated fadeInUp animSpeedLazy"><br><br>Cloud Development<br>Solutions<br><br></h1><span></span>
-        <h3 class="mg-lg valley-hero-text-sub text-right tc-davys-grey animated fadeInUp animSpeedLazy animDelay2"><br>We help our clients <br>leverage the full potential of modern cloud services<br><br></h3></div></div></div></div>
-    <!-- bloc-3 END -->
-    <br>
-    <br>
-    <br>
-<!-- bloc-4  Tech-->
-<div class="bloc b-parallax bg-b-edge bgc-white bloc-bg-texture d-bloc" id="bloc-17">
-    <div class="container tc-davys-grey bloc-md">
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="text-center">
-                    <span class="fa fa-server icon-round animSpeedLazy animated fadeInDown animDelay04 tc-davys-grey icon-md"></span>
-                </div><h3 class="text-center mg-md animated tc-davys-grey fadeInUp animSpeedSlow">Apps Deployment</h3>
-                <p class="text-left animated tc-davys-grey fadeInUp animSpeedLazy animDelay04">IT-RAT helps clients build, replatform and integrate applications on PaaS technologies such as Amazon Web Services, Microsoft Azure & Google Cloud Platform </p></div>
-                <div class="col-sm-3">
-                    <div class="text-center">
-                        <span class="fa fa-cloud icon-round animSpeedLazy animated fadeInDown animDelay06 tc-davys-grey icon-md"></span></div>
-                        <h3 class="text-center mg-md animated tc-davys-grey fadeInUp animSpeedSlow">Cloud Development</h3>
-                        <p class="text-left animated fadeInUp tc-davys-grey animSpeedLazy animDelay04">Experienced and dedicated teams of top-notch cloud developers provide full-cycle cloud development services, including cloud infrastructure setup, migration, cloud application development, cloud platforms, quality assurance, and maintenance and support</p></div>
-                        <div class="col-sm-3">
-                            <div class="text-center">
-                                <span class="fa fa-code icon-round animSpeedLazy animated fadeInDown animDelay1 tc-davys-grey icon-md"></span></div>
-                                <h3 class="text-center mg-md animated tc-davys-grey fadeInUp animSpeedSlow">Developer`s Tools</h3>
-                                <p class="text-left animated fadeInUp tc-davys-grey animSpeedLazy animDelay04">Programming code is written in the GoLand IDE by JetBrains that includes a code editor and a GUI for a seamless code development environment. We also use Docker, Kubernetes, Kafka, Puppet, Chef, etc.</p></div>
-                                <div class="col-sm-3">
-                                    <div class="text-center">
-                                        <span class="fa fa-cogs icon-round animSpeedLazy animated fadeInDown animDelay2 tc-davys-grey icon-md"></span></div>
-                                        <h3 class="text-center mg-md animated tc-davys-grey fadeInUp animSpeedSlow">Testing</h3>
-                                        <p class="text-left animated fadeInUp tc-davys-grey animSpeedLazy animDelay04">Solutions developed for cloud platforms issues undergo multiple tests to ensure that the final product is free from any technical or layout glitches</p></div></div></div></div>
-                                        <!-- bloc-4 END -->
-
-
-
-    <!-- ScrollToTop Button --><a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span class="fa fa-chevron-up"></span></a><!-- ScrollToTop Button END-->
-    
-
-		
-		
-	
-		
-		
-		
-		<!-- bloc-5 AWS -->
-<div class="bloc bgc-white l-bloc" id="bloc-9">
-    <a name="6.1"></a>
-    <div class="container bloc-lg">
-        <div class="row">
-            <div class="col-sm-6">
-                <img src="img/AWS.gif" class="animSpeedLazy animated vanishIn img-responsive" width="472" height="522" /></div>
-                <div class="col-sm-6">
-                    <h2 class="mg-lg text-right animated fadeInDown animSpeedSlow animDelay1">
-                        <strong>AWS</strong><br></h2>
-                        <p class="mg-lg text-left animated fadeInUp animSpeedLazy">
-        
-                            Amazon Web Services (AWS) is a subsidiary of Amazon.com that provides on-demand cloud computing platforms to individuals, companies and governments, on a paid subscription basis. The technology allows subscribers to have at their disposal a virtual cluster of computers, available all the time, through the Internet. 
-                            <br><br>AWS's version of virtual computers emulate most of the attributes of a real computer including hardware (CPU(s) & GPU(s) for processing, local/RAM memory, hard-disk/SSD storage); a choice of operating systems; networking; and pre-loaded application software such as web servers, databases, CRM, etc. 
-                            <br><br>Each AWS system also virtualizes its console I/O (keyboard, display, and mouse), allowing AWS subscribers to connect to their AWS system using a modern browser. The browser acts as a window into the virtual computer, letting subscribers log-in, configure and use their virtual systems just as they would a real physical computer. They can choose to deploy their AWS systems to provide internet-based services for themselves and their customers.<br>
-                        </p>
-                        <br>
-                        <a href="https://aws.amazon.com" class="btn btn-d btn-lg blocs-blue-button pull-right animated fadeInUp animSpeedSlow">More Info</a></div></div></div></div><!-- bloc-6.1 END -->
-
-                        <div class="bloc b-parallax tc-davys-grey bgc-white l-bloc" id="bloc-21">
-                                <div class="container bloc-md">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <h4 class="valley-hero-text-sub  text-right  mg-clear tc-davys-grey animated fadeInUp animSpeedSlow">
-                                                    We help large organizations and industry segments design, build, market and deliver services that allow key stakeholders to easily access applications from virtually any location, promoting increased productivity and supporting core business functions.                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-    <!-- bloc-6 Goodle Cloud --><div class="bloc bgc-white l-bloc" id="bloc-11"><div class="container bloc-lg"><div class="row"><div class="col-sm-6 col-sm-push-6">
-                <img src="img/gcc.gif" class="center-block animSpeedLazy animated vanishIn img-responsive" height="424" width="337" /></div><div class="col-sm-6 col-sm-pull-6">
-                        <h2 class="mg-lg text-left animated fadeInDown animSpeedSlow animDelay1">
-                                <strong>Google Cloud Platform</strong></h2>
-                    <p class="mg-lg  text-left animated fadeInUp animSpeedLazy">Google Cloud Platform, offered by Google, is a suite of cloud computing services that runs on the same infrastructure that Google uses internally for its end-user products, such as Google Search and YouTube. Alongside a set of management tools, it provides a series of modular cloud services including computing, data storage, data analytics and machine learning. Registration requires a credit card or bank account details.
-                        <br><br>Google Cloud Platform is a part of Google Cloud, which includes the Google Cloud Platform public cloud infrastructure, as well as G Suite, enterprise versions of Android and Chrome OS, and application programming interfaces (APIs) for machine learning and enterprise mapping services.<br><br>
-                    </p><a href="https://cloud.google.com" class="btn btn-lg btn-chrome-yellow animated fadeInUp animSpeedSlow">More Info</a></div></div></div></div><!-- bloc-11 END -->
-
-<!-- bloc-7 -->
-<div class="bloc b-parallax tc-davys-grey bgc-white l-bloc" id="bloc-21">
-        <div class="container bloc-md">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h4 class="valley-hero-text-sub  text-right  mg-clear tc-davys-grey animated fadeInUp animSpeedSlow">
-                            Our team works with you every step of the way <br> to help clearly define requirements and assists in providing you with a custom cloud rather than one-size-fits-all.
-                    
-                </div>
+<!-- ============ PROOF ============ -->
+<section class="proof">
+    <div class="wrap">
+        <p class="proof__label">Where our architects have built &amp; secured cloud</p>
+        <div class="marquee reveal">
+            <div class="marquee__track" id="logoTrack">
+                <span class="txt">NatWest</span>
+                <span class="txt">Okta</span>
+                <span class="txt">PETRONAS</span>
+                <img src="img/maersk.png" alt="Maersk">
+                <img src="img/simcorp.png" alt="SimCorp">
+                <img src="img/90poe.png" alt="90POE">
+                <img src="img/cloudstream.png" alt="Cloudstream">
+                <img src="img/hiveos.png" alt="Hive OS">
             </div>
         </div>
     </div>
-</div>
-</div> <!-- bloc-7 END -->
+</section>
 
-<!-- bloc-8 Azure -->
-<div class="bloc bgc-white l-bloc" id="bloc-9">
-    <a name="6.1"></a>
-    <div class="container bloc-lg">
-        <div class="row">
-            <div class="col-sm-6">
-                <img src="img/microsoftcrop.gif" class="animSpeedLazy animated vanishIn img-responsive" width="472" height="522" /></div>
-                <div class="col-sm-6">
-                    <h2 class="mg-lg text-right animated fadeInDown animSpeedSlow animDelay1">
-                        <strong>Microsoft Azure</strong><br></h2>
-                        <p class="mg-lg  text-left animated fadeInUp animSpeedLazy">
-        
-                            Microsoft Azure is a cloud computing service created by Microsoft for building, testing, deploying, and managing applications and services through a global network of Microsoft-managed data centers. It provides software as a service (SaaS), platform as a service (PaaS) and infrastructure as a service (IaaS) and supports many different programming languages, tools and frameworks, including both Microsoft-specific and third-party software and systems. 
-                            <br><br>Find answers to the business challenges you face with an Azure solution that brings together everything you need—related products, services, and third-party applications. 
-                            <br><br>From DevOps to business analytics to the Internet of Things, you’ll be up and running quickly with a scalable, cost-effective solution that works with your existing investments. <br>
-                        </p>
-                        <br>
-                        <a href="https://azure.microsoft.com/en-us/" class="btn btn-d btn-lg blocs-blue-button pull-right animated fadeInUp animSpeedSlow">More Info</a></div></div></div></div>
-                        <!-- bloc-8 END -->
+<!-- ============ PAIN (Interest) ============ -->
+<section class="section pain">
+    <div class="wrap">
+        <div class="shead">
+            <span class="eyebrow">The problem</span>
+            <h2>Cloud got expensive and exposed at the same time.</h2>
+            <p class="lede">Spend climbs faster than anyone forecast, AI workloads add a brand-new line item nobody owns, and every new service widens the attack surface. Most teams are firefighting both — without the architecture to fix the root cause.</p>
+        </div>
+        <div class="pain__grid">
+            <div class="pain__card reveal">
+                <span class="n">01</span>
+                <h3>The bill nobody can explain</h3>
+                <p>Untagged resources, idle capacity, and AI/LLM usage with no cost ownership. Finance and engineering point at each other while the invoice grows.</p>
+            </div>
+            <div class="pain__card reveal">
+                <span class="n">02</span>
+                <h3>Identity sprawl</h3>
+                <p>Over-permissioned roles, standing access, and fragmented IAM across AWS, GCP, Okta and Auth0. One leaked key away from a very bad week.</p>
+            </div>
+            <div class="pain__card reveal">
+                <span class="n">03</span>
+                <h3>Security bolted on too late</h3>
+                <p>Audits become fire drills. Compliance (ISO 27001, SOC 2, NIST) is documented, not enforced. Pipelines ship faster than guardrails can keep up.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
+<!-- ============ SERVICES (Desire) ============ -->
+<section class="section" id="services">
+    <div class="wrap">
+        <div class="shead">
+            <span class="eyebrow">What we do</span>
+            <h2>Two disciplines, one cloud team.</h2>
+            <p class="lede">We pair deep cloud-security architecture with hands-on FinOps governance — so your platform is safe, compliant and cost-efficient by default, not by exception.</p>
+        </div>
+        <div class="svc__grid">
 
+            <article class="svc svc--red reveal">
+                <div class="svc__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+                </div>
+                <h3>Cloud Security &amp; IAM</h3>
+                <p>Identity-first security architecture that holds up to real audits and real attackers.</p>
+                <ul>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Zero Trust &amp; least-privilege access models</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>IAM design across AWS, GCP, Okta &amp; Auth0</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>DevSecOps &amp; secure CI/CD pipelines</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Threat modelling &amp; reference architectures</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Compliance: ISO 27001, NIST, SOC 2, GDPR</li>
+                </ul>
+            </article>
 
-        <!--  bloc-9 -->
-        <div class="bloc b-parallax tc-davys-grey bgc-white l-bloc" id="bloc-21">
-                <div class="container bloc-md">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h4 class="valley-hero-text-sub  text-right  mg-clear tc-davys-grey animated fadeInUp animSpeedSlow">
-                                    IT-RAT is able to provide a path to untie current business capabilities from fixed costs and limited technical infrastructure, to help your business reduce total cost of ownership.                            
-                        </div>
+            <article class="svc svc--amber reveal">
+                <div class="svc__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16l3-4 3 2 5-7"/></svg>
+                </div>
+                <h3>FinOps &amp; Cost Governance</h3>
+                <p>Turn cloud spend into a managed, forecastable number that finance and engineering both trust.</p>
+                <ul>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Cost optimization: rightsizing, commitments, waste cuts</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Tagging, allocation &amp; chargeback that actually works</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Anomaly detection &amp; automated budget guardrails</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Forecasting, dashboards &amp; financial observability</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Multi-cloud governance &amp; GreenOps</li>
+                </ul>
+            </article>
+
+            <article class="svc svc--ink reveal">
+                <div class="svc__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18"/><path d="M12 3l-3 6 3 12 3-12-3-6z"/></svg>
+                </div>
+                <h3>Cloud &amp; Platform Architecture</h3>
+                <p>The foundation underneath both: scalable, resilient infrastructure built secure-by-default.</p>
+                <ul>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>End-to-end AWS &amp; GCP solution architecture</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Kubernetes, GitOps &amp; container platforms</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Infrastructure as code with Terraform / Terragrunt</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Migration, replatforming &amp; data pipelines</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>"Golden paths" for secure-by-default delivery</li>
+                </ul>
+            </article>
+
+            <article class="svc svc--red reveal">
+                <div class="svc__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>
+                </div>
+                <h3>Advisory &amp; Architecture Reviews</h3>
+                <p>A senior, independent read on where your cloud stands — and a roadmap to fix it.</p>
+                <ul>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Security &amp; cost posture assessments</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Multi-year cloud strategy &amp; reference standards</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Stakeholder alignment across eng, finance &amp; security</li>
+                    <li><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Team enablement, mentoring &amp; FinOps training</li>
+                </ul>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- ============ AI FINOPS BAND (Desire) ============ -->
+<section class="section section--tight" id="ai">
+    <div class="wrap">
+        <div class="aiband reveal">
+            <div class="aiband__inner">
+                <div>
+                    <span class="eyebrow">The new line item</span>
+                    <h2>FinOps for AI workloads</h2>
+                    <p>LLM APIs, token-based billing and cloud-native AI services are the fastest-growing — and least governed — part of the cloud bill. We bring cost visibility, allocation and guardrails to AI the same way FinOps did for compute, so you can scale models without scaling surprises.</p>
+                </div>
+                <div class="aiband__stats">
+                    <div class="stat">
+                        <div class="big">Token</div>
+                        <div class="lbl">Usage attributed per team, product &amp; model</div>
+                    </div>
+                    <div class="stat">
+                        <div class="big">Live</div>
+                        <div class="lbl">Real-time cost &amp; anomaly visibility</div>
+                    </div>
+                    <div class="stat">
+                        <div class="big">Guard</div>
+                        <div class="lbl">Budgets &amp; policy enforced automatically</div>
+                    </div>
+                    <div class="stat">
+                        <div class="big">Green</div>
+                        <div class="lbl">Sustainable, efficient AI at scale</div>
                     </div>
                 </div>
             </div>
         </div>
-    </div><!-- bloc-9 END -->
-
-<!-- bloc-10 Docker --><div class="bloc bgc-white l-bloc" id="bloc-11"><div class="container bloc-lg"><div class="row"><div class="col-sm-6 col-sm-push-6">
-    <img src="img/docker.gif" class="center-block animSpeedLazy animated vanishIn img-responsive" height="424" width="337" /></div><div class="col-sm-6 col-sm-pull-6">
-        <h2 class="mg-lg animated fadeInDown animSpeedSlow animDelay1">
-        <strong>Docker</strong></h2>
-        <p class="mg-lg  text-left animated fadeInUp animSpeedLazy">Docker is a computer program that performs operating-system-level virtualization, also known as "containerization". It was first released in 2013 and is developed by Docker, Inc.<br><br>Docker is used to run software packages called "containers". Containers are isolated from each other and bundle their own tools, libraries and configuration files; they can communicate with each other through well-defined channels. 
-        <br><br>All containers are run by a single operating system kernel and are thus more lightweight than virtual machines. Containers are created from "images" that specify their precise contents. Images are often created by combining and modifying standard images downloaded from public repositories.<br><br>
-        </p><a href="https://www.docker.com" class="btn btn-lg btn-chrome-yellow animated fadeInUp animSpeedSlow">More Info</a></div></div></div></div>
-        <!-- bloc-10 END -->
-
-<!-- bloc-11 -->
-<div class="bloc b-parallax tc-davys-grey bgc-white l-bloc" id="bloc-21">
-        <div class="container bloc-md">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h4 class="valley-hero-text-sub  text-right  mg-clear tc-davys-grey animated fadeInUp animSpeedSlow">
-                            We focus on analyzing your current application portfolio for opportunities and use cloud technologies to re-platform or migrate to new platforms.                    
-                </div>
-            </div>
-        </div>
-    </div> 
-    <!--bloc-11 END -->
-
-
-
-                <!--bloc-12 Kubernetes-->
-<div class="bloc bgc-white l-bloc" id="bloc-9">
-    <div class="container bloc-lg">
-        <div class="row">
-            <div class="col-sm-6">
-                <img src="img/kuber.gif" class="animSpeedLazy animated vanishIn img-responsive" width="470" height="470" /></div>
-                <div class="col-sm-6">
-                    <h2 class="mg-lg text-right animated fadeInDown animSpeedSlow animDelay1">
-                        <strong>Kubernetes</strong><br></h2>
-                        <p class="mg-lg  text-left animated fadeInUp animSpeedLazy">Kubernetes is a portable, extensible open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem. Kubernetes services, support, and tools are widely available.
-                        <br> <br> Google open-sourced the Kubernetes project in 2014. Kubernetes builds upon a decade and a half of experience that Google has with running production workloads at scale, combined with best-of-breed ideas and practices from the community.
-                        <br><br>Even though Kubernetes provides a lot of functionality, there are always new scenarios that would benefit from new features. Application-specific workflows can be streamlined to accelerate developer velocity. Ad hoc orchestration that is acceptable initially often requires robust automation at scale. This is why Kubernetes was also designed to serve as a platform for building an ecosystem of components and tools to make it easier to deploy, scale, and manage applications.</p><br>
-                        <a href="https://kubernetes.io" class="btn btn-d btn-lg blocs-blue-button pull-right animated fadeInUp animSpeedSlow">More Info</a></div></div></div></div>
-                        <!-- bloc-12 END -->
-
-<!--  bloc-13 -->
-<div class="bloc b-parallax tc-davys-grey bgc-white l-bloc" id="bloc-21">
-        <div class="container bloc-md">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h4 class="valley-hero-text-sub  text-right  mg-clear tc-davys-grey animated fadeInUp animSpeedSlow">
-                            Cloud computing has been around for quite some time. Now enterprises have started trusting it after testing its development projects and applications. Enterprises have slowly shown forward movement and are slowly moving their critical operations too onto the cloud.                    
-                </div>
-            </div>
-        </div>
     </div>
-    
-    <!-- bloc-13 END -->
-    
-    
-    
-<!-- bloc-14 Chef -->
-<div class="bloc bgc-white l-bloc" id="bloc-11"><div class="container bloc-lg"><div class="row"><div class="col-sm-6 col-sm-push-6">
-        <img src="img/chief_fun.gif" class="center-block animSpeedLazy animated vanishIn img-responsive" height="472" width="522" /></div><div class="col-sm-6 col-sm-pull-6">
-            <h2 class="mg-lg animated fadeInDown animSpeedSlow animDelay1">
-                <strong>Chef</strong></h2>
-                <p class="mg-lg  text-left animated fadeInUp animSpeedLazy"> Chef is both the name of a company and the name of a configuration management tool written in Ruby and Erlang. It uses a pure-Ruby, domain-specific language (DSL) for writing system configuration "recipes". 
-                <br><br>Chef is used to streamline the task of configuring and maintaining a company's servers, and can integrate with cloud-based platforms such as Internap, Amazon EC2, Google Cloud Platform, Oracle Cloud, OpenStack, SoftLayer, Microsoft Azure and Rackspace to automatically provision and configure new machines. 
-                <br><br>Chef contains solutions for both small and large scale systems, with features and pricing for the respective ranges.</p><br>
-                </p><a href="https://www.chef.io/chef/" class="btn btn-lg btn-chrome-yellow animated fadeInUp animSpeedSlow">More Info</a></div></div></div></div>
-                <!-- bloc-14 END -->
-    
-            
+</section>
 
-<!-- bloc-15 -->
-<div class="bloc b-parallax tc-davys-grey bgc-white l-bloc" id="bloc-21">
-        <div class="container bloc-md">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h4 class="valley-hero-text-sub  text-right  mg-clear tc-davys-grey animated fadeInUp animSpeedSlow">
-                            The traditional methods of developing applications often took long to complete is now reduced to a few weeks. With all the necessary software and tools available in the cloud, our developers can work more efficiently and productively to develop better applications quickly.                    
+<!-- ============ CAPABILITIES (Desire) ============ -->
+<section class="section" id="capabilities">
+    <div class="wrap">
+        <div class="shead">
+            <span class="eyebrow">Capabilities</span>
+            <h2>The stack we work in every day.</h2>
+        </div>
+        <div class="cap__cols">
+            <div>
+                <div class="cap__group reveal">
+                    <h3>Cloud &amp; Platform</h3>
+                    <div class="tags">
+                        <span class="tag">AWS</span><span class="tag">GCP</span><span class="tag">Kubernetes</span>
+                        <span class="tag">Terraform</span><span class="tag">Terragrunt</span><span class="tag">Docker</span>
+                        <span class="tag">ArgoCD</span><span class="tag">GitOps</span><span class="tag">Istio</span>
+                        <span class="tag">Serverless</span><span class="tag">Kafka</span><span class="tag">Go</span>
+                    </div>
+                </div>
+                <div class="cap__group reveal">
+                    <h3>Security &amp; Identity</h3>
+                    <div class="tags">
+                        <span class="tag">IAM</span><span class="tag">Okta</span><span class="tag">Auth0</span>
+                        <span class="tag">Zero Trust</span><span class="tag">DevSecOps</span><span class="tag">Secure CI/CD</span>
+                        <span class="tag">Threat Modelling</span><span class="tag">API Security</span>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-<!-- bloc 15 END-->
-
-<!--bloc-16 Golang-->
-<div class="bloc bgc-white l-bloc" id="bloc-9">
-        <div class="container bloc-lg">
-            <div class="row">
-                <div class="col-sm-6">
-                    <img src="img/gopher.gif" class="animSpeedLazy animated vanishIn img-responsive" width="470" height="470" /></div>
-                    <div class="col-sm-6">
-                        <h2 class="mg-lg text-right animated fadeInDown animSpeedSlow animDelay1">
-                            <strong>Golang</strong><br></h2>
-                            <p class="mg-lg  text-left animated fadeInUp animSpeedLazy">The Go programming language is an open source project to make programmers more productive.<br><br>Golang is expressive, concise, clean, and efficient. Its concurrency mechanisms make it easy to write programs that get the most out of multicore and networked machines, while its novel type system enables flexible and modular program construction.<br><br> Golang compiles quickly to machine code yet has the convenience of garbage collection and the power of run-time reflection. It's a fast, statically typed, compiled language that feels like a dynamically typed, interpreted language.</p><br>
-                            <a href="https://golang.org" class="btn btn-d btn-lg blocs-blue-button pull-right animated fadeInUp animSpeedSlow">More Info</a></div></div></div></div>
-        <!-- bloc-16 END -->
-    
-    <!--  bloc-17 -->
-    <div class="bloc b-parallax tc-davys-grey bgc-white l-bloc" id="bloc-21">
-            <div class="container bloc-md">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h4 class="valley-hero-text-sub  text-right  mg-clear tc-davys-grey animated fadeInUp animSpeedSlow">
-                                "The more i think about what a good language should do for us, i am more and more convinced that Go is the best language we have so far."<br>
-                                Steven Degutis                        
+            <div>
+                <div class="cap__group reveal">
+                    <h3>FinOps &amp; Cost</h3>
+                    <div class="tags">
+                        <span class="tag">FinOps</span><span class="tag">FinOps for AI</span><span class="tag">Cost Optimization</span>
+                        <span class="tag">Tagging &amp; Allocation</span><span class="tag">Forecasting</span>
+                        <span class="tag">Anomaly Detection</span><span class="tag">Multi-cloud</span><span class="tag">GreenOps</span>
+                    </div>
+                </div>
+                <div class="cap__group reveal">
+                    <h3>Governance &amp; Compliance</h3>
+                    <div class="compliance">
+                        <span class="c">ISO 27001</span>
+                        <span class="c">NIST</span>
+                        <span class="c">SOC 2</span>
+                        <span class="c">GDPR</span>
                     </div>
                 </div>
             </div>
         </div>
-<!-- bloc-17 END -->
+    </div>
+</section>
 
+<!-- ============ TEAM (Desire / credibility) ============ -->
+<section class="section team" id="team">
+    <div class="wrap">
+        <div class="shead center">
+            <span class="eyebrow">Who you work with</span>
+            <h2>Senior architects. No hand-offs.</h2>
+            <p class="lede" style="margin:0 auto;">You work directly with the people who do this at enterprise scale every day — not a layer of account managers.</p>
+        </div>
+        <div class="team__grid">
 
-
-                        <!-- bloc-18 CloudAnimation -->
-    <div class="bloc b-parallax tc-davys-grey bgc-white l-bloc" id="bloc-24">
-        <div class="container bloc-lg">
-            <div class="row">
-                <div class="col-sm-6">
-                    <img src="img/CloudAnimation-012.gif" class="img-responsive animSpeedLazy animated vanishIn img-responsive" height="322" width="545" />
-                </div>
-                <div class="col-sm-6 animated fadeInUp animSpeedLazy Delay2">
-                    <p class="mg-lg text-left">Our Cloud Computing Solution comprises of three key steps Cloud Consulting: 
-                    <br><br>We perform an in depth analysis of your existing business, future plans, business requirements and goals to drive ROI. We also do an assessment of which processes and technology are required for using cloud. We determine enterprises readiness for the cloud by aligning the cloud technology with the business requirements. 
-                    <br><br>Cloud Strategy: After performing the analysis the next step is to develop the perfect strategy for optimization and cost saving. We determine what the enterprises are trying to achieve from the Cloud, and other considerations such as performance, timelines, budget etc. After this step we match the business requirements with the right type of cloud platform. We offer many cloud deployment options such as Public, Private and Hybrid.
-                    <br><br>Cloud Integration: In this service we configure multiple application programs to share data in the cloud. We have multiple options from which the enterprises can benefit. 
-                    <br>a) Traditional enterprise integration tools deployed on premise 
-                    <br>b) Traditional enterprise integration tools hosted in the cloud 
-                    <br>c) On Demand Integration offerings. These are SaaS applications designed to deliver integration securely over the internet.<br></p></div></div></div></div>
-                    <!-- - bloc-18 END -->
-
-    <!--- bloc-19 -->
-    <div class="bloc b-parallax tc-davys-grey bgc-white l-bloc" id="bloc-21">
-            <div class="container bloc-md">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h4 class="valley-hero-text-sub  text-right  mg-clear tc-davys-grey animated fadeInUp animSpeedSlow">
-                                Applications that use virtualized IT services are definitely more <br>efficient and better equipped to meet user demands compared to the traditional ones.                        
+            <article class="member reveal">
+                <div class="member__media"><img src="img/Yuriy.gif" alt="Yurii Kostyuk"></div>
+                <div class="member__body">
+                    <span class="member__role">Co-founder · Cloud Security &amp; IAM</span>
+                    <h3>Yurii Kostyuk</h3>
+                    <p class="where">Lead Security Architect, PETRONAS · ex-Cloud Native Architect, Okta</p>
+                    <p>IAM solutions architect and cloud security consultant. Yurii defines enterprise-wide security strategy and designs secure, scalable architectures across hybrid and cloud-native environments — Zero Trust, identity, DevSecOps and platform resilience on AWS and GCP.</p>
+                    <div class="member__skills">
+                        <span>IAM</span><span>Zero Trust</span><span>AWS / GCP</span><span>Terraform</span><span>Kubernetes</span><span>Go</span>
                     </div>
+                    <a class="member__link" href="https://www.linkedin.com/in/yuriy-kostyuk-778900ab/" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.83-2.2 3.77-2.2 4.03 0 4.78 2.65 4.78 6.1V24h-4v-7.1c0-1.7-.03-3.9-2.38-3.9-2.38 0-2.75 1.86-2.75 3.78V24h-4V8z"/></svg>
+                        Connect on LinkedIn
+                    </a>
                 </div>
-            </div>
+            </article>
+
+            <article class="member reveal">
+                <div class="member__media"><img src="img/Tania.gif" alt="Tania Fedirko"></div>
+                <div class="member__body">
+                    <span class="member__role">Co-founder · FinOps &amp; Cost Governance</span>
+                    <h3>Tania Fedirko</h3>
+                    <p class="where">Principal FinOps Architect, NatWest Group · AWS Community Builder</p>
+                    <p>FinOps expert in cloud financial governance, cost optimization and multi-cloud strategy. Tania aligns engineering, finance and business across cloud, Kubernetes and AI workloads — applying FinOps best practices to LLM APIs and token-based usage while keeping things sustainable and scalable.</p>
+                    <div class="member__skills">
+                        <span>FinOps</span><span>FinOps for AI</span><span>Cost Governance</span><span>Multi-cloud</span><span>GreenOps</span><span>AWS</span>
+                    </div>
+                    <a class="member__link" href="https://www.linkedin.com/in/tania-fedirko-9bb1a5136/" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.83-2.2 3.77-2.2 4.03 0 4.78 2.65 4.78 6.1V24h-4v-7.1c0-1.7-.03-3.9-2.38-3.9-2.38 0-2.75 1.86-2.75 3.78V24h-4V8z"/></svg>
+                        Connect on LinkedIn
+                    </a>
+                </div>
+            </article>
+
         </div>
-        <!-- - bloc-19 END -->
+    </div>
+</section>
 
-        <br>
-        <br>
-        <br>
-
-<!--- bloc-20 Our Team -->
-<div class="bloc b-parallax tc-davys-grey bgc-white l-bloc" id="bloc-21">
-	<div class="container bloc-md">
-		<div class="row">
-			<div class="col-sm-12">
-				<h2 class="text-center blocs-team-title tc-celestial-blue animated fadeInUp animSpeedLazy">
-					Meet our team
-				</h2>
-				<p class="text-center blocs-team-sub tc-celestial animated fadeInUp animSpeedSlow">
-					We are the squad of skilled individuals.
-				</p>
-			</div>
-		</div>
-		<div class="row voffset-lg">
-			<div class="col-sm-6">
-				<img src="img/Yuriy.gif" class="img-responsive center-block btn-lg pull-right animated fadeInRight animSpeedLazy" height="500" width="500" />
-				<h3 class="text-center blocs-team-header tc-white">
-                    <a class="ltc-celestial-blue animated fadeInUp animSpeedSlow" href="https://www.linkedin.com/in/yuriy-kostyuk-778900ab/" 
-                    target="_blank">Yuriy Kostyuk </a>
-                    <a class="fa fa-linkedin-square animSpeedSlow animated fadeInDown ltc-celestial-blue icon-md" 
-                    href="https://www.linkedin.com/in/yuriy-kostyuk-778900ab/"></a>
-                    <br>
-				</h3>
-				<p class="text-center blocs-team-sub animated fadeInUp animSpeedSlow">
-					CEO / Senior Golang Engineer
-                </p>
-			</div>
-			<div class="col-sm-6">
-				<img src="img/Tania.gif" class="img-responsive center-block btn-lg pull-left animated fadeInLeft animSpeedLazy" height="500" width="500" />
-				<h3 class="text-center blocs-team-header tc-white">
-                    <a class="ltc-celestial-blue animated fadeInUp animSpeedSlow" href="https://www.linkedin.com/in/tania-fedirko-9bb1a5136/" 
-                    target="_blank">Tania Fedirko </a>
-                    <a class="fa fa-linkedin-square animSpeedSlow animated fadeInDown ltc-celestial-blue icon-md" 
-                    href="https://www.linkedin.com/in/tania-fedirko-9bb1a5136/" 
-                    target="_blank"></a>
-                    <br>
-				</h3>
-				<p class="text-center blocs-team-sub animated fadeInUp animSpeedSlow">
-					Cloud / Golang Engineer
-				</p>
-			</div>
-		</div>
-	</div>
-</div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<!-- bloc-20 END -->
-
-<!-- bloc-21 -->
-<div class="bloc b-parallax tc-davys-grey bgc-white l-bloc" id="bloc-21">
-        <div class="container bloc-md">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h4 class="valley-hero-text-sub  text-center  mg-clear tc-davys-grey animated fadeInUp animSpeedSlow">
-                            Our company has been working hard to accomplish beneficiary ventures for our partners.  We ensure every client is valued to the core. We are extremely delighted to value you as one of our beloved partner.
-                </div>
+<!-- ============ PROCESS (Desire) ============ -->
+<section class="section">
+    <div class="wrap">
+        <div class="shead">
+            <span class="eyebrow">How we engage</span>
+            <h2>Lightweight to start. Senior throughout.</h2>
+        </div>
+        <div class="steps">
+            <div class="step reveal">
+                <h3>Assess</h3>
+                <p>A focused review of your cloud security posture and cost structure. You get a clear, prioritized picture of risk and waste — usually within weeks.</p>
+            </div>
+            <div class="step reveal">
+                <h3>Architect</h3>
+                <p>We design the target state: identity model, guardrails, FinOps operating model and reference architectures — mapped to your compliance obligations.</p>
+            </div>
+            <div class="step reveal">
+                <h3>Embed</h3>
+                <p>We implement alongside your team, automate the guardrails, and hand over with the standards and training that keep it secure and efficient long after.</p>
             </div>
         </div>
     </div>
-   <!-- bloc-21 END --> 
+</section>
 
-<!-- bloc-22 Slider -->
-<div class="bloc full-width-bloc b-divider-dashed b-parallax bgc-davys-grey d-bloc" id="bloc-18">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-12">
-				<div id="carousel-1" class="carousel slide no-shadows" data-ride="carousel" data-interval="4000">
-					<ol class="carousel-indicators">
-						<li data-target="#carousel-1" data-slide-to="0" class="active">
-						</li>
-						<li data-target="#carousel-1" data-slide-to="1">
-						</li>
-						<li data-target="#carousel-1" data-slide-to="2">
-						</li>
-						<li data-target="#carousel-1" data-slide-to="3">
-						</li>
-						<li data-target="#carousel-1" data-slide-to="4">
-						</li>
-					</ol>
-					<div class="carousel-inner">
-						<div class="item active">
-							<img src="img/maersk.png" />
-							<div class="carousel-caption">
-							</div>
-						</div>
-						<div class="item">
-							<img src="img/hiveos.png" />
-							<div class="carousel-caption">
-							</div>
-						</div>
-						<div class="item">
-							<img src="img/cloudstream.png" />
-							<div class="carousel-caption">
-							</div>
-						</div>
-						<div class="item">
-							<img src="img/simcorp.png" />
-							<div class="carousel-caption">
-							</div>
-						</div>
-						<div class="item">
-							<img src="img/90poe.png" />
-							<div class="carousel-caption">
-							</div>
-						</div>
-					</div><a class="left carousel-control" href="#carousel-1" role="button" data-slide="prev"><span class="fa fa-chevron-left"></span><span class="sr-only">Previous</span></a><a class="right carousel-control" href="#carousel-1" role="button" data-slide="next"><span class="fa fa-chevron-right"></span><span class="sr-only">Next</span></a>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- bloc-22 END -->
-
-
-
-
-
-<!-- bloc-23 Mail -->
-<div class="bloc bgc-white l-bloc" id="bloc-13">
-    <a name="13"></a>
-        <div class="container bloc-lg">
-        <div class="row animated">
-        <div class="col-sm-6">
-        <img src="img/17-mail.gif" class="img-responsive animated" />
-    </div>
-    <div class="col-sm-6"><br><br><br><br><br>
-        <form id="form_1" action="https://formspree.io/itratmail@gmail.com" method="POST" novalidate success-msg="Your message has been sent." fail-msg="Sorry it seems that our mail server is not responding, Sorry for the inconvenience!">
-            <div class="form-group">
-                <label>Name</label>
-                <input id="name" type="text" name="name" class="form-control" required /></div>
+<!-- ============ CTA / CONTACT (Action) ============ -->
+<section class="section cta" id="contact">
+    <div class="wrap cta__inner">
+        <div class="reveal">
+            <span class="eyebrow">Get started</span>
+            <h2>Let's make your cloud safer and cheaper.</h2>
+            <p>Tell us where it hurts — runaway spend, a looming audit, an identity mess, or all three. We'll come back with a concrete first step.</p>
+            <div class="cta__meta">
+                <a href="mailto:itratmail@gmail.com">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+                    itratmail@gmail.com
+                </a>
+                <a href="https://www.linkedin.com/in/it-rat-117084146/" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.83-2.2 3.77-2.2 4.03 0 4.78 2.65 4.78 6.1V24h-4v-7.1c0-1.7-.03-3.9-2.38-3.9-2.38 0-2.75 1.86-2.75 3.78V24h-4V8z"/></svg>
+                    IT-RAT on LinkedIn
+                </a>
+            </div>
+        </div>
+        <div class="formcard reveal">
+            <form id="form_1" action="https://formspree.io/itratmail@gmail.com" method="POST">
                 <div class="form-group">
-                <label>E-mail</label>
-                <input id="email" type="email" name="_replyto" class="form-control" type="email" required /></div>
+                    <label for="name">Name</label>
+                    <input id="name" type="text" name="name" required>
+                </div>
                 <div class="form-group">
-                <label>Message</label>
-                <textarea id="message" name="message" class="form-control" rows="4" cols="50" required></textarea></div> 
-                <button class="bloc-button btn btn-lg btn-block animated fadeInUp animSpeedSlow animDelay2 btn-celestial-blue " type="submit" value="Send">Submit</button>
-            </form></div></div></div></div>
-            <!-- bloc-23 END -->
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-<!-- bloc-24 Social Connections Footer -->
-<div class="bloc bgc-white l-bloc" id="bloc-2">
-        <div class="container">
-            <div class="row animated vanishIn">
-                <div class="col-sm-12 col-md-6 col-md-offset-3">
-        <div class="col-xs-3">
-            <div class="text-center">
-            <a class="social" href="https://twitter.com/ITRatSoftDev" target="_blank">
-                <span class="fa fa-twitter icon-md animSpeedLazy animDelay2 animated fadeInDown">
-                </span>
-            </a>
+                    <label for="email">Work e-mail</label>
+                    <input id="email" type="email" name="_replyto" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">What can we help with?</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+                </div>
+                <button class="btn btn--primary" type="submit">Send message <span class="arr">&rarr;</span></button>
+                <p class="formnote">We reply within two business days.</p>
+            </form>
         </div>
     </div>
-            <div class="col-xs-3">
-            <div class="text-center">
-            <a class="social" href="https://www.facebook.com/ItRatSoftDev/" target="_blank">
-                <span class="fa fa-facebook-square icon-md animSpeedLazy animDelay1 animated fadeInDown">
-            </span>
-        </a>
-    </div>
-</div>
-<div class="col-xs-3">
-            <div class="text-center">
-            <a class="social" href="https://www.linkedin.com/in/it-rat-117084146/" target="_blank">
-                <span class="fa fa-linkedin-square icon-md animSpeedLazy animDelay06 animated fadeInDown">
-            </span>
-        </a>
-    </div>
-</div
-><div class="col-xs-3">
-    <div class="text-center">
-        <a class="social" href="https://www.instagram.com/itratsoftdev/" target="_blank">
-            <span class="ion ion-social-instagram icon-md animSpeedLazy animDelay04 animated fadeInDown">
-            </span></a></div></div></div></div></div></div>
-    <!-- bloc-24 END -->
-    <br>
+</section>
 
-<!-- bloc-25 Rights -->
-<div class="bloc built-with-blocs-bloc bgc-black bloc-bg-texture texture-paper b-divider b-parallax d-bloc" id="bloc-8">
-        <div class="container bloc-sm">
-        <div class="row">
-        <div class="col-sm-12 text-center">
-                        <a class="a-btn bloc-mob-center-text animated fadeInUp animDelay2 ltc-white" href="index.html">Copyright &copy; 2019 IT-RAT. All rights reserved.</a>
-        </div></div></div></div>
-        <!-- bloc-25 END -->
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+    <div class="wrap">
+        <div class="footer__top">
+            <div>
+                <a class="brand" href="#top"><img src="img/29.png" alt="IT-RAT logo"><span class="brand__txt">IT<i>-RAT</i></span></a>
+                <p class="footer__tag">Boutique cloud consultancy for enterprise — securing identity and infrastructure, governing cloud and AI spend.</p>
+            </div>
+            <div class="footer__social">
+                <a href="https://www.linkedin.com/in/it-rat-117084146/" target="_blank" rel="noopener" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.83-2.2 3.77-2.2 4.03 0 4.78 2.65 4.78 6.1V24h-4v-7.1c0-1.7-.03-3.9-2.38-3.9-2.38 0-2.75 1.86-2.75 3.78V24h-4V8z"/></svg>
+                </a>
+                <a href="https://twitter.com/ITRatSoftDev" target="_blank" rel="noopener" aria-label="Twitter / X">
+                    <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5.3-7-6.1 7H1.7l8-9.2L1 2h7l4.8 6.4L18.9 2zm-2.4 18h1.9L7.6 4H5.6l10.9 16z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/ItRatSoftDev/" target="_blank" rel="noopener" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24"><path d="M14 9h3V5h-3c-2.2 0-4 1.8-4 4v2H7v4h3v8h4v-8h3l1-4h-4V9c0-.6.4-1 1-1z"/></svg>
+                </a>
+                <a href="https://www.instagram.com/itratsoftdev/" target="_blank" rel="noopener" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                </a>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <span>&copy; <span id="year">2026</span> IT-RAT. All rights reserved.</span>
+            <span>Cloud Security · FinOps · Platform Engineering</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+(function () {
+    var nav = document.getElementById('nav');
+    var toggle = document.getElementById('navtoggle');
+    var links = document.getElementById('navlinks');
+
+    // sticky border on scroll
+    var onScroll = function () {
+        nav.classList.toggle('scrolled', window.scrollY > 12);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // mobile menu
+    toggle.addEventListener('click', function () {
+        var open = nav.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    links.addEventListener('click', function (e) {
+        if (e.target.tagName === 'A') nav.classList.remove('open');
+    });
+
+    // scroll reveal (rect-based — fires reliably on real and programmatic scroll)
+    var revealEls = [].slice.call(document.querySelectorAll('.reveal'));
+    var revealCheck = function () {
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        for (var i = revealEls.length - 1; i >= 0; i--) {
+            if (revealEls[i].getBoundingClientRect().top < vh * 0.9) {
+                revealEls[i].classList.add('in');
+                revealEls.splice(i, 1);
+            }
+        }
+    };
+    var rafQueued = false;
+    var onReveal = function () {
+        if (rafQueued) return;
+        rafQueued = true;
+        requestAnimationFrame(function () { rafQueued = false; revealCheck(); });
+    };
+    window.addEventListener('scroll', onReveal, { passive: true });
+    window.addEventListener('resize', onReveal);
+    window.addEventListener('load', revealCheck);
+    revealCheck();
+
+    // current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // scroll progress bar
+    var bar = document.getElementById('scrollbar');
+    var onProgress = function () {
+        var h = document.documentElement;
+        var max = h.scrollHeight - h.clientHeight;
+        bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    window.addEventListener('scroll', onProgress, { passive: true });
+    onProgress();
+
+    // seamless logo marquee (duplicate track content once)
+    var track = document.getElementById('logoTrack');
+    if (track) track.innerHTML += track.innerHTML;
+
+    if (!reduced) {
+        // ---- magnetic buttons ----
+        document.querySelectorAll('.btn--primary').forEach(function (btn) {
+            btn.addEventListener('mousemove', function (e) {
+                var r = btn.getBoundingClientRect();
+                var x = e.clientX - r.left - r.width / 2;
+                var y = e.clientY - r.top - r.height / 2;
+                btn.style.transform = 'translate(' + x * 0.25 + 'px,' + (y * 0.35 - 2) + 'px)';
+            });
+            btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
+        });
+
+        // ---- hero art 3D tilt + badge parallax ----
+        var hero = document.querySelector('.hero');
+        var art = document.querySelector('.hero__art');
+        var b1 = document.querySelector('.hero__badge--1');
+        var b2 = document.querySelector('.hero__badge--2');
+        if (hero && art) {
+            hero.addEventListener('mousemove', function (e) {
+                var r = hero.getBoundingClientRect();
+                var px = (e.clientX - r.left) / r.width - 0.5;
+                var py = (e.clientY - r.top) / r.height - 0.5;
+                art.style.transform = 'perspective(900px) rotateY(' + px * 7 + 'deg) rotateX(' + (-py * 7) + 'deg)';
+                if (b1) b1.style.transform = 'translate(' + px * -22 + 'px,' + (py * -22) + 'px)';
+                if (b2) b2.style.transform = 'translate(' + px * 22 + 'px,' + (py * 22) + 'px)';
+            });
+            hero.addEventListener('mouseleave', function () {
+                art.style.transform = '';
+                if (b1) b1.style.transform = '';
+                if (b2) b2.style.transform = '';
+            });
+        }
+
+        // ---- hero constellation canvas ----
+        var cv = document.getElementById('heroFx');
+        if (cv && cv.getContext) {
+            var ctx = cv.getContext('2d');
+            var W, H, DPR, nodes, mouse = { x: -999, y: -999 };
+            var COLORS = ['#14110f', '#f4a91b', '#e8431c'];
+
+            var resize = function () {
+                DPR = Math.min(window.devicePixelRatio || 1, 2);
+                W = cv.clientWidth; H = cv.clientHeight;
+                cv.width = W * DPR; cv.height = H * DPR;
+                ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+                var count = Math.round(Math.min(70, (W * H) / 14000));
+                nodes = [];
+                for (var i = 0; i < count; i++) {
+                    nodes.push({
+                        x: Math.random() * W, y: Math.random() * H,
+                        vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
+                        c: COLORS[i % 3 === 0 ? (Math.random() < 0.5 ? 1 : 2) : 0]
+                    });
+                }
+            };
+
+            var draw = function () {
+                ctx.clearRect(0, 0, W, H);
+                for (var i = 0; i < nodes.length; i++) {
+                    var n = nodes[i];
+                    n.x += n.vx; n.y += n.vy;
+                    if (n.x < 0 || n.x > W) n.vx *= -1;
+                    if (n.y < 0 || n.y > H) n.vy *= -1;
+
+                    var dmx = n.x - mouse.x, dmy = n.y - mouse.y;
+                    var dm = Math.sqrt(dmx * dmx + dmy * dmy);
+                    if (dm < 130) { n.x += dmx / dm * 0.6; n.y += dmy / dm * 0.6; }
+
+                    for (var j = i + 1; j < nodes.length; j++) {
+                        var m = nodes[j];
+                        var dx = n.x - m.x, dy = n.y - m.y;
+                        var d = Math.sqrt(dx * dx + dy * dy);
+                        if (d < 120) {
+                            ctx.globalAlpha = (1 - d / 120) * 0.16;
+                            ctx.strokeStyle = '#14110f';
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y); ctx.stroke();
+                        }
+                    }
+                    ctx.globalAlpha = n.c === '#14110f' ? 0.35 : 0.9;
+                    ctx.fillStyle = n.c;
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, n.c === '#14110f' ? 2 : 2.6, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(draw);
+            };
+
+            cv.parentElement.addEventListener('mousemove', function (e) {
+                var r = cv.getBoundingClientRect();
+                mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+            });
+            cv.parentElement.addEventListener('mouseleave', function () { mouse.x = mouse.y = -999; });
+            window.addEventListener('resize', resize);
+            resize();
+            draw();
+        }
+    }
+}());
+</script>
+
+</body>
+</html>
