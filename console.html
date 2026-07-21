@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open your Genaryx console &#183; IT-RAT</title>
+<meta name="description" content="Your Genaryx console runs on your own infrastructure, not on ours. This page takes you to it and remembers the address in this browser. We never see your address, your credentials or your data.">
+<link rel="canonical" href="https://it-rat.com/console.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="IT-RAT">
+<meta property="og:url" content="https://it-rat.com/console.html">
+<meta property="og:title" content="Open your Genaryx console &#183; IT-RAT">
+<meta property="og:description" content="Your console runs on your own infrastructure. This page takes you to it; we never see your address or your data.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  :root{--accent:#8B7CF6}
+  .con-wrap{max-width:640px;margin:0 auto;padding:clamp(44px,7vw,84px) 0 60px}
+  .con-card{border:1px solid var(--line-2);border-radius:var(--rad);background:var(--panel);padding:clamp(22px,3.4vw,34px)}
+  .con-card h1{font-size:clamp(26px,3.6vw,36px);letter-spacing:-.02em;margin:10px 0 0}
+  .con-card .kicker{font-family:var(--font-m);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .con-card p{color:var(--dim);font-size:14.5px;line-height:1.65;margin-top:14px}
+  .con-field{margin-top:22px}
+  .con-field label{display:block;font-size:13px;color:var(--fg);margin-bottom:7px}
+  .con-field input{width:100%;box-sizing:border-box;border:1px solid var(--line-2);border-radius:var(--rad-s);
+    background:#0B0F15;color:var(--fg);font-family:var(--font-m);font-size:14px;padding:12px 14px}
+  .con-field input:focus{outline:none;border-color:color-mix(in srgb,var(--accent) 60%,var(--line-2))}
+  .con-hint{font-family:var(--font-m);font-size:11.5px;color:var(--faint);margin-top:8px}
+  .con-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+  .con-err{margin-top:14px;border:1px solid rgba(255,87,75,.4);background:rgba(255,87,75,.08);
+    color:#ffb0a9;border-radius:var(--rad-s);padding:10px 13px;font-size:13px;display:none}
+  .con-err.on{display:block}
+  .con-recent{margin-top:22px;border-top:1px solid var(--line);padding-top:16px;display:none}
+  .con-recent.on{display:block}
+  .con-recent .l{font-family:var(--font-m);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint)}
+  .con-recent a{display:block;font-family:var(--font-m);font-size:13px;color:var(--fg);
+    border:1px solid var(--line);border-radius:var(--rad-s);padding:10px 13px;margin-top:9px;text-decoration:none}
+  .con-recent a:hover{border-color:var(--line-2)}
+  .con-note{display:flex;gap:12px;margin-top:26px;border:1px solid var(--line);border-radius:var(--rad-s);
+    padding:14px 15px;background:var(--panel-2)}
+  .con-note svg{width:20px;height:20px;color:var(--mint);flex:0 0 auto;margin-top:2px}
+  .con-note div{font-size:13px;color:var(--dim);line-height:1.6}
+  .con-note b{color:var(--fg)}
+</style>
+</head>
+<body data-root="./">
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html" data-dir="back"><svg class="glyph" viewBox="0 0 24 24" fill="none"><path d="M13.5 2 5 13.2h5.1L9.4 22l9-11.8h-5.3L13.5 2Z" fill="#F4B23E"/></svg>IT<b>-</b>RAT</a>
+    <span class="crumb">the stack<span class="sep">/</span><span class="here">enterprise</span></span>
+    <span class="spacer"></span>
+    <a class="tb-link" href="index.html#stack">The open stack</a>
+    <a class="tb-link" href="enterprise.html" title="Genaryx and the Pocket pager. In the works.">Enterprise<span class="soon-pill">soon</span></a>
+    <a class="tb-link" href="https://github.com/TAIPANBOX" target="_blank" rel="noopener">GitHub &#8599;</a>
+    <button class="kbd-hint" data-cmdk type="button"><span>jump</span><kbd>&#8984;K</kbd></button>
+  </div>
+</header>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="con-wrap">
+      <div class="con-card rv">
+        <div class="kicker">Genaryx</div>
+        <h1>Open your console</h1>
+        <p>
+          Your console does not run here. It runs on your own infrastructure, next to your stack,
+          which is why your runs, your spend and your identities never travel to us to be displayed.
+          This page is only a doorway: it sends your browser to your own address and remembers it
+          here for next time.
+        </p>
+
+        <form class="con-field" id="con-form" novalidate>
+          <label for="con-addr">Your console address</label>
+          <input id="con-addr" name="addr" inputmode="url" autocomplete="url" spellcheck="false"
+                 placeholder="https://10.9.0.1:7420">
+          <div class="con-hint">Usually the tunnel address your box listens on. Reachable once your VPN is up.</div>
+          <div class="con-err" id="con-err"></div>
+          <div class="con-actions">
+            <button class="btn primary" type="submit">Go to my console &#8594;</button>
+            <a class="btn" href="enterprise.html">What is Genaryx?</a>
+          </div>
+        </form>
+
+        <div class="con-recent" id="con-recent">
+          <span class="l">On this browser</span>
+          <div id="con-list"></div>
+        </div>
+
+        <div class="con-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          <div>
+            <b>We never see your credentials.</b> Signing in happens on your own console, not on this
+            site, and this page has nowhere to send a password even if it asked for one. The address
+            you type is kept in this browser and is never sent to us.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-note">&#169; 2026 IT-RAT <svg style="display:inline-block;width:15px;height:11px;vertical-align:-1px;margin:0 3px;border-radius:2px" viewBox="0 0 3 2" role="img" aria-label="Ukraine"><title>Ukraine</title><rect width="3" height="1" fill="#005BBB"/><rect y="1" width="3" height="1" fill="#FFD500"/></svg> &#183; Enterprise</div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+<script>
+/* A doorway, not a login. The address is normalised, checked for the obvious
+   mistakes, stored in this browser only, and opened. Nothing is transmitted
+   to it-rat.com: there is no endpoint here that could receive it. */
+(function(){
+  "use strict";
+  var KEY="genaryx.consoles";
+  var form=document.getElementById("con-form");
+  var input=document.getElementById("con-addr");
+  var err=document.getElementById("con-err");
+  var recent=document.getElementById("con-recent");
+  var list=document.getElementById("con-list");
+
+  function read(){ try{ return JSON.parse(localStorage.getItem(KEY)||"[]"); }catch(e){ return []; } }
+  function write(v){ try{ localStorage.setItem(KEY, JSON.stringify(v.slice(0,5))); }catch(e){} }
+
+  function paint(){
+    var saved=read();
+    if(!saved.length){ recent.classList.remove("on"); return; }
+    recent.classList.add("on");
+    list.innerHTML="";
+    saved.forEach(function(u){
+      var a=document.createElement("a");
+      a.href=u; a.textContent=u; a.rel="noopener";
+      list.appendChild(a);
+    });
+  }
+
+  function fail(m){ err.textContent=m; err.classList.add("on"); }
+
+  function normalise(raw){
+    var v=(raw||"").trim();
+    if(!v) return null;
+    if(!/^https?:\/\//i.test(v)) v="https://"+v;
+    try{ return new URL(v); }catch(e){ return null; }
+  }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    err.classList.remove("on");
+    var u=normalise(input.value);
+    if(!u){ fail("That does not look like an address. Try something like https://10.9.0.1:7420"); return; }
+    if(/(^|\.)it-rat\.com$/i.test(u.hostname)){
+      fail("Your console is not hosted here. Use the address of your own box.");
+      return;
+    }
+    var href=u.origin;
+    var saved=read().filter(function(x){ return x!==href; });
+    saved.unshift(href); write(saved);
+    window.location.href=href;
+  });
+
+  paint();
+})();
+</script>
+</body>
+</html>
