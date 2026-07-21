@@ -1,8 +1,9 @@
 /* IT-RAT v2 - livemock.js: interactive design mocks of the two iOS apps,
    running as real DOM in the page.
-   - Pocket: a full iPhone (five screens: Runs, Run detail with a real
-     slide-to-arm breaker, Live Activity, Pairing, Alerts) plus an Apple
-     Watch (Face, Fleet, Runs, Kill, Killed). Numbers tick, the segmented
+   - Pocket: a full iPhone (Runs, Run detail with a real slide-to-arm breaker,
+     Budgets with an org/team/agent drill-in, Agents flagged by behaviour,
+     Pairing, Device, Alerts, plus an unlooped Live Activity surface) and an
+     Apple Watch (Face, Fleet, Runs, Kill, Killed). Numbers tick, the segmented
      control filters, the breaker drags, the tab bar and side steps switch
      screens, and a kill from the wrist updates the phone.
    - Sphere: real iOS screenshots in an iPhone and Watch frame, navigated
@@ -101,6 +102,9 @@ const CSS=`
 .lm-mnote{font-family:var(--font-m);font-size:9.5px;color:var(--dim);line-height:1.5;margin-top:9px}
 .lm-disc{width:100%;margin-top:16px;border:1px solid rgba(255,87,75,.4);background:rgba(255,87,75,.08);color:#ffb0a9;
   font-family:var(--font-t);font-weight:700;font-size:12px;border-radius:12px;padding:11px;cursor:pointer}
+.lm-pairbtn{width:100%;margin-top:16px;border:1px solid var(--line-2);background:var(--panel);color:var(--fg);
+  font-family:var(--font-t);font-weight:700;font-size:12px;border-radius:12px;padding:11px;cursor:pointer}
+.lm-pairbtn:active{transform:scale(.99)}
 /* agent detail */
 .lm-chainrow{font-family:var(--font-m);font-size:11px;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 .lm-act{flex:1;border:0;border-radius:12px;padding:11px;font-family:var(--font-t);font-weight:750;font-size:12.5px;cursor:pointer}
@@ -158,8 +162,13 @@ const CSS=`
 /* pairing */
 .lm-pair{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:14px 20px}
 .lm-reticle{position:relative;width:150px;height:150px;margin:14px 0 6px;border-radius:20px;background:#0c1016;border:1px solid var(--line)}
-.lm-qr{position:absolute;inset:26px;border-radius:8px;background:
-  repeating-conic-gradient(var(--fg) 0 25%, #0c1016 0 50%) 0 0/18px 18px}
+.lm-qr{position:absolute;inset:26px;border-radius:6px;background:#E9EEF5;padding:5px;color:#0B0F15}
+.lm-qr svg{width:100%;height:100%;display:block}
+.lm-pairsteps{width:100%;margin-top:13px;display:flex;flex-direction:column;gap:8px;text-align:left}
+.lm-pairsteps div{display:flex;gap:9px;align-items:flex-start}
+.lm-pairsteps b{font-family:var(--font-m);font-size:8.5px;font-weight:600;color:var(--iris);border:1px solid var(--line-2);
+  border-radius:6px;width:17px;height:17px;display:grid;place-items:center;flex:0 0 auto}
+.lm-pairsteps span{font-size:11px;color:var(--dim);line-height:1.45}
 .lm-scan{position:absolute;left:14px;right:14px;height:2px;top:20px;background:var(--iris);box-shadow:0 0 14px var(--iris);animation:lmScan 2.4s ease-in-out infinite}
 @keyframes lmScan{0%,100%{top:20px}50%{top:128px}}
 .lm-corner{position:absolute;width:18px;height:18px;border:2px solid var(--iris)}
@@ -248,6 +257,28 @@ function wireSteps(stepsEl,fn){
 }
 /* status-bar signal + battery svg (shared) */
 const SB=`<span class="r"><svg width="16" height="10" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg><svg width="22" height="11" viewBox="0 0 24 12" fill="none"><rect x="1" y="1.5" width="19" height="9" rx="2.5" stroke="currentColor" opacity=".5"/><rect x="2.5" y="3" width="14" height="6" rx="1.2" fill="currentColor"/></svg></span>`;
+
+/* A code that reads as a QR at a glance: three finder patterns, the timing
+   rows, and deterministic modules in between. Decoration for the mock, so it
+   carries no payload and is not scannable. */
+function qrPattern(n){
+  n=n||25;const cells=[];
+  const finder=(x,y)=>{
+    for(const[cx,cy]of [[3,3],[n-4,3],[3,n-4]]){
+      const d=Math.max(Math.abs(x-cx),Math.abs(y-cy));
+      if(d<=4) return d===4?false:d!==2;
+    }
+    return null;
+  };
+  for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+    const f=finder(x,y);let on;
+    if(f!==null) on=f;
+    else if(x===6||y===6) on=(x+y)%2===0;
+    else on=((((x*73856093)^(y*19349663)^((x*y)*83492791))>>>7)&3)>1;
+    if(on)cells.push(`<rect x="${x}" y="${y}" width="1" height="1"/>`);
+  }
+  return `<svg viewBox="0 0 ${n} ${n}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true">${cells.join("")}</svg>`;
+}
 
 /* draw a sparkline into a canvas, value 0..1 array, color */
 function spark(cv,vals,col,fillA){
@@ -430,19 +461,25 @@ function pocket(root,stepsEl){
          <!-- PAIRING -->
          <div class="lm-view" data-v="pair">
            <div class="lm-pair">
+             <button class="lm-back" data-back-device>‹ Device</button>
              <div class="lm-cap" style="color:var(--iris)">Pair this iPhone</div>
              <div class="lm-reticle">
-               <div class="lm-qr"></div><div class="lm-scan"></div>
+               <div class="lm-qr">${qrPattern(25)}</div><div class="lm-scan"></div>
                <div class="lm-corner" style="top:8px;left:8px;border-right:0;border-bottom:0"></div>
                <div class="lm-corner" style="top:8px;right:8px;border-left:0;border-bottom:0"></div>
                <div class="lm-corner" style="bottom:8px;left:8px;border-right:0;border-top:0"></div>
                <div class="lm-corner" style="bottom:8px;right:8px;border-left:0;border-top:0"></div>
              </div>
-             <h2>Scan the code on your dashboard</h2>
-             <p>A one-time code links this device to your org. It expires in 10 minutes.</p>
+             <h2>Scan the code on your console</h2>
+             <p>A one-time code links this device to your org. It expires in <b data-pairttl style="font-family:var(--font-m);color:var(--fg)">9:58</b>.</p>
              <div class="lm-seal">
                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
                <div class="s"><b>Keys never leave this iPhone.</b> A signing key is generated in the Secure Enclave, so a stolen token alone cannot stop your agents.</div>
+             </div>
+             <div class="lm-pairsteps">
+               <div><b>1</b><span>Your console issues the code. It is single use and expires.</span></div>
+               <div><b>2</b><span>Scanning it enrols this phone and mints the on-device key.</span></div>
+               <div><b>3</b><span>From then on the phone reaches your box over the tunnel, never the open internet.</span></div>
              </div>
            </div>
          </div>
@@ -524,7 +561,8 @@ function pocket(root,stepsEl){
                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
                <div class="s"><b>Keys never leave this iPhone.</b> A stolen session cannot act: every destructive action is re-signed here with Face ID.</div>
              </div>
-             <button class="lm-disc" data-disc>Disconnect this device</button>
+             <button class="lm-pairbtn" data-goto-pair>Pair another device</button>
+             <button class="lm-disc" data-disc style="margin-top:9px">Disconnect this device</button>
            </div>
            <div class="lm-tabs" data-tabs>
              <button data-tab="runs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('runs')}</svg>Runs</button>
@@ -793,6 +831,13 @@ function pocket(root,stepsEl){
       :"Phone stays paired; you toggle the tunnel off when done, and idle peers are dropped. Reconnect needs no new code.";});
   /* device disconnect + agent actions */
   $(root,"[data-disc]").addEventListener("click",()=>toast("device disconnected · a fresh pairing code would be needed"));
+  /* device <-> pairing, with a code that visibly expires rather than sitting frozen */
+  $(root,"[data-goto-pair]").addEventListener("click",()=>{resetTtl();show("pair");});
+  $(root,"[data-back-device]").addEventListener("click",()=>show("device"));
+  const ttlEl=$(root,"[data-pairttl]");let ttl=598;
+  function paintTtl(){ttlEl.textContent=Math.floor(ttl/60)+":"+String(ttl%60).padStart(2,"0");}
+  function resetTtl(){ttl=598;paintTtl();}
+  setInterval(()=>{if(view!=="pair")return;ttl=ttl>0?ttl-1:598;paintTtl();},1000);
   $(root,"[data-throttle]").addEventListener("click",()=>toast("throttled · agent capped to its baseline rate"));
   $(root,"[data-agkill]").addEventListener("click",()=>toast("Enclave-signed kill · agent stopped across gateways"));
   /* budgets drill-in: scope row -> its breakdown -> (if flagged) behaviour */
@@ -853,7 +898,7 @@ function pocket(root,stepsEl){
   /* Auto-cycling loop through the main screens (по колу), with the side steps
      as jump-in anchors. The loop pauses while you interact on-screen and then
      resumes, so every tab, slider and banner stays live. */
-  const LOOP=["runs","detail","budgets","agents","device","push"];
+  const LOOP=["runs","detail","budgets","agents","pair","device","push"];
   const steps=stepsEl?[...stepsEl.querySelectorAll(".as-step")]:[];
   let loopI=0, pausedUntil=0;
   function goTo(i){
@@ -862,6 +907,7 @@ function pocket(root,stepsEl){
     if(v==="detail"){S.sel=0;renderDetail();}
     else if(v==="budgets")renderBudgets();
     else if(v==="agents")renderAgents();
+    else if(v==="pair")resetTtl();
     show(v);
     steps.forEach((s,j)=>s.classList.toggle("on",j===loopI));
   }
