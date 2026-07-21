@@ -230,6 +230,7 @@
     <div class="bento">
       <div class="card hover feature b-6 rv"><h3>Being told needs nothing open</h3><p>When a run crosses its cap, your box sends the alert out by mail. Outbound only: no inbound route to your network, no relay in the middle, no app to install and no developer account to hold. Your phone gets it the way it gets any mail, with the tunnel down and nothing running. An alert that only arrives once you are already connected is not an alert, it is a dashboard you have to remember to open.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>Acting needs you inside</h3><p>The mail carries a deep link, and the link goes to your console, which lives on your box and answers only over your own WireGuard tunnel. Phone on the tunnel, console opens, you sign in, and the destructive step is signed again with a passkey on that device. So a stolen alert is worth nothing: what it points at cannot be reached from the internet, and the action needs a key that never left your hand.</p></div>
+      <div class="card hover feature b-6 rv"><h3>Nothing to spoof, nothing to trust</h3><p>You may wonder how the browser knows it reached your box and not something wearing its name. It cannot reach anything else: the address only exists inside your WireGuard network, and WireGuard authenticates the peer by key before a single byte of HTTP moves. There is no public name to impersonate, no certificate authority in the decision and nothing to buy. The tunnel is not carrying the encryption on top of the trust; it is the trust.</p></div>
       <div class="card hover feature b-6 rv"><h3>Why the mail has no Kill button</h3><p>A button in an email is a URL, and URLs in mail get fetched by scanners, previews and clients before any human sees them. Anything that acts when opened will eventually act on its own. So the mail never carries a capability: it carries a link to a page that asks who you are and then asks your device to sign.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>The phone, without an app</h3><p>Your box issues a WireGuard config as a QR code, and it is scanned by the official WireGuard app rather than one of ours. That is the whole mobile requirement: no App Store review, no notarization, nothing of ours on the device. Reaching your console away from the tunnel is a relay problem we have deliberately not solved yet, and until we do, off-tunnel means you read the alert now and act when you are back on.</p></div>
     </div>
@@ -249,26 +250,6 @@
       <div class="lg"><b>What reaches the wrist</b><span>The fleet's burn rate up top, then the runs as fuses, hottest first and over-cap in ember, so the worst thing on the fleet is the first thing on the screen. The phone goes further: a relay-paired iPhone is served one bounded slice, the exception queue and nothing else, because the relay exposes no route for browsing a fleet at all.</span></div>
       <div class="lg"><b>Signed on the wrist</b><span>The kill is signed with the watch's own ES256 key, gated by wrist detection, and travels the same relay path into the same audit chain as a kill from the console. The relay cannot forge one: it forwards, it does not mint.</span></div>
           </div>
-  </div>
-</section>
-
-<!-- ================= PINNED TRUST ================= -->
-<section class="sec" id="pinned" style="padding-top:14px">
-  <div class="wrap">
-    <div class="bus-grid">
-      <div>
-        <div class="sec-head rv" style="margin-bottom:14px">
-          <div class="kicker">pinned trust &#183; no certificate authority</div>
-          <h2>The phone trusts exactly one certificate in the world.</h2>
-        </div>
-        <p class="lede rv d1" style="max-width:56ch">The relay lives on your infrastructure and serves its own certificate, so there is no public authority to ask about it and nothing to buy. The QR you scan carries that certificate's SPKI-SHA256 fingerprint alongside the pairing code, and the phone keeps it. From then on it accepts that key and refuses every other one, including a perfectly valid certificate from a perfectly reputable authority.</p>
-        <p class="rv d2" style="margin-top:14px;color:var(--dim);font-size:14px;line-height:1.65;max-width:56ch">That is stricter than ordinary TLS, not looser. A normal client trusts several hundred authorities and anything they sign; this trusts one key and aborts the pairing on a mismatch, before a token is ever handed over. The device shows you what it is pinned to, so the check is yours to make rather than ours to claim: org, plane, role, and the first characters of the pin itself.</p>
-      </div>
-      <figure class="shot rv d1">
-        <img src="assets/shots/enterprise/ph-pinned.webp" alt="TokenFuse Pocket settings: org, plane address, role and the pinned TLS fingerprint, with an unpair control" width="1320" height="1412" loading="lazy">
-        <figcaption>what this iPhone is bound to, in its own words &#183; and one control to let go of it</figcaption>
-      </figure>
-    </div>
   </div>
 </section>
 
@@ -354,9 +335,9 @@
           <text x="849" y="310" fill="#8A97A6" font-size="10">reads + proposes &#183; no signer</text>
 
           <text x="307" y="70" fill="#B48CFF" font-size="10.5" font-weight="700">WireGuard</text>
-          <text x="307" y="85" fill="#B48CFF" font-size="10">raised by the app</text>
+          <text x="307" y="85" fill="#B48CFF" font-size="10">your own tunnel</text>
           <text x="307" y="100" fill="#5A6675" font-size="10">the only road in</text>
-          <text x="300" y="262" fill="#5A6675" font-size="10">TLS, pinned from the QR</text>
+          <text x="300" y="262" fill="#5A6675" font-size="10">WireGuard, config from the QR</text>
           <text x="690" y="128" fill="#5A6675" font-size="10">push &#183; poll</text>
         </g>
         <line x1="224" y1="110" x2="390" y2="130" stroke="#B48CFF" stroke-width="1.7" marker-end="url(#enarrVio)" class="flow"/>
