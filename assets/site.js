@@ -5,12 +5,12 @@
 
 /* ---- the stack registry: single source of truth for navigation ---- */
 /* Order is the corridor: the rail, the left/right arrows, the dots and the
-   palette all walk it. It opens on the money plane and the two rooms that sit
-   directly on top of it, the pager and the control room, then the rest. */
+   palette all walk it. It opens on the money plane, then the control room you
+   actually run and the memory underneath it, then the rest of the planes. The
+   two iOS rooms come last together: neither is something you can run today. */
 const STACK = [
   {id:"tokenfuse", name:"TokenFuse",  plane:"money",     color:"#F4B23E", what:"Runtime spend control and the kill switch",       href:"services/tokenfuse.html"},
-  {id:"pocket",    name:"TokenFuse Pocket", plane:"iOS · watchOS", color:"#22D3EE", what:"The kill switch on your wrist",          href:"services/pocket.html", tier:"needs genaryx"},
-  {id:"enterprise",name:"Genaryx",    plane:"control room", color:"#B48CFF", what:"The paid control room over all of it, and the pager that ships inside it", href:"enterprise.html", tier:"enterprise"},
+  {id:"enterprise",name:"Genaryx",    plane:"control room", color:"#B48CFF", what:"The paid control room over all of it, in your browser on your own box", href:"enterprise.html", tier:"enterprise"},
   {id:"engram",    name:"Engram",     plane:"memory",    color:"#6C7BFF", what:"The SQLite of agent memory",                      href:"services/engram.html"},
   {id:"wardryx",   name:"Wardryx",    plane:"policy",    color:"#2DD4BF", what:"Policy decisions with a human in the loop",       href:"services/wardryx.html"},
   {id:"idryx",     name:"Idryx",      plane:"access",    color:"#34D399", what:"One identity graph for humans, keys and agents",  href:"services/idryx.html"},
@@ -18,6 +18,7 @@ const STACK = [
   {id:"verdryx",   name:"Verdryx",    plane:"quality",   color:"#FF7AA2", what:"Cost per correctly resolved case, not per token", href:"services/verdryx.html"},
   {id:"mockryx",   name:"Mockryx",    plane:"pre-prod",  color:"#FF8A5B", what:"Fire drills that prove guardrails hold",          href:"services/mockryx.html"},
   {id:"platform",  name:"Platform",   plane:"contract",  color:"#93A8C4", what:"Agent Passport, shared contract, Terraform",      href:"services/platform.html"},
+  {id:"pocket",    name:"TokenFuse Pocket", plane:"iOS · watchOS", color:"#22D3EE", what:"The kill switch on your wrist",          href:"services/pocket.html", tier:"exploration"},
   {id:"sphere",    name:"Sphere",     plane:"iOS",       color:"#A3E635", what:"Personal life intelligence, twelve agents",       href:"services/sphere.html"},
 ];
 window.STACK = STACK;
