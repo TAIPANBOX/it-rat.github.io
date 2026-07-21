@@ -10,13 +10,13 @@
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/enterprise.html">
 <meta property="og:title" content="Enterprise · Genaryx, the control room over the stack - in the works · IT-RAT">
-<meta property="og:description" content="One control room over the open agent-governance stack, running on your own infrastructure: hardware-signed kill switch, WireGuard remote, iPhone + Watch pager, and a local-first AI copilot. Shown honestly, before it ships.">
+<meta property="og:description" content="One control room over the open agent-governance stack, running on your own infrastructure: hardware-signed kill switch, WireGuard remote, and a local-first AI copilot. Shown honestly, before it ships.">
 <meta property="og:image" content="https://it-rat.com/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Enterprise · Genaryx, the control room over the stack - in the works · IT-RAT">
-<meta name="twitter:description" content="One control room over the open agent-governance stack, running on your own infrastructure: hardware-signed kill switch, WireGuard remote, iPhone + Watch pager, and a local-first AI copilot. Shown honestly, before it ships.">
+<meta name="twitter:description" content="One control room over the open agent-governance stack, running on your own infrastructure: hardware-signed kill switch, WireGuard remote, and a local-first AI copilot. Shown honestly, before it ships.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -122,7 +122,7 @@
       <div>
         <div class="kicker rv">enterprise &#183; genaryx &#183; in the works</div>
         <h1 class="rv d1"><span class="nm">Genaryx</span>. One control room over the whole agent stack.</h1>
-        <p class="lede rv d2">The seven open services each govern one plane of an agent fleet. Genaryx is the paid, closed console we are building on top of them for companies that run real fleets. It runs on your own infrastructure and you open it in a browser, with desktop apps for Windows and Linux beside it: money, policy, identity, quality, crypto, memory, drills and evidence in one window, a kill switch signed by hardware, remote reach over its own WireGuard tunnel, an iPhone and Watch pager, and Felyx - a local-first AI copilot that can read everything and touch nothing. Self-hosted on infrastructure you own, any cloud or on-prem: your plane, your data, our software.</p>
+        <p class="lede rv d2">The seven open services each govern one plane of an agent fleet. Genaryx is the paid, closed console we are building on top of them for companies that run real fleets. It runs on your own infrastructure and you open it in a browser: money, policy, identity, quality, crypto, memory, drills and evidence in one window, a kill switch signed by hardware, remote reach over its own WireGuard tunnel, and Felyx - a local-first AI copilot that can read everything and touch nothing. Self-hosted on infrastructure you own, any cloud or on-prem: your plane, your data, our software.</p>
         <div class="cta-row rv d3">
           <a class="btn primary" href="#console">See the real app <span class="mono">&#8594;</span></a>
           <a class="btn" href="#felyx">Felyx, the copilot</a>
@@ -130,7 +130,7 @@
       </div>
       <div class="hero-side rv d2">
         <div class="row"><span class="k">status</span><span class="v">in the works</span></div>
-        <div class="row"><span class="k">shells</span><span class="v">browser &#183; Tauri 2 &#183; SwiftUI later</span></div>
+        <div class="row"><span class="k">shells</span><span class="v">browser &#183; desktop build kept, not shipped</span></div>
         <div class="row"><span class="k">core</span><span class="v">one shared Rust core, UniFFI</span></div>
         <div class="row"><span class="k">signing</span><span class="v">Secure Enclave &#183; ES256</span></div>
         <div class="row"><span class="k">remote</span><span class="v">WireGuard, plane off the internet</span></div>
@@ -169,7 +169,7 @@
           <tr><td>One place to look</td><td class="warn">Per-service dashboards, curl, logs</td><td class="yes">16 live tabs over one Rust core</td></tr>
           <tr><td>Killing a runaway</td><td class="warn">A curl with an admin key</td><td class="yes">Touch ID + a typed reason: a break-glass ceremony, Secure Enclave-signed, journaled</td></tr>
           <tr><td>Reaching a private plane</td><td class="warn">SSH tunnels you babysit</td><td class="yes">The app raises its own WireGuard tunnel; the control plane never faces the internet</td></tr>
-          <tr><td>On call at 2am</td><td class="no">Laptop, VPN, luck</td><td class="yes">iPhone + Watch pager through a hardened relay; kill from the wrist</td></tr>
+          <tr><td>On call at 2am</td><td class="no">Laptop, VPN, luck</td><td class="yes">An alert that deep-links into your own console over the tunnel, where the destructive step is re-signed</td></tr>
           <tr><td>When something is off</td><td class="warn">You read six dashboards</td><td class="yes">Felyx explains it across planes with cited ids - and can only propose, never act</td></tr>
           <tr><td>Proving it to an auditor</td><td class="warn">Exports from each service</td><td class="yes">One signed evidence pack: EU AI Act, SR 11-7, SOC 2 mappings built in</td></tr>
           <tr><td>Where your data lives</td><td class="yes">Your infrastructure</td><td class="yes">Still yours: AWS, GCP, Hetzner and other clouds, or on-prem</td></tr>
@@ -224,17 +224,15 @@
 <section class="sec" id="pager" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">enterprise pager &#183; iphone + apple watch</div>
+      <div class="kicker" style="--accent:var(--amber);color:var(--amber)">exploration &#183; not part of the working product</div>
       <h2>The fleet in your pocket. The kill switch on your wrist.</h2>
-      <p class="lede">Pairing the phone and the watch to your TokenFuse data is an Enterprise capability: a 24/7 relay runs beside your firewalled Cloud holding a read-only viewer key, forwards device-signed kills verbatim - it structurally cannot mint one - and pushes the moment a run crosses its cap, so the wrist is the first thing that knows. The app has exactly one mode, this one: it pairs to a relay you run, or it does nothing at all.</p>
-      <p class="lede" style="margin-top:14px">Its own room holds the whole story, and it is worth the click: both apps running as a driveable mock, the out-of-band argument, and the comparison against a pager and an SSH session. <a href="services/pocket.html" data-dir="fwd" style="color:var(--cyan);border-bottom:1px solid var(--line-2)">Open TokenFuse Pocket</a>.</p>
+      <p class="lede">A phone and a watch were the first answer we prototyped to the 2am problem: a relay beside your firewalled Cloud, forwarding device-signed kills it structurally cannot mint. We are not building it next. The console reached over your own tunnel does the same job without an app store, an Apple developer account or a second release to sign, so that is where the effort goes. Kept here because the shape was right and the screenshots are real.</p>
+      <p class="lede" style="margin-top:14px">Both apps run as a driveable mock in their own room. <a href="services/pocket.html" data-dir="fwd" style="color:var(--cyan);border-bottom:1px solid var(--line-2)">Open TokenFuse Pocket</a>.</p>
     </div>
     <div class="wa-legend rv d1">
       <div class="lg"><b>What reaches the wrist</b><span>The fleet's burn rate up top, then the runs as fuses, hottest first and over-cap in ember, so the worst thing on the fleet is the first thing on the screen. The phone goes further: a relay-paired iPhone is served one bounded slice, the exception queue and nothing else, because the relay exposes no route for browsing a fleet at all.</span></div>
-      <div class="lg"><b>Digital Crown</b><span>Scroll the short list without a finger covering it, then turn the crown again on a run to arm its kill. Arming is a deliberate physical act, and letting go before the end simply does nothing.</span></div>
       <div class="lg"><b>Signed on the wrist</b><span>The kill is signed with the watch's own ES256 key, gated by wrist detection, and travels the same relay path into the same audit chain as a kill from the console. The relay cannot forge one: it forwards, it does not mint.</span></div>
-      <div class="lg"><b>After the kill</b><span>The wrist confirms by name, not with a generic tick: the run it just stopped is spelled out. Then it leaves the pager, because a pager should hold only what still needs a decision, and stays in the console, in the Money tab's ledger and in the audit trail, where the record belongs.</span></div>
-    </div>
+          </div>
   </div>
 </section>
 
@@ -307,7 +305,7 @@
         <g font-family="ui-monospace,Menlo" text-anchor="middle">
           <rect x="24" y="40" width="200" height="96" rx="14" fill="#10161F" stroke="#B48CFF" stroke-width="1.5"/>
           <text x="124" y="70" fill="#B48CFF" font-size="13" font-weight="700">Genaryx console</text>
-          <text x="124" y="90" fill="#8A97A6" font-size="10.5">browser &#183; Tauri 2</text>
+          <text x="124" y="90" fill="#8A97A6" font-size="10.5">browser console</text>
           <text x="124" y="106" fill="#8A97A6" font-size="10.5">one Rust core &#183; UniFFI</text>
           <text x="124" y="122" fill="#8A97A6" font-size="10.5">Secure Enclave ES256</text>
 
@@ -363,7 +361,7 @@
       <h2>Two shells. One Rust brain. Hardware where it counts.</h2>
     </div>
     <div class="bento">
-      <div class="card hover feature b-4 rv"><h3>Three shells, one core</h3><p>A browser console served from your own box, a Tauri 2 desktop app, and a native SwiftUI app to come, all thin skins over one shared Rust core. The logic - stores, connectors, ceremonies, the graph - is written once and tested once, so a command cannot mean one thing in the browser and another on the desktop. The shells stay honest by construction.</p></div>
+      <div class="card hover feature b-4 rv"><h3>One core, one shell that ships</h3><p>The browser console is the product. A Tauri desktop build is kept green beside it, unshipped: two shells over one shared Rust core is what forces the logic - stores, connectors, ceremonies, the graph - to live in the core rather than drifting into a screen. Written once, tested once, so a command cannot mean one thing in one place and something else in another.</p></div>
       <div class="card hover feature b-4 rv d1"><h3>Hardware signatures</h3><p>Kills and budget changes are ES256-signed by the Secure Enclave behind Touch ID, with a typed break-glass reason journaled next to the signature. A stolen laptop session or a compromised server cannot forge an order.</p></div>
       <div class="card hover feature b-4 rv d2"><h3>WireGuard built in</h3><p>The console bundles wireguard-go and raises its own tunnel: generate a keypair, exchange with the box, handshake, done. Your control plane answers on a private address and nowhere else. SSH stays for ops; the console does not need it.</p></div>
       <div class="card hover feature b-4 rv"><h3>A relay that cannot act</h3><p>The pager's relay holds a read-only viewer key, binds to exactly one device, pins its TLS identity into the pairing QR, and forwards device-signed mutations byte-for-byte. Compromise the relay and you can watch: you still cannot kill, budget or grant.</p></div>
@@ -383,7 +381,7 @@
     <div class="bento">
       <div class="card b-6 rv">
         <div class="kicker" style="--accent:var(--mint)">already true</div>
-        <p style="margin-top:12px;color:var(--dim);font-size:14.5px;line-height:1.7">The console has driven a real fleet over its own WireGuard tunnel and put a hardware-signed kill through it, against a plane closed to the internet. The pager has killed a run from a wrist. Felyx has run against a live model and found the one run still over its cap that nothing had killed, on a fleet of 9,501. Every claim above has a captured run behind it.</p>
+        <p style="margin-top:12px;color:var(--dim);font-size:14.5px;line-height:1.7">The console has driven a real fleet over its own WireGuard tunnel and put a hardware-signed kill through it, against a plane closed to the internet. The pager prototype has killed a run from a wrist. Felyx has run against a live model and found the one run still over its cap that nothing had killed, on a fleet of 9,501. Every claim above has a captured run behind it.</p>
       </div>
       <div class="card b-6 rv d1">
         <div class="kicker" style="--accent:var(--amber)">not yet</div>

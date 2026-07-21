@@ -76,8 +76,8 @@
         <form class="con-field" id="con-form" novalidate>
           <label for="con-addr">Your console address</label>
           <input id="con-addr" name="addr" inputmode="url" autocomplete="url" spellcheck="false"
-                 placeholder="https://10.9.0.1:7420">
-          <div class="con-hint">Usually the tunnel address your box listens on. Reachable once your VPN is up.</div>
+                 placeholder="http://10.9.0.1:7420">
+          <div class="con-hint">Usually the tunnel address your box listens on, reachable once your VPN is up. Include http:// or https:// to be certain; without one, a private address is assumed to be plain HTTP inside the tunnel.</div>
           <div class="con-err" id="con-err"></div>
           <div class="con-actions">
             <button class="btn primary" type="submit">Go to my console &#8594;</button>
@@ -140,11 +140,25 @@
 
   function fail(m){ err.textContent=m; err.classList.add("on"); }
 
+  /* A console reached over a tunnel is almost always plain HTTP on a private
+     address: the tunnel is already the encryption, and a certificate for
+     10.9.0.1 is not a thing anyone has. So when no scheme is typed, pick it
+     from the address rather than defaulting to https and failing the common
+     case. A public hostname still gets https, because there the tunnel is not
+     doing the protecting. Typing the scheme yourself always wins. */
+  function isPrivateHost(h){
+    return h==="localhost" || /\.local$/i.test(h) || h==="::1" ||
+      /^127\./.test(h) || /^10\./.test(h) || /^192\.168\./.test(h) ||
+      /^172\.(1[6-9]|2\d|3[01])\./.test(h);
+  }
   function normalise(raw){
     var v=(raw||"").trim();
     if(!v) return null;
-    if(!/^https?:\/\//i.test(v)) v="https://"+v;
-    try{ return new URL(v); }catch(e){ return null; }
+    var explicit=/^https?:\/\//i.test(v);
+    var u;
+    try{ u=new URL(explicit ? v : "http://"+v); }catch(e){ return null; }
+    if(!explicit) u.protocol = isPrivateHost(u.hostname) ? "http:" : "https:";
+    return u;
   }
 
   form.addEventListener("submit", function(e){

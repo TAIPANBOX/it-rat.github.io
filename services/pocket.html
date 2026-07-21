@@ -75,7 +75,7 @@
 </header>
 
 <div class="ent-ribbon">
-  <div class="wrap"><span class="dot"></span><b>In the works.</b> TokenFuse Pocket is not released: no pricing, no downloads. This page shows what we are building.</div>
+  <div class="wrap"><span class="dot"></span><b>An exploration.</b> Pocket is a direction we prototyped and kept, not something you can buy or download, and not part of the working stack. What ships today is the web console. Everything below is a design mock.</div>
 </div>
 
 <!-- ================= HERO ================= -->
@@ -83,9 +83,9 @@
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <div class="kicker rv">enterprise companion &#183; ships with genaryx &#183; iOS and watchOS only</div>
+        <div class="kicker rv">exploration &#183; prototype &#183; not part of the working stack</div>
         <h1 class="rv d1"><span class="nm">Pocket</span>. Watch the fleet burn live, and cut it from a device no attacker touched.</h1>
-        <p class="lede rv d2">TokenFuse's gateway enforces the budget in the request path your agent runs on. Pocket is the control that lives outside that path: it watches every run's burn rate live and pulls the kill switch with a command signed by hardware the agent's host never touches. iOS &#183; watchOS &#183; no Android, no web: the whole security story rests on the Secure Enclave, a chip only Apple ships.</p>
+        <p class="lede rv d2">TokenFuse's gateway enforces the budget in the request path your agent runs on. Pocket asks what a control OUTSIDE that path should look like on a device you already carry: the fleet's burn rate live, and a kill signed by hardware the agent's host never touches. We prototyped it far enough to know the shape is right and to know what it would cost to ship, then put the effort into the web console instead. It is kept here because the idea still holds.</p>
         <div class="cta-row rv d3">
           <a class="btn primary" href="#sim">Watch the kill from the wrist <span class="mono">&#9654;</span></a>
           <a class="btn" href="../enterprise.html">Part of Genaryx <span class="soon-pill">soon</span></a>
@@ -96,7 +96,7 @@
         <div class="row"><span class="k">signing</span><span class="v">Secure Enclave, keys never leave the device</span></div>
         <div class="row"><span class="k">pairs with</span><span class="v">genaryx-relay, beside TokenFuse Cloud</span></div>
         <div class="row"><span class="k">surfaces</span><span class="v">Dynamic Island &#183; Live Activity &#183; Watch complication</span></div>
-        <div class="row"><span class="k">ships with</span><span class="v">Genaryx Enterprise &#183; in the works</span></div>
+        <div class="row"><span class="k">status</span><span class="v">prototype &#183; no delivery date</span></div>
       </div>
     </div>
   </div>
@@ -107,8 +107,7 @@
   <div class="wrap">
     <div class="card rv" style="--accent:var(--violet);display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:space-between">
       <p style="color:var(--dim);font-size:14px;line-height:1.6;margin:0;max-width:72ch">
-        <b style="color:var(--fg)">Part of Enterprise.</b> Pocket and the Watch pair to <em>your</em> TokenFuse data through <span style="color:var(--violet)">Genaryx</span>, the enterprise control room we are building: a 24/7 relay beside a firewalled plane that reads but cannot act, push alerts the moment a cap breaks, the wrist kill. The plane it reads stays open; the pager around it is the Enterprise part.
-      </p>
+        <b style="color:var(--fg)">Where this sits.</b> The console you actually run is the web app in <span style="color:var(--violet)">Genaryx</span>, reached over your own tunnel. Pocket was the first answer we prototyped to the same 2am problem, on a device you already carry. It is not being built next, and nothing here is for sale.</p>
       <a class="btn" href="../enterprise.html" style="flex:0 0 auto">Enterprise &#183; in the works <span class="soon-pill">soon</span></a>
     </div>
   </div>
@@ -216,36 +215,13 @@
     </div>
     <div class="bento">
       <div class="card hover feature b-4 rv"><h3>The fuse, everywhere</h3><p>Mint under budget, amber warming, ember at the cap. The run list, the Dynamic Island, and the watch face all read the fuse the same way, so nothing needs translating between screens.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>Hardware-signed kill</h3><p>Every kill and every budget change is signed on-device by the Secure Enclave. A fully compromised server cannot forge that order, and it cannot block it from reaching your side either.</p></div>
-      <div class="card hover feature b-4 rv d2"><h3>Out of band by design</h3><p>The phone talks to the relay beside TokenFuse Cloud, never through the gateway or the agent's own network path. If the request path is exactly what's compromised, the kill still lands.</p></div>
+      <div class="card hover feature b-4 rv d1"><h3>Hardware-signed kill</h3><p>The design signs every kill on-device, so a fully compromised server can neither forge that order nor block it. The same property is what the web console reaches for with a passkey, which is why this became the direction we are building first.</p></div>
       <div class="card hover feature b-4 rv"><h3>The fleet at a glance</h3><p>Every run with its spend, its burn rate in dollars per minute, and how close it sits to a budget break, sorted hottest first, red once it's over.</p></div>
       <div class="card hover feature b-4 rv d1"><h3>Pairing in seconds</h3><p>Scan a QR code against your own Cloud plane. The app generates a key inside the Secure Enclave on the spot; the key never leaves it, not even to the app.</p></div>
-      <div class="card hover feature b-4 rv d2"><h3>An honest demo</h3><p>No mockups dressed up as a product. The interactive mock on this page is driveable end to end, and the <a href="../enterprise.html" style="color:var(--accent)">Enterprise page</a> shows the real app captured live against a live plane.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ================= COMPARISON ================= -->
-<section class="sec" style="padding-top:14px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="kicker">an honest comparison</div>
-      <h2>A kill switch is only as fast as the hand on it.</h2>
-      <p class="lede">PagerDuty tells a human there's a fire. SSH lets a human put it out, if the human, the laptop, and the VPN all cooperate at 2am. Pocket skips the coordination problem: the hand that can pull the Breaker is already on your wrist.</p>
-    </div>
-    <div class="tbl-scroll rv">
-      <table class="tbl">
-        <thead><tr><th></th><th>Pocket</th><th>PagerDuty alert</th><th>SSH from a laptop</th></tr></thead>
-        <tbody>
-          <tr><td>Time to stop a runaway</td><td class="yes">Seconds, from a wrist</td><td class="warn">Minutes, if someone's awake</td><td class="warn">Minutes, if the laptop is near and the VPN cooperates</td></tr>
-          <tr><td>Works when the server path is compromised</td><td class="yes">Yes, out of band</td><td class="warn">Alert maybe arrives</td><td class="no">No, you're in the same path</td></tr>
-          <tr><td>Can spend be cut by accident</td><td class="yes">Named confirm + on-device signature</td><td class="no">n/a</td><td class="warn">One wrong kill -9</td></tr>
-          <tr><td>Audit trail</td><td class="yes">Every kill logged as an incident</td><td class="warn">Alert history</td><td class="no">Shell history on a laptop</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
 
 <!-- ================= IN THE STACK ================= -->
 <section class="sec" style="padding-top:14px">
@@ -260,7 +236,7 @@
       <div class="card b-4 rv d1">
         <div class="kicker" style="--accent:var(--violet)">where it ships</div>
         <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
-          <p class="dim" style="font-size:13px;line-height:1.6">Pocket pairs through <a href="../enterprise.html" style="color:var(--violet)">Genaryx</a>, the enterprise control room, to a TokenFuse plane you host yourself - and ships with it. In the works, shown honestly: a live design mock, no pricing yet.</p>
+          <p class="dim" style="font-size:13px;line-height:1.6">Pocket would pair through <a href="../enterprise.html" style="color:var(--violet)">Genaryx</a> to a TokenFuse plane you host yourself. A prototype and a live design mock, kept because the shape was right; the console is what we are building.</p>
           <p class="dim" style="font-size:13px;line-height:1.6">The plane it reads is open today: <a href="platform.html#run" style="color:var(--cyan)">stand up the stack's live services locally in one command</a> and see the same money plane on your own machine.</p>
         </div>
       </div>
