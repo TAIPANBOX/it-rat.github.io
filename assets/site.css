@@ -87,9 +87,12 @@ p{margin:0}
 .kbd-hint kbd{font-family:inherit;background:var(--panel-2);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
 @media(max-width:680px){.crumb{display:none}.tb-link{padding:7px 7px}}
 
-/* ---------- topbar: enterprise nav item, disabled, coming soon ---------- */
-/* shares .tb-link for font, size, spacing and the 680px padding rule;
-   these two rules only mute the color and kill the hover/pointer feel */
+/* ---------- topbar: an item that is present but not going anywhere ---------- */
+/* Shares .tb-link for font, size, spacing and the 680px padding rule; these
+   two rules only mute the colour and kill the hover/pointer feel. Used for
+   the console entry on the console page itself, where dropping it would make
+   the bar look truncated against every other page, and linking it would only
+   point at the page you are already on. */
 .tb-soon{color:var(--faint);cursor:default;user-select:none}
 .tb-soon:hover{color:var(--faint);background:none}
 .soon-pill{
