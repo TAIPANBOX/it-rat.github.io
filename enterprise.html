@@ -132,7 +132,7 @@
         <div class="row"><span class="k">status</span><span class="v">in the works</span></div>
         <div class="row"><span class="k">shells</span><span class="v">browser &#183; desktop build kept, not shipped</span></div>
         <div class="row"><span class="k">core</span><span class="v">one shared Rust core, UniFFI</span></div>
-        <div class="row"><span class="k">signing</span><span class="v">Secure Enclave &#183; ES256</span></div>
+        <div class="row"><span class="k">signing</span><span class="v">passkey on your device &#183; ES256</span></div>
         <div class="row"><span class="k">remote</span><span class="v">WireGuard, plane off the internet</span></div>
         <div class="row"><span class="k">copilot</span><span class="v">Felyx &#183; local-first</span></div>
         <div class="row"><span class="k">hosting</span><span class="v">self-hosted &#183; any cloud or on-prem</span></div>
@@ -167,7 +167,7 @@
         <thead><tr><th></th><th>The open stack, by hand</th><th>Genaryx</th></tr></thead>
         <tbody>
           <tr><td>One place to look</td><td class="warn">Per-service dashboards, curl, logs</td><td class="yes">16 live tabs over one Rust core</td></tr>
-          <tr><td>Killing a runaway</td><td class="warn">A curl with an admin key</td><td class="yes">Touch ID + a typed reason: a break-glass ceremony, Secure Enclave-signed, journaled</td></tr>
+          <tr><td>Killing a runaway</td><td class="warn">A curl with an admin key</td><td class="yes">A passkey and a typed reason: a break-glass ceremony, hardware-signed on your own device, journaled</td></tr>
           <tr><td>Reaching a private plane</td><td class="warn">SSH tunnels you babysit</td><td class="yes">The app raises its own WireGuard tunnel; the control plane never faces the internet</td></tr>
           <tr><td>On call at 2am</td><td class="no">Laptop, VPN, luck</td><td class="yes">An alert that deep-links into your own console over the tunnel, where the destructive step is re-signed</td></tr>
           <tr><td>When something is off</td><td class="warn">You read six dashboards</td><td class="yes">Felyx explains it across planes with cited ids - and can only propose, never act</td></tr>
@@ -183,7 +183,7 @@
 <section class="sec" id="console" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">the real app, captured live</div>
+      <div class="kicker">the console, captured live</div>
       <h2>Sixteen tabs, one Rust core. Here are ten.</h2>
       <p class="lede">The actual macOS build against a live plane: $4,671 of governed spend across 9,501 runs and 37,596 model calls, 180 open incidents, 15 runs killed. Pick a tab on the left; click any screenshot to enlarge it, the same way the architecture schematics work everywhere else on this site.</p>
     </div>
@@ -206,16 +206,33 @@
     <div class="bus-grid">
       <div>
         <div class="sec-head rv" style="margin-bottom:14px">
-          <div class="kicker">genaryx bus &#183; the menu bar</div>
+          <div class="kicker" style="--accent:var(--amber);color:var(--amber)">direction &#183; the desktop build</div>
           <h2>The whole fleet, one glance up and to the right.</h2>
         </div>
-        <p class="lede rv d1" style="max-width:56ch">Genaryx Bus is the always-on menu bar companion. The fleet's governed spend ticks live next to your clock; open it and you get active runs, the last runaway by name, and what it just cost. The red line is a real control: <b style="color:var(--ember)">Kill last runaway</b> carries the same hardware-signed ceremony as the big app - it just spares you opening it.</p>
+        <p class="lede rv d1" style="max-width:56ch">Genaryx Bus is what the desktop build adds that a browser tab cannot: an always-on readout in the menu bar. The fleet's governed spend ticks live next to your clock; open it and you get active runs, the last runaway by name, and what it just cost. The red line is a real control: <b style="color:var(--ember)">Kill last runaway</b> carries the same hardware-signed ceremony as the big app - it just spares you opening it.</p>
         <p class="rv d2" style="margin-top:14px;color:var(--dim);font-size:14px;line-height:1.65;max-width:56ch">It reads the same <span class="mono" style="font-size:12.5px">genaryx-core</span> over UniFFI the console does, so the number in your menu bar, the number on the Overview wall and the number in the audit trail are the same number. Overspend shows up where your eyes already are: no browser, no tab, no dashboard fatigue.</p>
       </div>
       <figure class="shot rv d1">
         <img src="assets/shots/enterprise/gx-bus.webp" alt="Genaryx Bus in the macOS menu bar: live spend, active runs, the last runaway and a kill control" width="672" height="400" loading="lazy">
         <figcaption>$4,671.02 ticking live in the menu bar &#183; 9,486 active runs &#183; the last runaway named and priced at $11.33, with the kill that still needs Touch ID</figcaption>
       </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ALERTS / ON CALL ================= -->
+<section class="sec" id="alerts" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">on call</div>
+      <h2>The alert finds you anywhere. Acting on it only works from inside.</h2>
+      <p class="lede">Two different things get bundled together and should not be: being told something happened, and being able to do something about it. They need opposite things from the network, and pretending otherwise is how a pager ends up needing the very connection that is down.</p>
+    </div>
+    <div class="bento">
+      <div class="card hover feature b-6 rv"><h3>Being told needs nothing open</h3><p>When a run crosses its cap, your box sends the alert out by mail. Outbound only: no inbound route to your network, no relay in the middle, no app to install and no developer account to hold. Your phone gets it the way it gets any mail, with the tunnel down and nothing running. An alert that only arrives once you are already connected is not an alert, it is a dashboard you have to remember to open.</p></div>
+      <div class="card hover feature b-6 rv d1"><h3>Acting needs you inside</h3><p>The mail carries a deep link, and the link goes to your console, which lives on your box and answers only over your own WireGuard tunnel. Phone on the tunnel, console opens, you sign in, and the destructive step is signed again with a passkey on that device. So a stolen alert is worth nothing: what it points at cannot be reached from the internet, and the action needs a key that never left your hand.</p></div>
+      <div class="card hover feature b-6 rv"><h3>Why the mail has no Kill button</h3><p>A button in an email is a URL, and URLs in mail get fetched by scanners, previews and clients before any human sees them. Anything that acts when opened will eventually act on its own. So the mail never carries a capability: it carries a link to a page that asks who you are and then asks your device to sign.</p></div>
+      <div class="card hover feature b-6 rv d1"><h3>The phone, without an app</h3><p>Your box issues a WireGuard config as a QR code, and it is scanned by the official WireGuard app rather than one of ours. That is the whole mobile requirement: no App Store review, no notarization, nothing of ours on the device. Reaching your console away from the tunnel is a relay problem we have deliberately not solved yet, and until we do, off-tunnel means you read the alert now and act when you are back on.</p></div>
     </div>
   </div>
 </section>
@@ -307,12 +324,12 @@
           <text x="124" y="70" fill="#B48CFF" font-size="13" font-weight="700">Genaryx console</text>
           <text x="124" y="90" fill="#8A97A6" font-size="10.5">browser console</text>
           <text x="124" y="106" fill="#8A97A6" font-size="10.5">one Rust core &#183; UniFFI</text>
-          <text x="124" y="122" fill="#8A97A6" font-size="10.5">Secure Enclave ES256</text>
+          <text x="124" y="122" fill="#8A97A6" font-size="10.5">passkey ES256 &#183; on your device</text>
 
-          <rect x="24" y="240" width="200" height="80" rx="14" fill="#10161F" stroke="#22D3EE" stroke-width="1.4"/>
-          <text x="124" y="270" fill="#22D3EE" font-size="12.5" font-weight="700">iPhone + Watch</text>
-          <text x="124" y="288" fill="#8A97A6" font-size="10.5">device keys sign kills</text>
-          <text x="124" y="304" fill="#8A97A6" font-size="10.5">Face ID &#183; on-wrist ES256</text>
+          <rect x="24" y="240" width="200" height="80" rx="14" fill="#10161F" stroke="#F4B23E" stroke-width="1.4" stroke-dasharray="5 4"/>
+          <text x="124" y="268" fill="#F4B23E" font-size="12.5" font-weight="700">your phone</text>
+          <text x="124" y="286" fill="#8A97A6" font-size="10.5">reads the alert anywhere</text>
+          <text x="124" y="302" fill="#8A97A6" font-size="10.5">opens the console on the tunnel</text>
 
           <rect x="390" y="88" width="230" height="130" rx="16" fill="#10161F" stroke="#34D399" stroke-width="1.6"/>
           <text x="505" y="118" fill="#34D399" font-size="13.5" font-weight="700">your Cloud plane</text>
@@ -362,7 +379,7 @@
     </div>
     <div class="bento">
       <div class="card hover feature b-4 rv"><h3>One core, one shell that ships</h3><p>The browser console is the product. A Tauri desktop build is kept green beside it, unshipped: two shells over one shared Rust core is what forces the logic - stores, connectors, ceremonies, the graph - to live in the core rather than drifting into a screen. Written once, tested once, so a command cannot mean one thing in one place and something else in another.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>Hardware signatures</h3><p>Kills and budget changes are ES256-signed by the Secure Enclave behind Touch ID, with a typed break-glass reason journaled next to the signature. A stolen laptop session or a compromised server cannot forge an order.</p></div>
+      <div class="card hover feature b-4 rv d1"><h3>Hardware signatures</h3><p>Kills and budget changes are ES256-signed by a passkey on your own device (Touch ID, Windows Hello or a security key), with a typed break-glass reason journaled next to the signature. A stolen laptop session or a compromised server cannot forge an order.</p></div>
       <div class="card hover feature b-4 rv d2"><h3>WireGuard built in</h3><p>The console bundles wireguard-go and raises its own tunnel: generate a keypair, exchange with the box, handshake, done. Your control plane answers on a private address and nowhere else. SSH stays for ops; the console does not need it.</p></div>
       <div class="card hover feature b-4 rv"><h3>A relay that cannot act</h3><p>The pager's relay holds a read-only viewer key, binds to exactly one device, pins its TLS identity into the pairing QR, and forwards device-signed mutations byte-for-byte. Compromise the relay and you can watch: you still cannot kill, budget or grant.</p></div>
       <div class="card hover feature b-4 rv d1"><h3>Post-quantum licensing</h3><p>Licenses are offline entitlement files signed with ML-DSA, the NIST post-quantum standard. No license server, no phone-home: it works in an air-gapped room, which is exactly where some of this software will live.</p></div>
@@ -410,7 +427,7 @@ const TABS=[
  {id:"money",l:"Money",m:"runs &#183; kill &#183; budgets",img:"gx-money.webp",
   cap:"9,501 runs ranked by spend, with Replay, Budget and Kill on every row, and an incidents rail beside them: $2,404.60 of it runaway spend prevented, the largest share of the $3,131.82 that recovered 40% of the gross draw."},
  {id:"policy",l:"Policy",m:"wardryx &#183; approvals",img:"gx-policy.webp",
-  cap:"The approvals inbox: five holds waiting on a human, one decided today. Each carries the policy it breached and its cost bound, and Grant or Deny is signed with Touch ID before it counts."},
+  cap:"The approvals inbox: five holds waiting on a human, one decided today. Each carries the policy it breached and its cost bound, and Grant or Deny is signed with your passkey before it counts."},
  {id:"identity",l:"Identity",m:"idryx &#183; 29 identities",img:"gx-identity.webp",
   cap:"29 identities, none privileged, 43 detector alerts and 21 attestation gaps surfaced honestly. The panel says outright that Idryx has no attestation field and that this list is derived from its alerts instead."},
  {id:"quality",l:"Quality",m:"verdryx &#183; drift",img:"gx-quality.webp",
