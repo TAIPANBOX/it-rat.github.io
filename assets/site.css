@@ -72,6 +72,12 @@ p{margin:0}
 .topbar .spacer{flex:1}
 .tb-link{font-size:13.5px;color:var(--dim);padding:7px 10px;border-radius:9px;transition:color .15s, background .15s}
 .tb-link:hover{color:var(--fg);background:rgba(255,255,255,.05)}
+/* Account entry, not another page to read. It sits at the right edge, after
+   the content links, because that is where every user has been taught to look
+   for their own account, and it carries a border so the eye separates "go to
+   my thing" from "read about the thing". */
+.tb-cta{border:1px solid var(--line-2);color:var(--fg)}
+.tb-cta:hover{border-color:color-mix(in srgb,var(--accent) 55%,var(--line-2));background:rgba(255,255,255,.04)}
 .kbd-hint{
   display:flex;align-items:center;gap:7px;font-family:var(--font-m);font-size:11.5px;color:var(--faint);
   border:1px solid var(--line);border-radius:9px;padding:6px 10px;cursor:pointer;
