@@ -55,6 +55,9 @@
   .ent-ribbon .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:entPulse 2.4s infinite}
   @keyframes entPulse{0%,100%{opacity:1}50%{opacity:.35}}
   .ent-ribbon b{color:var(--fg);font-weight:650}
+
+  /* Nudge the mock off the page's hard left edge, toward the middle. */
+  #pk-live{margin-left:30px}
 </style>
 </head>
 <body data-service="pocket" data-root="../">
@@ -133,13 +136,13 @@
     <div class="appshow rv">
       <div id="pk-live"></div>
       <div class="as-steps" id="pk-steps">
-        <div class="as-step"><span class="as-n mono">01</span><span class="as-body"><b>Runs, the deck</b><span>Fleet burn up top with a live sparkline, then the exception queue: runs at or over their cap, worst first, ember and pulsing. The healthy fleet stays quiet; the pager holds only what needs a decision.</span></span></div>
-        <div class="as-step"><span class="as-n mono">02</span><span class="as-body"><b>Run detail, pull the breaker</b><span>Tap a run for spend against cap, model and steps. The kill asks you to mean it: a confirmation naming the exact run, then Face ID, then an on-device signature. Nothing is armed by a swipe.</span></span></div>
-        <div class="as-step"><span class="as-n mono">03</span><span class="as-body"><b>Budgets, the ladder above a run</b><span>The same cap enforced at three scopes: org, team, and agent, each with an 80% warn and a 95% alert. So a single agent cannot quietly drain a team's month while every individual run still looks fine.</span></span></div>
-        <div class="as-step"><span class="as-n mono">04</span><span class="as-body"><b>Agents, sorted by behaviour</b><span>Not spend, conduct. The identity plane flags a runaway agent, one that reached tools it never used, an orphaned key, a shadow model, worst first. Tap one for why it fired, its delegation chain and blast radius, then throttle or kill.</span></span></div>
-        <div class="as-step"><span class="as-n mono">05</span><span class="as-body"><b>Pairing, one scan and a key that stays</b><span>Your console issues a one-time code that expires in ten minutes. Scanning it links this iPhone to your org, and the signing key is generated in the Secure Enclave, so it never leaves the phone: a stolen token on its own cannot stop your agents.</span></span></div>
-        <div class="as-step"><span class="as-n mono">06</span><span class="as-body"><b>Device, and how far it reaches</b><span>The paired iPhone, its on-device signing key, and the last action it signed. Remote access runs over the tunnel: Default keeps the phone paired and reaps idle peers; Strict revokes the peer after a window and asks for a fresh code.</span></span></div>
-        <div class="as-step"><span class="as-n mono">07</span><span class="as-body"><b>Alerts that mean act</b><span>The relay pushes the moment a run crosses its cap. Tap a banner to jump straight to the run. And on the wrist: only runs at or over cap plus live detections; turn the Digital Crown to arm a kill, then confirm it on the wrist.</span></span></div>
+        <div class="as-step"><span class="as-n mono">01</span><span class="as-body"><b>Runs, the deck</b><span>Fleet burn up top, then the exception queue: the runs at or over their cap, worst first. The healthy fleet stays quiet.</span></span></div>
+        <div class="as-step"><span class="as-n mono">02</span><span class="as-body"><b>Run detail, pull the breaker</b><span>Spend against cap, model and steps. The kill wants you to mean it: slide to arm, then Face ID.</span></span></div>
+        <div class="as-step"><span class="as-n mono">03</span><span class="as-body"><b>Budgets, the ladder above a run</b><span>One cap enforced at three scopes, org, team and agent, so no single agent can quietly drain a team's month.</span></span></div>
+        <div class="as-step"><span class="as-n mono">04</span><span class="as-body"><b>Agents, sorted by behaviour</b><span>Not spend, conduct: a runaway agent, one reaching tools it never used, an orphaned key. Tap for why it fired and its blast radius.</span></span></div>
+        <div class="as-step"><span class="as-n mono">05</span><span class="as-body"><b>Pairing, one scan and a key that stays</b><span>Your console issues a one-time code. Scanning it mints a signing key in the Secure Enclave that never leaves the phone.</span></span></div>
+        <div class="as-step"><span class="as-n mono">06</span><span class="as-body"><b>Device, and how far it reaches</b><span>The paired iPhone and the last action it signed. Default reaps idle tunnel peers, Strict revokes them.</span></span></div>
+        <div class="as-step"><span class="as-n mono">07</span><span class="as-body"><b>Alerts that mean act</b><span>The relay pushes the moment a cap breaks. Tap a banner to land on the run, or arm the kill from the wrist.</span></span></div>
       </div>
     </div>
   </div>

@@ -23,7 +23,7 @@ function clock(){const d=new Date();return d.getHours()+":"+String(d.getMinutes(
 const CSS=`
 .lm-wrap{display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap}
 /* ---- iPhone frame ---- */
-.lm-phone{position:relative;width:min(312px,80vw);aspect-ratio:588/1240;border-radius:46px;
+.lm-phone{position:relative;width:min(320px,80vw);aspect-ratio:588/1240;border-radius:46px;
   background:linear-gradient(180deg,#20262f,#12161c);padding:5px;flex:0 0 auto;
   box-shadow:0 2px 0 rgba(255,255,255,.06) inset,0 34px 80px -30px rgba(0,0,0,.9),
     0 0 60px -18px color-mix(in srgb, var(--accent) 26%, transparent)}
@@ -367,6 +367,14 @@ function pocket(root,stepsEl){
   const T=(s)=>{ // tab icons
     return {runs:'<path d="M4 13h4l2 5 4-12 2 7h4"/>',bud:'<path d="M12 20v-6M12 10V4M5 20v-9M5 7V4M19 20v-3M19 13V4"/><circle cx="12" cy="12" r="2"/><circle cx="5" cy="9" r="2"/><circle cx="19" cy="15" r="2"/>',alr:'<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>',dev:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'}[s];
   };
+  /* One tab bar for every screen that carries one. `on` is the tab that owns
+     the screen, so a drill-in (a run, an agent, a budget scope) still shows
+     its parent tab lit rather than nothing. */
+  const TABBAR=on=>'<div class="lm-tabs" data-tabs>'+
+    [["runs","Runs","runs"],["budgets","Budgets","bud"],["alerts","Alerts","alr"],["device","Device","dev"]]
+      .map(([k,label,ico])=>`<button${on===k?' class="on"':""} data-tab="${k}">`+
+        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T(ico)}</svg>${label}</button>`)
+      .join("")+"</div>";
   root.classList.add("lm-wrap");
   root.innerHTML=
    `<figure class="lm-phone" style="margin:0"><span class="lm-island"></span>
@@ -396,12 +404,7 @@ function pocket(root,stepsEl){
              <div class="lm-listcap"><span class="l" data-lcount>3 active</span><span class="l" style="color:var(--iris)">sort · burn</span></div>
              <div data-runs></div>
            </div>
-           <div class="lm-tabs" data-tabs>
-             <button class="on" data-tab="runs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('runs')}</svg>Runs</button>
-             <button data-tab="budgets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('bud')}</svg>Budgets</button>
-             <button data-tab="alerts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('alr')}</svg>Alerts</button>
-             <button data-tab="device"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('dev')}</svg>Device</button>
-           </div>
+           ${TABBAR("runs")}
          </div>
          <!-- DETAIL -->
          <div class="lm-view" data-v="detail">
@@ -428,6 +431,7 @@ function pocket(root,stepsEl){
              </div>
              <div class="lm-khint">Kill is signed by the Secure Enclave · Face ID</div>
            </div>
+           ${TABBAR("runs")}
          </div>
          <!-- LIVE ACTIVITY -->
          <div class="lm-view" data-v="island">
@@ -457,6 +461,7 @@ function pocket(root,stepsEl){
                <div class="lm-fuse ember" style="height:9px;margin-top:9px"><i style="width:100%"></i></div>
              </div>
            </div>
+           ${TABBAR("alerts")}
          </div>
          <!-- PAIRING -->
          <div class="lm-view" data-v="pair">
@@ -499,12 +504,7 @@ function pocket(root,stepsEl){
              </div>
              <div class="lm-note" style="margin-top:4px">Tap a budget alert → Face ID → killed, without opening the app.</div>
            </div>
-           <div class="lm-tabs" data-tabs>
-             <button data-tab="runs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('runs')}</svg>Runs</button>
-             <button data-tab="budgets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('bud')}</svg>Budgets</button>
-             <button class="on" data-tab="alerts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('alr')}</svg>Alerts</button>
-             <button data-tab="device"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('dev')}</svg>Device</button>
-           </div>
+           ${TABBAR("alerts")}
          </div>
          <!-- BUDGET detail: drill into a scope -->
          <div class="lm-view" data-v="budgetdet">
@@ -520,6 +520,7 @@ function pocket(root,stepsEl){
              <div class="lm-cap" style="margin:15px 0 7px" data-bdlabel>Breakdown</div>
              <div data-bdkids></div>
            </div>
+           ${TABBAR("budgets")}
          </div>
          <!-- BUDGETS -->
          <div class="lm-view" data-v="budgets">
@@ -532,12 +533,7 @@ function pocket(root,stepsEl){
              <div class="lm-listcap"><span class="l" data-bcount>3 agents</span><span class="l" style="color:var(--iris)">80% warn · 95% alert</span></div>
              <div data-budgets></div>
            </div>
-           <div class="lm-tabs" data-tabs>
-             <button data-tab="runs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('runs')}</svg>Runs</button>
-             <button class="on" data-tab="budgets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('bud')}</svg>Budgets</button>
-             <button data-tab="alerts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('alr')}</svg>Alerts</button>
-             <button data-tab="device"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('dev')}</svg>Device</button>
-           </div>
+           ${TABBAR("budgets")}
          </div>
          <!-- DEVICE -->
          <div class="lm-view" data-v="device">
@@ -564,12 +560,7 @@ function pocket(root,stepsEl){
              <button class="lm-pairbtn" data-goto-pair>Pair another device</button>
              <button class="lm-disc" data-disc style="margin-top:9px">Disconnect this device</button>
            </div>
-           <div class="lm-tabs" data-tabs>
-             <button data-tab="runs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('runs')}</svg>Runs</button>
-             <button data-tab="budgets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('bud')}</svg>Budgets</button>
-             <button data-tab="alerts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('alr')}</svg>Alerts</button>
-             <button class="on" data-tab="device"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${T('dev')}</svg>Device</button>
-           </div>
+           ${TABBAR("device")}
          </div>
          <!-- AGENTS (behaviour) -->
          <div class="lm-view" data-v="agents">
@@ -583,6 +574,7 @@ function pocket(root,stepsEl){
              <div class="lm-listcap"><span class="l" data-acount>4 flagged</span><span class="l" style="color:var(--iris)">worst first</span></div>
              <div data-agents></div>
            </div>
+           ${TABBAR("runs")}
          </div>
          <!-- AGENT detail: why it was flagged -->
          <div class="lm-view" data-v="agentdet">
@@ -608,6 +600,7 @@ function pocket(root,stepsEl){
              </div>
              <div class="lm-khint">A kill is signed by the Secure Enclave · Face ID. Nothing here is armed by a tap alone.</div>
            </div>
+           ${TABBAR("runs")}
          </div>
          <div class="lm-toast" data-toast></div>
        </div>
@@ -667,7 +660,9 @@ function pocket(root,stepsEl){
 
   function show(v){ view=v;
     $$(root,".lm-view").forEach(x=>x.classList.toggle("on",x.dataset.v===v));
-    const tabFor={runs:"runs",push:"alerts",budgets:"budgets",device:"device"}[v]||"";
+    const tabFor={runs:"runs",detail:"runs",agents:"runs",agentdet:"runs",
+                  budgets:"budgets",budgetdet:"budgets",
+                  push:"alerts",island:"alerts",device:"device"}[v]||"";
     $$(root,"[data-tab]").forEach(b=>b.classList.toggle("on",b.dataset.tab===tabFor));
   }
   function toast(m){el.toast.textContent=m;el.toast.classList.add("on");setTimeout(()=>el.toast.classList.remove("on"),2600);}
@@ -850,17 +845,30 @@ function pocket(root,stepsEl){
 
   /* Drag to scroll each screen. The page hijacks the mouse wheel, so a drag is
      what actually moves content out from under the tab bar. Taps still work: a
-     click is only suppressed when the pointer actually moved. */
+     click is only suppressed when the pointer actually moved.
+
+     Deliberately NO setPointerCapture on the scroll box. With capture set, the
+     browser dispatches pointerdown AND pointerup to the capturing element, so
+     the click lands on the scroll box instead of whatever was tapped inside
+     it: every control in a scrolling screen goes dead (the back arrows, the
+     run/agent/budget rows), while the tab bar keeps working because it sits
+     outside the scroll box. Tracking the drag on `window` instead keeps a drag
+     alive past the frame edge without stealing the click. */
   let dragged=false;
   $$(root,".lm-scroll").forEach(sc=>{
     let down=false,sy=0,st=0,mv=0;
+    const move=e=>{if(!down)return;const dy=e.clientY-sy;if(Math.abs(dy)>2)mv=Math.abs(dy);sc.scrollTop=st-dy;};
+    const end=()=>{
+      if(!down)return;
+      if(mv>6){dragged=true;setTimeout(()=>{dragged=false;},140);}
+      down=false;
+      removeEventListener("pointermove",move);removeEventListener("pointerup",end);removeEventListener("pointercancel",end);
+    };
     sc.addEventListener("pointerdown",e=>{
-      if(e.target.closest(".lm-seg,.lm-flag,.lm-act,.lm-disc,.lm-breaker"))return;
-      down=true;sy=e.clientY;st=sc.scrollTop;mv=0;try{sc.setPointerCapture(e.pointerId);}catch(_){}
+      if(e.target.closest("button,.lm-breaker"))return;
+      down=true;sy=e.clientY;st=sc.scrollTop;mv=0;
+      addEventListener("pointermove",move);addEventListener("pointerup",end);addEventListener("pointercancel",end);
     });
-    sc.addEventListener("pointermove",e=>{if(!down)return;const dy=e.clientY-sy;if(Math.abs(dy)>2)mv=Math.abs(dy);sc.scrollTop=st-dy;});
-    const end=()=>{if(down&&mv>6){dragged=true;setTimeout(()=>{dragged=false;},140);}down=false;};
-    sc.addEventListener("pointerup",end);sc.addEventListener("pointercancel",end);
   });
   root.addEventListener("click",e=>{if(dragged){e.stopPropagation();e.preventDefault();}},true);
   /* expanded dynamic-island kill */
