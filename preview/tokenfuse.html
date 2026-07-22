@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TokenFuse Cloud - live preview (sample data)</title>
+<meta name="description" content="A static preview of the open-source TokenFuse Cloud money-plane dashboard, with sample fleet data. No backend, no real infrastructure.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect x='1' y='1' width='32' height='32' rx='9' fill='%23F4B23E'/%3E%3Cpath d='M13 2 4 14h6l-1 8 9-12h-6z' fill='none' stroke='%230A0E13' stroke-width='2.4' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  /* TokenFuse Cloud dashboard - the fuse identity (docs/16-design-system.md). */
+  :root {
+    color-scheme: dark;
+    --ink: #0a0e13; --ink-2: #0c121a; --panel: #121924; --panel-2: #172230;
+    --line: rgba(255,255,255,0.07); --line-2: rgba(255,255,255,0.13);
+    --fg: #eaf0f6; --dim: #7e8b9a; --faint: #4c596a;
+    --mint: #46e3b4; --amber: #f4b23e; --ember: #ff574b; --iris: #6c7bff;
+    --fd: "SF Pro Display","SF Pro Text",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    --ft: "SF Pro Text",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    --fm: "SF Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--fg); font-family: var(--ft); line-height: 1.5;
+    -webkit-font-smoothing: antialiased; min-height: 100vh;
+    background:
+      radial-gradient(1400px 700px at 0% -10%, rgba(108,123,255,0.09), transparent 55%),
+      radial-gradient(1200px 800px at 100% -5%, rgba(244,178,62,0.05), transparent 55%),
+      linear-gradient(180deg,#080b10,#0a0e13 45%,#080b10);
+  }
+  .shell { max-width: 1320px; margin: 0 auto; padding: 0 clamp(16px,3vw,34px) 64px; }
+  .topbar { display: flex; align-items: center; gap: 16px; padding: 20px 2px 16px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 11px; }
+  .brand .w { font-family: var(--fd); font-weight: 800; font-size: 18px; letter-spacing: -0.01em; }
+  .brand .w span { color: var(--dim); font-weight: 600; }
+  .brand .tagm { font-family: var(--fm); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); border-left: 1px solid var(--line); padding-left: 12px; }
+  .conn { margin-left: auto; display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .chip { display: flex; align-items: center; gap: 9px; background: var(--panel); border: 1px solid var(--line); border-radius: 11px; padding: 8px 12px; font-family: var(--fm); font-size: 11px; color: var(--dim); }
+  .chip b { color: var(--fg); font-weight: 600; }
+  .chip .k { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 9px var(--mint); }
+  .chip .live { color: var(--mint); }
+  /* demo banner */
+  .demoband { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: linear-gradient(180deg, rgba(108,123,255,0.10), rgba(108,123,255,0.04)); border: 1px solid rgba(108,123,255,0.28); border-radius: 12px; padding: 10px 14px; margin-bottom: 18px; }
+  .demoband .df { font-family: var(--fm); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--iris); border: 1px solid rgba(108,123,255,0.4); border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+  .demoband .dt { font-size: 12.5px; color: var(--dim); flex: 1; min-width: 220px; }
+  .demoband .dt b { color: var(--fg); font-weight: 600; }
+  .demoband a.dbtn { border: 0; background: linear-gradient(180deg,#238636,#1f7a30); color: #fff; border-radius: 9px; padding: 7px 14px; font-weight: 700; font-size: 12px; text-decoration: none; white-space: nowrap; }
+  .ammeter { display: flex; align-items: center; gap: 14px; background: linear-gradient(180deg,var(--panel),var(--ink-2)); border: 1px solid var(--line); border-radius: 14px; padding: 11px 16px; margin-bottom: 18px; }
+  .ammeter .lab { font-family: var(--fm); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); white-space: nowrap; }
+  .ammeter .rd { font-family: var(--fm); font-size: 12px; color: var(--dim); white-space: nowrap; }
+  .ammeter .rd b { color: var(--fg); font-weight: 600; }
+  .fuse { position: relative; height: 8px; border-radius: 6px; background: #0b1017; border: 1px solid var(--line); overflow: hidden; flex: 1; }
+  .fuse > i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; }
+  .fuse.mint > i { background: linear-gradient(90deg,#2fb98f,var(--mint)); }
+  .fuse.amber > i { background: linear-gradient(90deg,var(--mint),var(--amber)); box-shadow: 0 0 12px rgba(244,178,62,0.45); }
+  .fuse.ember > i { background: linear-gradient(90deg,var(--amber),var(--ember)); box-shadow: 0 0 14px rgba(255,87,75,0.6); }
+  .card { background: linear-gradient(180deg,var(--panel),var(--ink-2)); border: 1px solid var(--line); border-radius: 18px; }
+  .heroband { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .hero { padding: 20px 22px 16px; }
+  .hero .cap { font-family: var(--fm); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); }
+  .hero .rate { display: flex; align-items: baseline; gap: 10px; margin-top: 4px; }
+  .hero .v { font-family: var(--fd); font-weight: 800; font-size: 60px; letter-spacing: -0.04em; line-height: 0.9; font-variant-numeric: tabular-nums; }
+  .hero .u { font-family: var(--fm); font-size: 16px; color: var(--amber); }
+  .hero .spent { margin-left: auto; font-family: var(--fm); font-size: 12px; color: var(--dim); align-self: flex-end; }
+  .hero .spark { width: 100%; height: 60px; display: block; margin: 10px 0 6px; }
+  .hero .agl { display: flex; justify-content: space-between; font-family: var(--fm); font-size: 11px; color: var(--dim); margin-top: 8px; }
+  .hero .agl b { color: var(--fg); font-weight: 600; }
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .tile { padding: 18px; }
+  .tile .k { font-family: var(--fm); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+  .tile .n { font-family: var(--fd); font-weight: 800; font-size: 34px; letter-spacing: -0.03em; margin-top: 8px; font-variant-numeric: tabular-nums; }
+  .tile .s { font-family: var(--fm); font-size: 11px; color: var(--dim); margin-top: 4px; }
+  .tile.alert .n { color: var(--amber); }
+  .tile.killed .n { color: var(--dim); }
+  .main { display: grid; grid-template-columns: 1fr 340px; gap: 16px; }
+  .sechead { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 12px; }
+  .sechead .t { font-family: var(--fd); font-weight: 700; font-size: 16px; }
+  .sechead .r { font-family: var(--fm); font-size: 11px; color: var(--dim); }
+  .tablewrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 560px; }
+  thead th { font-family: var(--fm); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); font-weight: 600; text-align: left; padding: 8px 14px; border-bottom: 1px solid var(--line); }
+  thead th.num { text-align: right; }
+  tbody td { padding: 13px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr.over { background: linear-gradient(90deg, rgba(255,87,75,0.07), transparent 70%); }
+  tbody tr.killedrow { opacity: 0.5; }
+  .rid { font-family: var(--fm); font-size: 13px; }
+  .rmodel { font-family: var(--fm); font-size: 11px; color: var(--dim); }
+  .spentcell { min-width: 160px; }
+  .spentcell .nrow { display: flex; justify-content: space-between; font-family: var(--fm); font-size: 12px; margin-bottom: 6px; }
+  .spentcell .nrow b { font-weight: 600; }
+  td.num { text-align: right; font-family: var(--fm); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .pill { font-family: var(--fm); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; border: 1px solid transparent; white-space: nowrap; }
+  .pill.live { color: var(--mint); border-color: rgba(70,227,180,0.3); background: rgba(70,227,180,0.07); }
+  .pill.near { color: var(--amber); border-color: rgba(244,178,62,0.32); background: rgba(244,178,62,0.08); }
+  .pill.crit { color: var(--ember); border-color: rgba(255,87,75,0.38); background: rgba(255,87,75,0.1); }
+  .pill.dead { color: var(--faint); border-color: var(--line); background: #0b1017; }
+  .acts { display: flex; gap: 6px; justify-content: flex-end; }
+  .mini { border: 1px solid var(--line-2); background: #0e1520; color: var(--dim); border-radius: 8px; padding: 5px 10px; font-size: 11px; font-weight: 600; font-family: inherit; cursor: pointer; }
+  .mini:hover { border-color: var(--iris); color: var(--fg); }
+  .mini.kill { color: #ff9a92; border-color: rgba(255,87,75,0.3); background: rgba(255,87,75,0.06); }
+  .rail { display: flex; flex-direction: column; gap: 16px; }
+  .arow { display: flex; align-items: center; gap: 11px; padding: 11px 20px; border-top: 1px solid var(--line); }
+  .arow .d { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; }
+  .arow .d.crit { background: var(--ember); box-shadow: 0 0 9px var(--ember); }
+  .arow .d.near { background: var(--amber); box-shadow: 0 0 9px var(--amber); }
+  .arow .tx { flex: 1; min-width: 0; }
+  .arow .tx .m { font-size: 12.5px; }
+  .arow .tx .m .id { font-family: var(--fm); }
+  .arow .tx .s { font-family: var(--fm); font-size: 10px; color: var(--dim); margin-top: 2px; }
+  .arow .pct { font-family: var(--fd); font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
+  .barchart { padding: 4px 20px 8px; display: flex; flex-direction: column; gap: 11px; }
+  .bc { display: grid; grid-template-columns: 84px 1fr 66px; align-items: center; gap: 10px; }
+  .bc .id { font-family: var(--fm); font-size: 11px; color: var(--dim); }
+  .bc .amt { font-family: var(--fm); font-size: 11px; text-align: right; font-variant-numeric: tabular-nums; }
+  .foot { margin-top: 34px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 14px 34px; font-family: var(--fm); font-size: 11px; color: var(--faint); }
+  .foot b { color: var(--dim); font-weight: 500; }
+  @media (max-width: 960px) { .heroband, .main { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="32" height="32" rx="9" fill="url(#g)"/>
+        <g transform="translate(17 17) scale(0.92) translate(-11 -12)">
+          <path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="none" stroke="#0A0E13" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+        </g>
+        <defs><linearGradient id="g" x1="2" y1="2" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#F6B740"/><stop offset="1" stop-color="#FF574B"/></linearGradient></defs>
+      </svg>
+      <div class="w">TokenFuse <span>Cloud</span></div>
+      <div class="tagm">enforcement, not observability</div>
+    </div>
+    <div class="conn">
+      <span class="chip"><span class="k"></span>plane <b>demo.tokenfuse.dev</b> · <span class="live">live · 3s</span></span>
+    </div>
+  </header>
+
+  <div class="demoband">
+    <span class="df">Preview</span>
+    <span class="dt">A static preview of the open-source <b>TokenFuse Cloud</b> money-plane dashboard, with sample fleet data. No backend, no real infrastructure - just how it looks.</span>
+    <a class="dbtn" href="https://github.com/TAIPANBOX/tokenfuse#-quickstart" target="_blank" rel="noreferrer">Run it yourself</a>
+  </div>
+
+  <div class="ammeter">
+    <span class="lab">Fleet draw</span>
+    <div class="fuse amber"><i style="width:64%"></i></div>
+    <span class="rd">spending <b>$1.98</b> of <b>$3.10</b> caps · <b style="color:var(--amber)">64%</b></span>
+  </div>
+
+  <div class="heroband">
+    <div class="card hero">
+      <div class="cap">Fleet burn rate · all gateways</div>
+      <div class="rate"><span class="v">0.07</span><span class="u">$/min</span><span class="spent">spent $1.98</span></div>
+      <svg class="spark" id="spark" viewBox="0 0 600 100" preserveAspectRatio="none"></svg>
+      <div class="fuse amber"><i style="width:64%"></i></div>
+      <div class="agl"><span>spent today <b>$1.98</b></span><span>caps <b>$3.10</b> · 64%</span></div>
+    </div>
+    <div class="tiles">
+      <div class="card tile"><div class="k">Active runs</div><div class="n">5</div><div class="s">59 calls</div></div>
+      <div class="card tile"><div class="k">Spent today</div><div class="n">$1.98</div><div class="s">reserve &rarr; settle</div></div>
+      <div class="card tile alert"><div class="k">Alerts</div><div class="n">2</div><div class="s">&ge; 80% of cap</div></div>
+      <div class="card tile killed"><div class="k">Killed</div><div class="n">1</div><div class="s">this org</div></div>
+      <div class="card tile" style="grid-column:1 / -1"><div class="k">Saved this month</div><div class="n" style="color:var(--mint)">$0.50</div><div class="s">blocked $0.38 · cache $0.12</div></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="card">
+      <div class="sechead"><div class="t">Runs</div><div class="r">sorted · burn</div></div>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Run</th><th>Model</th><th>Spent / cap</th><th class="num">Calls</th><th class="num">Steps</th><th>Status</th><th class="num">Actions</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table></div>
+    </div>
+    <div class="rail">
+      <div class="card">
+        <div class="sechead"><div class="t">Alerts</div><div class="r">&ge; 80% of cap</div></div>
+        <div id="alerts"></div>
+      </div>
+      <div class="card">
+        <div class="sechead"><div class="t">Spend by run</div><div class="r">today</div></div>
+        <div class="barchart" id="barchart"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <span><b>One identity</b> - the fuse, matching the iOS app</span>
+    <span><b>Open source</b> · Apache-2.0 · self-host</span>
+    <span><b>Enforcement</b> - an over-budget call gets a hard 402, not a warning after the fact</span>
+  </footer>
+</div>
+
+<script>
+  // Sample fleet, in micro-USD. Static: this preview never calls a backend.
+  const RUNS = [
+    { id: "economics-analyst",  model: "gpt-4o",          spent: 860000, cap: 800000, calls: 14, steps: 14, killed: false },
+    { id: "rca-copilot",        model: "claude-sonnet-5", spent: 440000, cap: 500000, calls: 10, steps: 10, killed: false },
+    { id: "invoice-reconciler", model: "gpt-4o",          spent: 210000, cap: 600000, calls: 8,  steps: 8,  killed: false },
+    { id: "web-crawler",        model: "gpt-4o-mini",     spent: 120000, cap: 500000, calls: 12, steps: 12, killed: false },
+    { id: "support-triage",     model: "claude-haiku",    spent: 50000,  cap: 300000, calls: 6,  steps: 6,  killed: false },
+    { id: "data-exporter",      model: "gpt-4o-mini",     spent: 300000, cap: 400000, calls: 9,  steps: 9,  killed: true },
+  ];
+  const SERIES = [40,55,58,72,95,120,84,66,102,78,90,70].map(v => v * 1000);
+
+  const usd = (m) => "$" + (m / 1e6).toFixed(2);
+  const heat = (frac, killed) => killed ? "mint" : frac >= 1 ? "ember" : frac >= 0.8 ? "amber" : "mint";
+  const maxSpend = Math.max(1, ...RUNS.map(r => r.spent));
+
+  // Sparkline
+  (function () {
+    const W = 600, H = 100, max = Math.max(1, ...SERIES);
+    const pts = SERIES.map((v, i) => `${((i / (SERIES.length - 1)) * W).toFixed(1)},${(H - (v / max) * (H - 10) - 5).toFixed(1)}`).join(" ");
+    const lastY = H - (SERIES[SERIES.length - 1] / max) * (H - 10) - 5;
+    document.getElementById("spark").innerHTML =
+      `<polygon points="0,${H} ${pts} ${W},${H}" fill="rgba(244,178,62,0.22)"/>` +
+      `<polyline points="${pts}" fill="none" stroke="#f4b23e" stroke-width="2.5" vector-effect="non-scaling-stroke"/>` +
+      `<circle cx="${W}" cy="${lastY.toFixed(1)}" r="3.5" fill="#ff574b"/>`;
+  })();
+
+  // Runs table
+  document.getElementById("rows").innerHTML = RUNS.map((r) => {
+    const frac = r.cap > 0 ? r.spent / r.cap : 0;
+    const over = !r.killed && frac >= 1;
+    const status = r.killed ? '<span class="pill dead">killed</span>'
+      : frac >= 1 ? '<span class="pill crit">over cap</span>'
+      : frac >= 0.8 ? '<span class="pill near">near cap</span>'
+      : '<span class="pill live">live</span>';
+    const acts = r.killed ? '<span class="pill dead">402 killed</span>'
+      : `<button class="mini">Budget</button><button class="mini kill">Kill</button>`;
+    return `<tr class="${over ? "over" : r.killed ? "killedrow" : ""}">
+      <td><span class="rid">${r.id}</span></td>
+      <td><span class="rmodel">${r.model}</span></td>
+      <td class="spentcell">
+        <div class="nrow"><b style="${over ? "color:var(--ember)" : ""}">${usd(r.spent)}</b><span style="color:var(--dim)">${usd(r.cap)}</span></div>
+        <div class="fuse ${heat(frac, r.killed)}"><i style="width:${Math.min(100, frac * 100)}%"></i></div>
+      </td>
+      <td class="num">${r.calls}</td>
+      <td class="num">${r.steps}</td>
+      <td>${status}</td>
+      <td><div class="acts">${acts}</div></td>
+    </tr>`;
+  }).join("");
+
+  // Alerts rail
+  const alerts = RUNS.filter(r => r.cap > 0 && r.spent / r.cap >= 0.8 && !r.killed)
+    .sort((a, b) => b.spent / b.cap - a.spent / a.cap);
+  document.getElementById("alerts").innerHTML = alerts.map((a) => {
+    const frac = a.spent / a.cap;
+    return `<div class="arow">
+      <span class="d ${frac >= 1 ? "crit" : "near"}"></span>
+      <div class="tx"><div class="m">Run <span class="id">${a.id}</span> ${frac >= 1 ? "over cap" : "near cap"}</div><div class="s">${usd(a.spent)} / ${usd(a.cap)}</div></div>
+      <span class="pct" style="color:${frac >= 1 ? "var(--ember)" : "var(--amber)"}">${Math.round(frac * 100)}%</span>
+    </div>`;
+  }).join("");
+
+  // Spend-by-run barchart
+  document.getElementById("barchart").innerHTML = RUNS.slice(0, 6).map((r) => {
+    const frac = r.cap > 0 ? r.spent / r.cap : 0;
+    return `<div class="bc"><span class="id">${r.id}</span><div class="fuse ${heat(frac, r.killed)}"><i style="width:${(r.spent / maxSpend) * 100}%"></i></div><span class="amt">${usd(r.spent)}</span></div>`;
+  }).join("");
+</script>
+</body>
+</html>
