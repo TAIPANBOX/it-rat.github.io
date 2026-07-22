@@ -180,14 +180,14 @@
     <div class="sec-head rv">
       <div class="kicker">an honest comparison</div>
       <h2>Where the breaker lives matters.</h2>
-      <p class="lede">We would rather argue with the strongest version of the alternative than with a straw man. The best in-line proxies in this space do real work: per-agent budgets, several independent kill triggers, even fleet control planes. Every one of those triggers is software, reachable from the same estate it guards. Ours adds one that is not: a kill signed by a passkey on a device that was never part of the request path.</p>
+      <p class="lede">We would rather argue with the strongest version of the alternative than with a straw man. The best in-line proxies in this space do real work: per-agent budgets, several independent kill triggers, even fleet control planes. Every one of those triggers is software, reachable from the same estate it guards. Ours adds one that is not: a kill signed on the device's own secure element, hardware that never sat in the request path, and verifiable offline long after the incident is cold.</p>
     </div>
     <div class="tbl-scroll rv">
       <table class="tbl">
         <thead><tr><th></th><th>TokenFuse</th><th>In-line budget proxies</th><th>Observability dashboards</th></tr></thead>
         <tbody>
           <tr><td>Enforcement</td><td class="yes">In-line 402, seconds</td><td class="yes">In-line, in the request path</td><td class="no">Alert after the fact</td></tr>
-          <tr><td>Kill switch</td><td class="yes">Software triggers, plus one that is not software: Passkey-signed on a separate device</td><td class="warn">Remote APIs, signals, sentinel files: all software, all reachable from the estate they guard</td><td class="no">None</td></tr>
+          <tr><td>Kill switch</td><td class="yes">Software triggers, plus one that is not: an ES256 signature from a separate device's secure element, verifiable offline</td><td class="warn">Remote APIs, signals, sentinel files: all software, all reachable from the estate they guard</td><td class="no">None</td></tr>
           <tr><td>Shared budget across machines</td><td class="yes">Raft consensus, byte-identical state on every node</td><td class="warn">Per-agent budgets; fleet planes exist, typically behind commercial licences</td><td class="no">n/a</td></tr>
           <tr><td>Cost optimization</td><td class="yes">Router + semantic cache, measured 22%</td><td class="warn">Rarely a goal</td><td class="warn">Recommendations only</td></tr>
           <tr><td>FinOps handoff</td><td class="yes">FOCUS format, the one finance already reads</td><td class="warn">Security formats: SIEM, syslog, OTLP. Not the ones finance reads</td><td class="warn">Vendor lock</td></tr>
@@ -206,7 +206,7 @@
         <div class="kicker">in the stack</div>
         <h3 style="margin-top:12px">The loud neighbor everyone listens to.</h3>
         <p style="margin-top:10px;color:var(--dim);font-size:14.5px;line-height:1.65">
-          TokenFuse asks <a href="wardryx.html" data-dir="fwd" style="color:var(--teal)">Wardryx</a> before letting a declared tool through, and stamps the verdict on the response. Its Parquet traces are the raw material <a href="verdryx.html" data-dir="fwd" style="color:var(--rose)">Verdryx</a> prices outcomes from. <a href="mockryx.html" data-dir="fwd" style="color:var(--coral)">Mockryx</a> attacks it on purpose in pre-prod. <a href="idryx.html" data-dir="fwd" style="color:var(--mint)">Idryx</a> correlates its events into the identity graph. Everything travels as one envelope, the agent-event, and the <a href="../enterprise.html" style="color:var(--violet)">Genaryx</a> carries that same kill switch into a console you reach over your own tunnel.</p>
+          TokenFuse asks <a href="wardryx.html" data-dir="fwd" style="color:var(--teal)">Wardryx</a> before letting a declared tool through, and stamps the verdict on the response. Its Parquet traces are the raw material <a href="verdryx.html" data-dir="fwd" style="color:var(--rose)">Verdryx</a> prices outcomes from. <a href="mockryx.html" data-dir="fwd" style="color:var(--coral)">Mockryx</a> attacks it on purpose in pre-prod. <a href="idryx.html" data-dir="fwd" style="color:var(--mint)">Idryx</a> correlates its events into the identity graph. Everything travels as one envelope, the agent-event, and <a href="../enterprise.html" style="color:var(--violet)">Genaryx</a> lifts that same signed kill into a console you reach over your own tunnel, where it becomes a passkey break-glass ceremony.</p>
       </div>
       <div class="card b-4 rv d1">
         <div class="kicker" style="--accent:var(--mint)">try it now</div>
