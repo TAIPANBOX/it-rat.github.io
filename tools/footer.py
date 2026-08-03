@@ -47,6 +47,19 @@ PAGES = {
 }
 
 
+# The order the groups appear in the footer. A service whose group is not in
+# this list stops the run rather than being dropped quietly: a missing chip is
+# a page that becomes unreachable from every footer on the site, and that is
+# not something to discover from analytics.
+GROUP_ORDER = [
+    "run and watch",
+    "control at runtime",
+    "stores",
+    "checks and graphs",
+    "the contract",
+]
+
+
 def stack():
     """Parse the registry out of site.js rather than keeping a second copy."""
     js = (ROOT / "assets/site.js").read_text(encoding="utf-8")
@@ -57,21 +70,44 @@ def stack():
     for line in block.group(1).splitlines():
         m = re.search(r'id:"([^"]+)".*?name:"([^"]+)".*?color:"([^"]+)".*?href:"([^"]+)"', line)
         if m:
-            out.append(dict(zip(("id", "name", "color", "href"), m.groups())))
+            entry = dict(zip(("id", "name", "color", "href"), m.groups()))
+            g = re.search(r'group:"([^"]+)"', line)
+            entry["group"] = g.group(1) if g else ""
+            out.append(entry)
     if len(out) < 5:
         sys.exit("site.js: parsed too few services, refusing to write a broken footer")
+    unknown = sorted({s["group"] for s in out} - set(GROUP_ORDER))
+    if unknown:
+        sys.exit("site.js: group(s) not in GROUP_ORDER, refusing to drop a service: "
+                 + ", ".join(repr(u) for u in unknown))
     return out
 
 
-def chips(root, here):
+def chip(s, root, here):
+    dot = f'<i style="background:{s["color"]}"></i>{s["name"]}'
+    if s["id"] == here:
+        return f'<span class="foot-chip here" aria-current="page">{dot}</span>'
+    return f'<a class="foot-chip" href="{root}{s["href"]}">{dot}</a>'
+
+
+def groups(root, here, indent="        "):
+    """The stack, split by what each service is for.
+
+    One flat list of nine chips told a reader the names and nothing else. The
+    labels are the smallest honest answer to "which of these do I need", and
+    they cost no extra page.
+    """
+    svcs = stack()
     out = []
-    for s in stack():
-        dot = f'<i style="background:{s["color"]}"></i>{s["name"]}'
-        if s["id"] == here:
-            out.append(f'<span class="foot-chip here" aria-current="page">{dot}</span>')
-        else:
-            out.append(f'<a class="foot-chip" href="{root}{s["href"]}">{dot}</a>')
-    return "".join(out)
+    for name in GROUP_ORDER:
+        members = [s for s in svcs if s["group"] == name]
+        if not members:
+            continue
+        chips = "".join(chip(s, root, here) for s in members)
+        out.append(f'{indent}<div class="foot-group"><div class="l">{name}</div>\n'
+                   f'{indent}  <div class="foot-chips">{chips}</div>\n'
+                   f'{indent}</div>')
+    return "\n".join(out)
 
 
 def cols(root, here):
@@ -81,9 +117,7 @@ def cols(root, here):
         <div class="foot-note" style="margin-top:8px;max-width:34ch">The agent-governance stack, Apache-2.0.</div>
       </div>
       <div class="foot-groups">
-        <div class="foot-group"><div class="l">the stack</div>
-          <div class="foot-chips">{chips(root, here)}</div>
-        </div>
+{groups(root, here)}
       </div>
       <div>
         <a href="{root}guides.html">Guides</a>
@@ -150,12 +184,11 @@ def main():
     # the home page keeps its desk-agent block; only the injected slot changes
     p = ROOT / "index.html"
     h = p.read_text(encoding="utf-8")
-    slot = re.search(r'<div class="foot-groups"[^>]*>.*?</div>\s*(?=\n)', h, re.S)
+    slot = re.search(r'<div class="foot-groups"[^>]*>.*?\n      </div>', h, re.S)
     static = ('<div class="foot-groups">\n'
-              '        <div class="foot-group"><div class="l">the stack</div>\n'
-              f'          <div class="foot-chips">{chips("", "")}</div>\n'
-              '        </div>\n      </div>')
-    if slot and 'id="foot-stack"' in slot.group(0):
+              f'{groups("", "")}\n'
+              '      </div>')
+    if slot:
         h = h[:slot.start()] + static + h[slot.end():]
         # the inline renderer is now dead weight
         h = re.sub(r'\n  /\* One flat group.*?\n  document\.getElementById\("foot-stack"\)\.innerHTML =\n.*?\n.*?\n', "\n", h, flags=re.S)
