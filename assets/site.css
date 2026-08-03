@@ -362,7 +362,24 @@ p{margin:0}
    which is the paid room, and which is not part of the stack at all. Colours
    come from the same STACK registry the rail uses, so a service cannot have
    two identities on one page. */
-.foot-groups{display:flex;flex-direction:column;gap:16px;min-width:0;flex:1 1 460px}
+/* The groups run ACROSS, not down. Five labels stacked in a column rebuilt the
+   tall list the chips were meant to replace, just with headings on it. Laid out
+   as a wrapping row they read as a set of shelves, and each row fills the width
+   because every group is allowed to grow from the same basis. */
+.foot-groups{display:flex;flex-wrap:wrap;gap:18px 26px;min-width:0;flex:1 1 620px}
+/* Basis from content, not a fixed width: a group of four chips and a group of
+   one are not the same size, and forcing them to be broke the four onto two
+   lines while the one sat in a half-empty box. They grow by the same amount
+   instead, so each row still fills. */
+.foot-group{flex:1 1 auto;min-width:0}
+/* On a phone the shelves become one shelf. Side by side they need more width
+   than the viewport has, and this page is already wider than 390 for reasons
+   that have nothing to do with the footer, so the footer must not depend on
+   the page being narrow enough. */
+@media(max-width:700px){
+  .foot-groups{flex-direction:column;gap:15px;flex-basis:100%}
+  .foot-group{flex:0 0 auto}
+}
 .foot-group .l{
   font-family:var(--font-m);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--faint);margin-bottom:9px;
