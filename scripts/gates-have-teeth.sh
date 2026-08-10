@@ -211,12 +211,22 @@ run_case "deploy-target: the live repository is not the one holding the domain" 
 # The other half of the same fault: the two published copies disagree. This is
 # what a push to the mirror leaves behind, and it is invisible from either
 # repository on its own.
-run_case "deploy-target: the domain is behind the mirror" fail \
+#
+# It asserts the SHIPPING INSTRUCTION rather than the direction, and that is a
+# correction rather than a compromise. This case used to expect "behind by",
+# and it passed here and failed in CI with WRONG REASON, on the same two SHAs.
+# The gate reports "behind by N" or "diverged (live +N, mirror +M)" depending
+# on what `git rev-list --count` can compute, which depends on which objects
+# the clone happens to hold: a full clone here made it 0 ahead / 157 behind, a
+# shallow CI clone made the same pair 626 / 2. Both messages are true and both
+# come from check 2. Asserting the one that varies made this case measure the
+# object graph rather than the gate.
+run_case "deploy-target: the two published copies disagree" fail \
 	'./scripts/deploy-target-current.sh' \
 	"$(py 'edit("scripts/deploy-target-current.sh",
      "LIVE_REPO=\"it-rat/it-rat.github.io\"",
      "LIVE_REPO=\"TAIPANBOX/it-rat-v1\"")')" \
-	"behind by"
+	"ship it: git push upstream"
 
 echo
 echo "=== and what they must NOT catch ==="
