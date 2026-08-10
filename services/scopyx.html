@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scopyx - governed web egress for agents · IT-RAT</title>
+<meta name="description" content="Your agents already reach the web and nothing governs it. Scopyx decides every destination before anything leaves, and keeps origins rather than URLs.">
+<link rel="canonical" href="https://it-rat.com/services/scopyx.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="IT-RAT">
+<meta property="og:url" content="https://it-rat.com/services/scopyx.html">
+<meta property="og:title" content="Scopyx - governed web egress for agents · IT-RAT">
+<meta property="og:description" content="It is not a browser. It sits between an agent and whatever fetcher you already run, decides each destination against your policy before anything leaves, decides every redirect again, bounds what comes back, and keeps origins rather than URLs.">
+<meta property="og:image" content="https://it-rat.com/assets/og/scopyx.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Scopyx - governed web egress for agents · IT-RAT">
+<meta name="twitter:description" content="It is not a browser. It sits between an agent and whatever fetcher you already run, decides each destination against your policy before anything leaves, decides every redirect again, bounds what comes back, and keeps origins rather than URLs.">
+<meta name="twitter:image" content="https://it-rat.com/assets/og/scopyx.png">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="alternate" type="text/markdown" href="https://it-rat.com/services/scopyx.md">
+<link rel="stylesheet" href="../assets/site.css?v=e19">
+<style>
+  :root{--accent:#F0ABFC}
+  .svc-hero{padding:clamp(52px,8vw,96px) 0 34px}
+  .svc-hero h1{margin-top:14px}
+  .svc-hero h1 .nm{color:var(--accent)}
+  .svc-hero .lede{margin-top:20px}
+  .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(20px,4vw,48px);align-items:end}
+  @media(max-width:940px){.hero-grid{grid-template-columns:1fr}}
+  .hero-side{display:flex;flex-direction:column;gap:10px}
+  .hero-side .row{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid var(--line);padding:9px 2px;font-size:13.5px}
+  .hero-side .row .k{color:var(--faint)}
+  .hero-side .row .v{font-family:var(--font-m);color:var(--fg)}
+  .cta-row{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+  .feature h3{display:flex;align-items:center;gap:10px}
+  .feature h3::before{content:"";width:8px;height:8px;border-radius:3px;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+  .feature p{margin-top:9px;color:var(--dim);font-size:14px;line-height:1.6}
+
+  /* THE GATE RUN.
+     Four gates in the order the code checks them, and a request that stops at
+     whichever one catches it. Built as rows rather than a diagram because the
+     ORDER is the claim: a cheap local refusal never becomes a network call,
+     and an address inside the deployment is refused before any policy runs. */
+  .gates{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);overflow:hidden}
+  .gt-head{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--line);
+    font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .gt-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);flex:0 0 auto}
+  .gt-head .n{margin-left:auto;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .gt-row{display:grid;grid-template-columns:150px 1fr auto;gap:14px;align-items:center;
+    padding:13px 15px;border-bottom:1px solid var(--line);font-size:13.5px}
+  .gt-row:last-child{border-bottom:0}
+  .gt-row .stage{font-family:var(--font-m);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  .gt-row .url{font-family:var(--font-m);color:var(--dim);overflow-wrap:anywhere}
+  .gt-row .verdict{font-family:var(--font-m);font-size:11.5px;padding:3px 9px;border-radius:3px;white-space:nowrap}
+  .gt-row .verdict.stop{color:#FF8A8A;border:1px solid #FF8A8A33;background:#FF8A8A12}
+  .gt-row .verdict.go{color:#7BE0A8;border:1px solid #7BE0A833;background:#7BE0A812}
+  .gt-note{padding:12px 15px;color:var(--faint);font-size:12px;line-height:1.65;border-top:1px solid var(--line)}
+
+  /* The fidelity block, as a result carries it. */
+  .fid{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);padding:16px 18px;
+    font-family:var(--font-m);font-size:12.5px;line-height:1.85;color:var(--dim);overflow-x:auto}
+  .fid b{color:var(--fg);font-weight:600}
+  .fid .k{color:var(--accent)}
+  .fid .null{color:#FFC46B}
+
+  .install{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    border:1px solid var(--line-2);border-radius:var(--rad-s);padding:14px 18px;background:var(--panel);
+    font-family:var(--font-m);font-size:13px}
+  .install .cmd{color:var(--fg)}
+  .install .cmd b{color:var(--accent);font-weight:600}
+  .install .note{color:var(--faint);font-size:11.5px;margin-left:auto}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.4vw,26px)}
+  @media(max-width:900px){.grid3{grid-template-columns:1fr}}
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(16px,2.4vw,26px)}
+  @media(max-width:900px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-service="scopyx" data-root="../">
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html" data-dir="back"><svg class="glyph" viewBox="0 0 24 24" fill="none"><path d="M13.5 2 5 13.2h5.1L9.4 22l9-11.8h-5.3L13.5 2Z" fill="#F4B23E"/></svg>IT<b>-</b>RAT</a>
+    <span class="crumb">the stack<span class="sep">/</span><span class="here">scopyx</span></span>
+    <span class="spacer"></span>
+    <a class="tb-link tb-cta" href="../demo/">Live demo</a>
+    <a class="tb-link" href="../guides.html">Guides</a>
+    <a class="tb-link" href="../console.html">Console</a>
+    <button class="kbd-hint" data-cmdk type="button"><span>jump</span><kbd>&#8984;K</kbd></button>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="svc-hero" data-motif="boundary">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="kicker rv">egress plane</div>
+        <h1 class="rv d1"><span class="nm">Scopyx</span>. Your agents already reach the web. This is the part that decides whether they may.</h1>
+        <p class="lede rv d2">Every other plane in the stack governs what your agents do to your own services: what they spend, what they may call, who they are. None of them watches the one direction that leads outside. An agent reads a page, and the page tells it what to do next. An agent posts a customer list to an address it found in a prompt. Scopyx sits between an agent and whatever fetching tool you already run, and adds the four things that were missing: a decision before the request, a decision on every redirect, a bound on what comes back, and a record of the fetch and of the refusal.</p>
+        <div class="cta-row rv d3">
+          <a class="btn primary" href="#gates">Watch a request get refused <span class="mono">&#9654;</span></a>
+          <a class="btn" href="https://github.com/TAIPANBOX/scopyx" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="flex:0 0 auto"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg> GitHub</a>
+        </div>
+      </div>
+      <div class="hero-side rv d2">
+        <div class="row"><span class="k">shipped</span><span class="v">v0.1.0, image and manifests</span></div>
+        <div class="row"><span class="k">core</span><span class="v">Go &#183; one direct dependency</span></div>
+        <div class="row"><span class="k">one way out</span><span class="v">http and https, and nothing else</span></div>
+        <div class="row"><span class="k">fails</span><span class="v">closed, and says which refusal</span></div>
+        <div class="row"><span class="k">keeps</span><span class="v">the origin and a hash, never the URL</span></div>
+        <div class="row"><span class="k">licence</span><span class="v">Apache-2.0</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE GATES ================= -->
+<section class="sec" id="gates" style="padding-top:26px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">one run, measured</div>
+      <h2>Four gates, in this order, and the order is the claim.</h2>
+      <p class="lede">Scheme, then host, then the addresses the name actually resolves to, and only then your policy plane. Below is a real run of the published image against a fixture policy and the live internet. Watch where each request stops: a cheap local refusal never becomes a network call, and a name that points inside your own deployment is refused before any policy runs.</p>
+    </div>
+    <div class="gates rv">
+      <div class="gt-head"><span class="gt-dot"></span>scopyx v0.1.0 <span class="n">four requests, one container, one fixture policy</span></div>
+      <div class="gt-row">
+        <span class="stage">policy said yes</span>
+        <span class="url">https://example.com/</span>
+        <span class="verdict go">fetched</span>
+      </div>
+      <div class="gt-row">
+        <span class="stage">policy said no</span>
+        <span class="url">https://example.org/secret-report</span>
+        <span class="verdict stop">deny_policy</span>
+      </div>
+      <div class="gt-row">
+        <span class="stage">address, before policy</span>
+        <span class="url">http://169.254.169.254/latest/meta-data/</span>
+        <span class="verdict stop">deny_address</span>
+      </div>
+      <div class="gt-row">
+        <span class="stage">at the tool surface</span>
+        <span class="url">fetch_url(url, headers: {Authorization})</span>
+        <span class="verdict stop">refused by name</span>
+      </div>
+      <div class="gt-note">
+        The third row is the one worth reading twice. The fixture policy said <b>allow</b>, and it was refused anyway.
+        Policy languages talk about domains an agent may reach, and none of them was written with the cloud metadata
+        endpoint in mind: an agent that can be talked into fetching that address reads the credentials of whatever it
+        runs on. The fourth is not a fetch at all. A free-form header parameter is a credential-laundering channel
+        straight past a broker's inspection, so the tool has no field for one, and an unknown argument is refused by
+        name rather than ignored.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE REDIRECT ================= -->
+<section class="sec" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">the hop nobody asked for</div>
+      <h2>A redirect is a destination the caller never named.</h2>
+      <p class="lede">An allowed host answering 302 to a denied one is the oldest allowlist bypass there is, and it is invisible to any check that reads only the URL the caller passed.</p>
+    </div>
+    <div class="grid3">
+      <div class="feature rv"><h3>It refuses to follow</h3><p>The fetcher it ships with returns the redirect instead of following it. Following inside the fetcher would be a second request that no decision preceded, which is exactly the bypass. Every HTTP client in every language does the opposite by default, which is why this is written down rather than assumed.</p></div>
+      <div class="feature rv d1"><h3>Every hop is resolved again</h3><p>The target's name is looked up at the moment of the hop, never from anything remembered. An address resolved a minute ago would satisfy the check while the fetch reached something else.</p></div>
+      <div class="feature rv d2"><h3>And bounded twice</h3><p>Your configured depth, and a ceiling the plane keeps regardless. Two servers pointing at each other is a fetch that never returns, and a fetch that never returns is worse than one that is refused, because nothing reports it.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FIDELITY ================= -->
+<section class="sec" style="padding-top:18px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">what the answer admits</div>
+      <h2>Governed at the navigation is not governed per request.</h2>
+      <p class="lede">A fetch through a service you already run is decided before it is made, and then that service loads the page's images, fonts and scripts with nothing in between. The navigation was governed. The requests it caused were not. Every result says which of the two guarantees was in force, so a partial answer is visible as one rather than read as a complete one.</p>
+    </div>
+    <div class="fid rv">
+      <span class="k">backend</span>&nbsp; passthrough-http<br>
+      <span class="k">enforcement</span>&nbsp; <b>per_request</b>&nbsp; &#183; every request this fetch made was decided<br>
+      <span class="k">content_bytes</span>&nbsp; 559<br>
+      <span class="k">subresources_requested</span>&nbsp; 0&nbsp; &#183; it asked for nothing, and knows it<br>
+      <span class="k">subresources_blocked_by_policy</span>&nbsp; 0<br>
+      <span class="k">redirect_hops</span>&nbsp; 0<br>
+      <span class="k">truncated_by</span>&nbsp; <span class="null">null</span>
+    </div>
+    <div class="grid2" style="margin-top:22px">
+      <div class="feature rv"><h3>A count nobody can supply is null</h3><p>Zero says the page asked for nothing. Null says nobody knows. Reporting the second as the first claims perfect fidelity for exactly the backend that can see the least, and an agent that does not know it read half a page will report confidently on the half it got.</p></div>
+      <div class="feature rv d1"><h3>Nothing extracted with a failure is not an empty page</h3><p>It is an error. For a person, degrading to a blank frame is right. For an agent it is the worst failure available, because the model cannot tell the difference and you cannot either.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE RECORD ================= -->
+<section class="sec" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">what is kept</div>
+      <h2>A URL is personal data, and the record is built around that.</h2>
+      <p class="lede"><span class="mono">https://crm.example/customers/12345?email=jane@example.com</span> is an address and also a name, an identifier and a contact detail. The path and the query string, which is exactly where an identifier or a session token lives, are never assembled into the event at all. What is kept is the origin and a SHA-384, so two records can be compared without either holding the address.</p>
+    </div>
+    <div class="grid3">
+      <div class="feature rv"><h3>Its own journal, its own volume</h3><p>A component that can write the shared log can, once compromised, corrupt the trail it was adding to. This is the one part of the box that reaches the public internet on purpose, which makes it the last one that should be able to rewrite anybody else's record.</p></div>
+      <div class="feature rv d1"><h3>Chained, so a deletion shows</h3><p>Every line names its predecessor, in the same envelope the rest of the stack speaks. A journal that did not chain would look identical until somebody tried to verify it, which is the moment it matters and the moment it is too late.</p></div>
+      <div class="feature rv d2"><h3>No identity, no record, and the skip is counted</h3><p>A fabricated subject makes every downstream count wrong and puts a name on an alert that did not do the thing. A fetch with no authenticated agent behind it is not written, and the number of times that happened is reported rather than hidden.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BOUNDARIES ================= -->
+<section class="sec" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">the boundaries</div>
+      <h2>What it will not do, stated rather than discovered.</h2>
+      <p class="lede">No stealth, no CAPTCHA solving, no TLS-fingerprint matching, no bulk crawl, no image harvesting. It identifies itself as scopyx and never as a browser, and honours <span class="mono">robots.txt</span> by default.</p>
+    </div>
+    <div class="grid2">
+      <div class="feature rv"><h3>Because of what this is for</h3><p>Defensive tooling for an operator governing their own agents. A component that defeated a third party's controls would be the first thing here useful to somebody attacking a stranger, and that is a different product.</p></div>
+      <div class="feature rv d1"><h3>And because of Article 5</h3><p>The EU AI Act prohibits untargeted scraping of facial images to build recognition databases. A bulk-crawl mode is the feature that turns a governance tool into that, so there is not one.</p></div>
+    </div>
+    <div class="install rv" style="margin-top:26px">
+      <span class="cmd">docker run <b>ghcr.io/taipanbox/scopyx:v0.1.0</b></span>
+      <span class="note">it refuses to start bound wide with no credentials, deliberately</span>
+    </div>
+    <p class="lede rv" style="margin-top:22px;font-size:14px">
+      Scopyx is not an AI system under Article 3(1): it applies rules you wrote and infers nothing. Used beside one, it
+      supplies evidence for Article 12 record-keeping and Article 14 human oversight. The wording here is "covers the
+      requirements of Article 12", never "AI Act compliant", because there is no certification and no auditor behind
+      those words, and a claim nobody can hold is worse than no claim.
+    </p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+<!-- footer:auto -->
+    <div class="cols">
+      <div>
+        <a class="brand" href="../index.html" style="margin-bottom:10px"><svg class="glyph" viewBox="0 0 24 24" fill="none"><path d="M13.5 2 5 13.2h5.1L9.4 22l9-11.8h-5.3L13.5 2Z" fill="#F4B23E"/></svg>IT<b>-</b>RAT</a>
+      </div>
+      <div class="foot-groups">
+        <div class="foot-group"><div class="l">the stack</div>
+          <div class="foot-chips"><a class="foot-chip" href="../genaryx.html"><i style="background:#B48CFF"></i>Genaryx</a><a class="foot-chip" href="../services/engram.html"><i style="background:#6C7BFF"></i>Engram</a><a class="foot-chip" href="../services/tokenfuse.html"><i style="background:#F4B23E"></i>TokenFuse</a><a class="foot-chip" href="../services/wardryx.html"><i style="background:#2DD4BF"></i>Wardryx</a><a class="foot-chip" href="../services/idryx.html"><i style="background:#34D399"></i>Idryx</a><a class="foot-chip" href="../services/qryx.html"><i style="background:#B48CFF"></i>Qryx</a><a class="foot-chip" href="../services/verdryx.html"><i style="background:#FF7AA2"></i>Verdryx</a><a class="foot-chip" href="../services/mockryx.html"><i style="background:#FF8A5B"></i>Mockryx</a><a class="foot-chip" href="../services/heraldyx.html"><i style="background:#5BC8F5"></i>Heraldyx</a><span class="foot-chip here" aria-current="page"><i style="background:#F0ABFC"></i>Scopyx</span><a class="foot-chip" href="../services/pocket.html"><i style="background:#22D3EE"></i>TokenFuse Pocket</a><a class="foot-chip" href="../services/platform.html"><i style="background:#93A8C4"></i>Platform</a></div>
+        </div>
+        <div class="foot-row">
+          <div class="foot-group"><div class="l">standalone</div>
+            <div class="foot-chips"><a class="foot-chip" href="../services/trailryx.html"><i style="background:#E4626F"></i>Trailryx</a></div>
+          </div>
+          <div class="foot-group"><div class="l">side project</div>
+            <div class="foot-chips"><a class="foot-chip" href="../services/sphere.html"><i style="background:#A3E635"></i>Sphere</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- /footer:auto -->
+    <div class="foot-note">&#169; 2026 IT-RAT <svg style="display:inline-block;width:15px;height:11px;vertical-align:-1px;margin:0 3px;border-radius:2px" viewBox="0 0 3 2" role="img" aria-label="Ukraine"><title>Ukraine</title><rect width="3" height="1" fill="#005BBB"/><rect y="1" width="3" height="1" fill="#FFD500"/></svg> &#183; Apache-2.0</div>
+  </div>
+</footer>
+
+<script src="../assets/site.js?v=e19"></script>
+</body>
+</html>

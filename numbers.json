@@ -116,6 +116,16 @@
       "repo": "TAIPANBOX/agent-stack-go",
       "command": "gh release view -R TAIPANBOX/agent-stack-go --json tagName --jq .tagName; this page states it four times, twice inside install commands, so a tag cut in that repository makes four claims wrong here at once; down to one occurrence, the `go get` line, which stays pinned because agent-stack-go's own README forbids @latest for the library. `go install` of the agent-conform COMMAND is now @latest, since nothing lands in a consumer's go.mod",
       "measured_on": "2026-08-10"
+    },
+    {
+      "page": "services/scopyx.html",
+      "claim": "v0.1.0",
+      "occurrences": 3,
+      "repo": "TAIPANBOX/scopyx",
+      "command": "gh api repos/TAIPANBOX/scopyx/tags --jq '.[0].name'; scopyx publishes a tag and a multi-arch GHCR image, and the page states the version three times: the spec rail, the header of the measured run, and the docker run line. The last is an instruction somebody follows, so all three must agree",
+      "status": "measured",
+      "measured_on": "2026-08-10",
+      "note": "Cut and verified on 2026-08-10 by pulling the published image from a clean cache and running it: the binary reports v0.1.0 in its startup log and in the MCP initialize answer, which is stamped at build time and is therefore the harder of the two places to fake."
     }
   ]
 }

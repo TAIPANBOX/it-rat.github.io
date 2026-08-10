@@ -159,6 +159,13 @@
       "description": "The part of the agent stack that writes to you: it reads the shared event log, decides what is worth a human tonight, and mails it with one link."
     },
     {
+      "url": "https://it-rat.com/services/scopyx.html",
+      "markdown": "https://it-rat.com/services/scopyx.md",
+      "title": "Scopyx, the egress plane",
+      "kind": "service",
+      "description": "Not a browser: it sits between an agent and whatever fetcher you already run, decides each destination against your policy before anything leaves, decides every redirect again, and keeps origins rather than URLs."
+    },
+    {
       "url": "https://it-rat.com/services/trailryx.html",
       "markdown": "https://it-rat.com/services/trailryx.md",
       "title": "Trailryx, the record",

@@ -33,6 +33,7 @@ Every page below is available as markdown at the same path with a .md extension.
 - [Verdryx, the quality plane](https://it-rat.com/services/verdryx.md): Cost per correctly resolved case, not cost per token: five graders, statistical drift detection and a metered LLM judge, scored on your own outcome tags.
 - [Mockryx, the pre-production plane](https://it-rat.com/services/mockryx.md): Fire drills for your guardrails: YAML scenarios fired at a real gateway, asserting the 402, the 403 and the downstream reaction. Zero real spend, CI-native.
 - [Heraldyx, the alerts plane](https://it-rat.com/services/heraldyx.md): The part of the agent stack that writes to you: it reads the shared event log, decides what is worth a human tonight, and mails it with one link.
+- [Scopyx, the egress plane](https://it-rat.com/services/scopyx.md): Not a browser: it sits between an agent and whatever fetcher you already run, decides each destination against your policy before anything leaves, decides every redirect again, and keeps origins rather than URLs.
 - [Trailryx, the record](https://it-rat.com/services/trailryx.md): A record of what your AI agents did that nobody can quietly change or shorten, where every answer carries a proof that it is complete.
 - [Platform, the shared contract](https://it-rat.com/services/platform.md): One agent:// passport, one event envelope, one Go binding and a Terraform provider: the shared contract under all seven services of the stack. Apache-2.0.
 

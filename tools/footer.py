@@ -44,6 +44,7 @@ PAGES = {
     "services/idryx.html": ("../", "Apache-2.0"),
     "services/mockryx.html": ("../", "Apache-2.0"),
     "services/heraldyx.html": ("../", "Apache-2.0"),
+    "services/scopyx.html": ("../", "Apache-2.0"),
     "services/trailryx.html": ("../", "Apache-2.0"),
     # Side projects. They get the same footer as everything else because the
     # footer is where a reader checks what else exists; what keeps them out of

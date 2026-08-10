@@ -24,6 +24,7 @@ const STACK = [
   {id:"verdryx",   name:"Verdryx",    plane:"quality",   color:"#FF7AA2", what:"Cost per correctly resolved case, not per token", href:"services/verdryx.html"},
   {id:"mockryx",   name:"Mockryx",    plane:"pre-prod",  color:"#FF8A5B", what:"Fire drills that prove guardrails hold",          href:"services/mockryx.html"},
   {id:"heraldyx",  name:"Heraldyx",   plane:"alerts",    color:"#5BC8F5", what:"The box writes to you, with a link and never a button", href:"services/heraldyx.html"},
+  {id:"scopyx",    name:"Scopyx",     plane:"egress",    color:"#F0ABFC", what:"Agents reach the web through a decision, not around one", href:"services/scopyx.html"},
   {id:"pocket",    name:"TokenFuse Pocket", plane:"out of band", color:"#22D3EE", what:"The kill switch on a device the agent's host never touches", href:"services/pocket.html", note:"not wired in yet"},
   {id:"trailryx",  name:"Trailryx",   plane:"the record",color:"#E4626F", what:"A record nobody can quietly change or shorten",   href:"services/trailryx.html", group:"standalone", note:"standalone"},
   {id:"platform",  name:"Platform",   plane:"contract",  color:"#93A8C4", what:"Agent Passport, shared contract, Terraform",      href:"services/platform.html"},
