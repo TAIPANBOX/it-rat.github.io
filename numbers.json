@@ -21,7 +21,7 @@
   "entries": [
     {
       "page": "services/trailryx.html",
-      "claim": "1,172 tests · 31 crates",
+      "claim": "1,172 tests \u00b7 31 crates",
       "occurrences": 1,
       "repo": "TAIPANBOX/trailryx",
       "command": "cargo test --workspace, summed; and ./scripts/readme-numbers.sh, which gates the same figure inside that repository",
@@ -119,13 +119,13 @@
     },
     {
       "page": "services/scopyx.html",
-      "claim": "v0.1.0",
-      "occurrences": 3,
+      "claim": "v0.1.2",
+      "occurrences": 4,
       "repo": "TAIPANBOX/scopyx",
-      "command": "gh api repos/TAIPANBOX/scopyx/tags --jq '.[0].name'; scopyx publishes a tag and a multi-arch GHCR image, and the page states the version three times: the spec rail, the header of the measured run, and the docker run line. The last is an instruction somebody follows, so all three must agree",
+      "command": "gh api repos/TAIPANBOX/scopyx/tags --jq '.[0].name'; scopyx publishes a tag and TWO multi-arch GHCR images, the service and a `-chromium` variant, and the page states the version four times: the spec rail, the header of the measured run, and both docker run lines. The last two are instructions somebody follows, so all four must agree",
       "status": "measured",
       "measured_on": "2026-08-10",
-      "note": "Cut and verified on 2026-08-10 by pulling the published image from a clean cache and running it: the binary reports v0.1.0 in its startup log and in the MCP initialize answer, which is stamped at build time and is therefore the harder of the two places to fake."
+      "note": "Bumped from v0.1.0 on 2026-08-10 and the measured panel was RE-RUN rather than relabelled: all four requests were sent again to the published v0.1.2 image against a fixture policy, and every verdict matched the row it is drawn beside, including the header refusal, which comes back as a JSON-RPC -32602 naming the argument. Relabelling a measured panel with a new version without re-running it is precisely the fault this file exists to prevent."
     }
   ]
 }

@@ -182,7 +182,7 @@
         </div>
       </div>
       <div class="hero-side rv d2">
-        <div class="row"><span class="k">shipped</span><span class="v">v0.1.0, image and manifests</span></div>
+        <div class="row"><span class="k">shipped</span><span class="v">v0.1.2, two images and manifests</span></div>
         <div class="row"><span class="k">core</span><span class="v">Go &#183; one direct dependency</span></div>
         <div class="row"><span class="k">one way out</span><span class="v">http and https, and nothing else</span></div>
         <div class="row"><span class="k">fails</span><span class="v">closed, and says which refusal</span></div>
@@ -326,7 +326,7 @@
       <p class="lede">Four real requests, one container, the published image against a fixture policy and the live internet. Watch where each stops: a name pointing inside your own deployment is refused before any policy runs, and the request that never became a request is the last row.</p>
     </div>
     <div class="gates rv">
-      <div class="gt-head"><span class="gt-dot"></span>scopyx v0.1.0 <span class="n">four requests, one container, one fixture policy</span></div>
+      <div class="gt-head"><span class="gt-dot"></span>scopyx v0.1.2 <span class="n">four requests, one container, one fixture policy, re-run 2026-08-10</span></div>
       <div class="gt-row">
         <span class="stage">policy said yes</span>
         <span class="url">https://example.com/</span>
@@ -588,8 +588,12 @@
       <div class="feature rv d2"><h3>The one that needed code</h3><p>Every other line above holds because no code path exists to do it, and an absence enforces itself. Honouring <span class="mono">robots.txt</span> is the only one that had to be written: group boundaries, longest match, Allow beating Disallow at equal length, and both wildcards. It reads as one item in a list and it is not one.</p></div>
     </div>
     <div class="install rv" style="margin-top:26px">
-      <span class="cmd">docker run <b>ghcr.io/taipanbox/scopyx:v0.1.0</b></span>
+      <span class="cmd">docker run <b>ghcr.io/taipanbox/scopyx:v0.1.2</b></span>
       <span class="note">it refuses to start bound wide with no credentials, deliberately</span>
+    </div>
+    <div class="install rv" style="margin-top:12px">
+      <span class="cmd">docker run <b>ghcr.io/taipanbox/scopyx:v0.1.2-chromium</b></span>
+      <span class="note">the same service with a browser: 267 MB to pull against 3.5 MB</span>
     </div>
     <p class="lede rv" style="margin-top:22px;font-size:14px">
       Scopyx is not an AI system under Article 3(1): it applies rules you wrote and infers nothing. Used beside one, it

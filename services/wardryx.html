@@ -113,13 +113,19 @@
       <p class="lede">The PEP posts the proposed action: agent, tools, declared domains, step count, estimated cost, attestation. Wardryx matches policies by agent:// glob and applies the rules in a fixed order, where deny_above_usd outranks every approval and the hold check comes after it. The verdict returns with a cacheable flag, the caller's cache keys on agent, tool set and attestation, and every decision leaves as an event.</p>
     </div>
     <div class="diagram rv">
-      <svg viewBox="0 0 960 340" role="img" aria-label="Wardryx architecture: TokenFuse PEP posts /v1/decide, the Wardryx PDP returns allow, deny or hold with a cacheable flag; holds resolve via signed approval tokens; events and OTLP spans flow out; Terraform manages policies as code">
+      <svg viewBox="0 0 960 340" role="img" aria-label="Wardryx architecture: Two enforcement points, TokenFuse on the money path and Scopyx on the web path, both post /v1/decide; the Wardryx PDP returns allow, deny or hold with a cacheable flag; holds resolve via signed approval tokens; events and OTLP spans flow out; Terraform manages policies as code">
         <defs><marker id="a2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker></defs>
         <g font-family="ui-monospace,Menlo" text-anchor="middle">
-          <rect x="10" y="120" width="118" height="58" rx="12" fill="#141C27" stroke="#F4B23E" stroke-width="1.4"/>
-          <text x="69" y="146" fill="#F4B23E" font-size="12.5" font-weight="700">TokenFuse PEP</text>
-          <text x="69" y="163" fill="#8A97A6" font-size="10.5">asks per request</text>
-          <text x="165" y="140" fill="#5A6675" font-size="10">/v1/decide</text>
+          <rect x="10" y="92" width="118" height="52" rx="12" fill="#141C27" stroke="#F4B23E" stroke-width="1.4"/>
+          <text x="69" y="114" fill="#F4B23E" font-size="12" font-weight="700">TokenFuse PEP</text>
+          <text x="69" y="130" fill="#8A97A6" font-size="10">the money path</text>
+
+          <rect x="10" y="156" width="118" height="52" rx="12" fill="#141C27" stroke="#F0ABFC" stroke-width="1.4"/>
+          <text x="69" y="178" fill="#F0ABFC" font-size="12" font-weight="700">Scopyx PEP</text>
+          <text x="69" y="194" fill="#8A97A6" font-size="10">the web path</text>
+
+          <text x="168" y="134" fill="#5A6675" font-size="10">/v1/decide</text>
+          <text x="168" y="147" fill="#5A6675" font-size="9.5">from both</text>
 
           <rect x="210" y="46" width="300" height="200" rx="16" fill="#10161F" stroke="#2DD4BF" stroke-width="1.4"/>
           <text x="360" y="74" fill="#2DD4BF" font-size="14" font-weight="700">wardryx PDP :8090</text>
@@ -194,7 +200,7 @@
       </div>
       <div class="card hover feature b-4 rv d2"><h3>A hard ceiling that outranks approvals</h3><p>deny_above_usd is the rule no token can talk past. It is checked before the hold logic ever runs, so even a granted approval cannot authorize a spend over the ceiling. Some numbers should end the conversation, and this one does.</p></div>
       <div class="card hover feature b-4 rv"><h3>Attestation as a first-class gate</h3><p>deny_if_unattested demands a live attestation before an agent touches the sensitive rules. Methods are trimmed and lowercased on the way in, so a literal &#8220;None&#8221; string reads as no attestation instead of sneaking past as a value.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>Fail-open or fail-closed, your call</h3><p>When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The default is documented, and so is the tradeoff.</p>
+      <div class="card hover feature b-4 rv d1"><h3>Fail-open or fail-closed, your call</h3><p>When the decision point is unreachable, the enforcement point picks the failure mode per deployment, and the two that exist chose opposite defaults on purpose. TokenFuse's LLM path fails open: a money plane that refused every call when this one blinked would cost an operator production traffic over a network partition. Scopyx fails closed: an egress point that failed open is an unrestricted fetch proxy wearing a governance label, and the failure would be silent. Both defaults are documented, and so is the tradeoff.</p>
         <details class="sheet" data-sheet-kicker="modes and failure" data-sheet-title="Three modes at the call site, and one honest choice about outages">
           <summary>The modes, and what an outage costs</summary>
           <div class="sheet-in">
