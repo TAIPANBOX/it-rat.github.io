@@ -18,7 +18,7 @@ Four real requests, one container, the published image against a fixture policy 
 
 ## A redirect is a destination the caller never named.
 
-An allowed host answering 302 to a denied one is the oldest allowlist bypass there is, and it is invisible to any check that reads only the URL the caller passed.
+An allowed host answering 302 to a denied one is the oldest allowlist bypass there is, and it is invisible to any check that reads only the URL the caller passed. The same argument applies one layer down, to the name itself.
 
 ### It refuses to follow
 
@@ -28,6 +28,10 @@ The fetcher it ships with returns the redirect instead of following it. Followin
 
 The target's name is looked up at the moment of the hop, never from anything remembered. An address resolved a minute ago would satisfy the check while the fetch reached something else.
 
+### And the socket goes where the decision looked
+
+Every HTTP client resolves the name again, inside the dialer, with no memory of what was checked, and a hostile zone answers differently between the two lookups for nothing. So the checked addresses are pinned and the transport refuses to dial a host no decision covered, which makes it the floor under everything above it: a code path that reached out without asking cannot open a socket.
+
 ### And bounded twice
 
 Your configured depth, and a ceiling the plane keeps regardless. Two servers pointing at each other is a fetch that never returns, and a fetch that never returns is worse than one that is refused, because nothing reports it.
@@ -36,13 +40,23 @@ Your configured depth, and a ceiling the plane keeps regardless. Two servers poi
 
 Scopyx supplies no capability you do not already have. Point it at the Firecrawl account you already pay for, the Browserbase you already run, or the fetcher it ships with, and the tool you own gains a decision, a bound and a record. Anyone proposing a feature here should ask whether it makes the fetch better or the fetch more governed. The first belongs in somebody else's product.
 
-### The backend that needs nothing
+### The one that needs nothing
 
 The default fetcher wants no account, no API token and no browser on the host, so a box is governed on the day it is installed rather than the day somebody arranges a fetching service. It runs no JavaScript, and the result says so, because a page assembled in a browser arrives as the shell that assembles it.
 
 ### The one your invoice already covers
 
 Wrapping a service you already run is the commercially important case and the least impressive code in the repository. A destination your policy refuses never reaches that service, so it never appears in your bill for it either.
+
+### And a browser you installed
+
+It runs the page's own JavaScript, so a document assembled in the browser arrives assembled. Nothing is bundled and nothing is downloaded: the image stays small, and a missing browser is refused at startup with a message about the browser rather than at the first fetch with a message about the network.
+
+## A page is forty requests nobody named. Here is what stops them.
+
+A rendering backend is the first one that fetches things the caller never asked for: fonts, images, scripts, each potentially a different host. Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and see. Switch both off and see that too, which is exactly the experiment the test suite runs.
+
+Two mechanisms, and they are not the same kind of thing. The proxy is the floor: the browser is launched with no route to the network except it, so a refused destination is a socket that is never opened, and no flag or version of somebody else's browser can talk it out of that. CDP interception is the accountant: it sees the full URL of every request, including inside TLS, which the proxy cannot, so it produces the counts and the per-URL decisions. Where the two disagree the connection wins, because the connection is what carries bytes.
 
 ## Governed at the navigation is not governed per request.
 
@@ -59,6 +73,8 @@ It is an error. For a person, degrading to a blank frame is right. For an agent 
 ## A URL is personal data, and the record is built around that.
 
 `https://crm.example/customers/12345?email=jane@example.com` is an address and also a name, an identifier and a contact detail. The path and the query string, which is exactly where an identifier or a session token lives, are never assembled into the event at all. What is kept is the origin and a SHA-384, so two records can be compared without either holding the address.
+
+The path and the query string are not dropped later or redacted later. The field is never built, so there is no window in which the event holds them and no code path that could log one by accident.
 
 ### Its own journal, its own volume
 

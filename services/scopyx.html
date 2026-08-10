@@ -100,6 +100,22 @@
     #sx-arc path,.sx-lane{animation:none}
   }
 
+
+  /* THE TWO MECHANISMS.
+     The reader performs the experiment rather than reading its result. Two
+     switches, four states, and the only one where the tracker is reached is
+     both off, which is exactly what the mutation runs in the test suite
+     measured. A claim about redundancy is worth less than a switch. */
+  #mx-svg{display:block;width:100%;height:auto}
+  #mx-svg .mech{transition:stroke .25s,fill .25s,opacity .25s}
+  #mx-svg .off .mech{opacity:.2}
+  #mx-svg .off text{opacity:.35}
+  #mx-svg #mx-outbox,#mx-svg #mx-outtitle,#mx-svg #mx-outwhy,
+  #mx-svg #mx-tracker,#mx-svg #mx-trackersaw,#mx-svg #mx-outline,#mx-svg #mx-reach{
+    transition:fill .25s,stroke .25s,opacity .25s}
+  .fl-tab.mx-t[aria-pressed="false"]{color:var(--faint);background:transparent;
+    border-color:var(--line-2);text-decoration:line-through}
+
   /* THE GATE RUN.
      The same four gates as rows, and this set is measured rather than drawn:
      four real requests against the published image. The diagram argues, the
@@ -349,12 +365,13 @@
     <div class="sec-head rv">
       <div class="kicker">the hop nobody asked for</div>
       <h2>A redirect is a destination the caller never named.</h2>
-      <p class="lede">An allowed host answering 302 to a denied one is the oldest allowlist bypass there is, and it is invisible to any check that reads only the URL the caller passed.</p>
+      <p class="lede">An allowed host answering 302 to a denied one is the oldest allowlist bypass there is, and it is invisible to any check that reads only the URL the caller passed. The same argument applies one layer down, to the name itself.</p>
     </div>
-    <div class="grid3">
+    <div class="grid2">
       <div class="feature rv"><h3>It refuses to follow</h3><p>The fetcher it ships with returns the redirect instead of following it. Following inside the fetcher would be a second request that no decision preceded, which is exactly the bypass. Every HTTP client in every language does the opposite by default, which is why this is written down rather than assumed.</p></div>
       <div class="feature rv d1"><h3>Every hop is resolved again</h3><p>The target's name is looked up at the moment of the hop, never from anything remembered. An address resolved a minute ago would satisfy the check while the fetch reached something else.</p></div>
-      <div class="feature rv d2"><h3>And bounded twice</h3><p>Your configured depth, and a ceiling the plane keeps regardless. Two servers pointing at each other is a fetch that never returns, and a fetch that never returns is worse than one that is refused, because nothing reports it.</p></div>
+      <div class="feature rv d2"><h3>And the socket goes where the decision looked</h3><p>Every HTTP client resolves the name again, inside the dialer, with no memory of what was checked, and a hostile zone answers differently between the two lookups for nothing. So the checked addresses are pinned and the transport refuses to dial a host no decision covered, which makes it the floor under everything above it: a code path that reached out without asking cannot open a socket.</p></div>
+      <div class="feature rv d3"><h3>And bounded twice</h3><p>Your configured depth, and a ceiling the plane keeps regardless. Two servers pointing at each other is a fetch that never returns, and a fetch that never returns is worse than one that is refused, because nothing reports it.</p></div>
     </div>
   </div>
 </section>
@@ -367,9 +384,114 @@
       <h2>It is not a browser, and that is the whole design.</h2>
       <p class="lede">Scopyx supplies no capability you do not already have. Point it at the Firecrawl account you already pay for, the Browserbase you already run, or the fetcher it ships with, and the tool you own gains a decision, a bound and a record. Anyone proposing a feature here should ask whether it makes the fetch better or the fetch more governed. The first belongs in somebody else's product.</p>
     </div>
-    <div class="grid2">
-      <div class="feature rv"><h3>The backend that needs nothing</h3><p>The default fetcher wants no account, no API token and no browser on the host, so a box is governed on the day it is installed rather than the day somebody arranges a fetching service. It runs no JavaScript, and the result says so, because a page assembled in a browser arrives as the shell that assembles it.</p></div>
+    <div class="grid3">
+      <div class="feature rv"><h3>The one that needs nothing</h3><p>The default fetcher wants no account, no API token and no browser on the host, so a box is governed on the day it is installed rather than the day somebody arranges a fetching service. It runs no JavaScript, and the result says so, because a page assembled in a browser arrives as the shell that assembles it.</p></div>
       <div class="feature rv d1"><h3>The one your invoice already covers</h3><p>Wrapping a service you already run is the commercially important case and the least impressive code in the repository. A destination your policy refuses never reaches that service, so it never appears in your bill for it either.</p></div>
+      <div class="feature rv d2"><h3>And a browser you installed</h3><p>It runs the page's own JavaScript, so a document assembled in the browser arrives assembled. Nothing is bundled and nothing is downloaded: the image stays small, and a missing browser is refused at startup with a message about the browser rather than at the first fetch with a message about the network.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE TWO MECHANISMS ================= -->
+<section class="sec" id="mechanisms" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">try breaking it</div>
+      <h2>A page is forty requests nobody named. Here is what stops them.</h2>
+      <p class="lede">A rendering backend is the first one that fetches things the caller never asked for: fonts, images, scripts, each potentially a different host. Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and see. Switch both off and see that too, which is exactly the experiment the test suite runs.</p>
+    </div>
+
+    <div class="flight rv" id="mx-box">
+      <div class="fl-head"><span class="gt-dot"></span>one page, one subresource your policy refuses <span class="n">switch a mechanism off</span></div>
+      <svg id="mx-svg" viewBox="0 0 960 300" role="img" aria-label="The chromium backend has two independent things stopping a refused subresource: a proxy scopyx owns, which is the only route the browser has to the network and refuses any destination the plane did not decide, and CDP request interception, which sees the full URL of every request including inside TLS and produces the counts. Switching either off still refuses the request. Switching both off lets it reach the tracker.">
+        <defs>
+          <marker id="mxa" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/>
+          </marker>
+        </defs>
+        <g font-family="ui-monospace,Menlo,monospace" text-anchor="middle">
+
+          <!-- the browser, and its one way out -->
+          <rect x="14" y="52" width="204" height="212" rx="14" fill="#0C1118" stroke="rgba(255,255,255,.10)"/>
+          <circle cx="34" cy="71" r="3.5" fill="#F0ABFC"/>
+          <text x="46" y="75" fill="#5A6675" font-size="10" letter-spacing="1.3" text-anchor="start">A BROWSER YOU INSTALLED</text>
+
+          <rect x="34" y="94" width="164" height="56" rx="12" fill="#141C27" stroke="#2a3547"/>
+          <text x="116" y="116" fill="#E9EFF6" font-size="11.5" font-weight="700">chromium</text>
+          <text x="116" y="133" fill="#5A6675" font-size="9.5">fresh profile, deleted after</text>
+
+          <rect x="34" y="172" width="164" height="66" rx="12" fill="#141C27" stroke="#2a3547"/>
+          <text x="116" y="194" fill="#E9EFF6" font-size="10.5" font-weight="700">the page asks for</text>
+          <text x="116" y="210" fill="#5A6675" font-size="9.5">a font on allowed.example</text>
+          <text x="116" y="224" fill="#FF8A8A" font-size="9.5">a pixel on tracker.example</text>
+
+          <line x1="200" y1="122" x2="232" y2="130" stroke="#2a3547" stroke-width="1.4" marker-end="url(#mxa)"/>
+          <line x1="200" y1="204" x2="232" y2="196" stroke="#2a3547" stroke-width="1.4" marker-end="url(#mxa)"/>
+
+          <!-- the floor. OUTSIDE the browser's box on purpose: it is scopyx's,
+               and drawing it inside said the opposite of the design. -->
+          <g id="mx-proxy">
+            <rect class="mech" x="234" y="94" width="118" height="144" rx="12" fill="#1B1522" stroke="#F0ABFC"/>
+            <text x="293" y="118" fill="#F0ABFC" font-size="11" font-weight="700">the proxy</text>
+            <text x="293" y="134" fill="#E9EFF6" font-size="9.5">scopyx owns it</text>
+            <text x="293" y="158" fill="#8A97A6" font-size="9">the only route</text>
+            <text x="293" y="171" fill="#8A97A6" font-size="9">out of the browser</text>
+            <text x="293" y="196" fill="#F0ABFC" font-size="9.5" font-weight="700">THE FLOOR</text>
+            <text x="293" y="209" fill="#5A6675" font-size="8.5">a socket that is</text>
+            <text x="293" y="221" fill="#5A6675" font-size="8.5">not opened</text>
+          </g>
+
+          <!-- the accountant -->
+          <g id="mx-cdp">
+            <rect class="mech" x="418" y="30" width="238" height="86" rx="12" fill="#141C27" stroke="#2a3547" stroke-dasharray="5 4"/>
+            <text x="537" y="54" fill="#E9EFF6" font-size="11" font-weight="700">CDP interception</text>
+            <text x="537" y="71" fill="#8A97A6" font-size="9.5">the full URL of every request,</text>
+            <text x="537" y="84" fill="#8A97A6" font-size="9.5">including inside TLS</text>
+            <text x="537" y="104" fill="#F4B23E" font-size="9.5" font-weight="700">THE ACCOUNTANT</text>
+          </g>
+          <path d="M262 94 C262 52 340 30 416 44" fill="none" stroke="#2a3547" stroke-width="1.4"
+                stroke-dasharray="4 5" marker-end="url(#mxa)"/>
+
+          <!-- where each request ends up -->
+          <rect x="418" y="140" width="238" height="52" rx="10" fill="#141C27" stroke="#7BE0A8"/>
+          <text x="537" y="161" fill="#7BE0A8" font-size="10.5" font-weight="700">allowed.example</text>
+          <text x="537" y="177" fill="#5A6675" font-size="9.5">dialled at the checked address</text>
+          <line x1="356" y1="150" x2="416" y2="158" stroke="#2a3547" stroke-width="1.4" marker-end="url(#mxa)"/>
+
+          <g id="mx-out">
+            <rect id="mx-outbox" x="418" y="208" width="238" height="56" rx="10" fill="#1F1418" stroke="#FF8A8A"/>
+            <text id="mx-outtitle" x="537" y="230" fill="#FF8A8A" font-size="10.5" font-weight="700">tracker.example: refused</text>
+            <text id="mx-outwhy" x="537" y="247" fill="#5A6675" font-size="9.5">and counted as blocked in the record</text>
+          </g>
+          <line id="mx-outline" x1="356" y1="200" x2="416" y2="228" stroke="#FF8A8A" stroke-width="1.4" marker-end="url(#mxa)"/>
+
+          <!-- the tracker, which is the thing that must not be reached -->
+          <rect id="mx-tracker" x="712" y="208" width="234" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="829" y="230" fill="#8A97A6" font-size="10.5" font-weight="700">the tracker's own server</text>
+          <text id="mx-trackersaw" x="829" y="247" fill="#5A6675" font-size="9.5">saw nothing</text>
+          <line id="mx-reach" x1="660" y1="236" x2="708" y2="236" stroke="#FF8A8A" stroke-width="1.6"
+                marker-end="url(#mxa)" opacity="0"/>
+
+          <!-- the web -->
+          <rect x="712" y="140" width="234" height="52" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="829" y="161" fill="#E9EFF6" font-size="11" font-weight="700">the open web</text>
+          <text x="829" y="177" fill="#5A6675" font-size="9.5">reached only through the floor</text>
+          <line x1="660" y1="166" x2="708" y2="166" stroke="#2a3547" stroke-width="1.4" marker-end="url(#mxa)"/>
+        </g>
+      </svg>
+
+      <div class="fl-tabs" role="group" aria-label="Switch a mechanism off">
+        <button class="fl-tab mx-t" type="button" aria-pressed="true" data-m="proxy">the proxy: on</button>
+        <button class="fl-tab mx-t" type="button" aria-pressed="true" data-m="cdp">CDP interception: on</button>
+      </div>
+
+      <div class="fl-out">
+        <span class="u" id="mx-state">both on</span>
+        <span class="e" id="mx-where">refused twice over</span>
+        <span class="v stop" id="mx-verdict">never reached</span>
+      </div>
+
+      <p class="fl-why" id="mx-why">Two mechanisms, and they are not the same kind of thing. The proxy is the floor: the browser is launched with no route to the network except it, so a refused destination is a socket that is never opened, and no flag or version of somebody else's browser can talk it out of that. CDP interception is the accountant: it sees the full URL of every request, including inside TLS, which the proxy cannot, so it produces the counts and the per-URL decisions. Where the two disagree the connection wins, because the connection is what carries bytes.</p>
     </div>
   </div>
 </section>
@@ -406,6 +528,44 @@
       <h2>A URL is personal data, and the record is built around that.</h2>
       <p class="lede"><span class="mono">https://crm.example/customers/12345?email=jane@example.com</span> is an address and also a name, an identifier and a contact detail. The path and the query string, which is exactly where an identifier or a session token lives, are never assembled into the event at all. What is kept is the origin and a SHA-384, so two records can be compared without either holding the address.</p>
     </div>
+    <div class="flight rv" id="ur-box" style="margin-bottom:26px">
+      <div class="fl-head"><span class="gt-dot"></span>one URL, and what survives into the record <span class="n">retention is yours to set</span></div>
+      <svg id="ur-svg" viewBox="0 0 960 214" role="img" aria-label="A URL split where this plane splits it: the origin is kept, and the path and query string, which is where an identifier or a session token lives, are never assembled into the event at all. Turning retention on writes the full URL into a field named url_unprotected, named that because there is no subject-keyed payload plane here and a field called url would imply one.">
+        <g font-family="ui-monospace,Menlo,monospace">
+          <text x="14" y="24" fill="#5A6675" font-size="10" letter-spacing="1.3">ONE URL AN AGENT WAS ASKED TO FETCH</text>
+
+          <rect x="14" y="36" width="238" height="40" rx="9" fill="#141C27" stroke="#7BE0A8"/>
+          <text x="133" y="61" fill="#7BE0A8" font-size="12" text-anchor="middle">https://crm.example</text>
+
+          <rect id="ur-tail" x="258" y="36" width="688" height="40" rx="9" fill="#1F1418" stroke="#FF8A8A"/>
+          <text id="ur-tailtext" x="602" y="61" fill="#FF8A8A" font-size="12" text-anchor="middle">/customers/12345?email=jane@example.com&amp;session=8f2c...</text>
+
+          <text x="133" y="93" fill="#8A97A6" font-size="9.5" text-anchor="middle">an address</text>
+          <text id="ur-tailwhy" x="602" y="93" fill="#8A97A6" font-size="9.5" text-anchor="middle">a name, an identifier, a contact detail, and a credential</text>
+
+          <rect x="14" y="108" width="932" height="94" rx="12" fill="#0C1118" stroke="rgba(255,255,255,.10)"/>
+          <circle cx="34" cy="127" r="3.5" fill="#F0ABFC"/>
+          <text x="46" y="131" fill="#5A6675" font-size="10" letter-spacing="1.3">THE EVENT THIS PLANE WRITES</text>
+          <text x="34" y="156" fill="#8A97A6" font-size="10.5">origin</text>
+          <text x="170" y="156" fill="#E9EFF6" font-size="10.5">https://crm.example</text>
+          <text x="34" y="176" fill="#8A97A6" font-size="10.5">url_sha384</text>
+          <text x="170" y="176" fill="#E9EFF6" font-size="10.5">sha384:0ae4006e9bd9fa46...</text>
+          <g id="ur-extra" opacity="0">
+            <text x="34" y="196" fill="#F4B23E" font-size="10.5">url_unprotected</text>
+            <text x="170" y="196" fill="#F4B23E" font-size="10.5">https://crm.example/customers/12345?email=jane@example.com&amp;session=8f2c...</text>
+          </g>
+          <text id="ur-note" x="34" y="196" fill="#5A6675" font-size="9.5">two records compare without either holding the address</text>
+        </g>
+      </svg>
+
+      <div class="fl-tabs" role="group" aria-label="Choose a retention setting">
+        <button class="fl-tab ur-t" type="button" aria-pressed="true" data-r="off">SCOPYX_RETAIN unset</button>
+        <button class="fl-tab ur-t" type="button" aria-pressed="false" data-r="payload">SCOPYX_RETAIN=payload</button>
+      </div>
+
+      <p class="fl-why" id="ur-why" style="min-height:4.4em">The path and the query string are not dropped later or redacted later. The field is never built, so there is no window in which the event holds them and no code path that could log one by accident.</p>
+    </div>
+
     <div class="grid3">
       <div class="feature rv"><h3>Its own journal, its own volume</h3><p>A component that can write the shared log can, once compromised, corrupt the trail it was adding to. This is the one part of the box that reaches the public internet on purpose, which makes it the last one that should be able to rewrite anybody else's record.</p></div>
       <div class="feature rv d1"><h3>Chained, so a deletion shows</h3><p>Every line names its predecessor, in the same envelope the rest of the stack speaks. A journal that did not chain would look identical until somebody tried to verify it, which is the moment it matters and the moment it is too late.</p></div>
@@ -581,6 +741,108 @@ if(reduce){
     else auto=false;
   },{threshold:.3}).observe(box);
 }
+})();
+</script>
+
+<script>
+/* The two mechanisms, as a switch rather than a claim.
+
+   The four states are the four the test suite actually runs as mutations, and
+   the only one that reaches the tracker is both off. Written as data so the
+   page cannot drift from that: change what the code does and this table is
+   what needs editing, visibly. */
+(function(){
+"use strict";
+const svg=document.getElementById("mx-svg"); if(!svg) return;
+const proxy=document.getElementById("mx-proxy"), cdp=document.getElementById("mx-cdp");
+const box=document.getElementById("mx-outbox"), title=document.getElementById("mx-outtitle");
+const why2=document.getElementById("mx-outwhy"), line=document.getElementById("mx-outline");
+const reach=document.getElementById("mx-reach"), tracker=document.getElementById("mx-tracker");
+const saw=document.getElementById("mx-trackersaw");
+const st=document.getElementById("mx-state"), where=document.getElementById("mx-where");
+const ver=document.getElementById("mx-verdict"), why=document.getElementById("mx-why");
+const tabs=[...document.querySelectorAll(".mx-t")];
+
+const on={proxy:true,cdp:true};
+
+const STATES={
+  "1,1":{state:"both on", where:"refused twice over", verdict:"never reached", stop:true,
+    title:"tracker.example: refused", why2:"the proxy did not open the socket",
+    saw:"saw nothing",
+    text:"Two mechanisms, and they are not the same kind of thing. The proxy is the floor: the browser has no route to the network except it, so a refused destination is a socket that is never opened, and no flag or version of somebody else's browser can talk it out of that. CDP interception is the accountant: it sees the full URL of every request, including inside TLS, which the proxy cannot, so it produces the counts and the per-URL decisions."},
+  "0,1":{state:"the floor off", where:"refused by the accountant", verdict:"never reached", stop:true,
+    title:"tracker.example: refused", why2:"CDP failed the request before it was sent",
+    saw:"saw nothing",
+    text:"With the proxy decision removed, the request is still refused, because CDP interception decided it by its full URL. This is the state the test suite measures with the proxy's decision mutated out, and the refused server is still never reached. What is lost here is not the refusal but the guarantee: the accountant is the browser's own cooperation, and a bug, a flag or a version can withdraw it."},
+  "1,0":{state:"the accountant off", where:"refused by the floor", verdict:"never reached", stop:true,
+    title:"tracker.example: refused", why2:"the proxy did not open the socket",
+    saw:"saw nothing",
+    text:"With CDP blocking removed, the request is still refused, because the connection never opens. This is the mutation that matters most: it is the one that proves the guarantee does not rest on the browser telling the truth. What is lost is precision, not enforcement, since for https the proxy sees a host and not a path."},
+  "0,0":{state:"both off", where:"nothing decided it", verdict:"REACHED", stop:false,
+    title:"tracker.example: fetched", why2:"nothing stood between the page and its server",
+    saw:"saw one request, from your agent's IP",
+    text:"Both removed, and the pixel is fetched. This is the fourth mutation, and it is the one that goes red in the test suite: the case asserts on the SERVER that would have served it, not on what the result says. An outcome assertion would pass equally well if the request happened and the answer were discarded, which is the difference between governing egress and filtering a report about it."}
+};
+
+function render(){
+  const k=(on.proxy?1:0)+","+(on.cdp?1:0), s=STATES[k];
+  proxy.classList.toggle("off",!on.proxy);
+  cdp.classList.toggle("off",!on.cdp);
+
+  box.setAttribute("fill", s.stop?"#1F1418":"#14201A");
+  box.setAttribute("stroke", s.stop?"#FF8A8A":"#7BE0A8");
+  title.setAttribute("fill", s.stop?"#FF8A8A":"#7BE0A8");
+  title.textContent=s.title;
+  why2.textContent=s.why2;
+  line.setAttribute("stroke", s.stop?"#FF8A8A":"#7BE0A8");
+  reach.setAttribute("opacity", s.stop?"0":"1");
+  tracker.setAttribute("stroke", s.stop?"#2a3547":"#FF8A8A");
+  saw.setAttribute("fill", s.stop?"#5A6675":"#FF8A8A");
+  saw.textContent=s.saw;
+
+  st.textContent=s.state; where.textContent=s.where;
+  ver.textContent=s.verdict; ver.className="v "+(s.stop?"stop":"go");
+  why.textContent=s.text;
+  tabs.forEach(b=>{
+    const v=on[b.dataset.m];
+    b.setAttribute("aria-pressed",String(v));
+    b.textContent=(b.dataset.m==="proxy"?"the proxy: ":"CDP interception: ")+(v?"on":"off");
+  });
+}
+
+tabs.forEach(b=>b.addEventListener("click",()=>{ on[b.dataset.m]=!on[b.dataset.m]; render(); }));
+render();
+})();
+</script>
+
+<script>
+/* Retention, as a switch. The default keeps an origin and a hash; the opt-in
+   names its field `url_unprotected`, and seeing the field name change is the
+   argument. */
+(function(){
+"use strict";
+const svg=document.getElementById("ur-svg"); if(!svg) return;
+const extra=document.getElementById("ur-extra"), note=document.getElementById("ur-note");
+const tail=document.getElementById("ur-tail"), tailText=document.getElementById("ur-tailtext");
+const tailWhy=document.getElementById("ur-tailwhy"), why=document.getElementById("ur-why");
+const tabs=[...document.querySelectorAll(".ur-t")];
+
+const OFF="The path and the query string are not dropped later or redacted later. The field is never built, so there is no window in which the event holds them and no code path that could log one by accident.";
+const ON="Turning retention on is a decision, and the field it writes is called url_unprotected rather than url. There is no subject-keyed payload plane here, so a field called url would imply one and a reader would assume a protection that does not exist. The name is the warning, and it travels with the data.";
+
+function render(on){
+  extra.setAttribute("opacity", on?"1":"0");
+  note.setAttribute("opacity", on?"0":"1");
+  tail.setAttribute("stroke", on?"#F4B23E":"#FF8A8A");
+  tailText.setAttribute("fill", on?"#F4B23E":"#FF8A8A");
+  tailWhy.textContent = on
+    ? "kept, in full, because you asked for it"
+    : "a name, an identifier, a contact detail, and a credential";
+  why.textContent = on?ON:OFF;
+  tabs.forEach(b=>b.setAttribute("aria-pressed",String((b.dataset.r==="payload")===on)));
+}
+tabs.forEach(b=>b.addEventListener("click",()=>render(b.dataset.r==="payload")));
+render(false);
 })();
 </script>
 </body>
