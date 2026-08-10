@@ -12,7 +12,7 @@ This is a simulation, but it replays the shape of the live validation run: Token
 
 ## Sources in. Findings out. Nothing written back.
 
-Five read-only connectors describe the humans, keys and service accounts; the agent-event bus streams what TokenFuse, Wardryx, Mockryx and Verdryx watched the agents do. One core resolves the graph, walks delegation chains root-first, and runs the 22 detectors. Everything that leaves is an alert, a BOM, or a proposed diff a human applies.
+Five read-only connectors describe the humans, keys and service accounts; the agent-event bus streams what TokenFuse, Wardryx, Mockryx and Verdryx watched the agents do. One core resolves the graph, walks delegation chains root-first, and runs the 25 detectors. Everything that leaves is an alert, a BOM, or a proposed diff a human applies.
 
 ## Five identity kinds. One set of answers.
 

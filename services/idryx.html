@@ -82,7 +82,7 @@
       </div>
       <div class="hero-side rv d2">
         <div class="row"><span class="k">release</span><span class="v">latest &#183; prebuilt binaries</span></div>
-        <div class="row"><span class="k">core</span><span class="v">Go &#183; 22 detectors</span></div>
+        <div class="row"><span class="k">core</span><span class="v">Go &#183; 25 detectors</span></div>
         <div class="row"><span class="k">connectors</span><span class="v">Okta &#183; Entra &#183; AWS &#183; GCP &#183; Azure</span></div>
         <div class="row"><span class="k">output</span><span class="v">CycloneDX 1.6 Agent-BOM</span></div>
         <div class="row"><span class="k">posture</span><span class="v">read-only, proposes diffs</span></div>
@@ -110,7 +110,7 @@
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
       <h2>Sources in. Findings out. Nothing written back.</h2>
-      <p class="lede">Five read-only connectors describe the humans, keys and service accounts; the agent-event bus streams what TokenFuse, Wardryx, Mockryx and Verdryx watched the agents do. One core resolves the graph, walks delegation chains root-first, and runs the 22 detectors. Everything that leaves is an alert, a BOM, or a proposed diff a human applies.</p>
+      <p class="lede">Five read-only connectors describe the humans, keys and service accounts; the agent-event bus streams what TokenFuse, Wardryx, Mockryx and Verdryx watched the agents do. One core resolves the graph, walks delegation chains root-first, and runs the 25 detectors. Everything that leaves is an alert, a BOM, or a proposed diff a human applies.</p>
     </div>
     <div class="diagram rv">
       <svg viewBox="0 0 960 340" role="img" aria-label="Idryx architecture: identity sources feed the graph core, which emits alerts, an Agent-BOM, proposed Terraform diffs and a read-only dashboard">
@@ -132,7 +132,7 @@
           <g font-size="10.5">
             <rect x="216" y="84" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="278" y="103" fill="#E9EFF6">identity graph</text>
             <rect x="352" y="84" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="414" y="103" fill="#E9EFF6">delegation chains</text>
-            <rect x="216" y="122" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="278" y="141" fill="#E9EFF6">22 detectors</text>
+            <rect x="216" y="122" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="278" y="141" fill="#E9EFF6">25 detectors</text>
             <rect x="352" y="122" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="414" y="141" fill="#E9EFF6">blast radius</text>
             <rect x="216" y="160" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="278" y="179" fill="#E9EFF6">baseline engine</text>
             <rect x="352" y="160" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="414" y="179" fill="#E9EFF6">postgres 16 graph</text>
@@ -192,7 +192,7 @@
         </details>
       </div>
       <div class="card hover feature b-4 rv d2"><h3>22 deterministic detectors</h3><p>Statistics and rules over the graph, in four families. The LLM is never in the detection path, so every finding is reproducible and auditable.</p>
-        <details class="sheet" data-sheet-kicker="detection" data-sheet-title="What the 22 detectors look for, and why none of them ask a model">
+        <details class="sheet" data-sheet-kicker="detection" data-sheet-title="What the 25 detectors look for, and why none of them ask a model">
           <summary>What they look for</summary>
           <div class="sheet-in">
             <p class="dim" style="font-size:14px;line-height:1.7">Detection is deterministic: statistics and rules over the graph. The model is an interface for asking questions in English and getting explanations back, and it is never in the detection path, so a finding can be reproduced, argued with and defended in an audit. A baseline engine learns what is normal per identity and stays quiet during its learning period rather than opening a week of false positives on day one.</p>
@@ -337,7 +337,7 @@ Sim.mount(document.getElementById("ix-sim"),{
   title:"simulated replay · a runaway agent gets caught",
   window:60, duration:16000,
   clock:t=>t.toFixed(1)+"s",
-  badges:[{label:"22 detectors armed",color:"#34D399"},{label:"read-only plane",color:"#93A8C4"}],
+  badges:[{label:"25 detectors armed",color:"#34D399"},{label:"read-only plane",color:"#93A8C4"}],
   stage:{mode:"graph", ingest:[3,10],
     detections:[{t:30,kind:"runaway"},{t:38,kind:"attest"},{t:46,kind:"orphan"}],
     bomT:54},
