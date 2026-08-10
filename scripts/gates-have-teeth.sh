@@ -212,20 +212,36 @@ run_case "deploy-target: the live repository is not the one holding the domain" 
 # what a push to the mirror leaves behind, and it is invisible from either
 # repository on its own.
 #
-# It asserts the SHIPPING INSTRUCTION rather than the direction, and that is a
-# correction rather than a compromise. This case used to expect "behind by",
-# and it passed here and failed in CI with WRONG REASON, on the same two SHAs.
-# The gate reports "behind by N" or "diverged (live +N, mirror +M)" depending
-# on what `git rev-list --count` can compute, which depends on which objects
-# the clone happens to hold: a full clone here made it 0 ahead / 157 behind, a
-# shallow CI clone made the same pair 626 / 2. Both messages are true and both
-# come from check 2. Asserting the one that varies made this case measure the
-# object graph rather than the gate.
+# It plants two SYNTHETIC tips rather than pointing the script at a second real
+# repository, and the history of this one case is the argument for that.
+#
+# It first mutated LIVE_REPO to `TAIPANBOX/it-rat-v1` and expected "behind by".
+# That passed on a laptop and failed in CI, twice, in two different ways, and
+# neither had anything to do with the gate:
+#
+#   1. `it-rat-v1` is PRIVATE. A developer's git credentials read it; a runner
+#      holding only the live repository's token does not. `git ls-remote` came
+#      back empty, so the gate said UNJUDGEABLE, which is correct behaviour and
+#      is not the refusal the case was written to provoke.
+#   2. Even where it was readable, the message depends on what
+#      `git rev-list --count` can compute across two tips, and that depends on
+#      which objects the clone holds. The same pair measured 0 ahead / 157
+#      behind in a full clone and 626 / 2 in a shallow one, so the gate said
+#      "behind by" in one and "diverged" in the other. Both true.
+#
+# Two tips this repository invents are readable everywhere and unfetchable
+# everywhere, so check 2 takes one determined path and says one thing. The case
+# is narrower than it looks: it proves what the gate SAYS when the two copies
+# disagree, not that it can reach two real ones. Reachability is check 2's own
+# UNJUDGEABLE branch, which has no case here.
 run_case "deploy-target: the two published copies disagree" fail \
 	'./scripts/deploy-target-current.sh' \
 	"$(py 'edit("scripts/deploy-target-current.sh",
-     "LIVE_REPO=\"it-rat/it-rat.github.io\"",
-     "LIVE_REPO=\"TAIPANBOX/it-rat-v1\"")')" \
+     "live_sha=$(git ls-remote --heads \"$LIVE_URL\" \"$BRANCH\" 2>/dev/null | cut -f1)",
+     "live_sha=1111111111111111111111111111111111111111")
+edit("scripts/deploy-target-current.sh",
+     "mirror_sha=$(git ls-remote --heads \"$MIRROR_URL\" \"$BRANCH\" 2>/dev/null | cut -f1)",
+     "mirror_sha=2222222222222222222222222222222222222222")')" \
 	"ship it: git push upstream"
 
 echo
