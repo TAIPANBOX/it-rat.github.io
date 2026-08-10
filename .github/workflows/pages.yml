@@ -84,6 +84,13 @@ jobs:
       # clean tree and says so plainly, so it also reports any earlier step
       # that starts writing into the checkout.
       - name: the gates above can still fail
+        ## Needs the token the two network gates need, because it RUNS them as
+        ## its baseline before mutating anything. Without it demo-bundle-current
+        ## could not reach the API, came back red on a clean tree, and every
+        ## case built on it reported UNJUDGEABLE, which is the harness working
+        ## and the deploy stopping.
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: ./scripts/gates-have-teeth.sh
 
       - name: Fail on a published demo that genaryx has moved past
@@ -107,9 +114,11 @@ jobs:
         ## the mirror it is the whole point, and it is the mirror that gets
         ## pushed to by mistake.
         ##
-        ## The clone CI makes has no `upstream` remote, so check 1 of the script
-        ## is skipped here by construction and only the two published copies are
-        ## compared. That is the half a workflow can see.
+        ## The clone CI makes has no `upstream` remote, and check 1 of the
+        ## script skips itself when GITHUB_ACTIONS is set, so only the two
+        ## published copies are compared. That is the half a workflow can see.
+        ## This comment used to say "skipped by construction". It was not: the
+        ## check failed on the missing remote and took the deploy with it.
         env:
           GH_TOKEN: ${{ github.token }}
         run: ./scripts/deploy-target-current.sh

@@ -70,7 +70,18 @@ fail() { printf 'FAIL %s\n' "$1"; problems=$((problems + 1)); }
 # ---------------------------------------------------------------------------
 # 1. The remote that deploys must exist, and must point at the live repository.
 # ---------------------------------------------------------------------------
-if git rev-parse --git-dir >/dev/null 2>&1; then
+# Not a question CI can be asked. Actions checks out ONE repository with ONE
+# remote called `origin`, so "is `upstream` configured and pointing at live" is
+# about a person's clone and nothing else. This branch used to be absent, and
+# the workflow carried a comment saying check 1 was "skipped here by
+# construction": it was not skipped, it FAILED, and it took the whole Pages
+# deploy down with it for three pushes on 2026-08-10 before anybody read the
+# log. Skipped LOUDLY for the same reason check 3 is: a silent skip is how a
+# check stops checking.
+if [ "${GITHUB_ACTIONS:-}" = "true" ]; then
+	note "check 1 skipped in CI: one checkout, one remote, and the question is"
+	note "about a developer's clone. Checks 2 and 3 below still ran."
+elif git rev-parse --git-dir >/dev/null 2>&1; then
 	if ! git remote | grep -qx upstream; then
 		fail "no 'upstream' remote in this clone, so 'git push upstream $BRANCH' cannot run"
 		note "this is the exact state that left it-rat.com seven commits behind:"
