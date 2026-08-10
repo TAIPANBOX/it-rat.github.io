@@ -26,7 +26,7 @@ Five required fields: schema, ts, source, type, agent_id. Two versions coexist b
 
 ### The Go binding
 
-agent-stack-go v0.4.0 ships passport.Parse, an append-only event.Writer and chain.Validate, stdlib only at runtime. It is the same validation Idryx runs on ingest: a passport that parses in your pipeline parses in the graph.
+agent-stack-go ships passport.Parse, an append-only event.Writer and chain.Validate, stdlib only at runtime. It is the same validation Idryx runs on ingest: a passport that parses in your pipeline parses in the graph.
 
 ### agent-conform
 
@@ -78,7 +78,7 @@ For teams whose answer to everything is a cluster. One script brings up k3s acro
 
 Both paths are one command, and both ask what they need before the long part rather than failing on it afterwards. So the trade is not convenience. Kubernetes buys high availability and costs you the one thing a single box gets for free: the planes couple through a shared event log, so a cluster needs a ReadWriteMany volume for it.
 
-That trade, and sixty-nine other things that bite, are documented in the repositories rather than discovered by you. The same manifests came up on six clusters across Hetzner, AWS and GCP, and exactly one line of Kubernetes configuration differs between the three: Calico has to encapsulate unconditionally on GCP, because a GCE VPC routes every packet by destination and a pod address matches no route. Every trap we hit is written down and already fixed in the files.
+That trade, and seventy-eight other things that bite, are documented in the repositories rather than discovered by you. The same manifests came up on six clusters across Hetzner, AWS and GCP, and exactly one line of Kubernetes configuration differs between the three: Calico has to encapsulate unconditionally on GCP, because a GCE VPC routes every packet by destination and a pod address matches no route. Every trap we hit is written down and already fixed in the files.
 
 ## Two default futures, one contract.
 
@@ -98,6 +98,10 @@ Every other page on this site is a producer or a consumer of this contract. [Tok
 What the contract is for, in practice: [AI agent governance](https://it-rat.com/ai-agent-governance.html) and the controls it lets seven tools share.
 
 This installs nothing of the stack: it is the contract itself, for an agent of your own. Exit 0 means every file and every NDJSON line conforms; exit 1 means at least one did not. That is the whole interface.
+
+**Q: Download, any platform**
+
+Every one of those addresses always serves the newest release, so a link saved today still works after the next one. The asset names carry no version, which is what makes that true; the version lives inside the binary, where `agent-conform -version` reads it back.
 
 ## The contract seven services agree on
 

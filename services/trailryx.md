@@ -39,3 +39,7 @@ A durability sweep reporting zero violations proves nothing on its own: a check 
 ### With a disk that lies
 
 The same harness, the honest-disk assumption removed: 17,869 of 20,000 seeds fail, each naming its own seed and digest. That is what makes the zero above worth reading.
+
+**Q: Download the verifier**
+
+Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. These are the offline verifier; `trailryx-ingest` sits beside them on the releases page. No Windows build yet, and saying so is cheaper than a broken link.

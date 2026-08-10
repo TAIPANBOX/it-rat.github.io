@@ -75,9 +75,15 @@ TokenFuse asks [Wardryx](https://it-rat.com/wardryx.html) before letting a decla
 
 Where this fits in the wider practice: [FinOps for AI](https://it-rat.com/finops-for-ai.html) on managing spend that creates itself, and [AI agent governance](https://it-rat.com/ai-agent-governance.html) on the rest of the runtime controls.
 
+Run it from [the repository](https://github.com/TAIPANBOX/tokenfuse#-get-started), where the one-line command lives beside the image tag it pulls.
+
 Then point `ANTHROPIC_BASE_URL` at `localhost:4100` and give your next run a budget header. That's the whole migration.
 
 Want more than the gateway? [Run the live services locally](https://it-rat.com/platform.html#run) in one command.
+
+**Q: How this one ships**
+
+No per-platform binaries here, and the honest reason is that a gateway sits in front of traffic rather than on a laptop: it ships as an image. The tag and the command to run it live in the repository, next to the version they pull.
 
 ## How teams put a ceiling on agent spend
 

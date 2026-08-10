@@ -99,7 +99,13 @@ Engram is the knowledge plane of the stack. Its own reflect() calls can point ba
 
 Provenance is one of the questions a governed fleet has to answer; the others are in [AI agent governance](https://it-rat.com/ai-agent-governance.html).
 
+Install it from [the repository](https://github.com/TAIPANBOX/engram#readme), where the command lives beside the version it belongs to.
+
 The PyPI name is engdbram (the plain name was taken); the import stays `from engram import Engram`. Your first memory needs zero API keys: an LLM enters the picture only when you ask for reflect().
+
+**Q: How this one ships**
+
+No per-platform binaries here either: this one is a Python library you import, so the package index is the download. The install command lives in the repository, next to the version it resolves.
 
 ## What a memory has to do that similarity search cannot
 

@@ -83,7 +83,11 @@ Qryx emits every finding as an agent-event onto the shared bus that [Platform](h
 
 Crypto posture is one plane of a wider practice: [AI agent governance](https://it-rat.com/ai-agent-governance.html), and the defensive picture in [AI agent security](https://it-rat.com/ai-agent-security.html).
 
-Grab a v0.2.0 binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source: the ML-DSA toolchain downloads itself on the first build, Go 1.27.
+Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source: the ML-DSA toolchain downloads itself on the first build, Go 1.27.
+
+**Q: Download, any platform**
+
+Every one of those addresses always serves the newest release, so a link saved today still works after the next one. The asset names carry no version, which is what makes that true; the version lives inside the binary, where `qryx version` reads it back.
 
 ## Where a post-quantum migration actually starts
 

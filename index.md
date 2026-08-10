@@ -46,6 +46,10 @@ Fire drills that prove guardrails hold.
 
 The box writes to you, with a link and never a button.
 
+### Scopyx
+
+Agents reach the web through a decision, not around one.
+
 ### TokenFuse Pocket
 
 The kill switch on a device the agent's host never touches.

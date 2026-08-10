@@ -78,6 +78,10 @@ Why rehearsal belongs in CI, and what else it sits beside: [AI agent security](h
 
 Add `--save out/report.json` to keep the evidence. Point it at pre-prod, never at prod: the URL you pass is the only place it will ever send traffic.
 
+**Q: Download, any platform**
+
+Every one of those addresses always serves the newest release, so a link saved today still works after the next one. The asset names carry no version, which is what makes that true; the version lives inside the binary, where `mockryx version` reads it back.
+
 ## Rehearsing a defence before it is needed
 
 **Q: How do I test that my guardrails actually work?**

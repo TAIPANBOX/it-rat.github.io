@@ -79,7 +79,11 @@ Idryx consumes the same envelope [TokenFuse](https://it-rat.com/tokenfuse.html),
 
 Blast radius, shadow tooling and unattested agents are covered as failure modes in [AI agent security](https://it-rat.com/ai-agent-security.html), the graph's place among the planes in [AI agent governance](https://it-rat.com/ai-agent-governance.html), and what an agent identity has to be in [agent identity and authentication](https://it-rat.com/agent-identity.html).
 
-Download a [v0.2.0 release binary](https://github.com/TAIPANBOX/idryx/releases) (SHA256SUMS ships next to it), run detect against a log, then serve for the read-only dashboard on `:8080`.
+Download a [the latest release binary](https://github.com/TAIPANBOX/idryx/releases) (SHA256SUMS ships next to it), run detect against a log, then serve for the read-only dashboard on `:8080`.
+
+**Q: Download, any platform**
+
+Every one of those addresses always serves the newest release, so a link saved today still works after the next one. The asset names carry no version, which is what makes that true; the version lives inside the binary, where `idryx version` reads it back.
 
 ## Counting the identities nobody is counting
 
