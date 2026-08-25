@@ -82,16 +82,18 @@ engram-mcp speaks stdio: no network listener, no port to guard. Claude Desktop, 
 
 ## Similarity is a fraction of memory.
 
-Pinecone, Weaviate and pgvector are good at the problem they chose: similarity search over large corpora. Engram ships a vector index too, in-process. The difference is everything similarity cannot answer: when a fact was true, where it came from, whether two beliefs disagree. The third column is what most agents actually run on today.
+Engram ships a vector index, in-process, and then answers the questions similarity cannot: when a fact was true, where it came from, and whether two beliefs disagree.
 
-|  | Engram | Vector DBs | Raw chat history |
-|---|---|---|---|
-| What it stores | Memories with provenance | Embeddings of text | Transcripts |
-| Reasons over time | Bitemporal: valid + recorded | No | No |
-| Explains itself | why() chain to source episodes | No | No |
-| Contradiction handling | Detected, flagged as events | Not a concept | None |
-| Runs where | In-process, one file | Managed service | In your prompt window |
-| Forget a person | Targeted GDPR erase | Delete by id, if you kept the ids | Impossible |
+| Question an agent asks | What answers it |
+|---|---|
+| Find what I mean, not only what I typed | Hybrid recall: BM25 and cosine, blended |
+| What was true in March, before we knew better | Bitemporal facts: valid time and recorded time |
+| Why do you believe that | why(), a chain back to the source episodes |
+| These two things disagree | Contradictions detected and recorded as events |
+| Reach what the match is connected to | Spreading activation over Hebbian edges |
+| Stay useful instead of growing | Importance decay, and reflection prunes the bottom |
+| Forget a person | Targeted erase by episode, entity or fact |
+| Run it anywhere | In-process, one file, no server and no key to write |
 
 ### The plane that remembers.
 

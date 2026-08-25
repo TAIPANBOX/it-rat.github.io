@@ -4,9 +4,9 @@
 
 # Guides index
 
-> Ten guides: six on the field of AI agent governance, and four on running this stack in practice, from a first alert to what the numbers prove.
+> Eleven guides: seven on the field of AI agent governance, and four on running this stack, from a first alert to what the numbers prove.
 
-Ten guides. Six are about the practice rather than about our tools: what it means to govern an agent while it is running, how to manage spend that nobody provisions, how to secure a fleet that holds credentials and calls tools, where observability stops being enough, and what changes when tools arrive over a protocol. Each one names the open-source tool that does the job, and none of them needs you to buy anything to be useful. The other four are about this stack specifically: getting a first alert, following one incident through every plane, what the shapes cost, and what the numbers do and do not establish.
+Eleven guides. Seven are about the practice rather than about our tools: what it means to govern an agent while it is running, how to manage spend that nobody provisions, how to secure a fleet that holds credentials and calls tools, where observability stops being enough, what changes when tools arrive over a protocol, and what the tools on this market can and cannot actually do. Each one names the open-source tool that does the job, and none of them needs you to buy anything to be useful. The other four are about this stack specifically: getting a first alert, following one incident through every plane, what the shapes cost, and what the numbers do and do not establish.
 
 *start here*
 
@@ -37,6 +37,12 @@ The damage does not arrive as a sentence, it arrives as a tool call. Eight failu
 ## AI observability and governance are not rivals
 
 One explains what happened, the other decides what may happen. The same incident seen by each, why governance without observability is opaque, and the single integration decision that makes them compose: one run id.
+
+*the shapes*
+
+## Three shapes of agent tooling, and what each cannot do
+
+Named products change monthly and the shapes do not. What framework-native tracing, open self-hosted observability and a vendor's hosted control plane each answer, where each one stops, and twelve differences with a way to check every one of them.
 
 *the operational half*
 
@@ -862,6 +868,14 @@ Budgets, policy verdicts, identity, approval ceremonies, hard ceilings. It sits 
 
 **Useless for:** explaining why the model wanted to do it. A refusal is not an analysis.
 
+*a third shape*
+
+### Governance, with a condition attached
+
+The split above is between two jobs rather than two vendors, and one product shape sits awkwardly across it: the large platform that hosts your agents and governs them where they run, which is to say on itself. That shape genuinely acts in the request path, so calling it observability would be wrong. What comes with it is a condition. The agent has to be registered, and in the common case it has to be redeployed onto that platform before it can be governed at all. The question stops being whether a tool enforces, and becomes whether it enforces for an agent that stays where it already is.
+
+**Worth asking directly:** what happens to the agent nobody registered? A tool that governs by hosting can only govern what was handed to it, and the agent that causes the incident is usually the one nobody wrote down.
+
 ## Same incident, two tools.
 
 Take one concrete case: an agent enters a retry loop against a production API at two in the morning and spends four figures before anyone wakes up.
@@ -890,7 +904,7 @@ In this stack the run id is the unit everything keys on, and the governance plan
 
 - **What happens when it is unreachable?** Fail-open or fail-closed, chosen and documented, is the honest answer; silence is not.
 
-- **Can somebody else verify the record?** A journal whose entries each carry the hash of the one before it can be checked by a person who does not trust you. An export from a dashboard cannot.
+- **Can somebody else verify the record?** A journal whose entries each carry the hash of the one before it can be checked by a person who does not trust you. Stronger still is a completeness proof on every answer: a short receipt, checkable on its own, that the rows you were shown are all the rows that matched the question. A chain proves nothing was altered. Only a completeness proof says nothing was left out, and that is the half an auditor actually needs. An export from a dashboard offers neither.
 
 - **Does it join on the same id as everything else?** If it invents its own identifier, you are buying the integration project as well.
 
@@ -1309,6 +1323,10 @@ The single most useful habit in this project came out of a boring observation: a
 
 So the rule is that a passing measurement is only worth reading next to a run where the same measurement fails. The record plane's durability sweep is the cleanest example. Eight hundred million shard ticks across four hundred thousand seeded runs, roughly twelve million injected crashes, zero durability violations. On its own that number is worth very little. The same sweep is then run again with the simulated disk allowed to lie about flushing, and **17,869 of 20,000 seeds fail**. The first number is only evidence because the second one exists.
 
+The rule stopped being about measurements and became about the checks themselves on 2026-08-09, when a harness was put into twenty of the twenty-six repositories that plants each gate's own fault and requires the failure. **Eight gates could not produce one.** Every one had the same silhouette: a counter or a scan reading an empty subject as a clean one, so renaming a directory turned a check on eleven things into a check on nothing while the wording stayed confident. One of them held the only promise its repository makes to a stranger, that a local demo does not publish a money plane onto whatever network the laptop is on, and it was judging zero addresses.
+
+It keeps earning its place. On 2026-08-20 the same harness was pointed at a dependency check written that morning, and reported it toothless: the check read as "every crate has its own justification" and could not hold that, because a comment covering a pair of crates is one decision and deleting a comment in the middle merely merges two groups. The claim was narrowed to what it actually holds, in the script, in the invariant and in the case. Narrowing the claim is the cheaper half of that; the expensive half is that nothing else would have said so.
+
 The same shape applies to everything below. Where a claim has no companion failure, it says so.
 
 ## Five claims and what each one stops short of.
@@ -1362,6 +1380,8 @@ This list is deliberately visible rather than tidy, and it is the section worth 
 - **The detectors have not been driven at production scale.** They fire correctly on seeded fleets and against real event data, which is not the same as an estate's worth of identities.
 
 - **The federation completeness rule is specified and its transport is unbuilt.** The rule exists; the wires do not.
+
+- **The figures on this site go stale, and did again this month.** Eleven of them name a source repository, the command that produces them and the date somebody last ran it, and a gate refuses a page that states a number nobody owns. That gate cannot tell you an owned number is still true, and on 2026-08-20 five of the eleven were not: two test counts out by six and ten, a detector count out by two, a trap count out by three, and a release a whole version behind. None was wrong when written. Re-measuring now costs one command rather than an afternoon, which is the actual fix; being more careful was never available.
 
 Every figure quoted anywhere on this site or in these repositories is meant to carry three things: what produced it, when, and what it is a claim about. A measurement stays true about its moment and is not automatically true about the present, which is why a date is part of a number rather than decoration on it. If you find one here without those, that is a defect and worth telling us about.
 

@@ -10,7 +10,7 @@ Every page below is available as markdown at the same path with a .md extension.
 
 ## Guides
 
-- [Guides index](https://it-rat.com/guides.md): Ten guides: six on the field of AI agent governance, and four on running this stack in practice, from a first alert to what the numbers prove.
+- [Guides index](https://it-rat.com/guides.md): Eleven guides: seven on the field of AI agent governance, and four on running this stack, from a first alert to what the numbers prove.
 - [AI agent governance](https://it-rat.com/ai-agent-governance.md): What AI agent governance means in practice: budgets, policy, identity, provenance, quality and drills applied while an agent runs, not after.
 - [FinOps for AI](https://it-rat.com/finops-for-ai.md): FinOps applied to LLM and agent spend: the unit of work, per-run budgets, reserve-then-settle, FOCUS showback and cost per resolved case.
 - [AI agent security](https://it-rat.com/ai-agent-security.md): The failure modes an autonomous agent introduces, the runtime guardrail that answers each one, and how to rehearse them in CI. Defensive practice.

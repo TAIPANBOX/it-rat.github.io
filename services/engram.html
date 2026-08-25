@@ -226,24 +226,26 @@
   </div>
 </section>
 
-<!-- ================= COMPARISON ================= -->
+<!-- ================= WHAT IT HOLDS ================= -->
 <section class="sec" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">an honest comparison</div>
+      <div class="kicker">what it holds</div>
       <h2>Similarity is a fraction of memory.</h2>
-      <p class="lede">Pinecone, Weaviate and pgvector are good at the problem they chose: similarity search over large corpora. Engram ships a vector index too, in-process. The difference is everything similarity cannot answer: when a fact was true, where it came from, whether two beliefs disagree. The third column is what most agents actually run on today.</p>
+      <p class="lede">Engram ships a vector index, in-process, and then answers the questions similarity cannot: when a fact was true, where it came from, and whether two beliefs disagree.</p>
     </div>
     <div class="tbl-scroll rv">
       <table class="tbl">
-        <thead><tr><th></th><th>Engram</th><th>Vector DBs</th><th>Raw chat history</th></tr></thead>
+        <thead><tr><th>Question an agent asks</th><th>What answers it</th></tr></thead>
         <tbody>
-          <tr><td>What it stores</td><td class="yes">Memories with provenance</td><td class="warn">Embeddings of text</td><td class="no">Transcripts</td></tr>
-          <tr><td>Reasons over time</td><td class="yes">Bitemporal: valid + recorded</td><td class="no">No</td><td class="no">No</td></tr>
-          <tr><td>Explains itself</td><td class="yes">why() chain to source episodes</td><td class="no">No</td><td class="no">No</td></tr>
-          <tr><td>Contradiction handling</td><td class="yes">Detected, flagged as events</td><td class="no">Not a concept</td><td class="no">None</td></tr>
-          <tr><td>Runs where</td><td class="yes">In-process, one file</td><td class="warn">Managed service</td><td class="warn">In your prompt window</td></tr>
-          <tr><td>Forget a person</td><td class="yes">Targeted GDPR erase</td><td class="warn">Delete by id, if you kept the ids</td><td class="no">Impossible</td></tr>
+          <tr><td>Find what I mean, not only what I typed</td><td class="yes">Hybrid recall: BM25 and cosine, blended</td></tr>
+          <tr><td>What was true in March, before we knew better</td><td class="yes">Bitemporal facts: valid time and recorded time</td></tr>
+          <tr><td>Why do you believe that</td><td class="yes">why(), a chain back to the source episodes</td></tr>
+          <tr><td>These two things disagree</td><td class="yes">Contradictions detected and recorded as events</td></tr>
+          <tr><td>Reach what the match is connected to</td><td class="yes">Spreading activation over Hebbian edges</td></tr>
+          <tr><td>Stay useful instead of growing</td><td class="yes">Importance decay, and reflection prunes the bottom</td></tr>
+          <tr><td>Forget a person</td><td class="yes">Targeted erase by episode, entity or fact</td></tr>
+          <tr><td>Run it anywhere</td><td class="yes">In-process, one file, no server and no key to write</td></tr>
         </tbody>
       </table>
     </div>
