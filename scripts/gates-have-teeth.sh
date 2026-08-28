@@ -188,7 +188,7 @@ json.dump(d, open(p, "w"), indent=2)')" \
 # four times while the .html beside it was gated.
 run_case "service-numbers: an unowned figure in a .md twin, which the sweep could not see" fail \
 	'./scripts/service-numbers.sh' \
-	"$(py 'p = "services/sphere.md"
+	"$(py 'p = "services/qryx.md"
 s = open(p).read()
 assert s, p + " is empty"
 open(p, "w").write(s + "\n\n41 invariants live in this plane.\n")')" \
