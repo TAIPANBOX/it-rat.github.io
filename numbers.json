@@ -21,26 +21,26 @@
   "entries": [
     {
       "page": "services/trailryx.html",
-      "claim": "1,178 tests · 31 crates",
+      "claim": "1,204 tests · 31 crates",
       "occurrences": 1,
       "repo": "TAIPANBOX/trailryx",
       "command": "cargo test --workspace, summed; and ./scripts/readme-numbers.sh, which gates the same figure inside that repository",
       "status": "measured",
-      "measured_on": "2026-08-20",
-      "note": "The strongest entry here: the repository refuses its own push when this number drifts, so the site only has to keep up with a figure that is already true. It did not keep up. On 2026-08-20 the repo gate said 1178 and this page still said 1,172, six behind since 2026-08-10. The repo being honest is what makes the drift measurable, not what prevents it.",
+      "measured_on": "2026-08-28",
+      "note": "Measured 1204 by an actual cargo test --workspace on 2026-08-28; the page said 1,178, twenty-six behind after eight days. Third time in a row this figure has been the one that drifts, and the reason is in the entry below it: the repository gates its own badge, so the number is always true THERE and the site is the copy that falls behind. The strongest entry here: the repository refuses its own push when this number drifts, so the site only has to keep up with a figure that is already true. It did not keep up. On 2026-08-20 the repo gate said 1178 and this page still said 1,172, six behind since 2026-08-10. The repo being honest is what makes the drift measurable, not what prevents it.",
       "repo_dir": "trailryx",
       "check": "./scripts/readme-numbers.sh | grep -oE '^[0-9]+' | head -1",
       "slow": true
     },
     {
       "page": "services/tokenfuse.html",
-      "claim": "814 tests",
+      "claim": "1,107 tests",
       "occurrences": 1,
       "repo": "TAIPANBOX/tokenfuse",
       "command": "cargo test --all, summed over every `test result` line",
       "status": "measured",
-      "measured_on": "2026-08-20",
-      "note": "Found stale by this file's own first run: the page said 513 and `cargo test --all` sums to 709. The gap, not the number, is why this file exists, so it is recorded here rather than only in git history. Unlike trailryx, this repository has no gate on its own README figure, so nothing but this entry will notice the next drift.",
+      "measured_on": "2026-08-28",
+      "note": "Measured 1107 on 2026-08-28 against a page saying 814: 293 behind, the largest gap this manifest has recorded. Found stale by this file's own first run: the page said 513 and `cargo test --all` sums to 709. The gap, not the number, is why this file exists, so it is recorded here rather than only in git history. Unlike trailryx, this repository has no gate on its own README figure, so nothing but this entry will notice the next drift.",
       "repo_dir": "tokenfuse",
       "check": "cargo test --all 2>&1 | grep -E '^test result' | awk '{s+=$4} END {print s}'",
       "slow": true
@@ -73,15 +73,15 @@
     },
     {
       "page": "services/verdryx.html",
-      "claim": "300 tests",
+      "claim": "361 tests",
       "occurrences": 2,
       "repo": "verdryx",
       "command": "python3 -m pytest --collect-only -q",
       "status": "measured",
-      "measured_on": "2026-08-10",
-      "note": "Was 217 on the page and collects 292, with no errors and nothing skipped.",
+      "measured_on": "2026-08-28",
+      "note": "Was 300 and measured 361, sixty-one behind. The check printed NOTHING before today, which the drift tool reports as unmeasured rather than as agreement, and that is the only reason the gap was visible at all: system python3 has no pytest on this machine and the interpreter is EXTERNALLY-MANAGED. It now prefers the repository's own .venv when there is one, so the figure is measurable without installing anything.",
       "repo_dir": "verdryx",
-      "check": "${PYTHON:-python3} -m pytest --collect-only -q 2>/dev/null | grep -oE '^[0-9]+ tests? collected' | grep -oE '^[0-9]+'",
+      "check": "${PYTHON:-$([ -x .venv/bin/python ] && echo .venv/bin/python || echo python3)} -m pytest --collect-only -q 2>/dev/null | grep -oE '^[0-9]+ tests? collected' | grep -oE '^[0-9]+'",
       "slow": false
     },
     {
@@ -112,13 +112,13 @@
     },
     {
       "page": "services/platform.html",
-      "claim": "85 documented and already fixed",
+      "claim": "87 documented and already fixed",
       "occurrences": 1,
       "repo": "TAIPANBOX/stack-k8s",
       "command": "./scripts/gotchas-classified.sh, which prints the total and the four-way split",
       "status": "measured",
-      "measured_on": "2026-08-20",
-      "note": "Said 70 while the repository counted 79, and the prose beside it said sixty-nine, now seventy-eight. This check walked past both because its pattern knew tests, crates, detectors and entries and the page used a fifth noun: a stale figure sitting inside the thing written to catch stale figures. The pattern is wider now, which is the fix; that it needed widening at all is the lesson.",
+      "measured_on": "2026-08-28",
+      "note": "Two more traps documented in stack-k8s since 2026-08-20. Said 70 while the repository counted 79, and the prose beside it said sixty-nine, now seventy-eight. This check walked past both because its pattern knew tests, crates, detectors and entries and the page used a fifth noun: a stale figure sitting inside the thing written to catch stale figures. The pattern is wider now, which is the fix; that it needed widening at all is the lesson.",
       "repo_dir": "stack-k8s",
       "check": "./scripts/gotchas-classified.sh | grep -oE '[0-9]+ gotchas' | grep -oE '[0-9]+'",
       "slow": false
@@ -137,15 +137,16 @@
     },
     {
       "page": "services/platform.html",
-      "claim": "v0.7.0",
+      "claim": "v0.8.0",
       "occurrences": 1,
       "status": "measured",
       "repo": "TAIPANBOX/agent-stack-go",
       "command": "gh release view -R TAIPANBOX/agent-stack-go --json tagName --jq .tagName; this page states it four times, twice inside install commands, so a tag cut in that repository makes four claims wrong here at once; down to one occurrence, the `go get` line, which stays pinned because agent-stack-go's own README forbids @latest for the library. `go install` of the agent-conform COMMAND is now @latest, since nothing lands in a consumer's go.mod",
-      "measured_on": "2026-08-20",
+      "measured_on": "2026-08-28",
       "repo_dir": null,
       "check": "gh release view -R TAIPANBOX/agent-stack-go --json tagName --jq .tagName",
-      "slow": false
+      "slow": false,
+      "note": "agent-stack-go cut v0.8.0. This one sits INSIDE a `go get ...@` install command, so a stale value here is not a wrong sentence, it is a reader installing the wrong version. "
     },
     {
       "page": "services/scopyx.html",
@@ -181,9 +182,7 @@
       "command": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l",
       "status": "measured",
       "measured_on": "2026-08-28",
-      "note": "The page carried 22 for this same figure while saying 27 five times elsewhere on itself, so the published page contradicted itself. Registered because the sweep that finds unowned figures reads services/*.html only and matches digits only: neither the .md twin, which is published and linked from llms.txt, nor a number written out in words was reachable by it.",
-      "repo_dir": "Idryx",
-      "check": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l | tr -d ' '",
+      "note": "Deliberately carries NO check. The drift tool compares a measured value against the claim text, and a measurement returns 27 while this claim spells it out, so any check here reports DRIFTED forever on correct copy. The measurement lives on the digit entry for the same page; this entry exists so the words cannot fall out of step with it, and service-numbers.sh holds that, proved by planting the fault. One of the two occurrences is inside the FAQPage JSON-LD, where a search engine reads it and no person will.",
       "slow": false
     },
     {
@@ -207,9 +206,46 @@
       "command": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l",
       "status": "measured",
       "measured_on": "2026-08-28",
-      "note": "The page carried 22 for this same figure while saying 27 five times elsewhere on itself, so the published page contradicted itself. Registered because the sweep that finds unowned figures reads services/*.html only and matches digits only: neither the .md twin, which is published and linked from llms.txt, nor a number written out in words was reachable by it.",
+      "note": "Deliberately carries NO check. The drift tool compares a measured value against the claim text, and a measurement returns 27 while this claim spells it out, so any check here reports DRIFTED forever on correct copy. The measurement lives on the digit entry for the same page; this entry exists so the words cannot fall out of step with it, and service-numbers.sh holds that, proved by planting the fault. One of the two occurrences is inside the FAQPage JSON-LD, where a search engine reads it and no person will.",
+      "slow": false
+    },
+    {
+      "page": "services/verdryx.md",
+      "claim": "361 tests",
+      "occurrences": 1,
+      "repo": "verdryx",
+      "command": "python3 -m pytest --collect-only -q",
+      "status": "measured",
+      "measured_on": "2026-08-28",
+      "note": "The .md twin is published and linked from llms.txt, and the sweep for unowned figures globs services/*.html, so this copy of the same claim was held by nothing.",
+      "repo_dir": "verdryx",
+      "check": "${PYTHON:-$([ -x .venv/bin/python ] && echo .venv/bin/python || echo python3)} -m pytest --collect-only -q 2>/dev/null | grep -oE '^[0-9]+ tests? collected' | grep -oE '^[0-9]+'",
+      "slow": false
+    },
+    {
+      "page": "services/idryx.md",
+      "claim": "27 detectors",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/idryx",
+      "command": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l",
+      "status": "measured",
+      "measured_on": "2026-08-28",
+      "note": "The .md twin, published and linked from llms.txt. Held by nothing until the sweep learned to read .md on 2026-08-28; this entry is what that sweep found.",
       "repo_dir": "Idryx",
       "check": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l | tr -d ' '",
+      "slow": false
+    },
+    {
+      "page": "services/platform.md",
+      "claim": "32 entries",
+      "occurrences": 2,
+      "repo": "TAIPANBOX/agent-stack-go",
+      "command": "grep -n 'MaxDepth = ' chain/chain.go",
+      "status": "measured",
+      "measured_on": "2026-08-28",
+      "note": "The .md twin, published and linked from llms.txt. Held by nothing until the sweep learned to read .md on 2026-08-28; this entry is what that sweep found.",
+      "repo_dir": "agent-stack-go",
+      "check": "grep -h 'MaxDepth = ' chain/chain.go | grep -oE '[0-9]+'",
       "slow": false
     }
   ]

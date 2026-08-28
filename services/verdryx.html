@@ -208,7 +208,7 @@
         </details>
       </div>
       <div class="card hover feature b-4 rv"><h3>Zero-dependency core</h3><p>The eval runner, graders and drift math import nothing but the standard library. Anthropic and Parquet support are opt-in extras, not a tax on the common path.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>Offline test suite</h3><p>300 tests run against a deterministic StubLLMAdapter, no network, no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.</p></div>
+      <div class="card hover feature b-4 rv d1"><h3>Offline test suite</h3><p>361 tests run against a deterministic StubLLMAdapter, no network, no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.</p></div>
       <div class="card hover feature b-4 rv d2"><h3>Defensive by design</h3><p>Grades an operator's own agents against an eval set or a production outcome tag. The README puts it plainly: it &#8220;never manipulates outputs, never crafts adversarial prompts, and never attacks anything.&#8221;</p></div>
     </div>
   </div>
@@ -332,7 +332,7 @@ Sim.mount(document.getElementById("vx-sim"),{
   title:"simulated replay · an afternoon of support agents, priced by outcome",
   window:60, duration:16000,
   clock:t=>t.toFixed(1)+"s",
-  badges:[{label:"offline suite",color:"#34D399"},{label:"300 tests",color:"#FF7AA2"}],
+  badges:[{label:"offline suite",color:"#34D399"},{label:"361 tests",color:"#FF7AA2"}],
   stage:{mode:"priced",
     batches:[{t:10,n:12},{t:20,n:12},{t:30,n:11},{t:38,n:10},{t:48,n:9},{t:56,n:8}],
     lockT:30, lockV:0.00042, bandT:38, driftT:48, otlpT:56, tol:0.00007, yMax:0.00095},

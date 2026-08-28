@@ -129,12 +129,57 @@ for e in entries:
     if e.get("status") != "measured":
         unverified.append((e["page"], claim, e.get("status"), e.get("command")))
 
+# A number spelled out in words, but ONLY inside structured data.
+#
+# A blanket sweep for spelled-out numbers was written, measured and thrown away
+# on 2026-08-28. Across the site it fired on three correct sentences, and two of
+# them are records of a run that happened: "the same three detectors fired
+# against a real Postgres 16", "three of these five scenarios ran live". Those
+# are true forever, like the version in heraldyx's script comment below, and a
+# check that fails on correct copy is one everybody learns to skip.
+#
+# Inside JSON-LD the calculus is the opposite. A figure there is read by a
+# machine and by nobody who could notice it had gone stale, and it is the copy
+# that outlives the sentence it was lifted from. Measured on the same day: three
+# figures live in structured data across the whole site and every one has an
+# owner, so this fires on nothing that is right.
+#
+# It would have caught the case it was written for. idryx's FAQPage carried
+# "Twenty-two deterministic detectors" while five places on the same page said
+# 27, and the page shipped that way.
+LD_FIGURE = re.compile(
+    r"\b(?:[0-9][0-9,]*|One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten|Eleven|Twelve|"
+    r"Thirteen|Fourteen|Fifteen|Sixteen|Seventeen|Eighteen|Nineteen|Twenty|Thirty|Forty|"
+    r"Fifty|Sixty|Seventy|Eighty|Ninety)(?:-[a-z]+)?\s+(?:deterministic\s+)?"
+    r"(?:tests|crates|detectors|entries|documented|gotchas|scenarios|checks|invariants)",
+    re.I,
+)
+LD_BLOCK = re.compile(
+    r'<script[^>]*type="application/ld\+json"[^>]*>(.*?)</script>', re.S | re.I
+)
+
+
+def structured_data(text):
+    """Just the JSON-LD blocks, concatenated."""
+    return " ".join(LD_BLOCK.findall(text))
+
+
 # A number on a page that nobody put in the manifest is the case this whole file
 # exists for, so it is found rather than assumed away.
+#
+# The .md twins are swept too, since 2026-08-28. They are published, llms.txt
+# links them by URL, and until that day nothing read their figures: idryx.md
+# carried "22 deterministic detectors" four times, and verdryx.md said 300 tests
+# against a suite that collects 361. Both were invisible because this loop
+# globbed *.html and stopped there.
 managed = {(e["page"], e["claim"]) for e in entries}
-for page in sorted(pathlib.Path("services").glob("*.html")):
+pages = sorted(pathlib.Path("services").glob("*.html"))
+pages += sorted(pathlib.Path("services").glob("*.md"))
+for page in pages:
     text = page.read_text().replace("&#183;", "·")
-    sweeps = ((FIGURE, text), (VERSION, outside_scripts(text)))
+    sweeps = [(FIGURE, text), (VERSION, outside_scripts(text))]
+    if page.suffix == ".html":
+        sweeps.append((LD_FIGURE, structured_data(text)))
     for pattern, subject in sweeps:
         for m in set(pattern.findall(subject)):
             if any(m in c for p, c in managed if p == str(page)):

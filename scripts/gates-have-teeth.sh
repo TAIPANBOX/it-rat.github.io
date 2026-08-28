@@ -182,6 +182,34 @@ d["entries"] = d["entries"][1:]
 json.dump(d, open(p, "w"), indent=2)')" \
 	"FAIL"
 
+# The same invariant, on the half of the site the sweep could not read until
+# 2026-08-28. The .md twins are published and llms.txt links them by URL, and
+# the loop globbed *.html only, so idryx.md said "22 deterministic detectors"
+# four times while the .html beside it was gated.
+run_case "service-numbers: an unowned figure in a .md twin, which the sweep could not see" fail \
+	'./scripts/service-numbers.sh' \
+	"$(py 'p = "services/sphere.md"
+s = open(p).read()
+assert s, p + " is empty"
+open(p, "w").write(s + "\n\n41 invariants live in this plane.\n")')" \
+	"nothing in numbers.json owns it"
+
+# And the half no person reads. A figure inside JSON-LD is read by a machine,
+# outlives the sentence it came from, and is spelled out often enough that a
+# digit pattern walks past it: idryx shipped "Twenty-two deterministic
+# detectors" in its FAQPage while five places on the same page said 27.
+#
+# The mutation adds an UNOWNED spelled figure and leaves the owned one alone,
+# so it can only be caught by the structured-data sweep. The digit pattern
+# cannot see "Twelve checks" at all, which is the point of the case.
+run_case "service-numbers: an unowned figure spelled out inside JSON-LD" fail \
+	'./scripts/service-numbers.sh' \
+	"$(py 'edit("services/idryx.html",
+     "Twenty-seven deterministic detectors in four families",
+     "Twenty-seven deterministic detectors in four families, plus Twelve checks,")')" \
+	"nothing in numbers.json owns it"
+
+
 # Invariant 7. This case could not exist until 2026-08-10: the gate was red on
 # a clean tree here (the published demo was older than `apps/web`), so any case
 # written against it would have measured nothing, which is what the UNJUDGEABLE
