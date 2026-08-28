@@ -54,7 +54,7 @@ The eval runner, graders and drift math import nothing but the standard library.
 
 ### Offline test suite
 
-361 tests run against a deterministic StubLLMAdapter, no network, no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.
+365 tests run against a deterministic StubLLMAdapter, no network, no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.
 
 ### Defensive by design
 
