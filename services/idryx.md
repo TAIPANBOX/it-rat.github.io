@@ -2,9 +2,9 @@
 
 # Idryx, the access plane
 
-> One identity graph for humans, keys, service accounts and AI agents: delegation chains, blast radius, 22 deterministic detectors and a CycloneDX Agent-BOM.
+> One identity graph for humans, keys, service accounts and AI agents: delegation chains, blast radius, 27 deterministic detectors and a CycloneDX Agent-BOM.
 
-Your IdP counts the humans. Nobody counts the keys, the service accounts, or the agents acting on their behalf. Idryx reads what Okta, Entra, AWS, GCP and Azure already log, adds the agent-event bus, stitches all of it into one identity graph with delegation chains and blast radius, and runs 22 deterministic detectors over the result. Read-only by design: it proposes Terraform diffs, it never applies.
+Your IdP counts the humans. Nobody counts the keys, the service accounts, or the agents acting on their behalf. Idryx reads what Okta, Entra, AWS, GCP and Azure already log, adds the agent-event bus, stitches all of it into one identity graph with delegation chains and blast radius, and runs 27 deterministic detectors over the result. Read-only by design: it proposes Terraform diffs, it never applies.
 
 ## Watch the graph catch a runaway.
 
@@ -32,7 +32,7 @@ They are connected by a deliberately small set of edges. `on_behalf_of` is the d
 
 Resolving those edges is what makes blast radius computable: an identity's reach is the union of every permission along its chain, not the list of grants attached to its own name. That distinction is the difference between a key that looks harmless and a key that reaches admin two hops away.
 
-### 22 deterministic detectors
+### 27 deterministic detectors
 
 Statistics and rules over the graph, in four families. The LLM is never in the detection path, so every finding is reproducible and auditable.
 
@@ -62,16 +62,18 @@ A Linux-only sensor on the sys_enter_connect tracepoint captures real outbound c
 
 ## Built for the identities that never log in.
 
-SailPoint and CyberArk are serious IGA products for the identities they were built around: employees with logins. Idryx does not replace them, and it reads Okta and Entra as sources of truth. The difference is who gets first-class treatment: the keys, service accounts and agents that never log in at all.
+Your IdP counts the humans. The keys, service accounts and agents acting on their behalf are what this is built around: an agent is a node kind here, not a field bolted onto a user record. It reads Okta, Entra, AWS, GCP and Azure as sources of truth and proposes changes back as Terraform, never applying them itself.
 
-|  | Idryx | IGA suites | Spreadsheets + scripts |
-|---|---|---|---|
-| Covers AI agents natively | Yes: agents are a node kind | Bolted on | No |
-| Time to first insight | Minutes: point it at logs | Quarters of rollout | Weeks of grep |
-| Enforcement stance | Read-only, proposes diffs | Heavy write access | Manual |
-| Delegation chains for agents | First-class, root-first | Rare | No |
-| Evidence output | CycloneDX Agent-BOM | Proprietary reports | None |
-| Price | Apache-2.0 | Six figures | Your weekends |
+| Question you ask | What answers it |
+|---|---|
+| What is acting in my estate, and on whose behalf | One graph of humans, service accounts, keys, agents and MCP servers |
+| Who let this agent do that | Delegation chains, resolved root-first to the human at the top |
+| What breaks if this credential is taken | Blast radius, computed over the graph |
+| What is wrong right now | 27 deterministic detectors, each one named and separately testable |
+| What reached an LLM API that nobody provisioned | The eBPF sensor, and unmanaged_egress for identities it is the only evidence of |
+| Prove it to an auditor | A CycloneDX Agent-BOM, generated from the graph rather than typed up |
+| Change something | It proposes a Terraform diff. Applying it stays your decision |
+| Start today | Point it at logs you already keep. Apache-2.0, on hardware you own |
 
 ### The one that reads everything and touches nothing.
 
@@ -97,4 +99,4 @@ No. It is read-only by design: connectors read, and the output is an alert, a bi
 A CycloneDX 1.6 bill of materials for your agents: who owns each one, what runtime it runs on, what it is attested by, and what it can reach. It plugs into the same supply-chain tooling that already ingests your SBOMs.
 
 **Q: What does it actually detect?**
-Twenty-two deterministic detectors in four families: identity threats, non-human identity hygiene, agents and AI, and least privilege. Detection is statistics and rules over the graph; the model is never in the detection path, so every finding is reproducible and defensible in an audit.
+Twenty-seven deterministic detectors in four families: identity threats, non-human identity hygiene, agents and AI, and least privilege. Detection is statistics and rules over the graph; the model is never in the detection path, so every finding is reproducible and defensible in an audit.

@@ -159,6 +159,58 @@
       "repo_dir": null,
       "check": "gh api repos/TAIPANBOX/scopyx/tags --jq '.[0].name'",
       "slow": false
+    },
+    {
+      "page": "services/idryx.html",
+      "claim": "27 deterministic detectors",
+      "occurrences": 7,
+      "repo": "TAIPANBOX/idryx",
+      "command": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l",
+      "status": "measured",
+      "measured_on": "2026-08-28",
+      "note": "The page carried 22 for this same figure while saying 27 five times elsewhere on itself, so the published page contradicted itself. Registered because the sweep that finds unowned figures reads services/*.html only and matches digits only: neither the .md twin, which is published and linked from llms.txt, nor a number written out in words was reachable by it.",
+      "repo_dir": "Idryx",
+      "check": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l | tr -d ' '",
+      "slow": false
+    },
+    {
+      "page": "services/idryx.html",
+      "claim": "Twenty-seven deterministic detectors",
+      "occurrences": 2,
+      "repo": "TAIPANBOX/idryx",
+      "command": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l",
+      "status": "measured",
+      "measured_on": "2026-08-28",
+      "note": "The page carried 22 for this same figure while saying 27 five times elsewhere on itself, so the published page contradicted itself. Registered because the sweep that finds unowned figures reads services/*.html only and matches digits only: neither the .md twin, which is published and linked from llms.txt, nor a number written out in words was reachable by it.",
+      "repo_dir": "Idryx",
+      "check": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l | tr -d ' '",
+      "slow": false
+    },
+    {
+      "page": "services/idryx.md",
+      "claim": "27 deterministic detectors",
+      "occurrences": 4,
+      "repo": "TAIPANBOX/idryx",
+      "command": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l",
+      "status": "measured",
+      "measured_on": "2026-08-28",
+      "note": "The page carried 22 for this same figure while saying 27 five times elsewhere on itself, so the published page contradicted itself. Registered because the sweep that finds unowned figures reads services/*.html only and matches digits only: neither the .md twin, which is published and linked from llms.txt, nor a number written out in words was reachable by it.",
+      "repo_dir": "Idryx",
+      "check": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l | tr -d ' '",
+      "slow": false
+    },
+    {
+      "page": "services/idryx.md",
+      "claim": "Twenty-seven deterministic detectors",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/idryx",
+      "command": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l",
+      "status": "measured",
+      "measured_on": "2026-08-28",
+      "note": "The page carried 22 for this same figure while saying 27 five times elsewhere on itself, so the published page contradicted itself. Registered because the sweep that finds unowned figures reads services/*.html only and matches digits only: neither the .md twin, which is published and linked from llms.txt, nor a number written out in words was reachable by it.",
+      "repo_dir": "Idryx",
+      "check": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l | tr -d ' '",
+      "slow": false
     }
   ]
 }

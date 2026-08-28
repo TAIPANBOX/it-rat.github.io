@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Idryx - AI agent identity and access inventory · IT-RAT</title>
-<meta name="description" content="One identity graph for humans, keys, service accounts and AI agents: delegation chains, blast radius, 22 deterministic detectors and a CycloneDX Agent-BOM.">
+<meta name="description" content="One identity graph for humans, keys, service accounts and AI agents: delegation chains, blast radius, 27 deterministic detectors and a CycloneDX Agent-BOM.">
 <link rel="canonical" href="https://it-rat.com/services/idryx.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/services/idryx.html">
 <meta property="og:title" content="Idryx - AI agent identity and access inventory · IT-RAT">
-<meta property="og:description" content="Read-only connectors stitch humans, service accounts, keys and AI agents into one identity graph: delegation chains, blast radius, 22 deterministic detectors and a CycloneDX 1.6 Agent-BOM. Proposes diffs, never applies.">
+<meta property="og:description" content="Read-only connectors stitch humans, service accounts, keys and AI agents into one identity graph: delegation chains, blast radius, 27 deterministic detectors and a CycloneDX 1.6 Agent-BOM. Proposes diffs, never applies.">
 <meta property="og:image" content="https://it-rat.com/assets/og/idryx.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Idryx - AI agent identity and access inventory · IT-RAT">
-<meta name="twitter:description" content="Read-only connectors stitch humans, service accounts, keys and AI agents into one identity graph: delegation chains, blast radius, 22 deterministic detectors and a CycloneDX 1.6 Agent-BOM. Proposes diffs, never applies.">
+<meta name="twitter:description" content="Read-only connectors stitch humans, service accounts, keys and AI agents into one identity graph: delegation chains, blast radius, 27 deterministic detectors and a CycloneDX 1.6 Agent-BOM. Proposes diffs, never applies.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/idryx.png">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="icon" type="image/png" href="../favicon.png">
@@ -50,7 +50,7 @@
   .install .note{color:var(--faint);font-size:11.5px;margin-left:auto}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Idryx","url":"https://it-rat.com/services/idryx.html","description":"One identity graph for humans, keys, service accounts and AI agents: delegation chains, blast radius, 22 deterministic detectors and a CycloneDX Agent-BOM.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/idryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"Idryx","item":"https://it-rat.com/services/idryx.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I find every AI agent and service account we actually have?","acceptedAnswer":{"@type":"Answer","text":"Idryx reads what Okta, Entra, AWS, GCP and Azure already log, adds the agent-event bus the rest of the stack writes, and stitches all of it into one graph of humans, service accounts, keys, agents and MCP servers. The answer comes from the graph, not from a spreadsheet someone maintained until they left."}},{"@type":"Question","name":"Will it change anything in my cloud?","acceptedAnswer":{"@type":"Answer","text":"No. It is read-only by design: connectors read, and the output is an alert, a bill of materials, or a Terraform diff a human applies. It never writes back."}},{"@type":"Question","name":"What is an Agent-BOM?","acceptedAnswer":{"@type":"Answer","text":"A CycloneDX 1.6 bill of materials for your agents: who owns each one, what runtime it runs on, what it is attested by, and what it can reach. It plugs into the same supply-chain tooling that already ingests your SBOMs."}},{"@type":"Question","name":"What does it actually detect?","acceptedAnswer":{"@type":"Answer","text":"Twenty-two deterministic detectors in four families: identity threats, non-human identity hygiene, agents and AI, and least privilege. Detection is statistics and rules over the graph; the model is never in the detection path, so every finding is reproducible and defensible in an audit."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Idryx","url":"https://it-rat.com/services/idryx.html","description":"One identity graph for humans, keys, service accounts and AI agents: delegation chains, blast radius, 27 deterministic detectors and a CycloneDX Agent-BOM.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/idryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"Idryx","item":"https://it-rat.com/services/idryx.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I find every AI agent and service account we actually have?","acceptedAnswer":{"@type":"Answer","text":"Idryx reads what Okta, Entra, AWS, GCP and Azure already log, adds the agent-event bus the rest of the stack writes, and stitches all of it into one graph of humans, service accounts, keys, agents and MCP servers. The answer comes from the graph, not from a spreadsheet someone maintained until they left."}},{"@type":"Question","name":"Will it change anything in my cloud?","acceptedAnswer":{"@type":"Answer","text":"No. It is read-only by design: connectors read, and the output is an alert, a bill of materials, or a Terraform diff a human applies. It never writes back."}},{"@type":"Question","name":"What is an Agent-BOM?","acceptedAnswer":{"@type":"Answer","text":"A CycloneDX 1.6 bill of materials for your agents: who owns each one, what runtime it runs on, what it is attested by, and what it can reach. It plugs into the same supply-chain tooling that already ingests your SBOMs."}},{"@type":"Question","name":"What does it actually detect?","acceptedAnswer":{"@type":"Answer","text":"Twenty-seven deterministic detectors in four families: identity threats, non-human identity hygiene, agents and AI, and least privilege. Detection is statistics and rules over the graph; the model is never in the detection path, so every finding is reproducible and defensible in an audit."}}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-service="idryx" data-root="../">
@@ -74,7 +74,7 @@
       <div>
         <div class="kicker rv">access plane &#183; wave 1</div>
         <h1 class="rv d1"><span class="nm">Idryx</span>. Every identity on one graph, every unused grant on notice.</h1>
-        <p class="lede rv d2">Your IdP counts the humans. Nobody counts the keys, the service accounts, or the agents acting on their behalf. Idryx reads what Okta, Entra, AWS, GCP and Azure already log, adds the agent-event bus, stitches all of it into one identity graph with delegation chains and blast radius, and runs 22 deterministic detectors over the result. Read-only by design: it proposes Terraform diffs, it never applies.</p>
+        <p class="lede rv d2">Your IdP counts the humans. Nobody counts the keys, the service accounts, or the agents acting on their behalf. Idryx reads what Okta, Entra, AWS, GCP and Azure already log, adds the agent-event bus, stitches all of it into one identity graph with delegation chains and blast radius, and runs 27 deterministic detectors over the result. Read-only by design: it proposes Terraform diffs, it never applies.</p>
         <div class="cta-row rv d3">
           <a class="btn primary" href="#sim">Watch a runaway get caught <span class="mono">&#9654;</span></a>
           <a class="btn" href="https://github.com/TAIPANBOX/idryx" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="flex:0 0 auto"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg> GitHub</a>
@@ -191,7 +191,7 @@
           </div>
         </details>
       </div>
-      <div class="card hover feature b-4 rv d2"><h3>22 deterministic detectors</h3><p>Statistics and rules over the graph, in four families. The LLM is never in the detection path, so every finding is reproducible and auditable.</p>
+      <div class="card hover feature b-4 rv d2"><h3>27 deterministic detectors</h3><p>Statistics and rules over the graph, in four families. The LLM is never in the detection path, so every finding is reproducible and auditable.</p>
         <details class="sheet" data-sheet-kicker="detection" data-sheet-title="What the 27 detectors look for, and why none of them ask a model">
           <summary>What they look for</summary>
           <div class="sheet-in">
@@ -210,24 +210,26 @@
   </div>
 </section>
 
-<!-- ================= COMPARISON ================= -->
+<!-- ================= WHAT IT ANSWERS ================= -->
 <section class="sec" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">an honest comparison</div>
+      <div class="kicker">what it answers</div>
       <h2>Built for the identities that never log in.</h2>
-      <p class="lede">SailPoint and CyberArk are serious IGA products for the identities they were built around: employees with logins. Idryx does not replace them, and it reads Okta and Entra as sources of truth. The difference is who gets first-class treatment: the keys, service accounts and agents that never log in at all.</p>
+      <p class="lede">Your IdP counts the humans. The keys, service accounts and agents acting on their behalf are what this is built around: an agent is a node kind here, not a field bolted onto a user record. It reads Okta, Entra, AWS, GCP and Azure as sources of truth and proposes changes back as Terraform, never applying them itself.</p>
     </div>
     <div class="tbl-scroll rv">
       <table class="tbl">
-        <thead><tr><th></th><th>Idryx</th><th>IGA suites</th><th>Spreadsheets + scripts</th></tr></thead>
+        <thead><tr><th>Question you ask</th><th>What answers it</th></tr></thead>
         <tbody>
-          <tr><td>Covers AI agents natively</td><td class="yes">Yes: agents are a node kind</td><td class="warn">Bolted on</td><td class="no">No</td></tr>
-          <tr><td>Time to first insight</td><td class="yes">Minutes: point it at logs</td><td class="no">Quarters of rollout</td><td class="warn">Weeks of grep</td></tr>
-          <tr><td>Enforcement stance</td><td class="yes">Read-only, proposes diffs</td><td class="warn">Heavy write access</td><td class="no">Manual</td></tr>
-          <tr><td>Delegation chains for agents</td><td class="yes">First-class, root-first</td><td class="warn">Rare</td><td class="no">No</td></tr>
-          <tr><td>Evidence output</td><td class="yes">CycloneDX Agent-BOM</td><td class="warn">Proprietary reports</td><td class="no">None</td></tr>
-          <tr><td>Price</td><td class="yes">Apache-2.0</td><td class="no">Six figures</td><td class="warn">Your weekends</td></tr>
+          <tr><td>What is acting in my estate, and on whose behalf</td><td>One graph of humans, service accounts, keys, agents and MCP servers</td></tr>
+          <tr><td>Who let this agent do that</td><td>Delegation chains, resolved root-first to the human at the top</td></tr>
+          <tr><td>What breaks if this credential is taken</td><td>Blast radius, computed over the graph</td></tr>
+          <tr><td>What is wrong right now</td><td>27 deterministic detectors, each one named and separately testable</td></tr>
+          <tr><td>What reached an LLM API that nobody provisioned</td><td>The eBPF sensor, and unmanaged_egress for identities it is the only evidence of</td></tr>
+          <tr><td>Prove it to an auditor</td><td>A CycloneDX Agent-BOM, generated from the graph rather than typed up</td></tr>
+          <tr><td>Change something</td><td>It proposes a Terraform diff. Applying it stays your decision</td></tr>
+          <tr><td>Start today</td><td>Point it at logs you already keep. Apache-2.0, on hardware you own</td></tr>
         </tbody>
       </table>
     </div>
@@ -287,7 +289,7 @@
       </details>
       <details>
         <summary>What does it actually detect?</summary>
-        <div class="a"><p>Twenty-two deterministic detectors in four families: identity threats, non-human identity hygiene, agents and AI, and least privilege. Detection is statistics and rules over the graph; the model is never in the detection path, so every finding is reproducible and defensible in an audit.</p></div>
+        <div class="a"><p>Twenty-seven deterministic detectors in four families: identity threats, non-human identity hygiene, agents and AI, and least privilege. Detection is statistics and rules over the graph; the model is never in the detection path, so every finding is reproducible and defensible in an audit.</p></div>
       </details>
     </div>
   </div>
