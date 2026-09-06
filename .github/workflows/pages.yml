@@ -40,7 +40,7 @@ jobs:
         ## on a shallow clone every page looks as though it arrived at HEAD.
         ## It refuses rather than answering wrongly, which would fail the
         ## generated-blocks gate here on every deploy.
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
@@ -175,13 +175,13 @@ jobs:
           grep -o 'assets/site\.js?v=[0-9a-f]*' index.html | head -1
 
       - name: Configure Pages
-        uses: actions/configure-pages@v6
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       - name: Upload the site
         ## v5 is what pulls a Node-24 upload-artifact in transitively; pinning
         ## this one lower puts the deprecated runtime back regardless of the
         ## versions above.
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: .
 
@@ -223,7 +223,7 @@ jobs:
       - name: Deploy
         id: deployment
         continue-on-error: true
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
       - name: Wait, then try again
         if: steps.deployment.outcome == 'failure'
@@ -232,7 +232,7 @@ jobs:
         id: deployment2b
         if: steps.deployment.outcome == 'failure'
         continue-on-error: true
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
       - name: Wait longer, then try once more
         if: steps.deployment.outcome == 'failure' && steps.deployment2b.outcome == 'failure'
@@ -241,7 +241,7 @@ jobs:
         id: deployment3
         continue-on-error: true
         if: steps.deployment.outcome == 'failure' && steps.deployment2b.outcome == 'failure'
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
       ## A fourth attempt after a long wait, because the stale flag on GitHub's
       ## side has outlived four minutes more than once. Minutes are free on a
@@ -253,7 +253,7 @@ jobs:
       - name: Deploy, fourth attempt
         id: deployment4
         if: steps.deployment.outcome == 'failure' && steps.deployment2b.outcome == 'failure' && steps.deployment3.outcome == 'failure'
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
       - name: Say plainly whether the site moved
         ## Without this the job can end green on a first-attempt failure that a
