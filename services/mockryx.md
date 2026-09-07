@@ -4,11 +4,11 @@
 
 > Fire drills for your guardrails: YAML scenarios fired at a real gateway, asserting the 402, the 403 and the downstream reaction. Zero real spend, CI-native.
 
-A guardrail nobody has ever fired is a guess. Mockryx replays five hostile scenarios (a fake secret in a prompt, a budget burn, a denied tool, a forged delegation chain, an unapproved action) against the one URL you hand it: your own pre-production gateway, with a fake provider behind it. The enforcement path is the real one; the spend is not. CI reads the verdict as an exit code.
+A guardrail nobody has ever fired is a guess. Mockryx replays nine hostile scenarios (a fake secret in a prompt, a budget burn, a denied tool, a forged delegation chain, an unapproved action, an injected page, a quality drift, a reaction chain that has to reach the mail, and a provider outage) against the one URL you hand it: your own pre-production gateway, with a fake provider behind it. The enforcement path is the real one; the spend is not. CI reads the verdict as an exit code.
 
 ## Watch every guardrail answer for itself.
 
-This is a simulation, and the shape is the real drill record: three of these five scenarios ran live against a real gateway on disposable boxes, twice, and held both times, 0 gaps, $0 real spend. The other two are the Wardryx scenarios that ship in the same set. The provider behind the gateway is fake, so the burn the runaway drill attempts never reaches an invoice.
+This is a simulation replaying five of the nine drills, and the shape is the real record: three of those five ran live against a real gateway on disposable boxes, twice, and held both times, 0 gaps, $0 real spend. The other two are the Wardryx scenarios that ship in the same set. The provider behind the gateway is fake, so the burn the runaway drill attempts never reaches an invoice.
 
 ## One target URL. One report. Three exit codes.
 
