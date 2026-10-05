@@ -12,7 +12,7 @@ This is a simulation, labeled as one: a replay of the envelope's normal day. A p
 
 ## Everything meets at the envelope.
 
-Twelve registered sources write one shape onto one NDJSON bus: five required fields, five optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas, Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.
+Fourteen registered sources write one shape onto one NDJSON bus: five required fields, five optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also the fourteenth source; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.
 
 ## Boring on purpose. Load-bearing anyway.
 
@@ -30,7 +30,7 @@ agent-stack-go ships passport.Parse, an append-only event.Writer and chain.Valid
 
 ### agent-conform
 
-A standalone conformance CLI with the canonical JSON Schemas embedded. Files are classified by their own schema field, and unrecognized content is a FAIL, never silently skipped. Exit 0 or exit 1; it has already caught a real 63-versus-64 hex character prev_hash defect.
+A standalone conformance CLI with the canonical JSON Schemas embedded. Files are classified by their own schema field, and unrecognized content is a FAIL, never silently skipped. Exit 0 or exit 1; it has already caught a real 63-versus-64 hex character prev_hash defect. Since agent-stack-go v1.1.0 it also runs on the box as `watch-dir`: it re-checks every stream's hash chain and writes `chain_broken` (high) or `chain_unchained` (low) to its own stream, exiting 2 on a usage or I/O error. It ships as a signed, distroless image, `ghcr.io/taipanbox/agent-conform`, and runs by default every five minutes on the single box and every fifteen on a cluster.
 
 ### Governance as code
 
@@ -117,4 +117,4 @@ No. There is no shared runtime and no shared database. Adopting it is a naming a
 Yes. Three Terraform resources cover budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending.
 
 **Q: How do I check that my events actually conform?**
-Run `agent-conform`. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect.
+Run `agent-conform`. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect. On a box, `agent-conform watch-dir` re-checks every stream's hash chain and writes a `chain_broken` event to its own stream when one breaks; it exits 2 on a usage or I/O error. Both launchers run it by default.

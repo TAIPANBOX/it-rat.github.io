@@ -27,6 +27,7 @@ Three question shapes are the whole contract: `choice`, `score`, `noul` (yes/no)
 | eval.outcome_met | noul (yes/no) | n/a | Verdryx's grading; the calibration run below used it | measured 2026-09-25 |
 | eval.answer_quality | score | 4 ordered levels | Verdryx grader | measured 2026-09-25 |
 | request.complexity | choice | cheap / default / hard / reasoning | TokenFuse router, shadow mode only | planned, shadow only |
+| action.risk_class | choice | read_only / reversible_change / destructive / external_send / financial | Wardryx, through `wardryx-proxy`, from the tool, its arguments and its target only | released in v0.4.0, run on the stub only |
 
 ## Three modes: where your data goes.
 
@@ -144,7 +145,7 @@ Mean squared error between the stated probabilities and the true outcome; here, 
 
 ## What each part of the stack would get.
 
-Two edges are measured; the rest are what a later integration would read, not something built. Click or focus a node.
+Three edges are measured live. The Wardryx edge is built and released and measured on the stub backend only; the rest are what a later integration would read, not something built. Click or focus a node.
 
 Click or focus a node above for what typryx gives it, which template, and what happens with typryx absent.
 
@@ -154,7 +155,7 @@ Click or focus a node above for what typryx gives it, which template, and what h
 | TokenFuse, as broker | a named upstream; one tool_call recorded against the agent | measured |
 | TokenFuse, router shadow mode | the class it would have routed to, alongside cost, recorded only | planned |
 | Verdryx | a typed grader beside the existing LLM judge, opt-in per run with `--typed-url` | measured |
-| Wardryx | an optional signal that may become a hold, never a deny | planned |
+| Wardryx | an `action.risk_class` signal a `hold_if_signal` rule may turn into a hold, never a deny; opt-in in the launchers, off by default | built and released, measured on the stub only |
 | CostCrew | a suggested class or priority at triage; a person still decides | planned |
 | Genaryx | a panel, live only when `GENARYX_TYPRYX_URL` resolves | planned |
 | Engram | an optional importance score | planned |
@@ -164,7 +165,7 @@ Click or focus a node above for what typryx gives it, which template, and what h
 
 ### No deny from a probability
 
-Not here, and not in a consumer. The planned Wardryx rule may turn a signal into a hold, which a person releases; nothing turns a probability into a deny.
+Not here, and not in a consumer. Wardryx's `hold_if_signal` rule may turn a signal into a hold, which a person releases; nothing turns a probability into a deny. It is built and released, and measured on the stub backend only.
 
 ### Calibration, never pooled
 
@@ -188,13 +189,13 @@ The stub backend is deterministic and free, for tests and demos, and every answe
 
 ### Optional, and it changes nothing when it is absent.
 
-Typryx sits behind [TokenFuse](https://it-rat.com/tokenfuse.html)'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the `request.complexity` template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. [Verdryx](https://it-rat.com/verdryx.html) can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; measured on 2026-09-25. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. If [Wardryx](https://it-rat.com/wardryx.html) ever reads a typed signal, the planned rule may turn it into a hold, which a person releases; nothing here or in a consumer turns a probability into a deny.
+Typryx sits behind [TokenFuse](https://it-rat.com/tokenfuse.html)'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the `request.complexity` template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. [Verdryx](https://it-rat.com/verdryx.html) can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; measured on 2026-09-25. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. [Wardryx](https://it-rat.com/wardryx.html) can read one: `typryx wardryx-proxy` sits in front of it, asks `action.risk_class` about a pending tool call, and adds the answer to the decision request, where a `hold_if_signal` rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.
 
 Without it, the rest of the stack behaves exactly as it does today: nothing here is consumed by anything else unless an operator wires it in.
 
-Released as v0.3.0 on 2026-09-30, after a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, CI green. Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.
+Released as v0.4.0 on 2026-10-04, adding the `action.risk_class` template and `wardryx-proxy`, after v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, CI green. Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.
 
-Not yet: a tagged launcher release carrying the data-mode choice (it is on main in stack-single, stack-k8s and stack-up), a model tuned from an export and measured against the one it replaces, and the deeper consumers in the tables above.
+Not yet: a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers in the tables above.
 
 ## A typed answer, and what it does and does not do
 
@@ -205,7 +206,7 @@ No. It is an optional add-on, and every other service keeps its current path unc
 Only the fields the template's own `fields` list names, held by the type system rather than a promise: `internal/backend.Backend.Ask` takes a `template.Egress`, a type constructible only inside the template package. Measured on a live run: a state carrying `user_email` and, separately, `customer_iban`, neither reached the backend or the record.
 
 **Q: Can a probability block anything?**
-Not here, and not in a consumer. A probability is a signal a policy can threshold; the planned Wardryx rule may turn one into a hold, which a person releases, never a deny.
+Not here, and not in a consumer. A probability is a signal a policy can threshold; Wardryx's `hold_if_signal` rule can turn one into a hold, which a person releases, and never into a deny. That path is built and released, and measured on the stub backend only.
 
 **Q: How do I know a probability is honest?**
 Not from the number alone, which is the finding of the calibration run below: every group was 96% to 100% confident on average and right 50% to 73% of the time. `typryx calibration` groups by template, version, backend and model, never pooled, and prints accuracy, mean confidence, ECE and Brier against a later truth posted to `/v1/outcome`, so calibration is measured rather than assumed.

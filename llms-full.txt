@@ -201,7 +201,7 @@ Per-key rate limits cannot tell one agent's honest afternoon from the same key l
 
 ### 4. A human in the loop, without a parked connection
 
-Approval that holds an open connection while somebody sleeps is not a control, it is an outage waiting for a timeout. The workable shape is stateless: the agent is told to hold, a person decides out of band, and the eventual grant is proven by a signed token bound to that exact agent, run and tool set, not by anyone remembering an open request.
+Approval that holds an open connection while somebody sleeps is not a control, it is an outage waiting for a timeout. The workable shape is stateless: the agent is told to hold, a person decides out of band, and the eventual grant is proven by a signed token bound to that exact agent, run and tool set, and, where the request named the tool call, to that call's arguments, not by anyone remembering an open request.
 
 ### 5. Evidence produced as a by-product
 
@@ -437,7 +437,7 @@ A system prompt asking the model not to do something is a request. A policy poin
 
 ### Put a human on the actions that deserve one
 
-Not on everything, or people will click through it in a week. On the small set where a mistake is expensive and slow to reverse. The workable shape is a hold the agent can be told to wait for, with the grant proven by a signed token bound to that exact agent, run and tool set, so approving one action never quietly approves the next.
+Not on everything, or people will click through it in a week. On the small set where a mistake is expensive and slow to reverse. The workable shape is a hold the agent can be told to wait for, with the grant proven by a signed token bound to that exact agent, run and tool set, and to the call's own arguments where the request named them, so approving one action never quietly approves the next.
 
 ### Assume the tool inventory is wrong
 
@@ -1389,7 +1389,9 @@ A team with agents in more than one place wants one view of what they spend and 
 
 What travels to the hub is what a gateway already produces: its telemetry, and its questions to the policy plane. It travels out of the site, over HTTPS, to one public entry on the hub. Nothing at the site accepts a connection from outside, and nothing at the hub is reachable except that entry.
 
-**The entry is deliberately narrow.** It is a small proxy with a free certificate in front of the hub's planes, and it routes exactly the seven paths a remote gateway calls. Everything else answers 404 at the edge, the console included, so the entry cannot become a second way into the parts an operator uses.
+**The entry is deliberately narrow.** It is a small proxy with a free certificate in front of the hub's planes, and it routes exactly the eight paths a remote gateway calls. Everything else answers 404 at the edge, the console included, so the entry cannot become a second way into the parts an operator uses.
+
+One of the eight lets a site's gateway read back what its own runs have spent, so a restart or a move to another hub does not start every run at zero. It reads only that site's runs, and after a move the site's new key must carry the same site name the old hub recorded. It was measured on release binaries behind a stand-in for the entry, not yet behind the real one on a live hub.
 
 ## Three steps.
 
@@ -1512,7 +1514,7 @@ On 2026-09-26 the cluster launcher built one cluster from AMD, Intel and Ampere 
 
 ## Sixteen ways to break it, and what each one did.
 
-Each tile is one injected failure on the box above, with the customer's agents still calling. The colour is the outcome, not the severity: green held as designed, red found something, amber found something that is fixed on main and not yet in a release.
+Each tile is one injected failure on the box above, with the customer's agents still calling. The colour is the outcome, not the severity: green held as designed, red found something, amber found something that was fixed on main within a day and has shipped in the single-machine release since stack-single v1.1.6.
 
 The run froze at step seven and no plane said anything, at five seconds or at sixty. Absence was undetected; a stalled-run detector now exists.
 
@@ -1615,7 +1617,7 @@ Three published conclusions. That throughput collapses past 64 concurrent caller
 Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Six of the nine shipped pre-production drills have never been fired at a real gateway. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.
 
 **Q: Why publish the things that went wrong?**
-Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 78 entries and 28 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.
+Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 118 entries and 51 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.
 
 
 ---

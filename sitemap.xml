@@ -4,28 +4,28 @@
      so a footer sweep across all thirty pages does not date them all to
      today. Edit the page, then run the tool. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://it-rat.com/</loc><lastmod>2026-09-18</lastmod></url>
-  <url><loc>https://it-rat.com/genaryx.html</loc><lastmod>2026-09-27</lastmod></url>
-  <url><loc>https://it-rat.com/services/tokenfuse.html</loc><lastmod>2026-09-27</lastmod></url>
-  <url><loc>https://it-rat.com/services/costcrew.html</loc><lastmod>2026-09-27</lastmod></url>
+  <url><loc>https://it-rat.com/</loc><lastmod>2026-10-05</lastmod></url>
+  <url><loc>https://it-rat.com/genaryx.html</loc><lastmod>2026-10-05</lastmod></url>
+  <url><loc>https://it-rat.com/services/tokenfuse.html</loc><lastmod>2026-10-05</lastmod></url>
+  <url><loc>https://it-rat.com/services/costcrew.html</loc><lastmod>2026-10-05</lastmod></url>
   <url><loc>https://it-rat.com/services/pocket.html</loc><lastmod>2026-08-29</lastmod></url>
-  <url><loc>https://it-rat.com/services/wardryx.html</loc><lastmod>2026-09-25</lastmod></url>
+  <url><loc>https://it-rat.com/services/wardryx.html</loc><lastmod>2026-10-05</lastmod></url>
   <url><loc>https://it-rat.com/services/idryx.html</loc><lastmod>2026-09-27</lastmod></url>
   <url><loc>https://it-rat.com/services/scopyx.html</loc><lastmod>2026-09-18</lastmod></url>
-  <url><loc>https://it-rat.com/services/vouchryx.html</loc><lastmod>2026-09-27</lastmod></url>
+  <url><loc>https://it-rat.com/services/vouchryx.html</loc><lastmod>2026-10-05</lastmod></url>
   <url><loc>https://it-rat.com/services/qryx.html</loc><lastmod>2026-08-05</lastmod></url>
   <url><loc>https://it-rat.com/services/verdryx.html</loc><lastmod>2026-09-27</lastmod></url>
-  <url><loc>https://it-rat.com/services/typryx.html</loc><lastmod>2026-10-01</lastmod></url>
+  <url><loc>https://it-rat.com/services/typryx.html</loc><lastmod>2026-10-05</lastmod></url>
   <url><loc>https://it-rat.com/services/mockryx.html</loc><lastmod>2026-09-07</lastmod></url>
-  <url><loc>https://it-rat.com/services/trailryx.html</loc><lastmod>2026-09-18</lastmod></url>
-  <url><loc>https://it-rat.com/services/heraldyx.html</loc><lastmod>2026-09-27</lastmod></url>
+  <url><loc>https://it-rat.com/services/trailryx.html</loc><lastmod>2026-10-05</lastmod></url>
+  <url><loc>https://it-rat.com/services/heraldyx.html</loc><lastmod>2026-10-05</lastmod></url>
   <url><loc>https://it-rat.com/services/engram.html</loc><lastmod>2026-08-29</lastmod></url>
-  <url><loc>https://it-rat.com/services/platform.html</loc><lastmod>2026-09-27</lastmod></url>
+  <url><loc>https://it-rat.com/services/platform.html</loc><lastmod>2026-10-05</lastmod></url>
   <url><loc>https://it-rat.com/services/sphere.html</loc><lastmod>2026-09-18</lastmod></url>
   <url><loc>https://it-rat.com/agent-identity.html</loc><lastmod>2026-08-29</lastmod></url>
   <url><loc>https://it-rat.com/agent-tooling-compared.html</loc><lastmod>2026-08-29</lastmod></url>
-  <url><loc>https://it-rat.com/ai-agent-governance.html</loc><lastmod>2026-09-18</lastmod></url>
-  <url><loc>https://it-rat.com/ai-agent-security.html</loc><lastmod>2026-07-27</lastmod></url>
+  <url><loc>https://it-rat.com/ai-agent-governance.html</loc><lastmod>2026-10-05</lastmod></url>
+  <url><loc>https://it-rat.com/ai-agent-security.html</loc><lastmod>2026-10-05</lastmod></url>
   <url><loc>https://it-rat.com/ai-observability-vs-governance.html</loc><lastmod>2026-08-10</lastmod></url>
   <url><loc>https://it-rat.com/finops-for-ai.html</loc><lastmod>2026-09-18</lastmod></url>
   <url><loc>https://it-rat.com/first-alert.html</loc><lastmod>2026-09-18</lastmod></url>
@@ -33,7 +33,7 @@
   <url><loc>https://it-rat.com/guides.html</loc><lastmod>2026-09-27</lastmod></url>
   <url><loc>https://it-rat.com/mcp-security.html</loc><lastmod>2026-07-27</lastmod></url>
   <url><loc>https://it-rat.com/one-incident-end-to-end.html</loc><lastmod>2026-08-29</lastmod></url>
-  <url><loc>https://it-rat.com/two-sites.html</loc><lastmod>2026-09-27</lastmod></url>
-  <url><loc>https://it-rat.com/what-is-proven.html</loc><lastmod>2026-09-27</lastmod></url>
+  <url><loc>https://it-rat.com/two-sites.html</loc><lastmod>2026-10-05</lastmod></url>
+  <url><loc>https://it-rat.com/what-is-proven.html</loc><lastmod>2026-10-05</lastmod></url>
   <url><loc>https://it-rat.com/what-runs-where.html</loc><lastmod>2026-09-18</lastmod></url>
 </urlset>

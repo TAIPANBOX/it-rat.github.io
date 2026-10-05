@@ -42,7 +42,7 @@ An operator can explicitly opt into a bring-your-own-key cloud model - Anthropic
 
 ### Numbers from tools, never vibes
 
-Every figure in an answer comes from a typed read tool over the same connectors the tabs use. The model does not do arithmetic in prose, and when a plane is not configured Felyx says what it cannot see instead of inventing it.
+Every figure in an answer comes from a typed read tool over the same connectors the tabs use. The model does not do arithmetic in prose, and when a plane is not configured Felyx says what it cannot see instead of inventing it. Budgets come from a tool that reads the Cloud's own run and unit budgets with their spend, and a draft that states a budget no tool returned is sent back once for revision. Measured on 2026-10-05 on a three-node k3d cluster against the Cloud's own figures read the same minute; the check covers budget statements, not every run id an answer names.
 
 ### No signing key. Not restrained - absent.
 

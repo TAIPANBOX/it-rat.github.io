@@ -12,7 +12,9 @@ A team with agents in more than one place wants one view of what they spend and 
 
 What travels to the hub is what a gateway already produces: its telemetry, and its questions to the policy plane. It travels out of the site, over HTTPS, to one public entry on the hub. Nothing at the site accepts a connection from outside, and nothing at the hub is reachable except that entry.
 
-**The entry is deliberately narrow.** It is a small proxy with a free certificate in front of the hub's planes, and it routes exactly the seven paths a remote gateway calls. Everything else answers 404 at the edge, the console included, so the entry cannot become a second way into the parts an operator uses.
+**The entry is deliberately narrow.** It is a small proxy with a free certificate in front of the hub's planes, and it routes exactly the eight paths a remote gateway calls. Everything else answers 404 at the edge, the console included, so the entry cannot become a second way into the parts an operator uses.
+
+One of the eight lets a site's gateway read back what its own runs have spent, so a restart or a move to another hub does not start every run at zero. It reads only that site's runs, and after a move the site's new key must carry the same site name the old hub recorded. It was measured on release binaries behind a stand-in for the entry, not yet behind the real one on a live hub.
 
 ## Three steps.
 

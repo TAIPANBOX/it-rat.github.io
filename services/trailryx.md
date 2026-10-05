@@ -48,4 +48,4 @@ Each address always serves the newest release: the asset names carry no version,
 
 ## The newest thing on the bus is a crew of agents.
 
-[CostCrew](https://it-rat.com/costcrew.html) writes fifteen event types about money and about its own analysts, and this plane seals them with everything else. Measured on 2026-08-28: twenty-six events on the bus in one run, and nine of them sealed into records in that same run. The rest were refused by design rather than dropped, which is the distinction this store exists to keep.
+[CostCrew](https://it-rat.com/costcrew.html) writes twenty-two event types about money and about its own analysts. This plane seals the two about money with everything else and refuses the other twenty by name, because they record a practice rather than an agent's run. Measured on 2026-08-28: twenty-six events on the bus in one run, and nine of them sealed into records in that same run. The rest were refused by design rather than dropped, which is the distinction this store exists to keep.

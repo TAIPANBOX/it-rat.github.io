@@ -27,7 +27,7 @@ Public keys at a JWKS endpoint, so an enforcement point verifies offline. That i
 | POST /v1/token | The exchange. A `subject_token` and an `actor_token` in, plus a DPoP header. Out comes a short-lived JWT with nested `act` and `cnf.jkt`. |
 |---|---|
 | POST /v1/revoke | By `jti` for one token, or by `subject` for every token an agent holds. Both `actor` and `reason` are required, because a revocation nobody can attribute is an outage rather than a decision. |
-| GET /v1/revocations | What enforcement points poll, carrying `as_of`. |
+| GET /v1/revocations | What enforcement points poll, carrying `as_of`. Each entry holds only what a verifier needs, `jti`, `subject`, `issued_before` and `expires`; who revoked a token and why stay in the operator's record. |
 | GET /.well-known/jwks.json | Public keys. Verification is offline and stays offline. |
 | no introspection | Refused by design. Wardryx answers at a 3.2 ms p50 and nothing here is going to sit in front of that. |
 
@@ -47,7 +47,7 @@ Every value is required except the listen address, and none has a permissive def
 
 An RFC 8693 exchange takes two signed input tokens and a DPoP proof whose public key travels in the JWS header, which is a JOSE client before it is a curl command. So the client ships with the service: `vouchryx-demo` makes the keys, performs the exchange and prints a proof.
 
-Measured on 2026-08-27 on a clean box: a proven chain answered 200, and after a call to `/v1/revoke` the same token answered 401 with `reason=BadToken`. The control run is the part worth keeping: with the delegation door shut, that same revoked token answered 200, because nothing was looking at it. 208 tests, and the repository gates that number against its own suite.
+Measured on 2026-08-27 on a clean box: a proven chain answered 200, and after a call to `/v1/revoke` the same token answered 401 with `reason=BadToken`. The control run is the part worth keeping: with the delegation door shut, that same revoked token answered 200, because nothing was looking at it. 218 tests, and the repository gates that number against its own suite.
 
 ## Proving and ending a delegation
 

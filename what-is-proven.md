@@ -52,7 +52,7 @@ On 2026-09-26 the cluster launcher built one cluster from AMD, Intel and Ampere 
 
 ## Sixteen ways to break it, and what each one did.
 
-Each tile is one injected failure on the box above, with the customer's agents still calling. The colour is the outcome, not the severity: green held as designed, red found something, amber found something that is fixed on main and not yet in a release.
+Each tile is one injected failure on the box above, with the customer's agents still calling. The colour is the outcome, not the severity: green held as designed, red found something, amber found something that was fixed on main within a day and has shipped in the single-machine release since stack-single v1.1.6.
 
 The run froze at step seven and no plane said anything, at five seconds or at sixty. Absence was undetected; a stalled-run detector now exists.
 
@@ -155,4 +155,4 @@ Three published conclusions. That throughput collapses past 64 concurrent caller
 Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Six of the nine shipped pre-production drills have never been fired at a real gateway. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.
 
 **Q: Why publish the things that went wrong?**
-Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 78 entries and 28 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.
+Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 118 entries and 51 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.

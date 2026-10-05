@@ -30,7 +30,9 @@ The agent asks, Wardryx answers `hold` with an approval id, and the call ends th
 
 The token is bound to what was actually approved. Its claims name the agent, the run and the exact sorted set of tools, and carry an expiry, ten minutes by default; verification recomputes the HMAC over the still-encoded payload before decoding anything, then checks that what is being asked matches what was granted. A token for one run does not quietly authorise another.
 
-The signing secret is fail-closed. With it unset, Wardryx refuses to mint or verify rather than accepting anything, because there is no such thing as an unsigned or always-valid approval. Tokens are reusable within their window by default; switch single-use on and the first redemption is recorded atomically, so presenting the same token twice falls back to a fresh hold instead of silently allowing the action again. With no shared database that single-use guarantee is per process, and the server says so at startup rather than letting you assume otherwise.
+Since v1.2.0 an approval is also bound to the tool call a person read, when the held request carried one. The person is shown the tool and its target, and the token carries a digest of the name, the target and the exact arguments, so it is refused for any other call, the same JSON re-spaced included. A call whose arguments were too large to send binds only its name and target.
+
+The signing secret is fail-closed. With it unset, Wardryx refuses to mint or verify rather than accepting anything, because there is no such thing as an unsigned or always-valid approval. Since 1.0 a token works once by default: the first redemption is recorded atomically, so presenting the same token twice falls back to a fresh hold instead of silently allowing the action again. Setting `WARDRYX_APPROVAL_SINGLE_USE=false` makes it reusable within its window. With no shared database that single-use guarantee is per process, and the server says so at startup rather than letting you assume otherwise.
 
 ### A hard ceiling that outranks approvals
 
@@ -74,7 +76,7 @@ Two substitutes get proposed for a policy plane: asking the model to behave in t
 
 ### The desk every expensive idea stops at.
 
-[TokenFuse](https://it-rat.com/tokenfuse.html)'s PEP hook asks Wardryx on every request and stamps the verdict on the response. Each decision lands on the bus as a source: wardryx event, which [Idryx](https://it-rat.com/idryx.html) correlates into the identity graph. [Mockryx](https://it-rat.com/mockryx.html) rehearses the denials in pre-prod, so the first real no is never the first no ever. And the policies themselves are code: the [Platform](https://it-rat.com/platform.html) page's Terraform provider creates, changes and destroys them like any other resource. A probability from [Typryx](https://it-rat.com/typryx.html) is a planned, optional signal a policy may turn into a hold, never a deny.
+[TokenFuse](https://it-rat.com/tokenfuse.html)'s PEP hook asks Wardryx on every request and stamps the verdict on the response. Each decision lands on the bus as a source: wardryx event, which [Idryx](https://it-rat.com/idryx.html) correlates into the identity graph. [Mockryx](https://it-rat.com/mockryx.html) rehearses the denials in pre-prod, so the first real no is never the first no ever. And the policies themselves are code: the [Platform](https://it-rat.com/platform.html) page's Terraform provider creates, changes and destroys them like any other resource. A typed risk signal from [Typryx](https://it-rat.com/typryx.html) can turn an allow into a hold for a person and never into a deny: since v1.2.0 a decision reads `signals` and the pending `tool_call`, a `hold_if_signal` rule can only hold, and Typryx's `wardryx-proxy` adds the signal on the way in. The launchers offer it as an opt-in, off by default, and it was measured on the stub backend only.
 
 The policy point is one control among several: see [AI agent security](https://it-rat.com/ai-agent-security.html) for the failure modes it answers, and [AI agent governance](https://it-rat.com/ai-agent-governance.html) for how the planes fit together.
 
@@ -87,7 +89,7 @@ This plane answers about an action. What it cannot answer is whether the caller 
 ## Putting a human in front of the expensive actions
 
 **Q: How do I require human approval before an agent does something expensive?**
-Set a threshold in policy. Above it the answer to the agent is `hold` rather than allow, a human grants or refuses out of band, and the agent resubmits with a signed approval token bound to that agent, run and tool set. No connection is parked waiting for a signature.
+Set a threshold in policy. Above it the answer to the agent is `hold` rather than allow, a human grants or refuses out of band, and the agent resubmits with a signed approval token bound to that agent, run and tool set, and, when the held request named the tool call, to that exact call. The token works once by default. No connection is parked waiting for a signature.
 
 **Q: What answers can the policy plane give?**
 Three, and only three: allow, deny, or hold for a human. There is no improvisation and no fourth case, which is what makes the decisions reproducible and arguable after the fact.

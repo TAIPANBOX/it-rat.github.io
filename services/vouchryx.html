@@ -120,7 +120,7 @@
     <table class="api rv">
       <tr><td>POST /v1/token</td><td>The exchange. A <span class="mono">subject_token</span> and an <span class="mono">actor_token</span> in, plus a DPoP header. Out comes a short-lived JWT with nested <span class="mono">act</span> and <span class="mono">cnf.jkt</span>.</td></tr>
       <tr><td>POST /v1/revoke</td><td>By <span class="mono">jti</span> for one token, or by <span class="mono">subject</span> for every token an agent holds. Both <span class="mono">actor</span> and <span class="mono">reason</span> are required, because a revocation nobody can attribute is an outage rather than a decision.</td></tr>
-      <tr><td>GET /v1/revocations</td><td>What enforcement points poll, carrying <span class="mono">as_of</span>.</td></tr>
+      <tr><td>GET /v1/revocations</td><td>What enforcement points poll, carrying <span class="mono">as_of</span>. Each entry holds only what a verifier needs, <span class="mono">jti</span>, <span class="mono">subject</span>, <span class="mono">issued_before</span> and <span class="mono">expires</span>; who revoked a token and why stay in the operator's record.</td></tr>
       <tr><td>GET /.well-known/jwks.json</td><td>Public keys. Verification is offline and stays offline.</td></tr>
       <tr><td>no introspection</td><td>Refused by design. Wardryx answers at a 3.2 ms p50 and nothing here is going to sit in front of that.</td></tr>
     </table>
@@ -268,7 +268,7 @@
       <span class="cmd"><b>vouchryx-demo</b> exchange -subject user://acme/ada -actor agent://acme/triage</span>
       <span class="note">prints the token, its nested act and the key thumbprint bound to it</span>
     </div>
-    <p class="lede rv d2" style="margin-top:18px">Measured on 2026-08-27 on a clean box: a proven chain answered 200, and after a call to <span class="mono">/v1/revoke</span> the same token answered 401 with <span class="mono">reason=BadToken</span>. The control run is the part worth keeping: with the delegation door shut, that same revoked token answered 200, because nothing was looking at it. 208 tests, and the repository gates that number against its own suite.</p>
+    <p class="lede rv d2" style="margin-top:18px">Measured on 2026-08-27 on a clean box: a proven chain answered 200, and after a call to <span class="mono">/v1/revoke</span> the same token answered 401 with <span class="mono">reason=BadToken</span>. The control run is the part worth keeping: with the delegation door shut, that same revoked token answered 200, because nothing was looking at it. 218 tests, and the repository gates that number against its own suite.</p>
   </div>
 </section>
 

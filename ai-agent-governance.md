@@ -112,7 +112,7 @@ Per-key rate limits cannot tell one agent's honest afternoon from the same key l
 
 ### 4. A human in the loop, without a parked connection
 
-Approval that holds an open connection while somebody sleeps is not a control, it is an outage waiting for a timeout. The workable shape is stateless: the agent is told to hold, a person decides out of band, and the eventual grant is proven by a signed token bound to that exact agent, run and tool set, not by anyone remembering an open request.
+Approval that holds an open connection while somebody sleeps is not a control, it is an outage waiting for a timeout. The workable shape is stateless: the agent is told to hold, a person decides out of band, and the eventual grant is proven by a signed token bound to that exact agent, run and tool set, and, where the request named the tool call, to that call's arguments, not by anyone remembering an open request.
 
 ### 5. Evidence produced as a by-product
 

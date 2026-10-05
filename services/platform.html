@@ -54,7 +54,7 @@
   .install .note{color:var(--faint);font-size:11.5px;margin-left:auto}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Platform","url":"https://it-rat.com/services/platform.html","description":"One agent:// passport, one event envelope, one Go binding and a Terraform provider: the contract every service in the stack shares. Apache-2.0.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/agent-passport","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"Platform","item":"https://it-rat.com/services/platform.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an Agent Passport?","acceptedAnswer":{"@type":"Answer","text":"One identifier and one document per agent: an agent:// URI of at most 255 bytes, aligned with SPIFFE without requiring it, and a document naming an owner, a runtime and one of five attestation methods. The delegation chain behind it is ordered root first, acyclic, and capped at 32 entries."}},{"@type":"Question","name":"Do I have to adopt the whole stack to use the contract?","acceptedAnswer":{"@type":"Answer","text":"No. There is no shared runtime and no shared database. Adopting it is a naming agreement plus a few optional fields on events you already emit, which is why a service can add an event type without asking any other service for permission."}},{"@type":"Question","name":"Can budgets and policies live in version control?","acceptedAnswer":{"@type":"Answer","text":"Yes. Three Terraform resources cover budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending."}},{"@type":"Question","name":"How do I check that my events actually conform?","acceptedAnswer":{"@type":"Answer","text":"Run agent-conform . It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Platform","url":"https://it-rat.com/services/platform.html","description":"One agent:// passport, one event envelope, one Go binding and a Terraform provider: the contract every service in the stack shares. Apache-2.0.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/agent-passport","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"Platform","item":"https://it-rat.com/services/platform.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an Agent Passport?","acceptedAnswer":{"@type":"Answer","text":"One identifier and one document per agent: an agent:// URI of at most 255 bytes, aligned with SPIFFE without requiring it, and a document naming an owner, a runtime and one of five attestation methods. The delegation chain behind it is ordered root first, acyclic, and capped at 32 entries."}},{"@type":"Question","name":"Do I have to adopt the whole stack to use the contract?","acceptedAnswer":{"@type":"Answer","text":"No. There is no shared runtime and no shared database. Adopting it is a naming agreement plus a few optional fields on events you already emit, which is why a service can add an event type without asking any other service for permission."}},{"@type":"Question","name":"Can budgets and policies live in version control?","acceptedAnswer":{"@type":"Answer","text":"Yes. Three Terraform resources cover budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending."}},{"@type":"Question","name":"How do I check that my events actually conform?","acceptedAnswer":{"@type":"Answer","text":"Run agent-conform . It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect. On a box, agent-conform watch-dir re-checks every stream's hash chain and writes a chain_broken event to its own stream when one breaks; it exits 2 on a usage or I/O error. Both launchers run it by default."}}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-service="platform" data-root="../">
@@ -96,7 +96,7 @@
         <div class="row"><span class="k">passport schema</span><span class="v">v0.1 &#183; stable</span></div>
         <div class="row"><span class="k">event envelope</span><span class="v">v0.1 + v0.2 &#183; NDJSON</span></div>
         <div class="row"><span class="k">Go binding</span><span class="v">agent-stack-go &#183; latest</span></div>
-        <div class="row"><span class="k">conformance</span><span class="v">agent-conform CLI &#183; exit 0/1</span></div>
+        <div class="row"><span class="k">conformance</span><span class="v">agent-conform &#183; files and a chain watcher</span></div>
         <div class="row"><span class="k">as code</span><span class="v" style="font-size:11px;text-align:right">taipan_budget &#183; taipan_agent_passport &#183; taipan_wardryx_policy</span></div>
         <div class="row"><span class="k">licence</span><span class="v">Apache-2.0</span></div>
       </div>
@@ -122,13 +122,16 @@
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
       <h2>Everything meets at the envelope.</h2>
-      <p class="lede">Twelve registered sources write one shape onto one NDJSON bus: five required fields, five optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas, Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.</p>
+      <p class="lede">Fourteen registered sources write one shape onto one NDJSON bus: five required fields, five optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also the fourteenth source; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.</p>
     </div>
     <div class="diagram rv">
-      <svg viewBox="0 0 960 400" role="img" aria-label="Platform contract: twelve registered sources feed the agent-event bus, the envelope card lists its ten fields, five consumers read the stream, and the Terraform loop manages budgets, passports and policies as code">
+      <svg viewBox="0 0 960 400" role="img" aria-label="Platform contract: fourteen registered sources feed the agent-event bus, agent-conform among them writing its chain findings back, the envelope card lists its ten fields, five consumers read the stream, and the Terraform loop manages budgets, passports and policies as code">
         <defs><marker id="ap" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker></defs>
         <g font-family="ui-monospace,Menlo" text-anchor="middle">
-          <!-- twelve registered sources, two rows. The second row is offset by
+          <!-- thirteen registered sources, two rows; the fourteenth is
+               agent-conform, drawn as the consumer below with a wire in its
+               own colour back to the bus for the chain findings it writes. The second
+               row is offset by
                half a cell so the first row's arrows pass through its gaps
                rather than through its boxes, which is why nothing below here
                had to move when the registry grew past seven. -->
@@ -145,6 +148,7 @@
             <rect x="260" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#8B9DFF"/><text x="304" y="66" fill="#8B9DFF">vouchryx</text>
             <rect x="356" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#F0ABFC"/><text x="400" y="66" fill="#F0ABFC">scopyx</text>
             <rect x="452" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#7DD3A0"/><text x="496" y="66" fill="#7DD3A0">costcrew</text>
+            <rect x="548" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#60A5FA"/><text x="592" y="66" fill="#60A5FA">typryx</text>
           </g>
           <!-- the bus -->
           <rect x="20" y="84" width="664" height="30" rx="9" fill="#0F151E" stroke="#2a3547"/>
@@ -185,7 +189,7 @@
             <text x="622" y="350" fill="#E9EFF6">Trailryx records</text>
           </g>
           <g font-size="10" fill="#8A97A6">
-            <text x="82" y="366">schemas &#183; exit 0/1</text>
+            <text x="82" y="366">schemas &#183; chains</text>
             <text x="217" y="366">logged as identity edges</text>
             <text x="352" y="366">evidence packs</text>
             <text x="487" y="366">an alert with a link</text>
@@ -224,6 +228,8 @@
           <line x1="304" y1="76" x2="304" y2="80" marker-end="url(#ap)"/>
           <line x1="400" y1="76" x2="400" y2="80" marker-end="url(#ap)"/>
           <line x1="496" y1="76" x2="496" y2="80" marker-end="url(#ap)"/>
+          <line x1="592" y1="76" x2="592" y2="80" marker-end="url(#ap)"/>
+          <line x1="34" y1="330" x2="34" y2="118" stroke="#93A8C4" marker-end="url(#ap)"/>
           <line x1="352" y1="114" x2="352" y2="134" marker-end="url(#ap)"/>
           <line x1="240" y1="296" x2="82"  y2="326" marker-end="url(#ap)"/>
           <line x1="296" y1="296" x2="217" y2="326" marker-end="url(#ap)"/>
@@ -250,7 +256,7 @@
       <div class="card hover feature b-4 rv"><h3>The passport</h3><p>One agent, one URI: agent://trust-domain/path, at most 255 bytes, aligned with SPIFFE without requiring it. The document behind the ID names an owner, a runtime and one of five attestation methods. The delegation chain is ordered root first, acyclic, and capped at 32 entries.</p></div>
       <div class="card hover feature b-4 rv d1"><h3>The envelope</h3><p>Five required fields: schema, ts, source, type, agent_id. Two versions coexist by design: v0.1 with a closed source enum, v0.2 with an open string. Event types live in a per-source registry, so tokenfuse can add a type without asking engram.</p></div>
       <div class="card hover feature b-4 rv d2"><h3>The Go binding</h3><p>agent-stack-go ships passport.Parse, an append-only event.Writer and chain.Validate, stdlib only at runtime. It is the same validation Idryx runs on ingest: a passport that parses in your pipeline parses in the graph.</p></div>
-      <div class="card hover feature b-4 rv"><h3>agent-conform</h3><p>A standalone conformance CLI with the canonical JSON Schemas embedded. Files are classified by their own schema field, and unrecognized content is a FAIL, never silently skipped. Exit 0 or exit 1; it has already caught a real 63-versus-64 hex character prev_hash defect.</p></div>
+      <div class="card hover feature b-4 rv"><h3>agent-conform</h3><p>A standalone conformance CLI with the canonical JSON Schemas embedded. Files are classified by their own schema field, and unrecognized content is a FAIL, never silently skipped. Exit 0 or exit 1; it has already caught a real 63-versus-64 hex character prev_hash defect. Since agent-stack-go v1.1.0 it also runs on the box as <span class="mono" style="font-size:12.5px">watch-dir</span>: it re-checks every stream's hash chain and writes <span class="mono" style="font-size:12.5px">chain_broken</span> (high) or <span class="mono" style="font-size:12.5px">chain_unchained</span> (low) to its own stream, exiting 2 on a usage or I/O error. It ships as a signed, distroless image, <span class="mono" style="font-size:12.5px">ghcr.io/taipanbox/agent-conform</span>, and runs by default every five minutes on the single box and every fifteen on a cluster.</p></div>
       <div class="card hover feature b-4 rv d1"><h3>Governance as code</h3><p>Three Terraform resources: taipan_budget, taipan_agent_passport, taipan_wardryx_policy. Budgets and policies get PRs, plans and diffs like everything else, and edits made out of band surface on the next plan. Where the API has no delete, the provider says so instead of pretending.</p></div>
       <div class="card hover feature b-4 rv d2"><h3>Honest scope</h3><p>The provider is published on the Terraform Registry as <span class="mono">TAIPANBOX/taipan</span>: a normal <span class="mono">required_providers</span> block and <span class="mono">terraform init</span> pull it, GPG-verified, no build-from-source needed. The passport is metadata, not a token, and the spec is not an authentication protocol. Small claims, kept.</p></div>
     </div>
@@ -352,7 +358,7 @@
           <div class="row"><span class="k">proven on</span><span class="v">Hetzner, AWS and GCP</span></div>
           <div class="row"><span class="k">what it buys</span><span class="v">high availability</span></div>
           <div class="row"><span class="k">what it costs</span><span class="v">a ReadWriteMany volume</span></div>
-          <div class="row"><span class="k">traps</span><span class="v">114 documented, with whose fault each was</span></div>
+          <div class="row"><span class="k">traps</span><span class="v">118 documented, with whose fault each was</span></div>
         </div>
         <div class="sheet-row">
         <details class="sheet" data-sheet-kicker="a cluster &#183; stack-k8s" data-sheet-title="The commands, and the one thing a cluster costs you">
@@ -409,7 +415,7 @@
       <div class="card b-4 rv d1">
         <div class="kicker" style="--accent:var(--mint)">try it now</div>
         <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
-          <div class="install" style="border:none;padding:0;background:transparent"><span class="cmd">go get github.com/TAIPANBOX/<b>agent-stack-go</b>@v1.0.2</span></div>
+          <div class="install" style="border:none;padding:0;background:transparent"><span class="cmd">go get github.com/TAIPANBOX/<b>agent-stack-go</b>@v1.1.0</span></div>
           <div class="install" style="border:none;padding:0;background:transparent"><span class="cmd">go install github.com/TAIPANBOX/agent-stack-go/cmd/<b>agent-conform</b>@latest</span></div>
           <div class="install" style="border:none;padding:0;background:transparent"><span class="cmd"><b>agent-conform</b> passport.json events.ndjson</span></div>
           <p class="dim" style="font-size:13px;line-height:1.6">This installs nothing of the stack: it is the contract itself, for an agent of your own. Exit 0 means every file and every NDJSON line conforms; exit 1 means at least one did not. That is the whole interface.</p>
@@ -449,7 +455,7 @@
       </details>
       <details>
         <summary>How do I check that my events actually conform?</summary>
-        <div class="a"><p>Run <span class="mono">agent-conform</span>. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect.</p></div>
+        <div class="a"><p>Run <span class="mono">agent-conform</span>. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect.</p><p>On a box, <span class="mono">agent-conform watch-dir</span> re-checks every stream's hash chain and writes a <span class="mono">chain_broken</span> event to its own stream when one breaks; it exits 2 on a usage or I/O error. Both launchers run it by default.</p></div>
       </details>
     </div>
   </div>
@@ -522,7 +528,7 @@ Sim.mount(document.getElementById("pf-sim"),{
       [0,0],[9,0],[10,1],[16,1],[17,2],[23,2],[24,3],[30,3],[31,4],[37,4],[38,5],[44,5],[45,7],[60,7]]}
   ],
   counters:[
-    {id:"c1",label:"sources emitting",color:"#93A8C4",from:t=>t<10?0:t<17?2:t<24?4:t<31?6:t<38?8:t<45?10:12},
+    {id:"c1",label:"sources emitting",color:"#93A8C4",from:t=>t<10?0:t<17?2:t<24?4:t<31?6:t<38?8:t<45?10:t<52?12:14},
     {id:"c2",label:"schema versions",color:"#E9EFF6",from:t=>2},
     {id:"c3",label:"conformance failures",color:"#34D399",from:t=>0},
     {id:"c4",label:"resources as code",color:"#8A97A6",from:t=>3}
@@ -536,7 +542,7 @@ Sim.mount(document.getElementById("pf-sim"),{
     {t:38,cls:"ok",label:"qryx signs evidence · evidence_signed"},
     {t:45,cls:"ok",label:"verdryx: quality_score · mockryx: sim_run"},
     {t:52,cls:"ok",label:"agent-conform validates the whole stream · exit 0"},
-    {t:58,cls:"info",label:"twelve sources, one grammar, one audit story"}
+    {t:58,cls:"info",label:"fourteen sources, one grammar, one audit story"}
   ]
 });
 </script>

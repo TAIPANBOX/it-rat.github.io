@@ -41,7 +41,7 @@ FAQ = {
  ("What has not been established yet?",
   "<p>Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Six of the nine shipped pre-production drills have never been fired at a real gateway. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.</p>"),
  ("Why publish the things that went wrong?",
-  "<p>Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 78 entries and 28 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.</p>"),
+  "<p>Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 118 entries and 51 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.</p>"),
 ]),
 
 "first-alert.html": ("common questions", "What people ask before starting", [
@@ -162,12 +162,12 @@ FAQ = {
  ("Can it catch a retry loop before the bill does?",
   "<p>That is the case it was built for. A sustained loop or a fan-out explosion looks the same as a compromised agent from the budget's side, and both trip the breaker. In the live campaign, the runaway that mattered was caught and killed on the day, not on the invoice.</p>"),
  ("Does it still work with several gateways behind a load balancer?",
-  "<p>In the cluster build, yes: the spend ledger is raft-replicated and the affordability check is linearized across the fleet, so five gateways on five machines admit exactly what one budget allows, and that was tested through a leader kill and a real network partition. That build is optional and not what the shipped images run; the default profile is one gateway whose ledger lives in memory.</p>"),
+  "<p>In the cluster build, yes: the spend ledger is raft-replicated and the affordability check is linearized across the fleet, so five gateways on five machines admit exactly what one budget allows, and that was tested through a leader kill and a real network partition. That build is optional and not what the shipped images run; the default profile is one gateway whose ledger lives in memory and is read back from the Cloud when it starts, each run's spend over the last 31 days, so a restart does not hand a run its budget again. That read-back does not let two gateways share one budget; only the cluster build does.</p>"),
 ]),
 
 "services/wardryx.html": ("common questions", "Putting a human in front of the expensive actions", [
  ("How do I require human approval before an agent does something expensive?",
-  "<p>Set a threshold in policy. Above it the answer to the agent is <span class=\"mono\">hold</span> rather than allow, a human grants or refuses out of band, and the agent resubmits with a signed approval token bound to that agent, run and tool set. No connection is parked waiting for a signature.</p>"),
+  "<p>Set a threshold in policy. Above it the answer to the agent is <span class=\"mono\">hold</span> rather than allow, a human grants or refuses out of band, and the agent resubmits with a signed approval token bound to that agent, run and tool set, and, when the held request named the tool call, to that exact call. The token works once by default. No connection is parked waiting for a signature.</p>"),
  ("What answers can the policy plane give?",
   "<p>Three, and only three: allow, deny, or hold for a human. There is no improvisation and no fourth case, which is what makes the decisions reproducible and arguable after the fact.</p>"),
  ("What happens if the policy service is unreachable?",
@@ -182,7 +182,7 @@ FAQ = {
  ("What leaves the box when I send it a state?",
   "<p>Only the fields the template's own <span class=\"mono\">fields</span> list names, held by the type system rather than a promise: <span class=\"mono\">internal/backend.Backend.Ask</span> takes a <span class=\"mono\">template.Egress</span>, a type constructible only inside the template package. Measured on a live run: a state carrying <span class=\"mono\">user_email</span> and, separately, <span class=\"mono\">customer_iban</span>, neither reached the backend or the record.</p>"),
  ("Can a probability block anything?",
-  "<p>Not here, and not in a consumer. A probability is a signal a policy can threshold; the planned Wardryx rule may turn one into a hold, which a person releases, never a deny.</p>"),
+  "<p>Not here, and not in a consumer. A probability is a signal a policy can threshold; Wardryx's <span class=\"mono\">hold_if_signal</span> rule can turn one into a hold, which a person releases, and never into a deny. That path is built and released, and measured on the stub backend only.</p>"),
  ("How do I know a probability is honest?",
   "<p>Not from the number alone, which is the finding of the calibration run below: every group was 96% to 100% confident on average and right 50% to 73% of the time. <span class=\"mono\">typryx calibration</span> groups by template, version, backend and model, never pooled, and prints accuracy, mean confidence, ECE and Brier against a later truth posted to <span class=\"mono\">/v1/outcome</span>, so calibration is measured rather than assumed.</p>"),
  ("Does typryx need Jev to be useful?",
@@ -254,7 +254,8 @@ FAQ = {
  ("Can budgets and policies live in version control?",
   "<p>Yes. Three Terraform resources cover budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending.</p>"),
  ("How do I check that my events actually conform?",
-  "<p>Run <span class=\"mono\">agent-conform</span>. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect.</p>"),
+  "<p>Run <span class=\"mono\">agent-conform</span>. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect.</p>"
+  "<p>On a box, <span class=\"mono\">agent-conform watch-dir</span> re-checks every stream's hash chain and writes a <span class=\"mono\">chain_broken</span> event to its own stream when one breaks; it exits 2 on a usage or I/O error. Both launchers run it by default.</p>"),
 ]),
 
 "ai-agent-governance.html": ("common questions", "What people ask about agent governance", [

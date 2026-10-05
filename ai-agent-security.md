@@ -94,7 +94,7 @@ A system prompt asking the model not to do something is a request. A policy poin
 
 ### Put a human on the actions that deserve one
 
-Not on everything, or people will click through it in a week. On the small set where a mistake is expensive and slow to reverse. The workable shape is a hold the agent can be told to wait for, with the grant proven by a signed token bound to that exact agent, run and tool set, so approving one action never quietly approves the next.
+Not on everything, or people will click through it in a week. On the small set where a mistake is expensive and slow to reverse. The workable shape is a hold the agent can be told to wait for, with the grant proven by a signed token bound to that exact agent, run and tool set, and to the call's own arguments where the request named them, so approving one action never quietly approves the next.
 
 ### Assume the tool inventory is wrong
 

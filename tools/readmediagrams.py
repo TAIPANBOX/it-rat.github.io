@@ -51,9 +51,9 @@ ROOMS = {
                   "Engram: agent memory in one SQLite file, recalled with provenance",
                   "0d71541037a9"),
     "platform":  ("services/platform.html", "#93A8C4",
-                  "Platform: twelve registered sources write one envelope onto one NDJSON bus, "
+                  "Platform: fourteen registered sources write one envelope onto one NDJSON bus, "
                   "and five consumers read it back",
-                  "86ef8a54bde8"),
+                  "0d19536427a5"),
     "genaryx":   ("genaryx.html", "#B48CFF",
                   "Genaryx: one browser control room over the stack, reached only over the tunnel",
                   "81bdf83f6f14"),
