@@ -128,7 +128,7 @@ FAQ = {
 
 "services/costcrew.html": ("common questions", "What a crew of agents can and cannot do to your bill", [
  ("Do the agents change anything in my cloud account?",
-  "<p>No. This console reads exports that land in a folder and, where a connector is built, a vendor's usage API, and it writes only its own database. Eight of its seventeen connectors read today; the AWS, GCP and Azure billing exports are specified and not yet written, and the catalogue says so per entry. It has no credentials that can act, it makes no outbound call while serving a page, and it enforces nothing: every deliverable is a draft until a person stamps it.</p>"),
+  "<p>No. This console reads exports that land in a folder and, where a connector is built, a vendor's usage API, and it writes only its own database. Twelve of its eighteen connectors read today, the AWS and GCP billing exports among them; the Azure billing export is specified and not yet written, and the catalogue says so per entry. It has no credentials that can act, it makes no outbound call while serving a page, and it enforces nothing: every deliverable is a draft until a person stamps it.</p>"),
  ("How is this different from the console that kills runs?",
   "<p>Different question, different clock. <a href=\"../genaryx.html\">Genaryx</a> and <a href=\"tokenfuse.html\">TokenFuse</a> work in micro-dollars while a run is happening and can stop it. CostCrew works in cents on last month's invoice and allocates it. The crew here are agents like any other, so Genaryx governs them too.</p>"),
  ("What does it do about anomalies nobody has time for?",
