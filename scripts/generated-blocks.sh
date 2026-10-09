@@ -18,7 +18,7 @@
 #   markdown twin, which is served at it-rat.com/agent-tooling-compared.md, was
 #   still publishing the competitor comparison table and a section headed
 #   "Where they are plainly better than us" a day after both were taken off the
-#   page itself on Yurii's instruction. A generated file nobody regenerates is
+#   page itself by decision. A generated file nobody regenerates is
 #   worse than a hand-written one, because everybody assumes it is current.
 #
 #   services/scopyx.html was published on 2026-08-10 and was the one indexable

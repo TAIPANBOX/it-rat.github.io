@@ -10,7 +10,7 @@
    planes that are running, then the two that are not yet in play, ending
    on the shared contract.
 
-   Pocket and Trailryx sit together at the end on purpose (Yurii,
+   Pocket and Trailryx sit together at the end on purpose (@decided
    2026-08-03): one is built and not connected, the other is built and
    wired to nothing, and a reader walking the corridor meets everything
    that works before meeting either. */
@@ -64,7 +64,7 @@ window.STACK = STACK;
  * and would undo the heading above it. The heading says "side projects" in
  * words, the explanation now lives at the top of each room where it is actually
  * read, and a footer with two kinds of link in it is noisier than it is careful
- * (Yurii, 2026-08-03).
+ * (@decided 2026-08-03).
  */
 const SIDE = [
   {id:"sphere", name:"Sphere", color:"#A3E635", href:"services/sphere.html"},

@@ -184,7 +184,7 @@ def groups(root, here):
     # from CATEGORIES, because it is not a category and has no colour of its
     # own. Every other shelf carries one, and this one did not, which read as a
     # heading of a different kind rather than as the same heading without a
-    # colour to give it. @yurii 2026-08-29 asked for the dot.
+    # colour to give it. @decided 2026-08-29: the dot.
     #
     # One entry, so one colour. A second side project in a different colour
     # would make this the first one's, which is why it is asserted rather than
@@ -210,7 +210,7 @@ def groups(root, here):
 def cols(root, here):
     # Two columns: the mark, and the stack as chips. There is no third column
     # of links any more, on any page. Everything that stood in one over
-    # 2026-08-05 (@yurii) left for somewhere a reader would look first:
+    # 2026-08-05 (@decided) left for somewhere a reader would look first:
     #
     #   Guides              already a button in the top bar, on every page
     #   The people          a section of the front page, one scroll down
@@ -224,7 +224,7 @@ def cols(root, here):
     # it narrowed. It is now on the front page and nowhere else: a service page
     # carries no way to write to us at all, and somebody who wants to has to
     # get back to the front page first. That was measured and said out loud
-    # before it was done, and it is @yurii's call, made twice.
+    # before it was done, and it is the owner's call, made twice.
     #
     # So if a later sweep finds a service page with nothing to contact us by,
     # that is the decision rather than an oversight. Changing it means putting

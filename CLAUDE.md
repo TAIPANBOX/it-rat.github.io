@@ -105,7 +105,7 @@ true.
 5. **Nothing unverified reads as verified, and the two mobile apps are where
    that is hardest.** They are not one case, and this invariant said they were
    until 2026-08-04. Sphere is a side project; **TokenFuse Pocket is in the
-   stack**, by Yurii's decision on 2026-08-03, and the site says so.
+   stack**, `@decided 2026-08-03`, and the site says so.
 
    - **Sphere** is linked from the footer and nowhere else: not in the `STACK`
      registry, so it cannot reach the corridor rail, the prev/next walk, the
@@ -139,8 +139,8 @@ true.
 
    Until 2026-08-29 this invariant read "the stack is open; consulting is the
    commercial motion", and the Genaryx FAQ carried a question answering where
-   the money comes from. `@yurii 2026-08-29`: "там ніякого комерційного боку
-   немає... Ми колись так думали, але про це не має бути написано ніде."
+   the money comes from. `@decided 2026-08-29`: there is no commercial side,
+   an earlier idea of one is gone, and nothing on the site may describe one.
    The question is gone, so is the paragraph about the console once being the
    one thing that would be sold, and so is the same history in the redirect
    page's comment. What survives is the plain fact that the licence is
@@ -270,8 +270,8 @@ true.
    though its own commit message said it was "listed in all seven places", and
    its markdown twin, served at `it-rat.com/agent-tooling-compared.md`, was
    still publishing the competitor comparison table and a section headed "Where
-   they are plainly better than us" a day after both came off the page itself on
-   Yurii's instruction. `services/scopyx.html` went up on 2026-08-10 and was the
+   they are plainly better than us" a day after both came off the page itself by
+   decision. `services/scopyx.html` went up on 2026-08-10 and was the
    one indexable page here carrying no JSON-LD at all.
 
    **A generated file nobody regenerates is worse than a hand-written one**,

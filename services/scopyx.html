@@ -607,12 +607,12 @@
     <!-- The prev/next walk. `site.js` injects it from STACK, which has carried
          scopyx since its room was built; the page just never had the mount
          point to inject into, so it was the one room with no way out.
-         Reported by Yurii, 2026-08-11, alongside the missing backdrop.
+         Reported 2026-08-11, alongside the missing backdrop.
 
          INSIDE `.wrap`, which is where every other page puts it and which is
          what bounds its width. My first cut put it after the wrap closed, so
          the two-column grid spanned the whole section and the buttons came out
-         far wider than anywhere else. Yurii spotted that too. -->
+         far wider than anywhere else. That was reported the same day. -->
     <div data-edge-nav></div>
   </div>
 </section>
@@ -875,7 +875,7 @@ render(false);
      load, which is the layer under every page's text and diagrams; the
      per-service hero motif it can also mount is a separate, optional thing.
      This page was the ONLY one of fourteen without the tag, so it was the only
-     one rendering on a flat background. Reported by Yurii, 2026-08-11. -->
+     one rendering on a flat background. Reported 2026-08-11. -->
 <script src="../assets/ambient.js"></script>
 </body>
 </html>

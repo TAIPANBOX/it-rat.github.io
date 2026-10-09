@@ -80,7 +80,7 @@ p{margin:0}
 .tb-link:hover{color:var(--fg);background:rgba(255,255,255,.05)}
 /* The one thing in the bar that is an action rather than a page to read, so it
    carries a border and the eye separates "do this" from "read about this".
-   It sits FIRST, before the content links (@yurii, 2026-08-05).
+   It sits FIRST, before the content links (@decided 2026-08-05).
    This comment used to say the opposite, that it belonged at the right edge
    "because that is where every user has been taught to look for their own
    account". That is the right rule for an account entry and this is not one:
@@ -873,7 +873,7 @@ html.slide-back::view-transition-new(root){animation:vt-in-l .38s cubic-bezier(.
 /* The band's own disclosure. The claim stays on the page because it is what
    somebody has to know before reading anything else here; the three paragraphs
    explaining it are a click away, because a wall of text under the top bar is
-   text most people scroll past rather than read (Yurii, 2026-08-03). */
+   text most people scroll past rather than read (@decided 2026-08-03). */
 .ribbon-more{display:inline}
 /* The generic `.sheet>summary` is a padded, bordered button, which is right in
    the middle of a page and wrong inside a one-line band: it doubled the band's
@@ -908,7 +908,7 @@ html.slide-back::view-transition-new(root){animation:vt-in-l .38s cubic-bezier(.
    It stays, and "out of band" does not replace it: that is the ARCHITECTURE,
    the control travelling on a different channel from the thing it controls,
    and it will still be true when this ships and works. It says nothing about
-   whether it is connected (Yurii asked exactly this, 2026-08-03). */
+   whether it is connected (the question asked on 2026-08-03). */
 /* `.go` already carries an arrow as a pseudo-element, so `space-between` had
    three items to spread and parked the marker in the MIDDLE, between the words
    and the arrow. `order` puts it after the arrow and `margin-left:auto` does

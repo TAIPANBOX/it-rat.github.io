@@ -11,7 +11,7 @@ and touches nothing else in the bar:
   1. the jump button is present, and last
   2. the order: the tb-cta, then the content links, then Console, then jump
 
-`Console` went in on 2026-08-05 (@yurii), moving out of the footer where it had
+`Console` went in on 2026-08-05 (@decided), moving out of the footer where it had
 started to read as a leftover. console.html gets no link to itself; its crumb
 already says where you are.
 
@@ -20,10 +20,10 @@ the measurement is why: on 26 of the 28 pages it was the ONLY visible trigger
 for the palette. index.html carries a second one, "Jump anywhere", but that is
 one page. The keyboard opens the palette anywhere, with Cmd/Ctrl+K or `/`, so
 what removal cost was the tap target, and a phone has no keyboard. It stays,
-and the duplicate in the hero went instead (@yurii).
+and the duplicate in the hero went instead (@decided).
 
 **The tb-cta goes FIRST, and that reverses what site.css used to say about it**
-(@yurii, 2026-08-05). That rule read "it sits at the right edge, after the
+(@decided 2026-08-05). That rule read "it sits at the right edge, after the
 content links, because that is where every user has been taught to look", which
 is the pattern for an account entry. This one is "Live demo", which is not an
 account entry: it is the first thing worth doing on the site. The comment in
