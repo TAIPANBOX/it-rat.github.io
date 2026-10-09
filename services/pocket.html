@@ -90,8 +90,10 @@
         console, is itself the thing that has gone wrong. That is why the
         signature comes from the Secure Enclave on a device the agent's host never
         touches.</p>
-        <p style="margin-top:12px"><b>How it is meant to work.</b> The phone pairs
-        once, by QR, to the relay that runs beside the stack. The relay pushes only
+        <p style="margin-top:12px"><b>How it is meant to work, and what it lacks today.</b>
+        The phone pairs once, by QR, to a relay beside the stack. The one it was
+        built against, genaryx-relay, was removed from genaryx on 2026-07-28, so
+        today there is nothing to pair with and none of this runs end to end. The relay pushes only
         what needs a human, an over-cap run, straight into the signed-kill flow;
         the kill is signed on the device and the gateway has only to check the
         signature. The watch pairs on its own and carries the same flow, so a
@@ -126,7 +128,7 @@
       <div class="hero-side rv d2">
         <div class="row"><span class="k">platform</span><span class="v">iOS &#183; watchOS &#183; SwiftUI</span></div>
         <div class="row"><span class="k">signing</span><span class="v">Secure Enclave, keys never leave the device</span></div>
-        <div class="row"><span class="k">pairs with</span><span class="v">genaryx-relay, beside TokenFuse Cloud</span></div>
+        <div class="row"><span class="k">pairs with</span><span class="v">nothing today; genaryx-relay was removed</span></div>
         <div class="row"><span class="k">surfaces</span><span class="v">Dynamic Island &#183; Live Activity &#183; Watch complication</span></div>
         <div class="row"><span class="k">status</span><span class="v">no hardening pass, no security review</span></div>
         <div class="row"><span class="k">licence</span><span class="v">Apache-2.0</span></div>
@@ -166,7 +168,7 @@
         <div class="as-step"><span class="as-n mono">04</span><span class="as-body"><b>Agents, sorted by behaviour</b><span>Not spend, conduct: a runaway agent, one reaching tools it never used, an orphaned key. Tap for why it fired and its blast radius.</span></span></div>
         <div class="as-step"><span class="as-n mono">05</span><span class="as-body"><b>Pairing, one scan and a key that stays</b><span>Your console issues a one-time code. Scanning it mints a signing key in the Secure Enclave that never leaves the phone.</span></span></div>
         <div class="as-step"><span class="as-n mono">06</span><span class="as-body"><b>Device, and how far it reaches</b><span>The paired iPhone and the last action it signed. Default reaps idle tunnel peers, Strict revokes them.</span></span></div>
-        <div class="as-step"><span class="as-n mono">07</span><span class="as-body"><b>Alerts that mean act</b><span>The relay pushes the moment a cap breaks. Tap a banner to land on the run, or arm the kill from the wrist.</span></span></div>
+        <div class="as-step"><span class="as-n mono">07</span><span class="as-body"><b>Alerts that mean act</b><span>Built for a relay that pushes the moment a cap breaks. Tap a banner to land on the run, or arm the kill from the wrist.</span></span></div>
       </div>
     </div>
   </div>
@@ -178,7 +180,7 @@
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
       <h2>One phone. One key. A path the gateway never sees.</h2>
-      <p class="lede">The app pairs to the relay beside TokenFuse Cloud, never to the gateway your agent talks to. A kill or a budget change is signed on-device by the Secure Enclave, forwarded byte for byte by the relay to Cloud, and pushed out to every gateway in the fleet from there. The request path and the kill path never share a wire.</p>
+      <p class="lede">As designed, the app pairs to a relay beside TokenFuse Cloud, never to the gateway your agent talks to, and no such relay runs today. A kill or a budget change is signed on-device by the Secure Enclave, forwarded byte for byte by the relay to Cloud, and pushed out to every gateway in the fleet from there. The request path and the kill path never share a wire.</p>
     </div>
     <div class="diagram rv">
       <svg viewBox="0 0 980 340" role="img" aria-label="Pocket architecture: the phone signs a kill, the relay beside TokenFuse Cloud forwards it, and the whole path stays out of band from the agent's request path">
@@ -259,11 +261,11 @@
       <div class="b-6"><div class="feature rv"><h3>The same four signals</h3>
         <p>Pocket surfaces <span class="mono">budget_exhausted</span>, <span class="mono">sustained_loop</span>, <span class="mono">fanout_explosion</span> and <span class="mono">spend_spike</span>. All four are in <a href="heraldyx.html" data-dir="fwd" style="color:#5BC8F5">Heraldyx</a>'s catalogue too, with a sentence each for what happened, what the box already did, and what happens if nobody acts.</p></div></div>
       <div class="b-6"><div class="feature rv"><h3>One arrives here and never there</h3>
-        <p><span class="mono">spend_spike</span> is about a whole organisation, and the shared envelope requires an agent id, so its producer skips it rather than inventing a subject. It reaches this phone through the relay's own read slice and it never reaches the mail. An operator who only reads mail does not learn about it.</p></div></div>
+        <p><span class="mono">spend_spike</span> is about a whole organisation, and the shared envelope requires an agent id, so its producer skips it rather than inventing a subject. It was built to reach this phone through the relay's own read slice, and it never reaches the mail. An operator who only reads mail does not learn about it.</p></div></div>
       <div class="b-6"><div class="feature rv"><h3>Mail cannot act. This can</h3>
-        <p>Heraldyx reads a file and speaks SMTP, holds no credential for any plane, and its link is a view with no action in it, because mail gateways prefetch links. Pocket is the opposite by design: it pairs to the relay and the kill is signed on the device. That is a bigger blast radius, and it is why it needs a Secure Enclave and a per-device pairing rather than an address.</p></div></div>
+        <p>Heraldyx reads a file and speaks SMTP, holds no credential for any plane, and its link is a view with no action in it, because mail gateways prefetch links. Pocket is the opposite by design: it pairs to a relay and the kill is signed on the device. That is a bigger blast radius, and it is why it needs a Secure Enclave and a per-device pairing rather than an address.</p></div></div>
       <div class="b-6"><div class="feature rv"><h3>Different routes, on purpose</h3>
-        <p>Heraldyx reads the planes' shared event log directly, on the box, and needs nothing else running. Pocket reads <span class="mono">relay/v1/exceptions</span>, so it needs the relay up and the phone paired. Two paths that fail apart: the night the relay is down, the mail still goes out.</p></div></div>
+        <p>Heraldyx reads the planes' shared event log directly, on the box, and needs nothing else running. Pocket reads <span class="mono">relay/v1/exceptions</span>, so it needs a relay up and the phone paired. Two paths that fail apart: the night the relay is down, the mail still goes out, and while no relay runs at all, the mail is the only one of the two that does.</p></div></div>
     </div>
     <div class="rv" style="margin-top:22px">
       <div class="card b-4" style="padding:16px 18px">

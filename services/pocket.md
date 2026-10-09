@@ -14,8 +14,10 @@
  signature comes from the Secure Enclave on a device the agent's host never
  touches.
 
-**How it is meant to work.** The phone pairs
- once, by QR, to the relay that runs beside the stack. The relay pushes only
+**How it is meant to work, and what it lacks today.**
+ The phone pairs once, by QR, to a relay beside the stack. The one it was
+ built against, genaryx-relay, was removed from genaryx on 2026-07-28, so
+ today there is nothing to pair with and none of this runs end to end. The relay pushes only
  what needs a human, an over-cap run, straight into the signed-kill flow;
  the kill is signed on the device and the gateway has only to check the
  signature. The watch pairs on its own and carries the same flow, so a
@@ -42,7 +44,7 @@ An interactive design mock of the iPhone and Watch apps, running here as a web p
 
 ## One phone. One key. A path the gateway never sees.
 
-The app pairs to the relay beside TokenFuse Cloud, never to the gateway your agent talks to. A kill or a budget change is signed on-device by the Secure Enclave, forwarded byte for byte by the relay to Cloud, and pushed out to every gateway in the fleet from there. The request path and the kill path never share a wire.
+As designed, the app pairs to a relay beside TokenFuse Cloud, never to the gateway your agent talks to, and no such relay runs today. A kill or a budget change is signed on-device by the Secure Enclave, forwarded byte for byte by the relay to Cloud, and pushed out to every gateway in the fleet from there. The request path and the kill path never share a wire.
 
 ## Not a bigger dashboard. A switch you can actually reach.
 
@@ -72,15 +74,15 @@ Pocket surfaces `budget_exhausted`, `sustained_loop`, `fanout_explosion` and `sp
 
 ### One arrives here and never there
 
-`spend_spike` is about a whole organisation, and the shared envelope requires an agent id, so its producer skips it rather than inventing a subject. It reaches this phone through the relay's own read slice and it never reaches the mail. An operator who only reads mail does not learn about it.
+`spend_spike` is about a whole organisation, and the shared envelope requires an agent id, so its producer skips it rather than inventing a subject. It was built to reach this phone through the relay's own read slice, and it never reaches the mail. An operator who only reads mail does not learn about it.
 
 ### Mail cannot act. This can
 
-Heraldyx reads a file and speaks SMTP, holds no credential for any plane, and its link is a view with no action in it, because mail gateways prefetch links. Pocket is the opposite by design: it pairs to the relay and the kill is signed on the device. That is a bigger blast radius, and it is why it needs a Secure Enclave and a per-device pairing rather than an address.
+Heraldyx reads a file and speaks SMTP, holds no credential for any plane, and its link is a view with no action in it, because mail gateways prefetch links. Pocket is the opposite by design: it pairs to a relay and the kill is signed on the device. That is a bigger blast radius, and it is why it needs a Secure Enclave and a per-device pairing rather than an address.
 
 ### Different routes, on purpose
 
-Heraldyx reads the planes' shared event log directly, on the box, and needs nothing else running. Pocket reads `relay/v1/exceptions`, so it needs the relay up and the phone paired. Two paths that fail apart: the night the relay is down, the mail still goes out.
+Heraldyx reads the planes' shared event log directly, on the box, and needs nothing else running. Pocket reads `relay/v1/exceptions`, so it needs a relay up and the phone paired. Two paths that fail apart: the night the relay is down, the mail still goes out, and while no relay runs at all, the mail is the only one of the two that does.
 
 Nothing connects them. Pocket reads the control plane's own replay, not the record store, and neither knows the other exists.
 
