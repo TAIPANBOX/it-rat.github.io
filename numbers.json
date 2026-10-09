@@ -1337,12 +1337,12 @@
     {
       "page": "services/wardryx.html",
       "claim": "v1.2.0",
-      "occurrences": 2,
+      "occurrences": 3,
       "repo": "TAIPANBOX/wardryx",
       "command": "gh api repos/TAIPANBOX/wardryx/releases/tags/v1.2.0 --jq .tag_name; the release that adds signals and tool_call on /v1/decide, hold_if_signal (invariant 27) and the approval bound to the tool call (invariant 28)",
       "status": "measured",
-      "measured_on": "2026-10-05",
-      "note": "Added 2026-10-05: a named release, checked by its own tag; also the latest wardryx release that day. Its notes say the signal path is proven with caller-supplied signals only.",
+      "measured_on": "2026-10-09",
+      "note": "Added 2026-10-05: a named release, checked by its own tag; also the latest wardryx release that day. Its notes say the signal path is proven with caller-supplied signals only. Third occurrence since 2026-10-09: the hero status row, which said pre-1.0 after the surface froze at 1.0.0; still the latest release that day.",
       "repo_dir": null,
       "check": "gh api repos/TAIPANBOX/wardryx/releases/tags/v1.2.0 --jq .tag_name",
       "slow": false
