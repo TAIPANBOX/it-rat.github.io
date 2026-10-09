@@ -66,7 +66,7 @@ One API, three modes, because one retrieval strategy does not fit every question
 
 ### GDPR forget, scoped
 
-Erasure is real and targeted: one episode, one fact, or everything about a person. Agent-scoped as of 2.2.1, so one agent cannot delete another's memories.
+Erasure is real and targeted: one episode, one fact, or everything about a person. Since 2.2.1 an agent can forget only its own episodes; erasing a person reaches every agent in the file, on purpose.
 
 **Q: What forget() removes**
 
@@ -74,7 +74,9 @@ Erasure is real and targeted: one episode, one fact, or everything about a perso
 
 That cascade is the part most stores get wrong. Deleting the raw text while leaving a derived fact and a graph edge behind means the person is still reachable by association, which is exactly what an erasure request was about.
 
-Since 2.2.1 erasure is agent-scoped: in a shared store, one agent cannot reach into another agent's episodes. A delete that crosses that line is not a convenience, it is a way for one tenant to destroy another's evidence.
+Since 2.2.1 `forget()` is agent-scoped: in a shared store, one agent cannot reach into another agent's episodes by id. A delete that crosses that line is not a convenience, it is a way for one tenant to destroy another's evidence.
+
+Two erasures cross it on purpose. Facts and entities are shared by every agent in the file, so `forget_fact()` removes a fact for all of them. And `forget_entity()` reaches every agent's episodes about that person, because a request to be forgotten is about the person, not about one agent's copy.
 
 ### MCP server, stdio only
 
@@ -118,7 +120,7 @@ A vector store finds text that looks similar. It cannot tell you when a fact was
 None of the three to write a memory. It is one `.engram` file on SQLite plus sqlite-vec, in-process, installed with pip. A model only enters the picture when you ask for `reflect()`, and even that call can be pointed at a local model or routed through [TokenFuse](https://it-rat.com/tokenfuse.html) so thinking has a budget too.
 
 **Q: Can I delete everything about one person?**
-Yes, and the cascade is the point. Erasing an entity removes the episodes about them, the facts derived from those episodes, and the graph edges that made them findable, and reports how many of each it deleted. Erasure is agent-scoped, so in a shared store one agent cannot delete another's memories.
+Yes, and the cascade is the point. Erasing an entity removes the episodes about them, the facts derived from those episodes, and the graph edges that made them findable, and reports how many of each it deleted. That erasure reaches every agent in a shared store on purpose, because the request is about the person. What one agent cannot do is erase another agent's episodes by id: `forget()` is agent-scoped.
 
 **Q: Does it work with Claude Desktop, Claude Code or Cursor?**
 Yes, over MCP on stdio, so there is no network listener and no port to guard. Those clients get remember, recall, why and forget against the same store with no integration code.
