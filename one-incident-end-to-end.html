@@ -135,7 +135,7 @@
           <div class="who">Idryx &#183; the access plane &#183; off the request path</div>
           <p>The identity plane never sees the request. It reads the same event stream afterwards, alongside the passport documents, and it holds something neither of the first two planes has: the graph. It knows this agent is unattested, that its delegation chain is two hops deep, and now that it has a spend incident against it.</p>
           <p>Any one of those is a shrug. A spend incident alone is an agent having a bad afternoon. Together they are a finding, and the detector raises severity on the count: it needs at least two corroborating facts before it will call this <b>high</b>. That is the argument for a separate identity plane in one sentence. The correlation is only available to something that holds every identity in one graph.</p>
-          <div class="emit">emits <b>runaway_agent</b> &#183; high, because three facts agreed</div>
+          <div class="emit">emits <b>runaway_agent</b> &#183; high, because two facts agreed with the spend</div>
         </div>
       </div>
 
@@ -168,7 +168,7 @@
           <h3>The link is a coordinate, never a control</h3>
           <div class="who">Genaryx &#183; the console &#183; on your own infrastructure</div>
           <p>Following the link opens the panel showing that exact incident. It does not kill anything, and the difference is not fussiness. A link that acts is an unauthenticated capability held by whoever can see or forward the message, and mail security gateways <b>prefetch links</b>, so a one-click kill would fire before a human read the sentence next to it.</p>
-          <p>So the action happens in the console, behind a sign-in, and for anything destructive behind a fresh passkey confirmation bound to that exact command and its arguments. Not a session, not a role check alone: per action, because the point is that a stolen session cannot pull the switch. What the operator typed as a reason is journaled with it.</p>
+          <p>So the action happens in the console, behind a sign-in. Closing a retained reservation also takes a fresh passkey confirmation, bound to that one reservation and its revision, because a stolen session should not be able to close one. What the operator typed as a reason is journaled with it.</p>
           <div class="emit">writes a signed command record into a hash chain</div>
         </div>
       </div>
@@ -211,8 +211,8 @@
       <h2>Four things that only appear in order.</h2>
     </div>
     <div class="prose rv">
-      <h3>Two planes are in the path, five are not</h3>
-      <p>Only money and policy can stop a call, and they pay for that with latency on every request. Everything else reads the same event stream afterwards. That split is why the stack can add a plane without slowing anything down, and also why a plane that reads the log cannot save you in the moment: by the time identity has an opinion, the call is finished.</p>
+      <h3>For this incident, two planes are in the path, and five are not</h3>
+      <p>For this incident only money and policy stop the call, and they pay for that with latency on every request. Across the stack the egress plane also sits in the path, for web fetches. Everything else reads the same event stream afterwards. That split is why the stack can add a plane without slowing anything down, and also why a plane that reads the log cannot save you in the moment: by the time identity has an opinion, the call is finished.</p>
 
       <h3>The interesting finding belonged to nobody</h3>
       <p>The gateway knew about the spend. The passport knew about the missing attestation. The chain knew about the delegation depth. The <b>high</b> severity came from joining them, and no single service could have produced it. Buy one plane and you get one plane's opinion.</p>
@@ -243,7 +243,7 @@
     <div class="sec-head rv">
       <div class="kicker">next</div>
       <h2>Where this sits.</h2>
-      <p class="lede">Two moves in this walk are newer than the walk itself. Stopping the spend and stopping the <i>authority</i> are different acts, and the second one is <a href="services/vouchryx.html">a revocation</a> that lands at every enforcement point at once rather than a 402 on the next call. And what the incident leaves behind is <a href="services/trailryx.html">sealed</a> nightly, so the record of it can be shown to somebody who was not there. This walk is the products in motion. <a href="ai-agent-governance.html" style="color:var(--accent)">AI agent governance</a> is the field it belongs to, <a href="ai-observability-vs-governance.html" style="color:var(--accent)">observability versus governance</a> is why watching is not the same as stopping, and <a href="what-runs-where.html" style="color:var(--accent)">what runs where and what it costs</a> is the same stack seen from the infrastructure side. Every service named above is Apache-2.0 and runs on hardware you own; the whole set opens from <a href="index.html#stack" style="color:var(--accent)">the corridor</a>.</p>
+      <p class="lede">Two moves in this walk are newer than the walk itself. Stopping the spend and stopping the <i>authority</i> are different acts, and the second one is <a href="services/vouchryx.html">a revocation</a> that lands at every enforcement point that polls, within one poll interval, rather than a 402 on the next call. And what the incident leaves behind is <a href="services/trailryx.html">sealed</a> daily by default, so the record of it can be shown to somebody who was not there. This walk is the products in motion. <a href="ai-agent-governance.html" style="color:var(--accent)">AI agent governance</a> is the field it belongs to, <a href="ai-observability-vs-governance.html" style="color:var(--accent)">the record and the control</a> is why watching is not the same as stopping, and <a href="what-runs-where.html" style="color:var(--accent)">what runs where and what it costs</a> is the same stack seen from the infrastructure side. Every service named above is Apache-2.0 and runs on hardware you own; the whole set opens from <a href="index.html#stack" style="color:var(--accent)">the corridor</a>.</p>
     </div>
   </div>
 </section>

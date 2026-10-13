@@ -150,6 +150,8 @@ true.
    row on the TokenFuse page are NOT this. They describe how other shapes of
    tooling are licensed, anonymously, which is a fact about the field rather
    than a claim about us. Leave them.
+
+   `@decided 2026-10-13: no comparisons with other products on any page`. The market descriptions above no longer apply: the page that held them now describes what the stack does and how to check it.
    *(not enforced)*
 7. **The published demo is a build of the current genaryx.** `/demo` is not
    built here: it is a hand-pasted copy of `genaryx/apps/web/dist`, and a copy

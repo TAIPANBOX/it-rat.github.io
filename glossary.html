@@ -86,7 +86,7 @@
         <dd>Evidence that the caller holds the key a token was issued to, rather than merely holding the token. The token carries a thumbprint of the caller's public key, and every request carries a fresh signature from that key, so a token lifted from a log buys nothing. This is the half a delegation chain deliberately does not cover, and it is what <a href="services/vouchryx.html">Vouchryx</a> adds.</dd>
 
         <dt id="delegation-revocation">Delegation revocation</dt>
-        <dd>Ending an agent's right to act for somebody, at every enforcement point at once, without waiting for a token to expire. Distinct from a kill switch, which ends spend: the money case is a runaway, the authority case is a delegation that should never have been made or should stop now. Both are one operation and both have to be attributable, so an actor and a reason are required.</dd>
+        <dd>Ending an agent's right to act for somebody, at every enforcement point that polls the revocation list, within one poll interval, without waiting for a token to expire. Distinct from a kill switch, which ends spend: the money case is a runaway, the authority case is a delegation that should never have been made or should stop now. Both are one operation and both have to be attributable, so an actor and a reason are required.</dd>
 
         <dt id="found-not-saved">Found, not saved</dt>
         <dd>A FinOps distinction that decides whether anybody believes the rest of your numbers. A finding puts money on the table; nothing is saved until a person acts on it and the invoice changes. A console that reports found money as saved is disbelieved the first time finance checks it, and after that every other figure it prints is suspect too. See <a href="services/costcrew.html">CostCrew</a>.</dd>
@@ -194,7 +194,7 @@
     <div class="sec-head rv">
       <div class="kicker">where the terms are used</div>
       <h2>Each of these has a guide behind it.</h2>
-      <p class="lede">The <a href="guides.html" style="color:var(--accent)">six guides</a> cover governance, cost, security, MCP, identity and the line between observability and control, and the <a href="index.html#stack" style="color:var(--accent)">stack</a> is the open implementation of everything named here.</p>
+      <p class="lede">The <a href="guides.html" style="color:var(--accent)">twelve guides</a> cover governance, cost, security, MCP, identity and the line between observability and control, and the <a href="index.html#stack" style="color:var(--accent)">stack</a> is the open implementation of everything named here.</p>
     </div>
   </div>
 </section>

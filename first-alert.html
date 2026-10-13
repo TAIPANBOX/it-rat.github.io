@@ -93,7 +93,7 @@
     <div class="prose rv">
       <p><b>You need</b> a Debian or Ubuntu box you control, Docker on it, and somewhere to send mail: your own SMTP server, or a corporate relay you already have. That is the list.</p>
       <p><b>You do not need</b> an account with us, a licence key, a trial, a credit card, an API key for the store, or a cloud. Nothing in the stack calls home, and nothing about your runs, your spend or your identities travels anywhere to be displayed. There is no hosted plane, so there is nothing to sign up for.</p>
-      <p>An LLM provider key is a separate question. The gateway sits in front of whichever provider you already use, so you need whatever key you were already using. If you just want to watch the machinery work, the gateway can answer from a stub instead, and no provider is called at all.</p>
+      <p>An LLM provider key is a separate question. The gateway sits in front of whichever provider you already use, so you need whatever key you were already using.</p>
     </div>
   </div>
 </section>
@@ -143,7 +143,7 @@
         <div class="no">04</div>
         <div>
           <h3>Make it fire on purpose</h3>
-          <p>Do not wait for a real incident to find out whether any of this works. Give a run a budget of a fraction of a cent and let an agent loop against it: the gateway answers 402 in the request path, the event lands in the log, and the mail arrives. That is the whole chain, exercised in a minute, at no cost. Know which mail you are waiting for: at the notifier's default floor a single refusal is below it, and the message comes from the control plane once a run has been refused twice, as <span class="mono">budget_exhausted</span>. A run on 2026-09-17 found that on the installer's released versions that message never reached the log at all, because the control plane could not create its own events file and said nothing; the installer on <span class="mono">main</span> creates the file for it, which is what the one-line command installs.</p>
+          <p>Do not wait for a real incident to find out whether any of this works. Give a run a budget of a fraction of a cent and let an agent loop against it: the gateway answers 402 in the request path, the event lands in the log, and the mail arrives. That is the whole chain, exercised in a minute, at no cost. Know which mail you are waiting for: at the notifier's default floor a single refusal is below it, and the message comes from the control plane once a run has been refused three times, as <span class="mono">budget_exhausted</span>. A run on 2026-09-17 found that on the installer's released versions that message never reached the log at all, because the control plane could not create its own events file and said nothing; the installer on <span class="mono">main</span> creates the file for it, which is what the one-line command installs.</p>
           <p>Then read the mail carefully, because it is deliberately almost nothing: identifiers and numbers, never content, and one link into your own console rather than a button. Following it opens the panel showing that event. The action happens there, behind your sign-in.</p>
           <div class="cmd"><span class="c"># or fire the rehearsal harness at a pre-prod gateway:</span><br>github.com/TAIPANBOX/mockryx</div>
           <div class="gotcha"><b>Where this goes wrong:</b> if you never do this step you have a guardrail nobody has exercised, which is a claim rather than a control. The whole point of an inexpensive drill is that it can be run before you need it.</div>
@@ -184,7 +184,7 @@
         <li><b>Did the mail actually arrive, on a phone?</b> A plain-text alert that is unreadable on the device you will read it on at 3am is not an alert.</li>
         <li><b>Does the link in it open a view rather than perform an action?</b> If it acts, anyone who can forward the message holds the capability.</li>
         <li><b>Have you fired the guardrail on purpose at least once?</b> Before you rely on it, not after.</li>
-        <li><b>Does it survive a reboot?</b> Restart the box and check that everything comes back, including the notifier's own read position. We measured one on 2026-09-17: the first reboot lost the gateway on a box whose gateway sat on a tunnel address, because Docker bound the port before the tunnel held the address, and the installer now orders the two; the second reboot brought everything back on its own.</li>
+        <li><b>Does it survive a reboot?</b> Restart the box and check that everything comes back, including the notifier's own read position. We measured one on 2026-09-17: the first reboot lost the gateway on a box whose gateway sat on a tunnel address, because Docker bound the port before the tunnel held the address, and the installer now orders the two; the second reboot, with the fix, brought the containers and the gateway back on their own.</li>
       </ol>
     </div>
   </div>
