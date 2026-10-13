@@ -74,7 +74,7 @@
       <div>
         <div class="kicker rv">quality plane &#183; wave 2</div>
         <h1 class="rv d1"><span class="nm">Verdryx</span>. The denominator your LLM bill is missing.</h1>
-        <p class="lede rv d2">Cost-per-token dashboards report what a call cost and stop there. They cannot tell a successful call from a wasted one. Verdryx grades the output, exact match, regex, a production outcome tag, or an LLM judge, and prices the result that actually matters: cost per resolved case, not cost per call. On the last live run: $0.00042 to resolve a case, $0.00025 spent on one that went nowhere.</p>
+        <p class="lede rv d2">Verdryx grades each case by exact match, regex, a production outcome tag, the order of its tool calls or an LLM judge, and prices the result that matters: cost per resolved case, not cost per call. On the live run in VALIDATION.md, a resolved case cost $0.00042, and each abandoned attempt cost $0.00025 for nothing.</p>
         <div class="cta-row rv d3">
           <a class="btn primary" href="#sim">Watch an afternoon get priced <span class="mono">&#9654;</span></a>
           <a class="btn" href="https://github.com/TAIPANBOX/verdryx" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="flex:0 0 auto"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg> GitHub</a>
@@ -82,7 +82,7 @@
       </div>
       <div class="hero-side rv d2">
         <div class="row"><span class="k">version</span><span class="v">0.1.0 &#183; Python 3.11+</span></div>
-        <div class="row"><span class="k">tests</span><span class="v">474 &#183; fully offline suite</span></div>
+        <div class="row"><span class="k">tests</span><span class="v">fully offline suite</span></div>
         <div class="row"><span class="k">core deps</span><span class="v">one, rfc8785 (+ optional extras)</span></div>
         <div class="row"><span class="k">reads</span><span class="v">tokenfuse Parquet traces &#183; NDJSON &#183; CSV</span></div>
         <div class="row"><span class="k">exports</span><span class="v">agent-events v0.2 &#183; OTLP spans</span></div>
@@ -98,7 +98,7 @@
     <div class="sec-head rv">
       <div class="kicker">sixty seconds, one shift</div>
       <h2>Watch spend turn into a verdict.</h2>
-      <p class="lede">This is a simulation, but shaped by the real run: 176 real Claude calls read back as outcome-tagged traces. A shift's worth of support cases gets graded, a real cost per resolved case comes out the other side, and a drift check runs against a stored baseline before one OTLP span closes the loop.</p>
+      <p class="lede">This is a simulation, but shaped by the real run: a live, Claude-backed support workload whose outcome-tagged traces were read back and graded. A shift's worth of support cases gets graded, a real cost per resolved case comes out the other side, and a drift check runs against a stored baseline before one OTLP span closes the loop.</p>
     </div>
     <div class="rv" id="vx-sim"></div>
   </div>
@@ -210,30 +210,8 @@
         </details>
       </div>
       <div class="card hover feature b-4 rv"><h3>One-dependency core</h3><p>The graders and drift maths use only the standard library. The one runtime dependency is rfc8785, which canonicalises the JSON the event chain is hashed over. Anthropic and Parquet support are opt-in extras, not a tax on the common path.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>Offline test suite</h3><p>474 tests run against a deterministic StubLLMAdapter, no network, no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.</p></div>
+      <div class="card hover feature b-4 rv d1"><h3>Offline test suite</h3><p>The suite runs against a deterministic StubLLMAdapter, with no network and no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.</p></div>
       <div class="card hover feature b-4 rv d2"><h3>Defensive by design</h3><p>Grades an operator's own agents against an eval set or a production outcome tag. The README puts it plainly: it &#8220;never manipulates outputs, never crafts adversarial prompts, and never attacks anything.&#8221;</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= COMPARISON ================= -->
-<section class="sec" style="padding-top:14px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="kicker">an honest comparison</div>
-      <h2>Cost per call was never the question.</h2>
-      <p class="lede">Cost-per-token dashboards answer the easy question: what a call cost. Verdryx answers the one that matters: what did getting it right cost, and did that number just get worse.</p>
-    </div>
-    <div class="tbl-scroll rv">
-      <table class="tbl">
-        <thead><tr><th></th><th>Verdryx</th><th>cost-per-token dashboards</th><th>&#8220;eyeball the transcripts&#8221;</th></tr></thead>
-        <tbody>
-          <tr><td>Unit</td><td>Correct case</td><td>Token</td><td>Vibe</td></tr>
-          <tr><td>Catches quality regressions</td><td class="yes">Drift vs baseline, significance-tested</td><td class="no">No</td><td class="warn">Sometimes, too late</td></tr>
-          <tr><td>Knows what an abandoned attempt cost</td><td class="yes">Yes, $0.00025 in the live run</td><td class="no">No</td><td class="no">No</td></tr>
-          <tr><td>Needs a platform</td><td class="yes">pip install, one SQLite file</td><td class="no">A SaaS contract</td><td class="warn">Nothing but staff time</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </section>
@@ -342,7 +320,7 @@
 <script src="../assets/ambient.js"></script>
 <script>
 /* The afternoon-shift scenario. Shape mirrors the live validation record:
-   176 real Claude calls read back as outcome-tagged traces, graded in
+   a live Claude-backed run's outcome-tagged traces, read back and graded in
    batches, resolved rate settling at 60%, cost per resolved case measured
    at $0.00042 against $0.00025 burned on each abandoned attempt, then a
    drift check against a stored baseline holds stable and closes with one
@@ -351,7 +329,7 @@ Sim.mount(document.getElementById("vx-sim"),{
   title:"simulated replay · an afternoon of support agents, priced by outcome",
   window:60, duration:16000,
   clock:t=>t.toFixed(1)+"s",
-  badges:[{label:"offline suite",color:"#34D399"},{label:"474 tests",color:"#FF7AA2"}],
+  badges:[{label:"offline suite",color:"#34D399"},{label:"stub adapter",color:"#FF7AA2"}],
   stage:{mode:"priced",
     batches:[{t:10,n:12},{t:20,n:12},{t:30,n:11},{t:38,n:10},{t:48,n:9},{t:56,n:8}],
     lockT:30, lockV:0.00042, bandT:38, driftT:48, otlpT:56, tol:0.00007, yMax:0.00095},
@@ -374,7 +352,7 @@ Sim.mount(document.getElementById("vx-sim"),{
     {t:38,cls:"info",label:"baseline snapshotted for drift"},
     {t:48,cls:"ok",label:"drift check vs baseline: stable (two-sample significance, not just a threshold)"},
     {t:56,cls:"ok",label:"OTLP span exported &#183; one per eval/drift run"},
-    {t:59,cls:"info",label:"same numbers measured on the live 176-call run"}
+    {t:59,cls:"info",label:"same numbers measured on the live run"}
   ]
 });
 </script>

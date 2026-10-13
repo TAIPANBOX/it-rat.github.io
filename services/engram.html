@@ -10,13 +10,13 @@
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/services/engram.html">
 <meta property="og:title" content="Engram - agent memory with provenance, in one SQLite file · IT-RAT">
-<meta property="og:description" content="Embeddable agent memory in one SQLite file: episodic, semantic and procedural memory, bitemporal facts, hybrid BM25 + vector recall, why() provenance and GDPR forget. Validated on real Claude: 5 episodes became 10 facts, zero contradictions.">
+<meta property="og:description" content="Embeddable agent memory in one SQLite file: episodic and semantic memory, bitemporal facts, hybrid BM25 + vector recall, why() provenance and GDPR forget. Validated on real Claude: 5 episodes became 10 facts, zero contradictions.">
 <meta property="og:image" content="https://it-rat.com/assets/og/engram.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Engram - agent memory with provenance, in one SQLite file · IT-RAT">
-<meta name="twitter:description" content="Embeddable agent memory in one SQLite file: episodic, semantic and procedural memory, bitemporal facts, hybrid BM25 + vector recall, why() provenance and GDPR forget. Validated on real Claude: 5 episodes became 10 facts, zero contradictions.">
+<meta name="twitter:description" content="Embeddable agent memory in one SQLite file: episodic and semantic memory, bitemporal facts, hybrid BM25 + vector recall, why() provenance and GDPR forget. Validated on real Claude: 5 episodes became 10 facts, zero contradictions.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/engram.png">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="icon" type="image/png" href="../favicon.png">
@@ -74,7 +74,7 @@
       <div>
         <div class="kicker rv">knowledge plane &#183; wave 1</div>
         <h1 class="rv d1"><span class="nm">Engram</span>. The memory that remembers why.</h1>
-        <p class="lede rv d2">Vector search finds text that looks similar. It cannot say when a fact was true, where a belief came from, or that two beliefs disagree. Engram can: an embeddable memory in one SQLite file that stores raw episodes, distills them into facts with confidence scores, and answers why() for every belief it holds. No server, no Docker, and writing the first memory needs zero API keys.</p>
+        <p class="lede rv d2">Engram is an embeddable memory in one SQLite file. It stores raw episodes, distills them into facts with confidence scores, records when each fact was true, and answers why() for every belief it holds, with the episodes it came from. Two beliefs that disagree are recorded as a contradiction. No server, no Docker, and writing the first memory needs zero API keys.</p>
         <div class="cta-row rv d3">
           <a class="btn primary" href="#sim">Watch episodes become facts <span class="mono">&#9654;</span></a>
           <a class="btn" href="https://github.com/TAIPANBOX/engram" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="flex:0 0 auto"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg> GitHub</a>
@@ -82,7 +82,7 @@
       </div>
       <div class="hero-side rv d2">
         <div class="row"><span class="k">release</span><span class="v">latest &#183; PyPI engdbram</span></div>
-        <div class="row"><span class="k">core</span><span class="v">Python 3.11+ &#183; 517 tests</span></div>
+        <div class="row"><span class="k">core</span><span class="v">Python 3.11+</span></div>
         <div class="row"><span class="k">storage</span><span class="v">single SQLite file + sqlite-vec</span></div>
         <div class="row"><span class="k">recall</span><span class="v">hybrid BM25 + vector</span></div>
         <div class="row"><span class="k">integrations</span><span class="v">MCP &#183; LangChain &#183; LlamaIndex</span></div>
@@ -141,7 +141,7 @@
           <rect x="196" y="52" width="300" height="196" rx="16" fill="#10161F" stroke="#6C7BFF" stroke-width="1.4"/>
           <text x="346" y="80" fill="#6C7BFF" font-size="14" font-weight="700">engram.db &#183; SQLite + sqlite-vec</text>
           <g font-size="10.5" fill="#8A97A6">
-            <rect x="216" y="96" width="261" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="346" y="115" fill="#E9EFF6">episodic &#183; semantic &#183; procedural</text>
+            <rect x="216" y="96" width="261" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="346" y="115" fill="#E9EFF6">episodic &#183; semantic</text>
             <rect x="216" y="134" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="278" y="153" fill="#E9EFF6">bitemporal facts</text>
             <rect x="352" y="134" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="414" y="153" fill="#E9EFF6" font-size="10">spreading activation</text>
             <rect x="216" y="172" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="278" y="191" fill="#E9EFF6">Ebbinghaus decay</text>
@@ -196,7 +196,7 @@
           <div class="sheet-in">
             <p class="dim" style="font-size:14px;line-height:1.7">A fact in Engram carries <span class="mono" style="font-size:12.5px">valid_from</span> and <span class="mono" style="font-size:12.5px">valid_to</span>, which say when it was true in reality, and <span class="mono" style="font-size:12.5px">recorded_at</span> and <span class="mono" style="font-size:12.5px">superseded_at</span>, which say when the system learned it and when it stopped believing it. Those are different clocks, and collapsing them into one is how a memory quietly starts lying.</p>
             <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px">With both, you can ask what the agent believed as of March and get March's answer rather than today's. That is the difference between an audit you can defend and a database that only ever shows the present. A support agent that promised a refund policy in March should be judged against the policy it knew in March.</p>
-            <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px">It also makes correction safe. When Ivan moves from Acme to Globex, the old fact is closed with an end date and the new one opens; nothing is overwritten, so the reason the agent said what it said in March survives the correction. A vector store has no concept to hang this on: an embedding does not know when it stopped being true.</p>
+            <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px">It also makes correction safe. When Ivan moves from Acme to Globex, the old fact is closed with an end date and the new one opens; nothing is overwritten, so the reason the agent said what it said in March survives the correction.</p>
           </div>
         </details>
       </div>
@@ -232,8 +232,8 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">what it holds</div>
-      <h2>Similarity is a fraction of memory.</h2>
-      <p class="lede">Engram ships a vector index, in-process, and then answers the questions similarity cannot: when a fact was true, where it came from, and whether two beliefs disagree.</p>
+      <h2>Recall is one part of a memory.</h2>
+      <p class="lede">Engram keeps a vector index in-process. It also keeps when each fact was true, where it came from, and whether two beliefs disagree.</p>
     </div>
     <div class="tbl-scroll rv">
       <table class="tbl">

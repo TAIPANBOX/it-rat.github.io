@@ -10,13 +10,13 @@
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/services/mockryx.html">
 <meta property="og:title" content="Mockryx - fire drills for your AI agent guardrails · IT-RAT">
-<meta property="og:description" content="Nine hostile scenarios in YAML, replayed against your own pre-production gateway with a fake provider behind it: DLP, budget breaker, Wardryx denials, async off-path reactions. Exit codes CI can gate on. Zero real spend.">
+<meta property="og:description" content="Hostile scenarios in YAML, replayed against your own pre-production gateway with a fake provider behind it: DLP, budget breaker, Wardryx denials, async off-path reactions. Exit codes CI can gate on. Zero real spend.">
 <meta property="og:image" content="https://it-rat.com/assets/og/mockryx.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Mockryx - fire drills for your AI agent guardrails · IT-RAT">
-<meta name="twitter:description" content="Nine hostile scenarios in YAML, replayed against your own pre-production gateway with a fake provider behind it: DLP, budget breaker, Wardryx denials, async off-path reactions. Exit codes CI can gate on. Zero real spend.">
+<meta name="twitter:description" content="Hostile scenarios in YAML, replayed against your own pre-production gateway with a fake provider behind it: DLP, budget breaker, Wardryx denials, async off-path reactions. Exit codes CI can gate on. Zero real spend.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/mockryx.png">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="icon" type="image/png" href="../favicon.png">
@@ -74,7 +74,7 @@
       <div>
         <div class="kicker rv">pre-prod plane &#183; wave 2</div>
         <h1 class="rv d1"><span class="nm">Mockryx</span>. Prove every guardrail holds, against your own gateway, before real traffic.</h1>
-        <p class="lede rv d2">A guardrail nobody has ever fired is a guess. Mockryx replays nine hostile scenarios (a fake secret in a prompt, a budget burn, a denied tool, a forged delegation chain, an unapproved action, an injected page, a quality drift, a reaction chain that has to reach the mail, and a provider outage) against the one URL you hand it: your own pre-production gateway, with a fake provider behind it. The enforcement path is the real one; the spend is not. CI reads the verdict as an exit code.</p>
+        <p class="lede rv d2">A guardrail nobody has ever fired is a guess. Mockryx replays hostile scenarios (a fake secret in a prompt, a budget burn, a denied tool, a forged delegation chain, an unapproved action, an injected page, a quality drift, a reaction chain that has to reach the mail, and a provider outage) against the one URL you hand it: your own pre-production gateway, with a fake provider behind it. The enforcement path is the real one; the spend is not. CI reads the verdict as an exit code.</p>
         <div class="cta-row rv d3">
           <a class="btn primary" href="#sim">Watch the fire drill <span class="mono">&#9654;</span></a>
           <a class="btn" href="https://github.com/TAIPANBOX/mockryx" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="flex:0 0 auto"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg> GitHub</a>
@@ -83,7 +83,7 @@
       <div class="hero-side rv d2">
         <div class="row"><span class="k">status</span><span class="v">pre-1.0 &#183; main is supported</span></div>
         <div class="row"><span class="k">core</span><span class="v">Go 1.27 &#183; outbound-only CLI</span></div>
-        <div class="row"><span class="k">scenarios</span><span class="v">5 shipped &#183; YAML</span></div>
+        <div class="row"><span class="k">scenarios</span><span class="v">YAML, one file each</span></div>
         <div class="row"><span class="k">target</span><span class="v">your own gateway &#183; /v1/messages</span></div>
         <div class="row"><span class="k">verdicts</span><span class="v">exit 0 held &#183; 1 real gap &#183; 2 broken</span></div>
         <div class="row"><span class="k">licence</span><span class="v">Apache-2.0</span></div>
@@ -96,9 +96,9 @@
 <section class="sec" id="sim" style="padding-top:26px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">sixty seconds, five of the nine drills</div>
+      <div class="kicker">sixty seconds, five of the drills</div>
       <h2>Watch every guardrail answer for itself.</h2>
-      <p class="lede">This is a simulation replaying five of the nine drills, and the shape is the real record: three of those five ran live against a real gateway on disposable boxes, twice, and held both times, 0 gaps, $0 real spend. The other two are the Wardryx scenarios that ship in the same set. The provider behind the gateway is fake, so the burn the runaway drill attempts never reaches an invoice.</p>
+      <p class="lede">This is a simulation replaying five of the drills, and the shape is the real record: three of those five ran live against a real gateway on disposable boxes, twice, and held both times, 0 gaps, $0 real spend. The other two are the Wardryx scenarios that ship in the same set. The provider behind the gateway is fake, so the burn the runaway drill attempts never reaches an invoice.</p>
     </div>
     <div class="rv" id="mx-sim"></div>
   </div>
@@ -157,8 +157,8 @@
           <text x="269" y="106" fill="#5A6675" font-size="10.5">POST /v1/messages</text>
           <text x="458" y="232" fill="#5A6675" font-size="10.5" text-anchor="start">async reactions</text>
           <text x="272" y="240" fill="#5A6675" font-size="10.5">expect.event &#183; polled</text>
-          <text x="770" y="282" fill="#5A6675" font-size="10.5">a drill on every merge,</text>
-          <text x="770" y="298" fill="#5A6675" font-size="10.5">instead of a report once a year</text>
+          <text x="770" y="282" fill="#5A6675" font-size="10.5">a drill can gate every merge,</text>
+          <text x="770" y="298" fill="#5A6675" font-size="10.5">one exit code per run</text>
         </g>
         <g stroke="#5A6675" stroke-width="1.5" class="flow">
           <line x1="216" y1="118" x2="322" y2="118" marker-end="url(#a3)"/>
@@ -205,29 +205,6 @@
       </div>
       <div class="card hover feature b-4 rv d1"><h3>CI-native exit codes</h3><p>Exit 0: every drill held. Exit 1: a real defensive gap, fail the build. Exit 2: the harness itself is broken (bad flag, unreadable scenarios), so nothing was proven. Gate on 1, fix the pipeline on 2, and never let the two blur.</p></div>
       <div class="card hover feature b-4 rv d2"><h3>Zero real spend by design</h3><p>The provider behind the gateway is fake, so the runaway scenario can burn all it wants: the meter it trips is real, the invoice is not. And every hostile input stays inside your perimeter; Mockryx only ever talks to the one gateway URL you hand it.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= COMPARISON ================= -->
-<section class="sec" style="padding-top:14px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="kicker">an honest comparison</div>
-      <h2>The drill you can afford to run every release.</h2>
-      <p class="lede">A yearly pentest does real work Mockryx cannot: people, phishing, infrastructure. What it cannot do is tell you tomorrow morning that yesterday's config change broke the DLP. And unit tests with a mocked gateway mostly prove the mocks still pass. Mockryx drills the assembled thing.</p>
-    </div>
-    <div class="tbl-scroll rv">
-      <table class="tbl">
-        <thead><tr><th></th><th>Mockryx</th><th>Annual pentest</th><th>&#8220;Trust the unit tests&#8221;</th></tr></thead>
-        <tbody>
-          <tr><td>Cadence</td><td class="yes">Every release</td><td class="warn">Yearly</td><td class="no">Whenever</td></tr>
-          <tr><td>Tests the assembled system</td><td class="yes">Real gateway, real policies</td><td class="warn">Sometimes</td><td class="no">No: mocks all the way down</td></tr>
-          <tr><td>Costs real tokens</td><td class="yes">No</td><td class="no">n/a</td><td class="warn">Sometimes</td></tr>
-          <tr><td>Proves off-path services react</td><td class="yes">Yes: expect.event</td><td class="no">No</td><td class="no">No</td></tr>
-          <tr><td>Who reads the result</td><td class="yes">A CI gate, every merge</td><td class="warn">A PDF for the board</td><td class="no">Nobody</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </section>
@@ -340,7 +317,7 @@
    on-behalf-of-forged-chain are the Wardryx scenarios shipped in the same
    set. Exit 0 means every guardrail held. */
 Sim.mount(document.getElementById("mx-sim"),{
-  title:"simulated replay · five of the nine drills, zero real spend",
+  title:"simulated replay · five of the drills, zero real spend",
   window:60, duration:16000,
   clock:t=>t.toFixed(1)+"s",
   badges:[{label:"fire drill, not a fire",color:"#FF8A5B"},{label:"fake provider · $0",color:"#34D399"}],
