@@ -34,7 +34,7 @@ ROOMS = {
                   "de020e052276"),
     "wardryx":   ("services/wardryx.html", "#2DD4BF",
                   "Wardryx: the PEP asks per request, the PDP answers allow, deny or hold",
-                  "05d9bd048860"),
+                  "6c6862d6acb1"),
     "idryx":     ("services/idryx.html", "#34D399",
                   "Idryx: identity sources feed one graph that emits alerts, an Agent-BOM and proposed diffs",
                   "fd83459a2b8b"),
