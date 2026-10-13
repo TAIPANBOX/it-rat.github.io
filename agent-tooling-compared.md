@@ -80,7 +80,7 @@ Apache-2.0 throughout, the console included. Nothing in the governance layer sit
 
 ### An alert is a coordinate, and a session is not an authority
 
-The mail that wakes somebody at night carries one link into a view, and never a button that acts. A link that acts is a permission held by everyone who received or forwarded the mail, and security gateways follow links before a human reads the sentence next to them. In the console, closing a retained reservation takes a fresh passkey assertion, bound to that one reservation and its revision, rather than to whoever is signed in.
+The mail that wakes somebody at night carries one link into a view, and never a button that acts. A link that acts is a permission held by everyone who received or forwarded the mail, and security gateways follow links before a human reads the sentence next to them. In the console, seven commands take a fresh passkey assertion bound to that command and its arguments, rather than to whoever is signed in: a kill, a budget change, an approval, issuing or revoking a tunnel peer, revoking a delegation, and closing a retained reservation.
 
 ### Post-quantum sits inside the agent loop, and it has legal dates attached
 
@@ -108,7 +108,7 @@ Token spend says how much was burned. It does not say whether the burning bought
 
 ### And what it costs, since none of this is free
 
-Standing in the request path buys the refusal and charges latency for it, on every call, including the overwhelming majority that were always going to be fine. It also forces a decision: what happens when the control plane itself is unreachable. The policy plane is fail-closed. In the failure drill of 2026-09-17 it refused every governed call in about 0.3 s while it was down. **That is the trade, and it is named here on purpose.**
+Standing in the request path buys the refusal and charges latency for it, on every call, including the overwhelming majority that were always going to be fine. It also forces a decision: what happens when the control plane itself is unreachable. Both launchers set the gateway to fail closed when the policy plane is unreachable. In the failure drill of 2026-09-17, with the policy plane down, the gateway refused every governed call in about 0.3 s. **That is the trade, and it is named here on purpose.**
 
 ## Where each part of the stack answers.
 

@@ -54,7 +54,7 @@ The mail itself carries identifiers and numbers and never content, because the e
 
 Following the link opens the panel showing that exact incident. It does not kill anything, and the difference is not fussiness. A link that acts is an unauthenticated capability held by whoever can see or forward the message, and mail security gateways **prefetch links**, so a one-click kill would fire before a human read the sentence next to it.
 
-So the action happens in the console, behind a sign-in. Closing a retained reservation also takes a fresh passkey confirmation, bound to that one reservation and its revision, because a stolen session should not be able to close one. What the operator typed as a reason is journaled with it.
+So the action happens in the console, behind a sign-in, and the kill also takes a fresh passkey confirmation bound to that exact command and its arguments once a passkey is enrolled or the operator requires one, because a stolen session should not be able to pull the switch. What the operator typed as a reason is journaled with it.
 
 ### The same failure, rehearsed before it was real
 
@@ -113,7 +113,7 @@ Two: the money plane and the policy plane, because both sit in the request path.
 Because on its own it is an agent having a bad afternoon. The detector wants at least two corroborating facts before it will call something high, and in this walk it gets two on top of the spend event: an agent with no attestation on record, and a delegation chain two hops deep. None of the three services holds all three facts. The severity comes from the join, which is the argument for a separate identity plane rather than a rule inside the gateway.
 
 **Q: Why does the alert email contain a link instead of a kill button?**
-Because a link that acts is an unauthenticated capability held by whoever can see or forward the message, and mail security gateways prefetch links, so the action would fire before a human read the sentence beside it. The link is a coordinate: it opens the panel showing that incident in your own console. The action happens there, behind a sign-in, and anything destructive additionally needs a fresh passkey confirmation bound to that exact command.
+Because a link that acts is an unauthenticated capability held by whoever can see or forward the message, and mail security gateways prefetch links, so the action would fire before a human read the sentence beside it. The link is a coordinate: it opens the panel showing that incident in your own console. The action happens there, behind a sign-in, and anything destructive additionally needs a fresh passkey confirmation bound to that exact command, once a passkey is enrolled or the operator requires one.
 
 **Q: What does the notifier hold, and what can it reach?**
 It reads a file and sends mail. It holds no credential for any plane, opens no connection to one, has no API of its own, and can take no action on any agent. That narrowness is the design rather than an implementation detail: it is the one component allowed out of the box, so its blast radius has to stay small enough to state in a sentence.

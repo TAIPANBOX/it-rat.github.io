@@ -105,7 +105,7 @@ FAQ = {
   "<p>None of the three services holds all three facts. The severity comes from the join, which is the argument for a separate identity plane rather than a rule inside the gateway.</p>"),
  ("Why does the alert email contain a link instead of a kill button?",
   "<p>Because a link that acts is an unauthenticated capability held by whoever can see or forward the message, and mail security gateways prefetch links, so the action would fire before a human read the sentence beside it.</p>"
-  "<p>The link is a coordinate: it opens the panel showing that incident in your own console. The action happens there, behind a sign-in, and anything destructive additionally needs a fresh passkey confirmation bound to that exact command.</p>"),
+  "<p>The link is a coordinate: it opens the panel showing that incident in your own console. The action happens there, behind a sign-in, and anything destructive additionally needs a fresh passkey confirmation bound to that exact command, once a passkey is enrolled or the operator requires one.</p>"),
  ("What does the notifier hold, and what can it reach?",
   "<p>It reads a file and sends mail. It holds no credential for any plane, opens no connection to one, has no API of its own, and can take no action on any agent. That narrowness is the design rather than an implementation detail: it is the one component allowed out of the box, so its blast radius has to stay small enough to state in a sentence.</p>"),
  ("Why does the mail carry identifiers and numbers but no content?",

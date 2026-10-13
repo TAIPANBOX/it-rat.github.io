@@ -318,9 +318,9 @@
         <div class="e-n">06</div>
         <div>
           <h3>An alert is a coordinate, and a session is not an authority</h3>
-          <p>The mail that wakes somebody at night carries one link into a view, and never a button that acts. A link that acts is a permission held by everyone who received or forwarded the mail, and security gateways follow links before a human reads the sentence next to them. In the console, closing a retained reservation takes a fresh passkey assertion, bound to that one reservation and its revision, rather than to whoever is signed in.</p>
-          <div class="e-x"><b>Limit:</b> the passkey step covers closing a retained reservation. Other console actions are not described here as passkey-bound.</div>
-          <div class="e-c"><b>Check it:</b> the closure token is bound to one reservation id and its revision, and the gateway refuses a stale revision. The rule is in the gateway's closure code.</div>
+          <p>The mail that wakes somebody at night carries one link into a view, and never a button that acts. A link that acts is a permission held by everyone who received or forwarded the mail, and security gateways follow links before a human reads the sentence next to them. In the console, seven commands take a fresh passkey assertion bound to that command and its arguments, rather than to whoever is signed in: a kill, a budget change, an approval, issuing or revoking a tunnel peer, revoking a delegation, and closing a retained reservation.</p>
+          <div class="e-x"><b>Limit:</b> the step is enforced once a passkey is enrolled or the operator requires one (<code>GENARYX_WEB_REQUIRE_PASSKEY=1</code>). With neither, the command still runs and is journaled as software-signed.</div>
+          <div class="e-c"><b>Check it:</b> the seven commands are one list in the console's web crate, and its router tests refuse an enrolled caller who brings no assertion. A closure is also bound to one reservation id and its revision, and the gateway refuses a stale revision.</div>
           <div class="e-p">A stolen session should not be able to pull the lever.</div>
         </div>
       </div>
@@ -400,7 +400,7 @@
 
     <div class="prose rv" style="margin-top:22px">
       <h3>And what it costs, since none of this is free</h3>
-      <p>Standing in the request path buys the refusal and charges latency for it, on every call, including the overwhelming majority that were always going to be fine. It also forces a decision: what happens when the control plane itself is unreachable. The policy plane is fail-closed. In the failure drill of 2026-09-17 it refused every governed call in about 0.3 s while it was down. <b>That is the trade, and it is named here on purpose.</b></p>
+      <p>Standing in the request path buys the refusal and charges latency for it, on every call, including the overwhelming majority that were always going to be fine. It also forces a decision: what happens when the control plane itself is unreachable. Both launchers set the gateway to fail closed when the policy plane is unreachable. In the failure drill of 2026-09-17, with the policy plane down, the gateway refused every governed call in about 0.3 s. <b>That is the trade, and it is named here on purpose.</b></p>
     </div>
   </div>
 </section>

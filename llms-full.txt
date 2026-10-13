@@ -1039,7 +1039,7 @@ The mail itself carries identifiers and numbers and never content, because the e
 
 Following the link opens the panel showing that exact incident. It does not kill anything, and the difference is not fussiness. A link that acts is an unauthenticated capability held by whoever can see or forward the message, and mail security gateways **prefetch links**, so a one-click kill would fire before a human read the sentence next to it.
 
-So the action happens in the console, behind a sign-in. Closing a retained reservation also takes a fresh passkey confirmation, bound to that one reservation and its revision, because a stolen session should not be able to close one. What the operator typed as a reason is journaled with it.
+So the action happens in the console, behind a sign-in, and the kill also takes a fresh passkey confirmation bound to that exact command and its arguments once a passkey is enrolled or the operator requires one, because a stolen session should not be able to pull the switch. What the operator typed as a reason is journaled with it.
 
 ### The same failure, rehearsed before it was real
 
@@ -1098,7 +1098,7 @@ Two: the money plane and the policy plane, because both sit in the request path.
 Because on its own it is an agent having a bad afternoon. The detector wants at least two corroborating facts before it will call something high, and in this walk it gets two on top of the spend event: an agent with no attestation on record, and a delegation chain two hops deep. None of the three services holds all three facts. The severity comes from the join, which is the argument for a separate identity plane rather than a rule inside the gateway.
 
 **Q: Why does the alert email contain a link instead of a kill button?**
-Because a link that acts is an unauthenticated capability held by whoever can see or forward the message, and mail security gateways prefetch links, so the action would fire before a human read the sentence beside it. The link is a coordinate: it opens the panel showing that incident in your own console. The action happens there, behind a sign-in, and anything destructive additionally needs a fresh passkey confirmation bound to that exact command.
+Because a link that acts is an unauthenticated capability held by whoever can see or forward the message, and mail security gateways prefetch links, so the action would fire before a human read the sentence beside it. The link is a coordinate: it opens the panel showing that incident in your own console. The action happens there, behind a sign-in, and anything destructive additionally needs a fresh passkey confirmation bound to that exact command, once a passkey is enrolled or the operator requires one.
 
 **Q: What does the notifier hold, and what can it reach?**
 It reads a file and sends mail. It holds no credential for any plane, opens no connection to one, has no API of its own, and can take no action on any agent. That narrowness is the design rather than an implementation detail: it is the one component allowed out of the box, so its blast radius has to stay small enough to state in a sentence.
@@ -1561,7 +1561,7 @@ This list is deliberately visible rather than tidy, and it is the section worth 
 
 - **The federation completeness rule is specified and its transport is unbuilt.** The rule exists; the wires do not.
 
-- **The figures on this site go stale, and did again this month.** 116 of them name a source repository, the command that produces them and the date somebody last ran it. A gate refuses a service page that states a number nobody owns, and the root pages are not in its scope. That gate cannot tell you an owned number is still true, and on 2026-08-20 five of the eleven were not: two test counts out by six and ten, a detector count out by two, a trap count out by three, and a release a whole version behind. None was wrong when written. Re-measuring now costs one command rather than an afternoon, which is the actual fix; being more careful was never available.
+- **The figures on this site go stale, and did again this month.** 116 of them name a source repository, the command that produces them and the date somebody last ran it. A gate refuses a service page that states a number nobody owns, and the root pages are not in its scope. That gate cannot tell you an owned number is still true, and on 2026-08-20, when eleven were owned, five of them were not: two test counts out by six and ten, a detector count out by two, a trap count out by three, and a release a whole version behind. None was wrong when written. Re-measuring now costs one command rather than an afternoon, which is the actual fix; being more careful was never available.
 
 Every figure quoted anywhere on this site or in these repositories is meant to carry three things: what produced it, when, and what it is a claim about. A measurement stays true about its moment and is not automatically true about the present, which is why a date is part of a number rather than decoration on it. If you find one here without those, that is a defect and worth telling us about.
 
@@ -1687,7 +1687,7 @@ Apache-2.0 throughout, the console included. Nothing in the governance layer sit
 
 ### An alert is a coordinate, and a session is not an authority
 
-The mail that wakes somebody at night carries one link into a view, and never a button that acts. A link that acts is a permission held by everyone who received or forwarded the mail, and security gateways follow links before a human reads the sentence next to them. In the console, closing a retained reservation takes a fresh passkey assertion, bound to that one reservation and its revision, rather than to whoever is signed in.
+The mail that wakes somebody at night carries one link into a view, and never a button that acts. A link that acts is a permission held by everyone who received or forwarded the mail, and security gateways follow links before a human reads the sentence next to them. In the console, seven commands take a fresh passkey assertion bound to that command and its arguments, rather than to whoever is signed in: a kill, a budget change, an approval, issuing or revoking a tunnel peer, revoking a delegation, and closing a retained reservation.
 
 ### Post-quantum sits inside the agent loop, and it has legal dates attached
 
@@ -1715,7 +1715,7 @@ Token spend says how much was burned. It does not say whether the burning bought
 
 ### And what it costs, since none of this is free
 
-Standing in the request path buys the refusal and charges latency for it, on every call, including the overwhelming majority that were always going to be fine. It also forces a decision: what happens when the control plane itself is unreachable. The policy plane is fail-closed. In the failure drill of 2026-09-17 it refused every governed call in about 0.3 s while it was down. **That is the trade, and it is named here on purpose.**
+Standing in the request path buys the refusal and charges latency for it, on every call, including the overwhelming majority that were always going to be fine. It also forces a decision: what happens when the control plane itself is unreachable. Both launchers set the gateway to fail closed when the policy plane is unreachable. In the failure drill of 2026-09-17, with the policy plane down, the gateway refused every governed call in about 0.3 s. **That is the trade, and it is named here on purpose.**
 
 ## Where each part of the stack answers.
 
