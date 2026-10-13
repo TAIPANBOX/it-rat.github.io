@@ -326,7 +326,11 @@ subprocess.run(["git", "rm", "-q", "services/tokenfuse.md"], check=True)')" \
 
 run_case "generated-blocks: a lastmod in the sitemap edited by hand" fail \
 	'./scripts/generated-blocks.sh' \
-	"$(py 'edit("sitemap.xml", "<lastmod>2026-07-27</lastmod>", "<lastmod>2026-08-29</lastmod>")')" \
+	"$(py 'import re
+s = open("sitemap.xml").read()
+s2 = re.sub(r"<lastmod>[^<]*</lastmod>", "<lastmod>2026-08-29</lastmod>", s, count=1)
+assert s2 != s, "no lastmod to edit"
+open("sitemap.xml", "w").write(s2)')" \
 	"a generator would rewrite it"
 
 run_case "generated-blocks: a README diagram edited by hand" fail \
