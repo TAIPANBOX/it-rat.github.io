@@ -185,11 +185,11 @@
         </div>
       </div>
       <div class="hero-side rv d2">
-        <div class="row"><span class="k">shipped</span><span class="v">v1.0.1, two images and manifests</span></div>
+        <div class="row"><span class="k">shipped</span><span class="v">v1.0.1, two images (default and -chromium)</span></div>
         <div class="row"><span class="k">core</span><span class="v">Go 1.27 &#183; one direct dependency</span></div>
         <div class="row"><span class="k">one way out</span><span class="v">http and https, and nothing else</span></div>
         <div class="row"><span class="k">fails</span><span class="v">closed, and says which refusal</span></div>
-        <div class="row"><span class="k">keeps</span><span class="v">the origin and a hash, never the URL</span></div>
+        <div class="row"><span class="k">keeps</span><span class="v">the origin and a hash, not the URL unless you opt in</span></div>
         <div class="row"><span class="k">licence</span><span class="v">Apache-2.0</span></div>
       </div>
     </div>
@@ -202,7 +202,7 @@
     <div class="sec-head rv">
       <div class="kicker">one request, in flight</div>
       <h2>Five gates, in this order, and the order is the claim.</h2>
-      <p class="lede">The scheme, then the host, then every address that name resolves to at the moment of the fetch, then your policy plane, and last the site's own <span class="mono">robots.txt</span>. The first three are local and free, so a cheap refusal never becomes a network call. Your policy is asked fourth, which means a destination you refuse is never contacted at all, not even for its <span class="mono">robots.txt</span>. Pick a request and watch where it stops.</p>
+      <p class="lede">The verdicts run in this order: the scheme, the host, every address that name resolves to at the moment of the fetch, your policy plane, and last the site's own <span class="mono">robots.txt</span>. Before the first verdict the plane resolves the name and asks your policy plane once per host, so a refused destination costs one lookup and one policy question. It is never fetched, and its <span class="mono">robots.txt</span> is never requested. Pick a request and watch where it stops.</p>
     </div>
 
     <div class="flight rv" id="sx-box">
@@ -315,7 +315,7 @@
         <span class="v go" id="sx-verdict">fetched</span>
       </div>
 
-      <p class="fl-why" id="sx-why">Nothing here is a network call until the fourth gate has answered. A scheme, a name and a set of addresses cost nothing to refuse, so the cheap refusals happen while the request is still inside your own process. The site's own preference is asked last, which is the ordering that matters: a destination your policy refuses is never contacted at all, not even to read its <span class="mono">robots.txt</span>.</p>
+      <p class="fl-why" id="sx-why">The name is resolved and your policy plane is asked before any verdict, so the cheapest refusal still costs one lookup and one policy question. What a refusal prevents is the fetch. A scheme or a host the rules refuse costs nothing, so those refusals happen while the request is still inside your own process. The site's own preference is asked last, which is the ordering that matters: a destination your policy refuses is never contacted at all, not even to read its <span class="mono">robots.txt</span>.</p>
     </div>
   </div>
 </section>
@@ -329,7 +329,7 @@
       <p class="lede">Four real requests, one container, the published image against a fixture policy and the live internet. Watch where each stops: a name pointing inside your own deployment is refused before any policy runs, and the request that never became a request is the last row.</p>
     </div>
     <div class="gates rv">
-      <div class="gt-head"><span class="gt-dot"></span>scopyx v1.0.1 <span class="n">four requests, one container, one fixture policy, re-run 2026-08-10</span></div>
+      <div class="gt-head"><span class="gt-dot"></span>scopyx v0.1.2 <span class="n">four requests, one container, one fixture policy, re-run 2026-08-10</span></div>
       <div class="gt-row">
         <span class="stage">policy said yes</span>
         <span class="url">https://example.com/</span>
@@ -371,7 +371,7 @@
       <p class="lede">An allowed host answering 302 to a denied one is the oldest allowlist bypass there is, and it is invisible to any check that reads only the URL the caller passed. The same argument applies one layer down, to the name itself.</p>
     </div>
     <div class="grid2">
-      <div class="feature rv"><h3>It refuses to follow</h3><p>The fetcher it ships with returns the redirect instead of following it. Following inside the fetcher would be a second request that no decision preceded, which is exactly the bypass. Every HTTP client in every language does the opposite by default, which is why this is written down rather than assumed.</p></div>
+      <div class="feature rv"><h3>It refuses to follow</h3><p>The fetcher it ships with returns the redirect instead of following it. Following inside the fetcher would be a second request that no decision preceded, which is exactly the bypass. Most HTTP clients follow redirects by default, which is why this is written down rather than assumed.</p></div>
       <div class="feature rv d1"><h3>Every hop is resolved again</h3><p>The target's name is looked up at the moment of the hop, never from anything remembered. An address resolved a minute ago would satisfy the check while the fetch reached something else.</p></div>
       <div class="feature rv d2"><h3>And the socket goes where the decision looked</h3><p>Every HTTP client resolves the name again, inside the dialer, with no memory of what was checked, and a hostile zone answers differently between the two lookups for nothing. So the checked addresses are pinned and the transport refuses to dial a host no decision covered, which makes it the floor under everything above it: a code path that reached out without asking cannot open a socket.</p></div>
       <div class="feature rv d3"><h3>And bounded twice</h3><p>Your configured depth, and a ceiling the plane keeps regardless. Two servers pointing at each other is a fetch that never returns, and a fetch that never returns is worse than one that is refused, because nothing reports it.</p></div>
@@ -385,10 +385,10 @@
     <div class="sec-head rv">
       <div class="kicker">what it decides over</div>
       <h2>It is not a browser, and that is the whole design.</h2>
-      <p class="lede">Scopyx supplies no capability you do not already have. Point it at the Firecrawl account you already pay for, the Browserbase you already run, or the fetcher it ships with, and the tool you own gains a decision, a bound and a record. Anyone proposing a feature here should ask whether it makes the fetch better or the fetch more governed. The first belongs in somebody else's product.</p>
+      <p class="lede">Scopyx supplies no capability you do not already have. Point it at the fetching service you already run, through an HTTP endpoint that speaks scopyx's external contract (SCOPYX_EXTERNAL_ENDPOINT). A vendor API needs an adapter in front of it, and this repository ships none. Either way, the tool you own gains a decision, a bound and a record. Anyone proposing a feature here should ask whether it makes the fetch better or the fetch more governed. The first belongs in somebody else's product.</p>
     </div>
     <div class="grid3">
-      <div class="feature rv"><h3>The one that needs nothing</h3><p>The default fetcher wants no account, no API token and no browser on the host, so a box is governed on the day it is installed rather than the day somebody arranges a fetching service. It runs no JavaScript, and the result says so, because a page assembled in a browser arrives as the shell that assembles it.</p></div>
+      <div class="feature rv"><h3>The one that needs nothing</h3><p>The default fetcher wants no account, no API token and no browser on the host, so a box is governed on the day it is installed rather than the day somebody arranges a fetching service. It runs no JavaScript, and the result names its backend as passthrough-http, which is how you can tell, because a page assembled in a browser arrives as the shell that assembles it.</p></div>
       <div class="feature rv d1"><h3>The one your invoice already covers</h3><p>Wrapping a service you already run is the commercially important case and the least impressive code in the repository. A destination your policy refuses never reaches that service, so it never appears in your bill for it either.</p></div>
       <div class="feature rv d2"><h3>And a browser you installed</h3><p>It runs the page's own JavaScript, so a document assembled in the browser arrives assembled. Nothing is bundled and nothing is downloaded: the image stays small, and a missing browser is refused at startup with a message about the browser rather than at the first fetch with a message about the network.</p></div>
     </div>
@@ -401,7 +401,7 @@
     <div class="sec-head rv">
       <div class="kicker">try breaking it</div>
       <h2>A page is forty requests nobody named. Here is what stops them.</h2>
-      <p class="lede">A rendering backend is the first one that fetches things the caller never asked for: fonts, images, scripts, each potentially a different host. Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and see. Switch both off and see that too, which is exactly the experiment the test suite runs.</p>
+      <p class="lede">A rendering backend is the first one that fetches things the caller never asked for: fonts, images, scripts, each potentially a different host. Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and see. Switch both off and the chromium test that asserts the refused server is never reached is the one that should fail. That run is not recorded yet.</p>
     </div>
 
     <div class="flight rv" id="mx-box">
@@ -514,7 +514,7 @@
       <span class="k">subresources_requested</span>&nbsp; 0&nbsp; &#183; it asked for nothing, and knows it<br>
       <span class="k">subresources_blocked_by_policy</span>&nbsp; 0<br>
       <span class="k">redirect_hops</span>&nbsp; 0<br>
-      <span class="k">truncated_by</span>&nbsp; <span class="null">null</span>
+      <span class="k">truncated_by</span>&nbsp; <span class="null">""</span>
     </div>
     <div class="grid2" style="margin-top:22px">
       <div class="feature rv"><h3>A count nobody can supply is null</h3><p>Zero says the page asked for nothing. Null says nobody knows. Reporting the second as the first claims perfect fidelity for exactly the backend that can see the least, and an agent that does not know it read half a page will report confidently on the half it got.</p></div>
@@ -583,7 +583,7 @@
     <div class="sec-head rv">
       <div class="kicker">the boundaries</div>
       <h2>What it will not do, stated rather than discovered.</h2>
-      <p class="lede">No stealth, no CAPTCHA solving, no TLS-fingerprint matching, no bulk crawl, no image harvesting, and <span class="mono">robots.txt</span> is honoured. It identifies itself as scopyx and never as a browser.</p>
+      <p class="lede">No stealth, no CAPTCHA solving, no TLS-fingerprint matching, no bulk crawl, no image harvesting, and <span class="mono">robots.txt</span> is honoured. It identifies itself as scopyx to robots.txt and on the default fetcher. A browser you installed sends its own user agent to the page, because the plane does not set one.</p>
     </div>
     <div class="grid3">
       <div class="feature rv"><h3>Because of what this is for</h3><p>Defensive tooling for an operator governing their own agents. A component that defeated a third party's controls would be the first thing here useful to somebody attacking a stranger, and that is a different product.</p></div>
@@ -596,10 +596,10 @@
     </div>
     <div class="install rv" style="margin-top:12px">
       <span class="cmd">docker run <b>ghcr.io/taipanbox/scopyx:v1.0.1-chromium</b></span>
-      <span class="note">the same service with a browser: 267 MB to pull against 3.5 MB</span>
+      <span class="note">the same service with a browser: 267 MB to pull against 3.5 MB (measured on v0.1.2, 2026-08-10)</span>
     </div>
     <p class="lede rv" style="margin-top:22px;font-size:14px">
-      Scopyx is not an AI system under Article 3(1): it applies rules you wrote and infers nothing. Used beside one, it
+      Scopyx applies rules you wrote and infers nothing, so we do not treat it as an AI system under Article 3(1). Whether a system you run is one is for your own legal review. Used beside one, it
       supplies evidence for Article 12 record-keeping and Article 14 human oversight. The wording here is "covers the
       requirements of Article 12", never "AI Act compliant", because there is no certification and no auditor behind
       those words, and a claim nobody can hold is worse than no claim.
@@ -683,11 +683,11 @@ const G=[210,322,434,546,658], AGENT=136, WEB=786, ENTRY=136;
 
 const RUNS=[
   { url:"https://example.com/", verdict:"fetched", cls:"go", event:"writes web_fetch",
-    why:"Nothing here is a network call until the fourth gate has answered. A scheme, a name and a set of addresses cost nothing to refuse, so the cheap refusals happen while the request is still inside your own process. The site's own preference is asked last, which is the ordering that matters: a destination your policy refuses is never contacted at all, not even to read its robots.txt.",
+    why:"The name is resolved and your policy plane is asked before any verdict, so the cheapest refusal still costs one lookup and one policy question. What a refusal prevents is the fetch. A scheme or a host the rules refuse costs nothing, so those refusals happen while the request is still inside your own process. The site's own preference is asked last, which is the ordering that matters: a destination your policy refuses is never contacted at all, not even to read its robots.txt.",
     steps:[["g",0],["g",1],["g",2],["g",3],["g",4],["m",WEB]] },
 
   { url:"http://169.254.169.254/latest/meta-data/", verdict:"deny_address", cls:"stop", event:"writes web_blocked",
-    why:"The fixture policy said allow, and it was refused anyway. Policy languages talk about domains an agent may reach and none of them was written with the cloud metadata endpoint in mind, so this gate sits before the policy gate rather than after it. Look at the two gates that went dark: your policy was never asked, and a plane that asked it would have been told yes.",
+    why:"The fixture policy said allow, and it was refused anyway. Policy languages talk about domains an agent may reach and none of them was written with the cloud metadata endpoint in mind, so this gate sits before the policy gate rather than after it. The policy plane was asked, and it answered allow; the address rule decides first, so the policy verdict and the robots.txt gate never run.",
     steps:[["g",0],["g",1],["gx",2]] },
 
   { url:"https://status.example/notice", url2:"https://exfil.example/collect",
@@ -799,7 +799,7 @@ const STATES={
   "0,1":{state:"the floor off", where:"refused by the accountant", verdict:"never reached", stop:true,
     title:"tracker.example: refused", why2:"CDP failed the request before it was sent",
     saw:"saw nothing",
-    text:"With the proxy decision removed, the request is still refused, because CDP interception decided it by its full URL. This is the state the test suite measures with the proxy's decision mutated out, and the refused server is still never reached. What is lost here is not the refusal but the guarantee: the accountant is the browser's own cooperation, and a bug, a flag or a version can withdraw it."},
+    text:"With the proxy decision removed, the request is still refused, because CDP interception decided it by its full URL. This is the state a run with the proxy's decision removed should measure, and the refused server should still never be reached. That run is not recorded yet. What is lost here is not the refusal but the guarantee: the accountant is the browser's own cooperation, and a bug, a flag or a version can withdraw it."},
   "1,0":{state:"the accountant off", where:"refused by the floor", verdict:"never reached", stop:true,
     title:"tracker.example: refused", why2:"the proxy did not open the socket",
     saw:"saw nothing",
@@ -807,7 +807,7 @@ const STATES={
   "0,0":{state:"both off", where:"nothing decided it", verdict:"REACHED", stop:false,
     title:"tracker.example: fetched", why2:"nothing stood between the page and its server",
     saw:"saw one request, from your agent's IP",
-    text:"Both removed, and the pixel is fetched. This is the fourth mutation, and it is the one that goes red in the test suite: the case asserts on the SERVER that would have served it, not on what the result says. An outcome assertion would pass equally well if the request happened and the answer were discarded, which is the difference between governing egress and filtering a report about it."}
+    text:"Both removed, and the pixel is fetched. This is the fourth mutation, and it is the one that should go red: the case asserts on the SERVER that would have served it, not on what the result says. That run is not recorded yet. An outcome assertion would pass equally well if the request happened and the answer were discarded, which is the difference between governing egress and filtering a report about it."}
 };
 
 function render(){

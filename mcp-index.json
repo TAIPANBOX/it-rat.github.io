@@ -184,7 +184,7 @@
       "markdown": "https://it-rat.com/services/heraldyx.md",
       "title": "Heraldyx, the alerts plane",
       "kind": "service",
-      "description": "The part of the agent stack that writes to you: it reads the shared event log, decides what is worth a human tonight, and mails it with one link."
+      "description": "The part of the agent stack that writes to you: it reads the shared event log, decides what is worth a human tonight, and mails it with links into your own console."
     },
     {
       "url": "https://it-rat.com/services/scopyx.html",
@@ -198,7 +198,7 @@
       "markdown": "https://it-rat.com/services/trailryx.md",
       "title": "Trailryx, the record",
       "kind": "service",
-      "description": "A record of what your AI agents did that nobody can quietly change or shorten, where every answer carries a proof that it is complete."
+      "description": "A record of what your AI agents did that nobody can quietly change or shorten, where every answer says whether it is proved complete."
     },
     {
       "url": "https://it-rat.com/services/platform.html",

@@ -4,7 +4,7 @@
 
 > A typed answer, choice, score or yes/no, with a probability, never a guess: capped, journaled, and calibrated against real outcomes.
 
-Agents already ask each other, and their models, questions that have exactly one shape: choice (which option), score (how good, on an ordered scale) or yes/no. Typryx takes a question from a versioned template and returns a typed answer read off a probability distribution, or refuses with a named reason instead of inventing one. Only the fields the template names ever leave the box, and every answer, refusal or timeout lands on a hash-chained journal.
+Agents already ask each other, and their models, questions that have exactly one shape: choice (which option), score (how good, on an ordered scale) or yes/no. Typryx takes a question from a versioned template and returns a typed answer read off a probability distribution, or refuses with a named reason instead of inventing one. Only the fields the template names leave the box unless an operator switches freeform questions on (TYPRYX_ALLOW_FREEFORM=1, off by default). Every answer, refusal or timeout lands on a hash-chained journal.
 
 ## Every real judgement from one run, replayed in the same order.
 
@@ -12,7 +12,7 @@ Not an illustration: these are the 60 real arithmetic judgements from the calibr
 
 ## The path of one ask.
 
-An agent reaches typryx over MCP, most often through tokenfuse's broker, both measured. Inside, a call crosses the door, the template lookup, the egress filter and the hourly cap before it reaches a swappable backend; the answer is read off the probability distribution, never taken as the backend's own claim. Everything is journaled. On the right: the calibration loop that scores a later truth, and the consumers, all still planned, that would read the journal.
+An agent reaches typryx over MCP, most often through tokenfuse's broker, both built. Inside, a call crosses the door, the template lookup, the egress filter and the hourly cap before it reaches a swappable backend; the answer is read off the probability distribution, never taken as the backend's own claim. Everything is journaled. On the right: the calibration loop that scores a later truth, and the consumers, all still planned, that would read the journal.
 
 ## Where can an ask stop, and what does it leave behind?
 
@@ -25,7 +25,7 @@ Three question shapes are the whole contract: `choice`, `score`, `noul` (yes/no)
 | template | type | options | who would ask it | status |
 |---|---|---|---|---|
 | eval.outcome_met | noul (yes/no) | n/a | Verdryx's grading; the calibration run below used it | measured 2026-09-25 |
-| eval.answer_quality | score | 4 ordered levels | Verdryx grader | measured 2026-09-25 |
+| eval.answer_quality | score | 4 ordered levels | Verdryx grader | README example, 2026-09-25 |
 | request.complexity | choice | cheap / default / hard / reasoning | TokenFuse router, shadow mode only | planned, shadow only |
 | action.risk_class | choice | read_only / reversible_change / destructive / external_send / financial | Wardryx, through `wardryx-proxy`, from the tool, its arguments and its target only | released in v0.4.0, run on the stub only |
 
@@ -83,7 +83,7 @@ It is off by default: with no directory set, nothing is written and no directory
 
 ### Why labels are human truths only
 
-The export labels a question with the truth a person posted and with nothing else. A hosted model's answer never becomes a training label, which matters because TypeSafe's agreement forbids using Jev's output to train another model.
+The export labels a question with the truth a person posted and with nothing else. A hosted model's answer never becomes a training label, which matters because TypeSafe's agreement forbids using Jev's output for model distillation or to build a similar or competing product.
 
 What typryx cannot see is how a person reached a truth. A label copied from a model's answer would get through, and the poster's own word is the only record of where it came from.
 
@@ -91,9 +91,9 @@ Decided 2026-09-30: a customer picks one of three data modes for typed answers, 
 
 ### Toggle the extra fields. The egress never changes.
 
-Only `task` and `final_answer` are in the template's `fields`, so they are the only two that ever reach the backend, whatever else sits in the state. The type a backend receives is constructible only inside the template package, so a map or raw state cannot reach one even by an implementation mistake.
+Only `task` and `final_answer` are in the template's `fields`, so on a template ask they are the only two that reach the backend, whatever else sits in the state. The type a backend receives for a template ask is constructible only inside the template package, so a map or raw state cannot reach one on that path, even by an implementation mistake. The one exception is a freeform question, which sends the whole state when TYPRYX_ALLOW_FREEFORM=1 is set (off by default).
 
-Measured on a live run: a five-field state carrying `user_email` and, separately, `customer_iban`, neither ever reached the backend or the record. Through Claude Code over MCP, an extra `api_token` field never reached the record either (`held_back_fields: 1`).
+Measured (undated, see the typryx README): a five-field state carrying `user_email` and, separately, `customer_iban`, neither ever reached the backend or the record. Through Claude Code over MCP, an extra `api_token` field never reached the record either (`held_back_fields: 1`).
 
 ### Never invents an answer
 
@@ -113,13 +113,13 @@ Same 60 items, seed 1, timed end to end from the caller (`go run ./examples/spee
 | typed, one token, through typryx | qwen2.5:7b | 148 ms | 159 ms | 66.7% (3 of 60 unparsed, counted wrong) |
 | text judge, short verdict | qwen2.5:7b | 1,509 ms | 2,103 ms | 100% |
 
-Against a hosted API the network dominates: on gpt-4.1-mini the shortcut was about 1.3× faster than a short text verdict and gave up about a third of the accuracy, and gpt-5.4-mini, a current small reasoning model, was right on all 60 in about the same time as the shortcut. Locally, on qwen2.5:7b, the shortcut is about 10× faster. A typed decision earns its place by the probability it carries and where it runs, not by speed; vendor speed claims are not on this page. Jev is not on this chart: it was measured on a different set of questions, the 434 in [Three modes](https://it-rat.com/services/typryx.html#modes), and the two sets are never mixed.
+Against a hosted API the network dominates: on gpt-4.1-mini the shortcut was about 1.3× faster than a short text verdict and gave up 28 points of accuracy (71.7% against 100%), and gpt-5.4-mini, a current small reasoning model, was right on all 60 in about the same time as the shortcut. Locally, on qwen2.5:7b, the shortcut is about 10× faster. A typed decision earns its place by the probability it carries and where it runs, not by speed; vendor speed claims are not on this page. Jev is not on this chart: it was measured on a different set of questions, the 434 in [Three modes](https://it-rat.com/services/typryx.html#modes), and the two sets are never mixed.
 
 ## Stated confidence and actual accuracy are not the same number.
 
 Eight groups, 480 judgements, never pooled: `typryx calibration --min-n 30 --json` over durable ledgers, 60 arithmetic judgements per group, seed 1, template `eval.outcome_met`, backend openai-logprobs, half the items right and half wrong. Five models: three OpenAI models of the previous generation over the hosted API (gpt-4.1-mini, gpt-4o-mini, gpt-4.1-nano, each with two template wordings) and two open-weight Qwen 2.5 models run locally on Ollama (3B and 7B). Every group was 96% to 100% confident on average and right 50% to 73% of the time. Click or focus a dot for its numbers.
 
-Every group was 96% to 100% confident on average, right 50% to 73% of the time, and the errors do not lean one way: three groups (gpt-4.1-nano in both wordings, and qwen2.5:3b) said "correct" to every one of 60 items, right exactly half the time, the base rate. gpt-4.1-mini mostly passed a wrong answer as right; gpt-4o-mini erred both ways; qwen2.5:7b never passed a wrong answer but failed a third of the right ones. Rewording (v1 to v2) barely moved accuracy, because a one-token judge has no room to work anything out before answering: it suits classification, not verification. OpenAI's current models, gpt-5.x and gpt-6, refuse token probabilities outright (probed 2026-09-25: "'logprobs' is not supported with this model"), so this backend reaches only earlier hosted models and open models.
+Every group was 96% to 100% confident on average, right 50% to 73% of the time, and the errors do not lean one way: three groups (gpt-4.1-nano in both wordings, and qwen2.5:3b) said "correct" to every one of 60 items, right exactly half the time, the base rate. gpt-4.1-mini passed half of the wrong answers as right (15 of 30 in each wording); gpt-4o-mini erred both ways; qwen2.5:7b never passed a wrong answer but failed two-thirds of the right ones (20 of 30). Rewording (v1 to v2) barely moved accuracy, because a one-token judge has no room to work anything out before answering: it suits classification, not verification. OpenAI's current models, gpt-5.x and gpt-6, refuse token probabilities outright (the typryx README records this probe: "'logprobs' is not supported with this model"), so this backend reaches only earlier hosted models and open models.
 
 | model | wording | n | stated | accuracy | ECE | Brier | right | lenient | strict |
 |---|---|---|---|---|---|---|---|---|---|
@@ -132,7 +132,7 @@ Every group was 96% to 100% confident on average, right 50% to 73% of the time, 
 | qwen2.5:3b | v2 | 60 | 0.998 | 0.500 | 0.498 | 0.995 | 30 | 30 | 0 |
 | qwen2.5:7b | v2 | 60 | 0.965 | 0.667 | 0.298 | 0.597 | 40 | 0 | 20 |
 
-Exact models: gpt-4.1-mini-2025-04-14, gpt-4o-mini-2024-07-18 and gpt-4.1-nano-2025-04-14 over OpenAI's API; qwen2.5:3b and qwen2.5:7b on Ollama on a development Mac. Wording v1 is the example template (`2d3ecbdc`), v2 asks plainly whether the answer is exactly correct (`781efaaf`); the local models ran v2 only. Every figure here is one run of 60 items, reproducible with `examples/calibration` in the repository.
+Exact models: gpt-4.1-mini, gpt-4o-mini and gpt-4.1-nano over OpenAI's API; qwen2.5:3b and qwen2.5:7b on Ollama on a development Mac. Wording v1 is the example template (`2d3ecbdc`), v2 asks plainly whether the answer is exactly correct (`781efaaf`); the local models ran v2 only. Every figure here is one run of 60 items, reproducible with `examples/calibration` in the repository.
 
 **stated confidence**
 The probability the model's own answer carried when it was given, averaged over the group.
@@ -145,21 +145,21 @@ Mean squared error between the stated probabilities and the true outcome; here, 
 
 ## What each part of the stack would get.
 
-Three edges are measured live. The Wardryx edge is built and released and measured on the stub backend only; the rest are what a later integration would read, not something built. Click or focus a node.
+Three edges are built and wired in, but none is recorded as a live run yet. The Wardryx edge is built and released and runs only against the stub backend; the rest are what a later integration would read, not something built. Click or focus a node.
 
 Click or focus a node above for what typryx gives it, which template, and what happens with typryx absent.
 
 |  | what typryx gives it | status |
 |---|---|---|
-| MCP clients (Claude Code and others) | a typed answer with a probability, per call, over MCP | measured |
-| TokenFuse, as broker | a named upstream; one tool_call recorded against the agent | measured |
+| MCP clients (Claude Code and others) | a typed answer with a probability, per call, over MCP | built |
+| TokenFuse, as broker | a named upstream; one tool_call recorded against the agent | built |
 | TokenFuse, router shadow mode | the class it would have routed to, alongside cost, recorded only | planned |
-| Verdryx | a typed grader beside the existing LLM judge, opt-in per run with `--typed-url` | measured |
-| Wardryx | an `action.risk_class` signal a `hold_if_signal` rule may turn into a hold, never a deny; opt-in in the launchers, off by default | built and released, measured on the stub only |
-| CostCrew | a suggested class or priority at triage; a person still decides | planned |
+| Verdryx | a typed grader beside the existing LLM judge, opt-in per run with `--typed-url` | built, not run live |
+| Wardryx | an `action.risk_class` signal a `hold_if_signal` rule may turn into a hold, never a deny; opt-in in the launchers, off by default | built and released, run only against a loopback stand-in (v0.4.0 release notes) |
+| CostCrew | a suggested class or priority at triage; a person still decides | built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL, not run live |
 | Genaryx | a panel, live only when `GENARYX_TYPRYX_URL` resolves | planned |
 | Engram | an optional importance score | planned |
-| Journal readers (Trailryx, Idryx) | the same agent-event envelope; Idryx will never call typryx, its detection stays deterministic | planned |
+| Journal readers (Trailryx, Idryx) | the four event types reach the shared events volume; heraldyx renders them; Idryx lists typryx as a source and never calls it; Trailryx refuses them by design | on the shared bus |
 
 ## A probability, never an enforcement decision.
 
@@ -189,11 +189,11 @@ The stub backend is deterministic and free, for tests and demos, and every answe
 
 ### Optional, and it changes nothing when it is absent.
 
-Typryx sits behind [TokenFuse](https://it-rat.com/tokenfuse.html)'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the `request.complexity` template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. [Verdryx](https://it-rat.com/verdryx.html) can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; measured on 2026-09-25. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. [Wardryx](https://it-rat.com/wardryx.html) can read one: `typryx wardryx-proxy` sits in front of it, asks `action.risk_class` about a pending tool call, and adds the answer to the decision request, where a `hold_if_signal` rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.
+Typryx sits behind [TokenFuse](https://it-rat.com/tokenfuse.html)'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the `request.complexity` template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. [Verdryx](https://it-rat.com/verdryx.html) can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built and not yet run live. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. [Wardryx](https://it-rat.com/wardryx.html) can read one: `typryx wardryx-proxy` sits in front of it, asks `action.risk_class` about a pending tool call, and adds the answer to the decision request, where a `hold_if_signal` rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.
 
 Without it, the rest of the stack behaves exactly as it does today: nothing here is consumed by anything else unless an operator wires it in.
 
-Released as v0.4.0 on 2026-10-04, adding the `action.risk_class` template and `wardryx-proxy`, after v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, CI green. Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.
+Released as v0.4.0 on 2026-10-04, adding the `action.risk_class` template and `wardryx-proxy`, after v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, with CI green on the v0.4.0 release run (2026-10-04). Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.
 
 Not yet: a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers in the tables above.
 

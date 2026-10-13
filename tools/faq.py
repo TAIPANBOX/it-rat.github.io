@@ -41,7 +41,7 @@ FAQ = {
  ("What has not been established yet?",
   "<p>Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Six of the nine shipped pre-production drills have never been fired at a real gateway. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.</p>"),
  ("Why publish the things that went wrong?",
-  "<p>Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 119 entries and 52 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.</p>"),
+  "<p>Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 123 entries and 55 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.</p>"),
 ]),
 
 "first-alert.html": ("common questions", "What people ask before starting", [
@@ -141,7 +141,7 @@ FAQ = {
 
 "services/vouchryx.html": ("common questions", "Proving and ending a delegation", [
  ("How is this different from just giving the agent an API key?",
-  "<p>A key names nobody and ends nowhere. This mints a short-lived token that says which human the agent is acting for, in a nested <span class=\"mono\">act</span> claim, bound to the caller's own key so a copy of the token is useless. When the delegation should end, one revocation ends it at every enforcement point on its next poll of the list, rather than waiting for an expiry.</p>"),
+  "<p>A key names nobody and ends nowhere. This mints a short-lived token that says which human the agent is acting for, in a nested <span class=\"mono\">act</span> claim, bound to the caller's own key so a copy of the token is useless. When the delegation should end, one revocation ends it at every enforcement point on its next poll of the list, rather than waiting for an expiry. Today only the TokenFuse gateway polls that list; no other enforcement point does yet.</p>"),
  ("What happens to a token that is already in flight when we revoke it?",
   "<p>Its next use is refused. Enforcement points poll the revocation list, every 12 seconds by default, and refuse anything on it, so the token's own expiry has no say; a call admitted before that poll is not pulled back, and a door that cannot reach the list keeps the last one it fetched and, past a minute, refuses by default. Measured on a live box: a proven chain answered 200, and after the revoke the same token answered 401.</p>"),
  ("Does this replace the delegation chain in the Passport?",
@@ -255,7 +255,7 @@ FAQ = {
   "<p>Yes. Four Terraform resources cover run budgets, business-unit budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending.</p>"),
  ("How do I check that my events actually conform?",
   "<p>Run <span class=\"mono\">agent-conform</span>. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect.</p>"
-  "<p>On a box, <span class=\"mono\">agent-conform watch-dir</span> re-checks every stream's hash chain and writes a <span class=\"mono\">chain_broken</span> event to its own stream when one breaks; it exits 2 on a usage or I/O error. Both launchers run it by default.</p>"),
+  "<p>On a box, <span class=\"mono\">agent-conform watch-dir</span> re-checks every stream's hash chain and writes a <span class=\"mono\">chain_broken</span> event to its own stream when one breaks; it exits 2 on a usage or I/O error. stack-single runs it every five minutes and stack-k8s runs it as a CronJob every fifteen minutes. stack-up runs it once a day, at 06:52, as a routine.</p>"),
 ]),
 
 "ai-agent-governance.html": ("common questions", "What people ask about agent governance", [

@@ -54,7 +54,7 @@
   .install .note{color:var(--faint);font-size:11.5px;margin-left:auto}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Platform","url":"https://it-rat.com/services/platform.html","description":"One agent:// passport, one event envelope, one Go binding and a Terraform provider: the contract every service in the stack shares. Apache-2.0.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/agent-passport","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"Platform","item":"https://it-rat.com/services/platform.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an Agent Passport?","acceptedAnswer":{"@type":"Answer","text":"One identifier and one document per agent: an agent:// URI of at most 255 bytes, aligned with SPIFFE without requiring it, and a document naming an owner, a runtime and one of six attestation methods. The delegation chain behind it is ordered root first, acyclic, and capped at 32 entries."}},{"@type":"Question","name":"Do I have to adopt the whole stack to use the contract?","acceptedAnswer":{"@type":"Answer","text":"No. There is no shared runtime and no shared database. Adopting it is a naming agreement plus a few optional fields on events you already emit, which is why a service can add an event type without asking any other service for permission."}},{"@type":"Question","name":"Can budgets and policies live in version control?","acceptedAnswer":{"@type":"Answer","text":"Yes. Four Terraform resources cover run budgets, business-unit budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending."}},{"@type":"Question","name":"How do I check that my events actually conform?","acceptedAnswer":{"@type":"Answer","text":"Run agent-conform . It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect. On a box, agent-conform watch-dir re-checks every stream's hash chain and writes a chain_broken event to its own stream when one breaks; it exits 2 on a usage or I/O error. Both launchers run it by default."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Platform","url":"https://it-rat.com/services/platform.html","description":"One agent:// passport, one event envelope, one Go binding and a Terraform provider: the contract every service in the stack shares. Apache-2.0.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/agent-passport","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"Platform","item":"https://it-rat.com/services/platform.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an Agent Passport?","acceptedAnswer":{"@type":"Answer","text":"One identifier and one document per agent: an agent:// URI of at most 255 bytes, aligned with SPIFFE without requiring it, and a document naming an owner, a runtime and one of six attestation methods. The delegation chain behind it is ordered root first, acyclic, and capped at 32 entries."}},{"@type":"Question","name":"Do I have to adopt the whole stack to use the contract?","acceptedAnswer":{"@type":"Answer","text":"No. There is no shared runtime and no shared database. Adopting it is a naming agreement plus a few optional fields on events you already emit, which is why a service can add an event type without asking any other service for permission."}},{"@type":"Question","name":"Can budgets and policies live in version control?","acceptedAnswer":{"@type":"Answer","text":"Yes. Four Terraform resources cover run budgets, business-unit budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending."}},{"@type":"Question","name":"How do I check that my events actually conform?","acceptedAnswer":{"@type":"Answer","text":"Run agent-conform . It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect. On a box, agent-conform watch-dir re-checks every stream's hash chain and writes a chain_broken event to its own stream when one breaks; it exits 2 on a usage or I/O error. stack-single runs it every five minutes and stack-k8s runs it as a CronJob every fifteen minutes. stack-up runs it once a day, at 06:52, as a routine."}}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-service="platform" data-root="../">
@@ -122,10 +122,10 @@
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
       <h2>Everything meets at the envelope.</h2>
-      <p class="lede">Fourteen registered sources write one shape onto one NDJSON bus: five required fields, five optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also the fourteenth source; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.</p>
+      <p class="lede">Fourteen registered sources write one shape onto one NDJSON bus: five required fields, six optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also the fourteenth source; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.</p>
     </div>
     <div class="diagram rv">
-      <svg viewBox="0 0 960 400" role="img" aria-label="Platform contract: fourteen registered sources feed the agent-event bus, agent-conform among them writing its chain findings back, the envelope card lists its ten fields, five consumers read the stream, and the Terraform loop manages budgets, passports and policies as code">
+      <svg viewBox="0 0 960 400" role="img" aria-label="Platform contract: fourteen registered sources feed the agent-event bus, agent-conform among them writing its chain findings back, the envelope card lists its eleven fields, five consumers read the stream, and the Terraform loop manages budgets, passports and policies as code">
         <defs><marker id="ap" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker></defs>
         <g font-family="ui-monospace,Menlo" text-anchor="middle">
           <!-- thirteen registered sources, two rows; the fourteenth is
@@ -172,8 +172,9 @@
             <text x="448" y="238">on_behalf_of</text>
             <text x="448" y="255">data</text>
             <text x="448" y="272">prev_hash</text>
+            <text x="448" y="289">delegation_proof</text>
           </g>
-          <text x="352" y="289" fill="#5A6675" font-size="10">prev_hash: sha256 chain &#183; unknown fields ignored</text>
+          <text x="352" y="306" fill="#5A6675" font-size="10">prev_hash: sha256 chain &#183; unknown fields ignored</text>
           <!-- consumers. Five now: the record plane reads the same stream and
                seals it, which is what made this row too narrow at four. -->
           <g font-size="10.5" font-weight="700">
@@ -278,19 +279,19 @@
         <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
           <div class="install"><span class="cmd">curl -fsSL https://raw.githubusercontent.com/TAIPANBOX/<b>stack-single</b>/main/install.sh | bash</span></div>
         </div>
-        <p class="dim" style="font-size:13.5px;line-height:1.65;margin-top:16px">Nothing is compiled: every plane is pulled from the public registry at a pinned version. Measured on 2026-09-13 on a fresh 2-vCPU cloud machine, from that line to a console answering on loopback: <b>109 seconds</b>, with every one of the installer's own checks green; on 2026-09-17, on a mini PC that already had Docker, <b>61 seconds</b> for the first run and 36 for the second. It needs root on Debian or Ubuntu, and docker and git; it comes back after a reboot (measured once, on 2026-09-17, on a box whose gateway sat on a tailnet address: the first reboot lost the gateway until the installer learned to order Docker after the tunnel, the second brought it back on its own); and it is reachable by agents running anywhere else, which the same day proved from two clouds at once.</p>
+        <p class="dim" style="font-size:13.5px;line-height:1.65;margin-top:16px">Nothing is compiled: every plane is pulled from the public registry at a pinned version. Measured on 2026-09-13 on a fresh 2-vCPU cloud machine, from that line to a console answering on loopback: <b>109 seconds</b>, with every one of the installer's own checks green; on 2026-09-17, on a mini PC that already had Docker, <b>61 seconds</b> for the first run (exit 1: 22 checks ok, and one that fails by construction, since it probed loopback whatever the bind address was; fixed by stack-single #59) and 36 seconds for the second, with the same 22 checks ok. It needs root on Debian or Ubuntu, and docker and git; it comes back after a reboot (measured once, on 2026-09-17, on a box whose gateway sat on a tailnet address: the first reboot lost the gateway until the installer learned to order Docker after the tunnel, the second brought it back on its own); and it is reachable by agents running anywhere else, which the same day proved from two clouds at once.</p>
         <div class="kicker" style="margin-top:26px">on your laptop &#183; no Docker</div>
         <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
           <div class="install"><span class="cmd">git clone https://github.com/TAIPANBOX/<b>stack-up</b></span></div>
           <div class="install"><span class="cmd">cd stack-up &amp;&amp; <b>./up.sh</b></span></div>
         </div>
-        <p class="dim" style="font-size:13.5px;line-height:1.65;margin-top:16px">The sandbox, and it builds from source on purpose: nothing but your own compilers touches it. That is the cost as well as the point, so it wants Rust, Go, Node and Python already installed. Measured on 2026-09-01 from an empty build cache: <b>221 seconds</b> to a working dashboard. Binds <span class="mono">127.0.0.1</span> only, stops on Ctrl-C, keeps nothing.</p>
+        <p class="dim" style="font-size:13.5px;line-height:1.65;margin-top:16px">The sandbox, and it builds from source on purpose: nothing but your own compilers touches it. That is the cost as well as the point, so it wants Rust, Go, Node and Python already installed. Measured on 2026-09-01 from an empty build cache: <b>221 seconds</b> to a working dashboard. A cold run with both optional planes took <b>325 seconds</b> on 2026-09-13. Binds <span class="mono">127.0.0.1</span> only, stops on Ctrl-C, keeps nothing.</p>
         <div class="sheet-row">
           <details class="sheet" data-sheet-kicker="run the live stack locally" data-sheet-title="What the first run actually does">
             <summary>What the first run does</summary>
             <div class="sheet-in">
               <p class="dim" style="font-size:13.5px;line-height:1.65">Open the link it prints and you are looking at your own local money plane, live, with a short demo dataset already in it. Point an agent's OpenAI base URL at the gateway to feed it your own.</p>
-              <p class="dim" style="font-size:13.5px;line-height:1.65;margin-top:12px">It builds and starts the stack's long-running services from source. Measured on a clean run on 2026-08-29, that is TokenFuse's gateway, cloud and dashboard, plus Wardryx, Idryx, Heraldyx and Scopyx, six ports on loopback answering 200. Heraldyx is pinned to file mode there, writing what it would have mailed rather than mailing it. Trailryx is built and wired as a sealing routine rather than a port. Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs, installed into your home directory and started when you want them, each with its own try-it on its page. The delegation plane and the FinOps console stay behind a flag, <span class="mono">--with-delegation</span> and <span class="mono">--with-finops</span>, because one needs an issuer to trust and the other is a different product.</p>
+              <p class="dim" style="font-size:13.5px;line-height:1.65;margin-top:12px">It builds and starts the stack's long-running services from source. Those are TokenFuse's gateway, cloud and dashboard, plus Wardryx, Idryx and Scopyx: six ports on loopback, as the stack-up README's port table lists them. Heraldyx is pinned to file mode there, writing what it would have mailed rather than mailing it. Trailryx is built and wired as a sealing routine rather than a port. Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs, installed into your home directory and started when you want them, each with its own try-it on its page. The delegation plane and the FinOps console stay behind a flag, <span class="mono">--with-delegation</span> and <span class="mono">--with-finops</span>, because one needs an issuer to trust and the other is a different product.</p>
               <p class="dim" style="font-size:13.5px;line-height:1.65;margin-top:12px">Press Ctrl-C and it stops clean, with no orphaned processes.</p>
             </div>
           </details>
@@ -359,7 +360,7 @@
           <div class="row"><span class="k">proven on</span><span class="v">Hetzner, AWS and GCP</span></div>
           <div class="row"><span class="k">what it buys</span><span class="v">high availability</span></div>
           <div class="row"><span class="k">what it costs</span><span class="v">a ReadWriteMany volume</span></div>
-          <div class="row"><span class="k">traps</span><span class="v">119 documented, with whose fault each was</span></div>
+          <div class="row"><span class="k">traps</span><span class="v">123 documented, with whose fault each was</span></div>
         </div>
         <div class="sheet-row">
         <details class="sheet" data-sheet-kicker="a cluster &#183; stack-k8s" data-sheet-title="The commands, and the one thing a cluster costs you">
@@ -384,21 +385,11 @@
 <section class="sec" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">an honest comparison</div>
-      <h2>Two default futures, one contract.</h2>
-      <p class="lede">Without a shared contract you get one of two outcomes: every tool logs its own JSON, or one vendor's schema becomes the standard and you rent it. Here is the matrix.</p>
+      <div class="kicker">the contract</div>
+      <h2>One contract, shared by every service.</h2>
+      <p class="lede">Every event carries one agent_id and an explicit schema field. The canonical JSON Schemas ship with agent-conform, which checks a file against them. Anyone can implement the contract; it is Apache-2.0.</p>
     </div>
-    <div class="tbl-scroll rv">
-      <table class="tbl">
-        <thead><tr><th></th><th>the contract</th><th>&#8220;every tool logs its own JSON&#8221;</th><th>a vendor's proprietary schema</th></tr></thead>
-        <tbody>
-          <tr><td>Cross-tool correlation</td><td class="yes">One agent_id everywhere</td><td class="no">grep and hope</td><td class="warn">Inside one vendor only</td></tr>
-          <tr><td>Versioning</td><td class="yes">Explicit schema field; v0.1 to v1.0 all stay live</td><td class="no">None</td><td class="warn">The vendor's roadmap</td></tr>
-          <tr><td>Validation</td><td class="yes">JSON Schema + a conformance CLI</td><td class="no">None</td><td class="no">Closed</td></tr>
-          <tr><td>Who can implement it</td><td class="yes">Anyone; Apache-2.0</td><td class="no">n/a</td><td class="warn">Licensees</td></tr>
-        </tbody>
-      </table>
-    </div>
+    
   </div>
 </section>
 
@@ -456,7 +447,7 @@
       </details>
       <details>
         <summary>How do I check that my events actually conform?</summary>
-        <div class="a"><p>Run <span class="mono">agent-conform</span>. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect.</p><p>On a box, <span class="mono">agent-conform watch-dir</span> re-checks every stream's hash chain and writes a <span class="mono">chain_broken</span> event to its own stream when one breaks; it exits 2 on a usage or I/O error. Both launchers run it by default.</p></div>
+        <div class="a"><p>Run <span class="mono">agent-conform</span>. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect.</p><p>On a box, <span class="mono">agent-conform watch-dir</span> re-checks every stream's hash chain and writes a <span class="mono">chain_broken</span> event to its own stream when one breaks; it exits 2 on a usage or I/O error. stack-single runs it every five minutes and stack-k8s runs it as a CronJob every fifteen minutes. stack-up runs it once a day, at 06:52, as a routine.</p></div>
       </details>
     </div>
   </div>

@@ -12,7 +12,7 @@ This is a simulation, labeled as one: a replay of the envelope's normal day. A p
 
 ## Everything meets at the envelope.
 
-Fourteen registered sources write one shape onto one NDJSON bus: five required fields, five optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also the fourteenth source; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.
+Fourteen registered sources write one shape onto one NDJSON bus: five required fields, six optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also the fourteenth source; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.
 
 ## Boring on purpose. Load-bearing anyway.
 
@@ -44,15 +44,15 @@ The provider is published on the Terraform Registry as `TAIPANBOX/taipan`: a nor
 
 Two ways in, and they are for different machines. On your own laptop the sandbox builds from source and binds loopback only. On a Linux box you own, one line pulls the published images and the whole governed stack is up in under two minutes.
 
-Nothing is compiled: every plane is pulled from the public registry at a pinned version. Measured on 2026-09-13 on a fresh 2-vCPU cloud machine, from that line to a console answering on loopback: **109 seconds**, with every one of the installer's own checks green; on 2026-09-17, on a mini PC that already had Docker, **61 seconds** for the first run and 36 for the second. It needs root on Debian or Ubuntu, and docker and git; it comes back after a reboot (measured once, on 2026-09-17, on a box whose gateway sat on a tailnet address: the first reboot lost the gateway until the installer learned to order Docker after the tunnel, the second brought it back on its own); and it is reachable by agents running anywhere else, which the same day proved from two clouds at once.
+Nothing is compiled: every plane is pulled from the public registry at a pinned version. Measured on 2026-09-13 on a fresh 2-vCPU cloud machine, from that line to a console answering on loopback: **109 seconds**, with every one of the installer's own checks green; on 2026-09-17, on a mini PC that already had Docker, **61 seconds** for the first run (exit 1: 22 checks ok, and one that fails by construction, since it probed loopback whatever the bind address was; fixed by stack-single #59) and 36 seconds for the second, with the same 22 checks ok. It needs root on Debian or Ubuntu, and docker and git; it comes back after a reboot (measured once, on 2026-09-17, on a box whose gateway sat on a tailnet address: the first reboot lost the gateway until the installer learned to order Docker after the tunnel, the second brought it back on its own); and it is reachable by agents running anywhere else, which the same day proved from two clouds at once.
 
-The sandbox, and it builds from source on purpose: nothing but your own compilers touches it. That is the cost as well as the point, so it wants Rust, Go, Node and Python already installed. Measured on 2026-09-01 from an empty build cache: **221 seconds** to a working dashboard. Binds `127.0.0.1` only, stops on Ctrl-C, keeps nothing.
+The sandbox, and it builds from source on purpose: nothing but your own compilers touches it. That is the cost as well as the point, so it wants Rust, Go, Node and Python already installed. Measured on 2026-09-01 from an empty build cache: **221 seconds** to a working dashboard. A cold run with both optional planes took **325 seconds** on 2026-09-13. Binds `127.0.0.1` only, stops on Ctrl-C, keeps nothing.
 
 **Q: What the first run does**
 
 Open the link it prints and you are looking at your own local money plane, live, with a short demo dataset already in it. Point an agent's OpenAI base URL at the gateway to feed it your own.
 
-It builds and starts the stack's long-running services from source. Measured on a clean run on 2026-08-29, that is TokenFuse's gateway, cloud and dashboard, plus Wardryx, Idryx, Heraldyx and Scopyx, six ports on loopback answering 200. Heraldyx is pinned to file mode there, writing what it would have mailed rather than mailing it. Trailryx is built and wired as a sealing routine rather than a port. Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs, installed into your home directory and started when you want them, each with its own try-it on its page. The delegation plane and the FinOps console stay behind a flag, `--with-delegation` and `--with-finops`, because one needs an issuer to trust and the other is a different product.
+It builds and starts the stack's long-running services from source. Those are TokenFuse's gateway, cloud and dashboard, plus Wardryx, Idryx and Scopyx: six ports on loopback, as the stack-up README's port table lists them. Heraldyx is pinned to file mode there, writing what it would have mailed rather than mailing it. Trailryx is built and wired as a sealing routine rather than a port. Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs, installed into your home directory and started when you want them, each with its own try-it on its page. The delegation plane and the FinOps console stay behind a flag, `--with-delegation` and `--with-finops`, because one needs an issuer to trust and the other is a different product.
 
 Press Ctrl-C and it stops clean, with no orphaned processes.
 
@@ -82,16 +82,9 @@ Both paths are one command, and both ask what they need before the long part rat
 
 That trade, and every other thing that bites, are documented in the repositories rather than discovered by you. The same manifests came up on six clusters across Hetzner, AWS and GCP, and exactly one line of Kubernetes configuration differs between the three: Calico has to encapsulate unconditionally on GCP, because a GCE VPC routes every packet by destination and a pod address matches no route. Every trap we hit is written down and already fixed in the files.
 
-## Two default futures, one contract.
+## One contract, shared by every service.
 
-Without a shared contract you get one of two outcomes: every tool logs its own JSON, or one vendor's schema becomes the standard and you rent it. Here is the matrix.
-
-|  | the contract | “every tool logs its own JSON” | a vendor's proprietary schema |
-|---|---|---|---|
-| Cross-tool correlation | One agent_id everywhere | grep and hope | Inside one vendor only |
-| Versioning | Explicit schema field; v0.1 to v1.0 all stay live | None | The vendor's roadmap |
-| Validation | JSON Schema + a conformance CLI | None | Closed |
-| Who can implement it | Anyone; Apache-2.0 | n/a | Licensees |
+Every event carries one agent_id and an explicit schema field. The canonical JSON Schemas ship with agent-conform, which checks a file against them. Anyone can implement the contract; it is Apache-2.0.
 
 ### The layer every other page stands on.
 
@@ -117,4 +110,4 @@ No. There is no shared runtime and no shared database. Adopting it is a naming a
 Yes. Four Terraform resources cover run budgets, business-unit budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending.
 
 **Q: How do I check that my events actually conform?**
-Run `agent-conform`. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect. On a box, `agent-conform watch-dir` re-checks every stream's hash chain and writes a `chain_broken` event to its own stream when one breaks; it exits 2 on a usage or I/O error. Both launchers run it by default.
+Run `agent-conform`. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect. On a box, `agent-conform watch-dir` re-checks every stream's hash chain and writes a `chain_broken` event to its own stream when one breaks; it exits 2 on a usage or I/O error. stack-single runs it every five minutes and stack-k8s runs it as a CronJob every fifteen minutes. stack-up runs it once a day, at 06:52, as a routine.

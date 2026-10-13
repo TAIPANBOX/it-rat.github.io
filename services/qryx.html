@@ -142,7 +142,7 @@
 
           <rect x="266" y="78" width="240" height="70" rx="10" fill="#141C27" stroke="#2a3547"/>
           <text x="386" y="107" fill="#E9EFF6" font-size="11" font-weight="700">detectors</text>
-          <text x="386" y="124" fill="#8A97A6" font-size="10.5">7 sources &#8594; one model</text>
+          <text x="386" y="124" fill="#8A97A6" font-size="10.5">sources &#8594; one model</text>
 
           <rect x="266" y="160" width="240" height="70" rx="10" fill="#141C27" stroke="#2a3547"/>
           <text x="386" y="189" fill="#E9EFF6" font-size="11" font-weight="700">dedup graph</text>
@@ -233,22 +233,11 @@
 <section class="sec" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">an honest comparison</div>
+      <div class="kicker">what it reads</div>
       <h2>You cannot migrate what you cannot see.</h2>
-      <p class="lede">A crypto audit and a CSPM checkbox both ask about cryptography. Neither one reads the binary.</p>
+      <p class="lede">Qryx reads binaries, container images, live TLS endpoints, certificates, dependencies, cloud KMS and source code, and puts them into one graph graded against the CNSA 2.0 and NCSC milestones.</p>
     </div>
-    <div class="tbl-scroll rv">
-      <table class="tbl">
-        <thead><tr><th></th><th>Qryx</th><th>Annual crypto audit</th><th>CSPM checkbox</th></tr></thead>
-        <tbody>
-          <tr><td>Cadence</td><td class="yes">Every commit</td><td class="no">Yearly PDF</td><td class="warn">Weekly dashboard</td></tr>
-          <tr><td>Sees binaries</td><td class="yes">Symbol-level, incl. static fallback</td><td class="no">No</td><td class="no">No</td></tr>
-          <tr><td>Post-quantum grading</td><td class="yes">NCSC + CNSA milestones</td><td class="warn">A consultant's opinion</td><td class="no">None</td></tr>
-          <tr><td>Evidence</td><td class="yes">Signed, ML-DSA optional</td><td class="no">Slide deck</td><td class="no">Screenshot</td></tr>
-          <tr><td>Cost of a finding</td><td class="yes">A failed CI run</td><td class="warn">A remediation project</td><td class="no">A ticket nobody owns</td></tr>
-        </tbody>
-      </table>
-    </div>
+    
   </div>
 </section>
 
@@ -268,7 +257,7 @@
         <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
           <div class="install" style="border:none;padding:0;background:transparent"><span class="cmd">qryx <b>scan</b> .</span></div>
           <div class="install" style="border:none;padding:0;background:transparent"><span class="cmd">qryx <b>tls</b> api.anthropic.com:443</span></div>
-          <p class="dim" style="font-size:13px;line-height:1.6">Grab the latest binary from the <a href="https://github.com/TAIPANBOX/qryx/releases" style="color:var(--dim);text-decoration:underline">releases page</a> (Linux, macOS, Windows, SHA256SUMS included), or build from source: the ML-DSA toolchain downloads itself on the first build, Go 1.27.</p>
+          <p class="dim" style="font-size:13px;line-height:1.6">Grab the latest binary from the <a href="https://github.com/TAIPANBOX/qryx/releases" style="color:var(--dim);text-decoration:underline">releases page</a> (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.2 toolchain downloads itself on the first build.</p>
           <details class="sheet" data-sheet-kicker="download" data-sheet-title="qryx, every platform">
             <summary>Download, any platform</summary>
             <div class="sheet-in">

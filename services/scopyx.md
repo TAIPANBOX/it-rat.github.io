@@ -8,9 +8,9 @@ Every other plane in the stack governs what your agents do to your own services:
 
 ## Five gates, in this order, and the order is the claim.
 
-The scheme, then the host, then every address that name resolves to at the moment of the fetch, then your policy plane, and last the site's own `robots.txt`. The first three are local and free, so a cheap refusal never becomes a network call. Your policy is asked fourth, which means a destination you refuse is never contacted at all, not even for its `robots.txt`. Pick a request and watch where it stops.
+The verdicts run in this order: the scheme, the host, every address that name resolves to at the moment of the fetch, your policy plane, and last the site's own `robots.txt`. Before the first verdict the plane resolves the name and asks your policy plane once per host, so a refused destination costs one lookup and one policy question. It is never fetched, and its `robots.txt` is never requested. Pick a request and watch where it stops.
 
-Nothing here is a network call until the fourth gate has answered. A scheme, a name and a set of addresses cost nothing to refuse, so the cheap refusals happen while the request is still inside your own process. The site's own preference is asked last, which is the ordering that matters: a destination your policy refuses is never contacted at all, not even to read its `robots.txt`.
+The name is resolved and your policy plane is asked before any verdict, so the cheapest refusal still costs one lookup and one policy question. What a refusal prevents is the fetch. A scheme or a host the rules refuse costs nothing, so those refusals happen while the request is still inside your own process. The site's own preference is asked last, which is the ordering that matters: a destination your policy refuses is never contacted at all, not even to read its `robots.txt`.
 
 ## The diagram argues. This is the receipt.
 
@@ -22,7 +22,7 @@ An allowed host answering 302 to a denied one is the oldest allowlist bypass the
 
 ### It refuses to follow
 
-The fetcher it ships with returns the redirect instead of following it. Following inside the fetcher would be a second request that no decision preceded, which is exactly the bypass. Every HTTP client in every language does the opposite by default, which is why this is written down rather than assumed.
+The fetcher it ships with returns the redirect instead of following it. Following inside the fetcher would be a second request that no decision preceded, which is exactly the bypass. Most HTTP clients follow redirects by default, which is why this is written down rather than assumed.
 
 ### Every hop is resolved again
 
@@ -38,11 +38,11 @@ Your configured depth, and a ceiling the plane keeps regardless. Two servers poi
 
 ## It is not a browser, and that is the whole design.
 
-Scopyx supplies no capability you do not already have. Point it at the Firecrawl account you already pay for, the Browserbase you already run, or the fetcher it ships with, and the tool you own gains a decision, a bound and a record. Anyone proposing a feature here should ask whether it makes the fetch better or the fetch more governed. The first belongs in somebody else's product.
+Scopyx supplies no capability you do not already have. Point it at the fetching service you already run, through an HTTP endpoint that speaks scopyx's external contract (SCOPYX_EXTERNAL_ENDPOINT). A vendor API needs an adapter in front of it, and this repository ships none. Either way, the tool you own gains a decision, a bound and a record. Anyone proposing a feature here should ask whether it makes the fetch better or the fetch more governed. The first belongs in somebody else's product.
 
 ### The one that needs nothing
 
-The default fetcher wants no account, no API token and no browser on the host, so a box is governed on the day it is installed rather than the day somebody arranges a fetching service. It runs no JavaScript, and the result says so, because a page assembled in a browser arrives as the shell that assembles it.
+The default fetcher wants no account, no API token and no browser on the host, so a box is governed on the day it is installed rather than the day somebody arranges a fetching service. It runs no JavaScript, and the result names its backend as passthrough-http, which is how you can tell, because a page assembled in a browser arrives as the shell that assembles it.
 
 ### The one your invoice already covers
 
@@ -54,7 +54,7 @@ It runs the page's own JavaScript, so a document assembled in the browser arrive
 
 ## A page is forty requests nobody named. Here is what stops them.
 
-A rendering backend is the first one that fetches things the caller never asked for: fonts, images, scripts, each potentially a different host. Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and see. Switch both off and see that too, which is exactly the experiment the test suite runs.
+A rendering backend is the first one that fetches things the caller never asked for: fonts, images, scripts, each potentially a different host. Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and see. Switch both off and the chromium test that asserts the refused server is never reached is the one that should fail. That run is not recorded yet.
 
 Two mechanisms, and they are not the same kind of thing. The proxy is the floor: the browser is launched with no route to the network except it, so a refused destination is a socket that is never opened, and no flag or version of somebody else's browser can talk it out of that. CDP interception is the accountant: it sees the full URL of every request, including inside TLS, which the proxy cannot, so it produces the counts and the per-URL decisions. Where the two disagree the connection wins, because the connection is what carries bytes.
 
@@ -90,7 +90,7 @@ A fabricated subject makes every downstream count wrong and puts a name on an al
 
 ## What it will not do, stated rather than discovered.
 
-No stealth, no CAPTCHA solving, no TLS-fingerprint matching, no bulk crawl, no image harvesting, and `robots.txt` is honoured. It identifies itself as scopyx and never as a browser.
+No stealth, no CAPTCHA solving, no TLS-fingerprint matching, no bulk crawl, no image harvesting, and `robots.txt` is honoured. It identifies itself as scopyx to robots.txt and on the default fetcher. A browser you installed sends its own user agent to the page, because the plane does not set one.
 
 ### Because of what this is for
 
@@ -104,7 +104,7 @@ The EU AI Act prohibits untargeted scraping of facial images to build recognitio
 
 Every other line above holds because no code path exists to do it, and an absence enforces itself. Honouring `robots.txt` is the only one that had to be written: group boundaries, longest match, Allow beating Disallow at equal length, and both wildcards. It reads as one item in a list and it is not one.
 
-Scopyx is not an AI system under Article 3(1): it applies rules you wrote and infers nothing. Used beside one, it
+Scopyx applies rules you wrote and infers nothing, so we do not treat it as an AI system under Article 3(1). Whether a system you run is one is for your own legal review. Used beside one, it
  supplies evidence for Article 12 record-keeping and Article 14 human oversight. The wording here is "covers the
  requirements of Article 12", never "AI Act compliant", because there is no certification and no auditor behind
  those words, and a claim nobody can hold is worse than no claim.

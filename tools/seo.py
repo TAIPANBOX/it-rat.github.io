@@ -321,7 +321,11 @@ def main():
         bits = head_bits(html, path)
         if not bits["name"] or not bits["url"]:
             sys.exit(f"{path}: could not read a name or canonical, refusing to guess")
-        graph = [software(bits), breadcrumbs(bits)]
+        app = software(bits)
+        if path == "services/pocket.html":
+            # Pocket runs on iPhone and Apple Watch. The generic line says Linux and macOS.
+            app["operatingSystem"] = "iOS, watchOS"
+        graph = [app, breadcrumbs(bits)]
         q = faq(html)
         if q:
             graph.append(q)
@@ -330,8 +334,8 @@ def main():
     # Sphere gets four lines of its own rather than a place in SERVICE_PAGES,
     # because the generic service branch would state three things about it that
     # its own page denies. Apache-2.0, when the repository is MIT and the
-    # footer says so. "Linux, macOS", when the band under the title says iOS
-    # only. And a breadcrumb through "The stack", when the first sentence of
+    # footer says so. "Linux, macOS", when the app runs on iPhone
+    # and Apple Watch. And a breadcrumb through "The stack", when the first sentence of
     # the page is that it is not part of the stack.
     #
     # It had no JSON-LD at all until 2026-08-29, which is how it avoided saying
@@ -344,7 +348,7 @@ def main():
     if sp["name"] != "Sphere":
         sys.exit(f"services/sphere.html: read the name as {sp['name']!r}, refusing to guess")
     sp_app = software(sp)
-    sp_app["operatingSystem"] = "iOS"
+    sp_app["operatingSystem"] = "iOS, watchOS"
     sp_app["applicationCategory"] = "LifestyleApplication"
     sp_app["license"] = "https://opensource.org/licenses/MIT"
     n += write("services/sphere.html", [sp_app, guide_crumbs(sp, sp["name"])])

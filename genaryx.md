@@ -8,7 +8,7 @@ The open services each govern one plane of an agent fleet. Genaryx is the consol
 
 ### The open stack stays open.
 
-Genaryx is Apache-2.0, like everything under it. It is the room built on top of the open services, for teams that want one pane of glass, passkey ceremonies and an incident feed instead of a dashboard per plane and a terminal, and you can read every line of it before you run it. And every screenshot on this page is the real app against a live plane, not a mockup: a fictional tier-1 bank, `meridian.example`, run on real infrastructure.
+Genaryx is Apache-2.0, like everything under it. It is the room built on top of the open services, for teams that want one pane of glass, passkey ceremonies and an incident feed instead of a dashboard per plane and a terminal, and you can read every line of it before you run it. The frames here are the real console UI from the demo build, on simulated data for a fictional tier-1 bank, `meridian.example`. The live run is in what is proven.
 
 ## What the console adds that the stack alone does not.
 
@@ -16,7 +16,7 @@ You can stand up the open stack's live services yourself in one command, and ple
 
 |  | The open stack, by hand | Genaryx |
 |---|---|---|
-| One place to look | Per-service dashboards, curl, logs | One console, 17 live tabs over one Rust core |
+| One place to look | Per-service dashboards, curl, logs | One console, twenty tabs over one Rust core |
 | Killing a runaway | A curl with an admin key | A break-glass ceremony over a device signature the plane already verifies: a passkey, a typed reason journaled beside it |
 | Reaching a private plane | SSH tunnels you babysit | Your box issues each device its own peer config, lists what holds access, and revokes one in a click; the console answers only inside that tunnel |
 | On call at 2am | Laptop, VPN, luck | Your console from any browser over your own tunnel, incidents sorted worst-first, and the destructive step re-signed by the passkey in your hand |
@@ -34,7 +34,7 @@ Felyx is the fleet's analyst. It answers money questions with numbers pulled by 
 
 ### Local first, by default
 
-Out of the box Felyx talks to a model on your own hardware: Ollama, LM Studio, vLLM - any OpenAI-compatible endpoint on localhost or your private network. A residency gate refuses any other destination, so a sensitive install cannot leak a prompt or a number by misconfiguration.
+Out of the box Felyx talks to a model on your own hardware: Ollama, LM Studio, vLLM - any OpenAI-compatible endpoint on localhost or your private network. A residency gate refuses any other destination unless the operator opts out (off by default) or names extra hosts in GENARYX_COPILOT_LOCAL_HOSTNAMES, so a sensitive install cannot leak a prompt or a number by misconfiguration.
 
 ### Cloud only if you choose it
 
@@ -42,11 +42,11 @@ An operator can explicitly opt into a bring-your-own-key cloud model - Anthropic
 
 ### Numbers from tools, never vibes
 
-Every figure in an answer comes from a typed read tool over the same connectors the tabs use. The model does not do arithmetic in prose, and when a plane is not configured Felyx says what it cannot see instead of inventing it. Budgets come from a tool that reads the Cloud's own run and unit budgets with their spend, and a draft that states a budget no tool returned is sent back once for revision. Measured on 2026-10-05 on a three-node k3d cluster against the Cloud's own figures read the same minute; the check covers budget statements, not every run id an answer names.
+Every figure in an answer comes from a typed read tool over the same connectors the tabs use. The model does not do arithmetic in prose, and when a plane is not configured Felyx says what it cannot see instead of inventing it. Budgets come from a tool that reads the Cloud's own run and unit budgets with their spend, and a draft that states a budget no tool returned is sent back once for revision. Measured on 2026-10-05 on the forge lab against the Cloud's own figures read the same minute; the check covers budget statements, not every run id an answer names.
 
 ### No signing key. Not restrained - absent.
 
-The copilot crate has no dependency on the signing crate, and a build-time test asserts it stays that way. A proposal becomes action only through the same passkey ceremony a human uses (Touch ID, Windows Hello or a security key); the audit trail reads “human approved copilot proposal”, never “copilot did it”.
+The copilot crate has no dependency on the signing crate, and a build-time test asserts it stays that way. A proposal becomes action only through the same passkey ceremony a human uses (Touch ID, Windows Hello or a security key); the journal names the human who approved a copilot proposal, and the copilot is never the actor.
 
 ### It cannot silence an alert
 
@@ -54,7 +54,7 @@ The hard floor is deterministic code: an over-cap or runaway event fires immedia
 
 ### Metered like any other agent
 
-Felyx's own LLM calls carry their own run id and agent id, so pointed at the stack's TokenFuse gateway the assistant that watches your budgets has a budget: visible, cappable, killable. Through that gateway, with policy enforced, it answered across the planes and stopped at its run budget with a 402. The thesis, dogfooded.
+Felyx's own LLM calls carry their own run id and agent id, so pointed at the stack's TokenFuse gateway the assistant that watches your budgets has a budget: visible, cappable, killable. Where the gateway runs client keys, Felyx presents its own, named by GENARYX_COPILOT_FUSE_KEY_REF (env:NAME or file:PATH); without it the gateway refuses each question with a 401. Through that gateway, with policy enforced, it answered across the planes and stopped at its run budget with a 402. The thesis, dogfooded.
 
 ## Your plane stays yours. Every path in is signed.
 
@@ -94,7 +94,7 @@ Every governance event the stack emits carries the SHA-256 of the event before i
 
 ### Post-quantum, already
 
-Evidence packs self-verify: an embedded digest plus an ML-DSA (FIPS 204) signature, the NIST post-quantum standard, so the proof you hand an auditor stays trustworthy past the next cryptographic era. And Qryx audits your fleet's own crypto against the NCSC and CNSA 2.0 migration timelines, so you know what will break before an adversary does.
+Evidence packs are tamper-evident two ways: every artifact is kept byte for byte, and a manifest signed with the console's device key (ES256) records each artifact's sha256. A Qryx artifact in the pack keeps its own ML-DSA (FIPS 204) signature; the console does not sign with ML-DSA. And Qryx audits your fleet's own crypto against the NCSC and CNSA 2.0 migration timelines, so you know what will break before an adversary does.
 
 ### Self-hosted, your cloud or on-prem
 
@@ -112,13 +112,13 @@ We never run your Cloud plane or hold your data. The plane lives on infrastructu
 
 - Felyx, on a live local model, named the caught runaway and filed a capped proposal only a human could approve, on 42 agents.
 
-**Q: What was actually run**
+**Q: What the reported runs describe**
 
 A laptop on the public internet imported the peer config this box issued itself, completed a handshake against the box's published UDP port, and opened the console over TLS inside that tunnel, from a machine that had no other route to it. It then enrolled a passkey and issued a second device, and that action was refused until the operator confirmed it on their own authenticator: the journal records it signed `webauthn-es256`, naming the credential they touched. Revoking a device cut it off the same way.
 
 Every one of those records carries the hash of the event before it, and the stack's own conformance checker verifies the chain they sit in. The console has separately driven a real fleet and put a device-signed kill through it, against a plane closed to the internet.
 
-Felyx has run against a live local model, named the caught runaway and what it burned, and filed a capped-budget proposal only a human could approve, on a live fleet of 42 agents. Every claim here has a captured run behind it.
+Felyx has run against a live local model, named the caught runaway and what it burned, and filed a capped-budget proposal only a human could approve, on a fleet of 42 agents. No run is cited for this yet.
 
 Clone it, run it, fork it. Apache-2.0, the whole console, with no tier and no key. It comes up on infrastructure you own and it is reached over a tunnel your own box issues, which is the same on the first day as on the hundredth.
 

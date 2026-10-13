@@ -31,7 +31,7 @@
 
           <rect x="266" y="78" width="240" height="70" rx="10" fill="#141C27" stroke="#2a3547"/>
           <text x="386" y="107" fill="#E9EFF6" font-size="11" font-weight="700">detectors</text>
-          <text x="386" y="124" fill="#8A97A6" font-size="10.5">7 sources &#8594; one model</text>
+          <text x="386" y="124" fill="#8A97A6" font-size="10.5">sources &#8594; one model</text>
 
           <rect x="266" y="160" width="240" height="70" rx="10" fill="#141C27" stroke="#2a3547"/>
           <text x="386" y="189" fill="#E9EFF6" font-size="11" font-weight="700">dedup graph</text>

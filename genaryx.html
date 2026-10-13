@@ -152,7 +152,7 @@
 </header>
 
 <div class="ent-ribbon">
-  <div class="wrap"><span class="dot"></span><b>Genaryx.</b> The console over the open stack, deployed on your infrastructure and run with us. Every screenshot on this page is the real app against a live plane.</div>
+  <div class="wrap"><span class="dot"></span><b>Genaryx.</b> The console over the open stack, deployed on your infrastructure. The frames on this page come from the demo build, which runs simulated data; the live run is in what is proven.</div>
 </div>
 
 <!-- ================= HERO ================= -->
@@ -176,7 +176,7 @@
         <div class="row"><span class="k">remote</span><span class="v">WireGuard, plane off the internet</span></div>
         <div class="row"><span class="k">copilot</span><span class="v">Felyx &#183; local-first</span></div>
         <div class="row"><span class="k">hosting</span><span class="v">self-hosted &#183; any cloud or on-prem</span></div>
-        <div class="row"><span class="k">crypto</span><span class="v">post-quantum ready &#183; ML-DSA where it matters</span></div>
+        <div class="row"><span class="k">crypto</span><span class="v">post-quantum ready &#183; ML-DSA in the Qryx evidence it carries</span></div>
         <div class="row"><span class="k">licence</span><span class="v">Apache-2.0</span></div>
       </div>
     </div>
@@ -190,7 +190,7 @@
       <div class="kicker" style="--accent:var(--mint)">first, the honest part</div>
       <h3 style="margin-top:12px">The open stack stays open.</h3>
       <p style="margin-top:10px;color:var(--dim);font-size:14.5px;line-height:1.65">
-        Genaryx is Apache-2.0, like everything under it. It is the room built on top of the open services, for teams that want one pane of glass, passkey ceremonies and an incident feed instead of a dashboard per plane and a terminal, and you can read every line of it before you run it. And every screenshot on this page is the real app against a live plane, not a mockup: a fictional tier-1 bank, <span class="mono" style="font-size:12.5px">meridian.example</span>, run on real infrastructure.</p>
+        Genaryx is Apache-2.0, like everything under it. It is the room built on top of the open services, for teams that want one pane of glass, passkey ceremonies and an incident feed instead of a dashboard per plane and a terminal, and you can read every line of it before you run it. The frames here are the real console UI from the demo build, on simulated data for a fictional tier-1 bank, <span class="mono" style="font-size:12.5px">meridian.example</span>. The live run is in what is proven.</p>
     </div>
   </div>
 </section>
@@ -207,7 +207,7 @@
       <table class="tbl">
         <thead><tr><th></th><th>The open stack, by hand</th><th>Genaryx</th></tr></thead>
         <tbody>
-          <tr><td>One place to look</td><td class="warn">Per-service dashboards, curl, logs</td><td class="yes">One console, 17 live tabs over one Rust core</td></tr>
+          <tr><td>One place to look</td><td class="warn">Per-service dashboards, curl, logs</td><td class="yes">One console, twenty tabs over one Rust core</td></tr>
           <tr><td>Killing a runaway</td><td class="warn">A curl with an admin key</td><td class="yes">A break-glass ceremony over a device signature the plane already verifies: a passkey, a typed reason journaled beside it</td></tr>
           <tr><td>Reaching a private plane</td><td class="warn">SSH tunnels you babysit</td><td class="yes">Your box issues each device its own peer config, lists what holds access, and revokes one in a click; the console answers only inside that tunnel</td></tr>
           <tr><td>On call at 2am</td><td class="no">Laptop, VPN, luck</td><td class="yes">Your console from any browser over your own tunnel, incidents sorted worst-first, and the destructive step re-signed by the passkey in your hand</td></tr>
@@ -318,16 +318,16 @@
       <p class="lede">Felyx is the fleet's analyst. It answers money questions with numbers pulled by tools, chains an incident across money, identity, policy and memory into a root cause with cited ids, drafts the kill you were about to write, and annotates the page that wakes you. It is also an AI we can honestly ask you to trust, because the trust is structural, not a system prompt.</p>
     </div>
     <div class="bento">
-      <div class="card hover feature b-4 rv"><h3>Local first, by default</h3><p>Out of the box Felyx talks to a model on your own hardware: Ollama, LM Studio, vLLM - any OpenAI-compatible endpoint on localhost or your private network. A residency gate refuses any other destination, so a sensitive install cannot leak a prompt or a number by misconfiguration.</p></div>
+      <div class="card hover feature b-4 rv"><h3>Local first, by default</h3><p>Out of the box Felyx talks to a model on your own hardware: Ollama, LM Studio, vLLM - any OpenAI-compatible endpoint on localhost or your private network. A residency gate refuses any other destination unless the operator opts out (off by default) or names extra hosts in GENARYX_COPILOT_LOCAL_HOSTNAMES, so a sensitive install cannot leak a prompt or a number by misconfiguration.</p></div>
       <div class="card hover feature b-4 rv d1"><h3>Cloud only if you choose it</h3><p>An operator can explicitly opt into a bring-your-own-key cloud model - Anthropic or OpenRouter - per install, in config, off by default. The app's residency banner always states which mode you are in; there is no silent fallback.</p></div>
-      <div class="card hover feature b-4 rv d2"><h3>Numbers from tools, never vibes</h3><p>Every figure in an answer comes from a typed read tool over the same connectors the tabs use. The model does not do arithmetic in prose, and when a plane is not configured Felyx says what it cannot see instead of inventing it. Budgets come from a tool that reads the Cloud's own run and unit budgets with their spend, and a draft that states a budget no tool returned is sent back once for revision. Measured on 2026-10-05 on a three-node k3d cluster against the Cloud's own figures read the same minute; the check covers budget statements, not every run id an answer names.</p></div>
-      <div class="card hover feature b-4 rv"><h3>No signing key. Not restrained - absent.</h3><p>The copilot crate has no dependency on the signing crate, and a build-time test asserts it stays that way. A proposal becomes action only through the same passkey ceremony a human uses (Touch ID, Windows Hello or a security key); the audit trail reads &#8220;human approved copilot proposal&#8221;, never &#8220;copilot did it&#8221;.</p></div>
+      <div class="card hover feature b-4 rv d2"><h3>Numbers from tools, never vibes</h3><p>Every figure in an answer comes from a typed read tool over the same connectors the tabs use. The model does not do arithmetic in prose, and when a plane is not configured Felyx says what it cannot see instead of inventing it. Budgets come from a tool that reads the Cloud's own run and unit budgets with their spend, and a draft that states a budget no tool returned is sent back once for revision. Measured on 2026-10-05 on the forge lab against the Cloud's own figures read the same minute; the check covers budget statements, not every run id an answer names.</p></div>
+      <div class="card hover feature b-4 rv"><h3>No signing key. Not restrained - absent.</h3><p>The copilot crate has no dependency on the signing crate, and a build-time test asserts it stays that way. A proposal becomes action only through the same passkey ceremony a human uses (Touch ID, Windows Hello or a security key); the journal names the human who approved a copilot proposal, and the copilot is never the actor.</p></div>
       <div class="card hover feature b-4 rv d1"><h3>It cannot silence an alert</h3><p>The hard floor is deterministic code: an over-cap or runaway event fires immediately, before any model is called. Felyx may only add a short annotation inside a strict time budget. A slow, wrong or absent model changes nothing about whether you get alerted.</p></div>
-      <div class="card hover feature b-4 rv d2"><h3>Metered like any other agent</h3><p>Felyx's own LLM calls carry their own run id and agent id, so pointed at the stack's TokenFuse gateway the assistant that watches your budgets has a budget: visible, cappable, killable. Through that gateway, with policy enforced, it answered across the planes and stopped at its run budget with a 402. The thesis, dogfooded.</p></div>
+      <div class="card hover feature b-4 rv d2"><h3>Metered like any other agent</h3><p>Felyx's own LLM calls carry their own run id and agent id, so pointed at the stack's TokenFuse gateway the assistant that watches your budgets has a budget: visible, cappable, killable. Where the gateway runs client keys, Felyx presents its own, named by GENARYX_COPILOT_FUSE_KEY_REF (env:NAME or file:PATH); without it the gateway refuses each question with a 401. Through that gateway, with policy enforced, it answered across the planes and stopped at its run budget with a 402. The thesis, dogfooded.</p></div>
     </div>
     <div class="felyx-quote rv">
-      <div class="q">&#8220;reconciliation-batch-eod-002-LIVE is stuck in a sustained loop and burning resources unattended - review and kill it now to prevent runaway costs or duplicate or corrupt EOD reconciliation output.&#8221;</div>
-      <div class="src">felyx's live annotation on a HARD page &#183; captured live, 2026-07-19 &#183; written two seconds after the deterministic alert had already gone out</div>
+      <div class="q">&#8220;An annotation names a stuck batch job, says it is burning resources unattended, and asks for one decision: review it and kill it now.&#8221;</div>
+      <div class="src">a paraphrase of the annotation felyx writes on a HARD page, not a recorded capture &#183; the deterministic alert goes out first</div>
     </div>
     <div class="prov-row rv d1">
       <span class="prov loc"><b>Ollama</b> &#183; local</span>
@@ -429,7 +429,7 @@
         </details>
       </div>
       <div class="card hover feature b-4 rv"><h3>An audit trail that proves itself</h3><p>Every governance event the stack emits carries the SHA-256 of the event before it, computed over RFC 8785 canonical JSON: one file, one chain, restarts included. Tampering does not hide, it breaks the chain exactly where it happened, and <span class="mono">agent-conform -chain</span> verifies a journal in one command.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>Post-quantum, already</h3><p>Evidence packs self-verify: an embedded digest plus an ML-DSA (FIPS 204) signature, the NIST post-quantum standard, so the proof you hand an auditor stays trustworthy past the next cryptographic era. And Qryx audits your fleet's own crypto against the NCSC and CNSA 2.0 migration timelines, so you know what will break before an adversary does.</p></div>
+      <div class="card hover feature b-4 rv d1"><h3>Post-quantum, already</h3><p>Evidence packs are tamper-evident two ways: every artifact is kept byte for byte, and a manifest signed with the console's device key (ES256) records each artifact's sha256. A Qryx artifact in the pack keeps its own ML-DSA (FIPS 204) signature; the console does not sign with ML-DSA. And Qryx audits your fleet's own crypto against the NCSC and CNSA 2.0 migration timelines, so you know what will break before an adversary does.</p></div>
       <div class="card hover feature b-4 rv d2"><h3>Self-hosted, your cloud or on-prem</h3><p>We never run your Cloud plane or hold your data. The plane lives on infrastructure you own - AWS, GCP, Hetzner, any cloud or on-prem - reached only over WireGuard. Nothing to subpoena or breach on our side.</p></div>
     </div>
   </div>
@@ -444,7 +444,7 @@
     </div>
     <div class="bento">
       <div class="card b-6 rv">
-        <div class="kicker" style="--accent:var(--mint)">already true</div>
+        <div class="kicker" style="--accent:var(--mint)">reported, not yet in the record</div>
         <ul class="proof">
           <li>A laptop on the public internet opened the console over a tunnel this box issued itself, with no other route in.</li>
           <li>Issuing a device and revoking one each needed a touch on the operator's own authenticator, journaled <span class="mono" style="font-size:12.5px">webauthn-es256</span>.</li>
@@ -452,12 +452,12 @@
           <li>A device-signed kill went through a real fleet, against a plane closed to the internet.</li>
           <li>Felyx, on a live local model, named the caught runaway and filed a capped proposal only a human could approve, on 42 agents.</li>
         </ul>
-        <details class="sheet" data-sheet-kicker="already true" data-sheet-title="The captured runs behind each of those lines">
-          <summary>What was actually run</summary>
+        <details class="sheet" data-sheet-kicker="reported, not yet in the record" data-sheet-title="The runs described behind each of those lines; none is cited here yet">
+          <summary>What the reported runs describe</summary>
           <div class="sheet-in">
             <p class="dim" style="font-size:14px;line-height:1.7">A laptop on the public internet imported the peer config this box issued itself, completed a handshake against the box's published UDP port, and opened the console over TLS inside that tunnel, from a machine that had no other route to it. It then enrolled a passkey and issued a second device, and that action was refused until the operator confirmed it on their own authenticator: the journal records it signed <span class="mono" style="font-size:13px">webauthn-es256</span>, naming the credential they touched. Revoking a device cut it off the same way.</p>
             <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px">Every one of those records carries the hash of the event before it, and the stack's own conformance checker verifies the chain they sit in. The console has separately driven a real fleet and put a device-signed kill through it, against a plane closed to the internet.</p>
-            <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px">Felyx has run against a live local model, named the caught runaway and what it burned, and filed a capped-budget proposal only a human could approve, on a live fleet of 42 agents. Every claim here has a captured run behind it.</p>
+            <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px">Felyx has run against a live local model, named the caught runaway and what it burned, and filed a capped-budget proposal only a human could approve, on a fleet of 42 agents. No run is cited for this yet.</p>
           </div>
         </details>
       </div>

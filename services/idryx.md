@@ -58,7 +58,7 @@ What does this key reach, transitively? Idryx computes the union of every permis
 
 ### eBPF network sensor
 
-A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent fetching packages straight from PyPI on every start.
+A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent fetching packages straight from PyPI on every start. That was one agent turn on one lab node, on 2026-09-27; it has not yet run on a fleet or a cloud host.
 
 ## Built for the identities that never log in.
 
@@ -77,7 +77,7 @@ Your IdP counts the humans. The keys, service accounts and agents acting on thei
 
 ### The one that reads everything and touches nothing.
 
-Idryx consumes the same envelope [TokenFuse](https://it-rat.com/tokenfuse.html), [Wardryx](https://it-rat.com/wardryx.html), [Mockryx](https://it-rat.com/mockryx.html) and [Verdryx](https://it-rat.com/verdryx.html) write: the agent-event. It validates Agent Passports against the [platform contract](https://it-rat.com/platform.html), and the loop closes at the policy plane: its attestation_missing detector is the reason an unattested agent meets a 403 from Wardryx policies instead of your production data.
+Idryx consumes the same envelope [TokenFuse](https://it-rat.com/tokenfuse.html), [Wardryx](https://it-rat.com/wardryx.html), [Mockryx](https://it-rat.com/mockryx.html) and [Verdryx](https://it-rat.com/verdryx.html) write: the agent-event. It validates Agent Passports against the [platform contract](https://it-rat.com/platform.html), and the loop closes at the policy plane: Wardryx's deny_if_unattested policy refuses an agent with no live attestation, and the gateway answers that refusal with a 403 instead of your production data. Idryx's attestation_missing detector reports those agents in the graph.
 
 Blast radius, shadow tooling and unattested agents are covered as failure modes in [AI agent security](https://it-rat.com/ai-agent-security.html), the graph's place among the planes in [AI agent governance](https://it-rat.com/ai-agent-governance.html), and what an agent identity has to be in [agent identity and authentication](https://it-rat.com/agent-identity.html).
 
@@ -89,7 +89,7 @@ Every one of those addresses always serves the newest release, so a link saved t
 
 ## It records who acts for whom. It does not prove it.
 
-The delegation chain here is a record, and the spec says so plainly: it names an agent without proving possession, and says who acted for whom without saying when. [Vouchryx](https://it-rat.com/vouchryx.html) is the other half, proof of possession per request and a revocation an incident can actually use, and every finding it produces lands on the same bus this graph is folded from.
+The delegation chain here is a record: each identity lists the on_behalf_of chain it acts under, root first, and the graph walks that chain to show what the identity can reach. [Vouchryx](https://it-rat.com/vouchryx.html) is the other half, proof of possession per request and a revocation an incident can actually use, and every finding it produces lands on the same bus this graph is folded from.
 
 ## Counting the identities nobody is counting
 

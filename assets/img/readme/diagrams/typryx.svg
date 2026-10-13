@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 -18 996 696" width="996" height="696" role="img" aria-label="Typryx: an ask crosses the door, template lookup, egress filter and hourly cap to a swappable backend, stub, openai-logprobs or jev, and every answer or refusal is journaled, with a calibration loop and journal readers on the side">
-  <title>Typryx: an ask crosses the door, template lookup, egress filter and hourly cap to a swappable backend, stub, openai-logprobs or jev, and every answer or refusal is journaled, with a calibration loop and journal readers on the side</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 -18 996 696" width="996" height="696" role="img" aria-label="Typryx: an ask crosses the door, template lookup, egress filter and hourly cap to a swappable backend, stub, openai-logprobs or jev, and every answer or refusal is journaled, with a calibration loop and the journal on the shared events volume">
+  <title>Typryx: an ask crosses the door, template lookup, egress filter and hourly cap to a swappable backend, stub, openai-logprobs or jev, and every answer or refusal is journaled, with a calibration loop and the journal on the shared events volume</title>
   <rect x="-18" y="-18" width="996" height="696" rx="16" fill="#0A0E13"/>
   <rect x="-17.5" y="-17.5" width="995" height="695" rx="15.5" fill="none" stroke="rgba(255,255,255,.09)"/>
 
@@ -10,11 +10,11 @@
         <g font-family="ui-monospace,Menlo" text-anchor="middle">
           <rect x="30" y="18" width="320" height="48" rx="10" fill="#141C27" stroke="#34D399"/>
           <text x="190" y="40" fill="#E9EFF6" font-size="12" font-weight="700">agent, over MCP</text>
-          <text x="190" y="56" fill="#34D399" font-size="10.5">measured: Claude Code 2.1.270</text>
+          <text x="190" y="56" fill="#34D399" font-size="10.5">built: Claude Code 2.1.270</text>
 
           <rect x="30" y="96" width="360" height="54" rx="10" fill="#141C27" stroke="#34D399"/>
           <text x="210" y="118" fill="#E9EFF6" font-size="11.5" font-weight="700">tokenfuse MCP broker</text>
-          <text x="210" y="135" fill="#34D399" font-size="10.5">measured: named upstream, tool_call recorded</text>
+          <text x="210" y="135" fill="#34D399" font-size="10.5">built: named upstream, tool_call recorded</text>
 
           <rect x="30" y="178" width="440" height="126" rx="14" fill="#10161F" stroke="#60A5FA" stroke-width="1.4"><animate attributeName="stroke-opacity" values="1;.45;1" dur="3.4s" repeatCount="indefinite"/></rect>
           <text x="250" y="202" fill="#60A5FA" font-size="13.5" font-weight="700">typryx</text>
@@ -22,7 +22,7 @@
           <rect x="138" y="214" width="98" height="28" rx="7" fill="#141C27" stroke="#2a3547"/><text x="187" y="232" fill="#E9EFF6" font-size="10.5">template</text>
           <rect x="244" y="214" width="120" height="28" rx="7" fill="#141C27" stroke="#2a3547"/><text x="304" y="232" fill="#E9EFF6" font-size="10.5">egress filter</text>
           <rect x="372" y="214" width="88" height="28" rx="7" fill="#141C27" stroke="#2a3547"/><text x="416" y="232" fill="#E9EFF6" font-size="10.5">hourly cap</text>
-          <text x="250" y="268" fill="#8A97A6" font-size="10.5">only the fields a template names ever leave</text>
+          <text x="250" y="268" fill="#8A97A6" font-size="10.5">only the fields a template names leave; freeform is opt-in</text>
           <text x="250" y="285" fill="#5A6675" font-size="10.5">1,000 calls/hour by default, counted past door + template + filter</text>
 
           <rect x="30" y="326" width="440" height="98" rx="14" fill="#10161F" stroke="#2a3547" stroke-width="1.4"/>
@@ -51,15 +51,15 @@
           <text x="738" y="312" fill="#5A6675" font-size="10.5">a bound crossed, per template &#215; version &#215; backend &#215; model</text>
 
           <rect x="546" y="340" width="384" height="300" rx="14" fill="none" stroke="#5A6675" stroke-width="1.2" stroke-dasharray="4 5"/>
-          <text x="738" y="362" fill="#8A97A6" font-size="11" font-weight="700">planned, none of these consume typryx yet</text>
+          <text x="738" y="362" fill="#8A97A6" font-size="11" font-weight="700">still planned, or built and not run live</text>
           <rect x="555" y="376" width="366" height="30" rx="8" fill="#141C27" stroke="#FF7AA2" stroke-dasharray="3 3"/><text x="738" y="396" fill="#FF7AA2" font-size="10.5">verdryx: a typed grader beside the LLM judge</text>
           <rect x="555" y="414" width="366" height="30" rx="8" fill="#141C27" stroke="#2DD4BF" stroke-dasharray="3 3"/><text x="738" y="434" fill="#2DD4BF" font-size="10.5">wardryx: a signal that may become a hold, never a deny</text>
           <rect x="555" y="452" width="366" height="30" rx="8" fill="#141C27" stroke="#F4B23E" stroke-dasharray="3 3"/><text x="738" y="472" fill="#F4B23E" font-size="10.5">tokenfuse: router shadow mode</text>
-          <rect x="555" y="490" width="366" height="30" rx="8" fill="#141C27" stroke="#7DD3A0" stroke-dasharray="3 3"/><text x="738" y="510" fill="#7DD3A0" font-size="10.5">costcrew: a suggested class/priority at triage</text>
+          <rect x="555" y="490" width="366" height="30" rx="8" fill="#141C27" stroke="#7DD3A0" stroke-dasharray="3 3"/><text x="738" y="510" fill="#7DD3A0" font-size="10.5">costcrew: a suggested class or priority at triage (built, opt-in)</text>
           <rect x="555" y="528" width="366" height="30" rx="8" fill="#141C27" stroke="#B48CFF" stroke-dasharray="3 3"/><text x="738" y="548" fill="#B48CFF" font-size="10.5">genaryx: a panel, live only when configured</text>
           <rect x="555" y="566" width="366" height="30" rx="8" fill="#141C27" stroke="#6C7BFF" stroke-dasharray="3 3"/><text x="738" y="586" fill="#6C7BFF" font-size="10.5">engram: an optional importance score</text>
-          <text x="738" y="614" fill="#5A6675" font-size="10.5">journal readers Trailryx, Idryx, Genaryx:</text>
-          <text x="738" y="630" fill="#5A6675" font-size="10.5">launcher wiring planned</text>
+          <text x="738" y="614" fill="#5A6675" font-size="10.5">journal: on the shared events volume:</text>
+          <text x="738" y="630" fill="#5A6675" font-size="10.5">Trailryx refuses these four by design</text>
         </g>
         <g stroke="#5A6675" stroke-width="1.5" class="flow">
           <line x1="190" y1="66" x2="210" y2="94" marker-end="url(#txa1)"/>

@@ -60,7 +60,7 @@
   .standalone b{color:var(--fg)}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"TokenFuse Pocket","url":"https://it-rat.com/services/pocket.html","description":"Our iPhone and Apple Watch app for TokenFuse: the fleet's burn live, and a kill signed by the Secure Enclave. Built, and not wired into a running stack yet.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/tokenfuse-mobile","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"TokenFuse Pocket","item":"https://it-rat.com/services/pocket.html"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"TokenFuse Pocket","url":"https://it-rat.com/services/pocket.html","description":"Our iPhone and Apple Watch app for TokenFuse: the fleet's burn live, and a kill signed by the Secure Enclave. Built, and not wired into a running stack yet.","applicationCategory":"DeveloperApplication","operatingSystem":"iOS, watchOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/tokenfuse-mobile","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"TokenFuse Pocket","item":"https://it-rat.com/services/pocket.html"}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-service="pocket" data-root="../">
@@ -83,9 +83,7 @@
              data-sheet-title="In the stack, and not wired into one yet">
       <summary>what that means</summary>
       <div class="sheet-in">
-        <p><b>Where this sits today, stated rather than implied.</b> Pocket is
-        part of the stack and it is the only part of it you do not run on your own
-        box: it is the out-of-band control for TokenFuse, the way to pull the
+        <p><b>Where this sits today, stated rather than implied.</b> Pocket is listed in the stack registry as not wired into a running stack yet. It is designed as the out-of-band control for TokenFuse, the way to pull the
         Breaker when the machine running the gateway, or the machine running your
         console, is itself the thing that has gone wrong. That is why the
         signature comes from the Secure Enclave on a device the agent's host never
@@ -98,11 +96,9 @@
         the kill is signed on the device and the gateway has only to check the
         signature. The watch pairs on its own and carries the same flow, so a
         deauthorized device says it was deauthorized rather than pretending.</p>
-        <p style="margin-top:12px"><b>What is actually true today.</b> The
-        interface is finished and every screen has been driven against a real
-        control plane on a simulator. It is not connected to anything you are
+        <p style="margin-top:12px"><b>What is actually true today.</b> The interface is finished. The iPhone app's repository records every screen as driven against a real control plane on a simulator, and no run of ours is recorded for it yet. It is not connected to anything you are
         running: there is no App Store build, no real push delivery, and no
-        hardening pass or security review. Treat it as the shape of the control
+        hardening pass or whole-app security review; a narrower review on 2026-09-06 led to one transport-security fix. Treat it as the shape of the control
         rather than a control you have. The console you run today is the
         <a href="../genaryx.html" data-dir="fwd" style="color:var(--violet)">Genaryx</a>
         web app.</p>
@@ -119,7 +115,7 @@
       <div>
         <div class="kicker rv">out of band &#183; iOS and watchOS &#183; not wired in yet</div>
         <h1 class="rv d1"><span class="nm">Pocket</span>. Watch the fleet burn live, and cut it from a device no attacker touched.</h1>
-        <p class="lede rv d2">TokenFuse's gateway enforces the budget in the request path your agent runs on. Pocket asks what a control OUTSIDE that path should look like on a device you already carry: the fleet's burn rate live, and a kill signed by hardware the agent's host never touches. Both apps are built and every screen was driven live against a real control plane on the simulator, which is a long way from shipped: no production hardening pass, no security review, no App Store. The effort goes to the web console, and this moves when there is time for it.</p>
+        <p class="lede rv d2">TokenFuse's gateway enforces the budget in the request path your agent runs on. Pocket asks what a control OUTSIDE that path should look like on a device you already carry: the fleet's burn rate live, and a kill signed by hardware the agent's host never touches. Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet. That is a long way from shipped: no production hardening pass, no security review, no App Store. The effort goes to the web console, and this moves when there is time for it.</p>
         <div class="cta-row rv d3">
           <a class="btn primary" href="#sim">Watch the kill from the wrist <span class="mono">&#9654;</span></a>
           <a class="btn" href="https://github.com/TAIPANBOX/tokenfuse-mobile" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="flex:0 0 auto"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg> GitHub</a>
@@ -130,7 +126,7 @@
         <div class="row"><span class="k">signing</span><span class="v">Secure Enclave, keys never leave the device</span></div>
         <div class="row"><span class="k">pairs with</span><span class="v">nothing today; genaryx-relay was removed</span></div>
         <div class="row"><span class="k">surfaces</span><span class="v">Dynamic Island &#183; Live Activity &#183; Watch complication</span></div>
-        <div class="row"><span class="k">status</span><span class="v">no hardening pass, no security review</span></div>
+        <div class="row"><span class="k">status</span><span class="v">no hardening pass, no whole-app security review</span></div>
         <div class="row"><span class="k">licence</span><span class="v">Apache-2.0</span></div>
       </div>
     </div>
@@ -157,17 +153,17 @@
     <div class="sec-head rv">
       <div class="kicker">design mocks, live</div>
       <h2>Do not watch it. Drive it.</h2>
-      <p class="lede">An interactive design mock of the iPhone and Watch apps, running here as a web page. Five iPhone screens and five Watch screens, all live: the burn ticks and every screen is driveable. The ceremony the app implements is stricter than this mock: a kill is confirmed by name and signed on the device, and a killed run then leaves the pager, staying in the console and the audit trail. Drive it with the steps, the tab bar, or the Watch switch.</p>
+      <p class="lede">An interactive design mock of the iPhone and Watch apps, running here as a web page. Seven iPhone screens, a Live Activity surface and five Watch screens, all live: the burn ticks and every screen is driveable. The ceremony the app implements is stricter than this mock: a kill is confirmed by name and signed on the device, and a killed run then leaves the pager, staying in the console and the audit trail. Drive it with the steps, the tab bar, or the Watch switch.</p>
     </div>
     <div class="appshow rv">
       <div id="pk-live"></div>
       <div class="as-steps" id="pk-steps">
         <div class="as-step"><span class="as-n mono">01</span><span class="as-body"><b>Runs, the deck</b><span>Fleet burn up top, then the exception queue: the runs at or over their cap, worst first. The healthy fleet stays quiet.</span></span></div>
         <div class="as-step"><span class="as-n mono">02</span><span class="as-body"><b>Run detail, pull the breaker</b><span>Spend against cap, model and steps. The kill wants you to mean it: slide to arm, then Face ID.</span></span></div>
-        <div class="as-step"><span class="as-n mono">03</span><span class="as-body"><b>Budgets, the ladder above a run</b><span>One cap enforced at three scopes, org, team and agent, so no single agent can quietly drain a team's month.</span></span></div>
+        <div class="as-step"><span class="as-n mono">03</span><span class="as-body"><b>Budgets, the ladder above a run</b><span>A cap on each run, and a monthly cap for each business unit, both enforced by the gateways. The org, team and agent ladder on this screen is a drawn design.</span></span></div>
         <div class="as-step"><span class="as-n mono">04</span><span class="as-body"><b>Agents, sorted by behaviour</b><span>Not spend, conduct: a runaway agent, one reaching tools it never used, an orphaned key. Tap for why it fired and its blast radius.</span></span></div>
-        <div class="as-step"><span class="as-n mono">05</span><span class="as-body"><b>Pairing, one scan and a key that stays</b><span>Your console issues a one-time code. Scanning it mints a signing key in the Secure Enclave that never leaves the phone.</span></span></div>
-        <div class="as-step"><span class="as-n mono">06</span><span class="as-body"><b>Device, and how far it reaches</b><span>The paired iPhone and the last action it signed. Default reaps idle tunnel peers, Strict revokes them.</span></span></div>
+        <div class="as-step"><span class="as-n mono">05</span><span class="as-body"><b>Pairing, one scan and a key that stays</b><span>As designed, your console would issue a one-time code, and scanning it would mint a signing key in the Secure Enclave that never leaves the phone. No console code issues one today.</span></span></div>
+        <div class="as-step"><span class="as-n mono">06</span><span class="as-body"><b>Device, and how far it reaches</b><span>The paired iPhone and the last action it signed. The mock draws a Default and a Strict peer mode for the Device screen. Neither is built.</span></span></div>
         <div class="as-step"><span class="as-n mono">07</span><span class="as-body"><b>Alerts that mean act</b><span>Built for a relay that pushes the moment a cap breaks. Tap a banner to land on the run, or arm the kill from the wrist.</span></span></div>
       </div>
     </div>
@@ -241,9 +237,9 @@
     </div>
     <div class="bento">
       <div class="card hover feature b-4 rv"><h3>The fuse, everywhere</h3><p>Mint under budget, amber warming, ember at the cap. The run list, the Dynamic Island, and the watch face all read the fuse the same way, so nothing needs translating between screens.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>Hardware-signed kill</h3><p>The design signs every kill on-device, so a fully compromised server can neither forge that order nor block it. The same property is what the web console reaches for with a passkey, which is why this became the direction we are building first.</p></div>
+      <div class="card hover feature b-4 rv d1"><h3>Hardware-signed kill</h3><p>The design signs every kill on-device, so a fully compromised server can neither forge that order nor change it. It can still refuse to pass the order on. The same property is what the web console reaches for with a passkey, which is why this became the direction we are building first.</p></div>
       <div class="card hover feature b-4 rv"><h3>The fleet at a glance</h3><p>Every run with its spend, its burn rate in dollars per minute, and how close it sits to a budget break, sorted hottest first, red once it's over.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>Pairing in seconds</h3><p>Scan a QR code against your own Cloud plane. The app generates a key inside the Secure Enclave on the spot; the key never leaves it, not even to the app.</p></div>
+      <div class="card hover feature b-4 rv d1"><h3>Pairing in seconds</h3><p>Scan the QR code a Genaryx relay issues. No relay runs today, so nothing can be paired yet. The key is generated inside the Secure Enclave and never leaves it, not even to the app.</p></div>
     </div>
   </div>
 </section>
@@ -284,12 +280,12 @@
         <div class="kicker">where it sits</div>
         <h3 style="margin-top:12px">The human end of a machine decision.</h3>
         <p style="margin-top:10px;color:var(--dim);font-size:14.5px;line-height:1.65">
-          Pocket is the human end of <a href="tokenfuse.html" data-dir="fwd" style="color:var(--amber)">TokenFuse</a>: the gateway enforces the budget in the request path, Pocket lets you watch it happen and pull the kill switch from somewhere else entirely. A kill lands as an incident on the same event bus the rest of the <a href="platform.html" data-dir="fwd" style="color:var(--steel)">Platform</a> reads. What actually gets enforced was decided upstream, by <a href="wardryx.html" data-dir="fwd" style="color:var(--teal)">Wardryx</a> and the budgets you set. Pocket doesn't make that call; it gives you a fast, honest way to see it and override it.</p>
+          Pocket is the human end of <a href="tokenfuse.html" data-dir="fwd" style="color:var(--amber)">TokenFuse</a>: the gateway enforces the budget in the request path, Pocket lets you watch it happen and pull the kill switch from somewhere else entirely. A kill is written as a run_killed event on the same agent-event bus the rest of the <a href="platform.html" data-dir="fwd" style="color:var(--steel)">Platform</a> reads. What actually gets enforced was decided upstream, by <a href="wardryx.html" data-dir="fwd" style="color:var(--teal)">Wardryx</a> and the budgets you set. Pocket doesn't make that call; it gives you a fast, honest way to see it and override it.</p>
       </div>
       <div class="card b-4 rv d1">
         <div class="kicker" style="--accent:var(--violet)">what it pairs with</div>
         <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
-          <p class="dim" style="font-size:13px;line-height:1.6">Pocket pairs through <a href="../genaryx.html" style="color:var(--violet)">Genaryx</a> to a TokenFuse plane you host yourself. Both apps are built and open, and neither is
+          <p class="dim" style="font-size:13px;line-height:1.6">Pocket was designed to pair through <a href="../genaryx.html" style="color:var(--violet)">Genaryx</a> to a TokenFuse plane you host yourself. That relay was removed from Genaryx on 2026-07-28, so nothing pairs today. Both apps are built and open, and neither is
           connected to a running stack: the console is what an operator uses today.</p>
           <p class="dim" style="font-size:13px;line-height:1.6">The plane it reads is open today: <a href="platform.html#run" style="color:var(--cyan)">stand up the stack's live services locally in one command</a> and see the same money plane on your own machine.</p>
         </div>

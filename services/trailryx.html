@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trailryx - a record that proves it is complete · IT-RAT</title>
-<meta name="description" content="A record of what your AI agents did that nobody can quietly change or shorten, where every answer carries a proof that it is complete.">
+<meta name="description" content="A record of what your AI agents did that nobody can quietly change or shorten, where every answer says whether it is proved complete.">
 <link rel="canonical" href="https://it-rat.com/services/trailryx.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/services/trailryx.html">
 <meta property="og:title" content="Trailryx - a record that proves it is complete · IT-RAT">
-<meta property="og:description" content="Tamper-evident agent records in Rust, with no third-party code in the core or the verifier. A query on a provable dimension comes back with a completeness proof; anything else is answered honestly and marked partial. One subject can be erased while the chain still verifies.">
+<meta property="og:description" content="Tamper-evident agent records in Rust, with no third-party code in the core or the verifier. A query on a provable dimension comes back with a completeness proof; anything else is answered honestly and marked partial. The library can erase one subject while the chain still verifies; the shipped node cannot yet.">
 <meta property="og:image" content="https://it-rat.com/assets/og/trailryx.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Trailryx - a record that proves it is complete · IT-RAT">
-<meta name="twitter:description" content="Tamper-evident agent records in Rust, with no third-party code in the core or the verifier. A query on a provable dimension comes back with a completeness proof; anything else is answered honestly and marked partial. One subject can be erased while the chain still verifies.">
+<meta name="twitter:description" content="Tamper-evident agent records in Rust, with no third-party code in the core or the verifier. A query on a provable dimension comes back with a completeness proof; anything else is answered honestly and marked partial. The library can erase one subject while the chain still verifies; the shipped node cannot yet.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/trailryx.png">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="icon" type="image/png" href="../favicon.png">
@@ -56,7 +56,7 @@
   .standalone b{color:var(--fg)}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Trailryx","url":"https://it-rat.com/services/trailryx.html","description":"A record of what your AI agents did that nobody can quietly change or shorten, where every answer carries a proof that it is complete.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/trailryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"Trailryx","item":"https://it-rat.com/services/trailryx.html"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Trailryx","url":"https://it-rat.com/services/trailryx.html","description":"A record of what your AI agents did that nobody can quietly change or shorten, where every answer says whether it is proved complete.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/trailryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"Trailryx","item":"https://it-rat.com/services/trailryx.html"}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-service="trailryx" data-root="../">
@@ -80,7 +80,7 @@
       <div>
         <div class="kicker rv">the record &#183; Rust</div>
         <h1 class="rv d1"><span class="nm">Trailryx</span>. A record of what your agents did that nobody can quietly change, or quietly shorten.</h1>
-        <p class="lede rv d2">Tamper-evident is the easy half, and most audit stores stop there: you can tell if a record was edited. The hard half is the answer. Ask "everything agent X did in March" and an ordinary store hands you rows with no way to know whether it handed you all of them. Trailryx answers with a completeness proof when it can, and says partial with the reason named when it cannot. And it can still erase one person on request without breaking the trail, which is the pair almost nothing manages at once.</p>
+        <p class="lede rv d2">Tamper-evident is the easy half, and most audit stores stop there: you can tell if a record was edited. The hard half is the answer. Ask "everything agent X did in March" and an ordinary store hands you rows with no way to know whether it handed you all of them. Trailryx answers with a completeness proof when it can, and says partial with the reason named when it cannot. And its store is built to erase one person on request without breaking the trail; the shipped node does not expose that yet, which is the pair almost nothing manages at once.</p>
         <div class="cta-row rv d3">
           <a class="btn primary" href="#sim">Watch an answer get proved <span class="mono">&#9654;</span></a>
           <a class="btn" href="https://github.com/TAIPANBOX/trailryx" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="flex:0 0 auto"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg> GitHub</a>
@@ -88,7 +88,7 @@
       </div>
       <div class="hero-side rv d2">
         <div class="row"><span class="k">core</span><span class="v">Rust &#183; no unsafe &#183; 0 third-party</span></div>
-        <div class="row"><span class="k">tests</span><span class="v">1,220 across 31 crates</span></div>
+        <div class="row"><span class="k">tests</span><span class="v">1,227 across 31 crates</span></div>
         <div class="row"><span class="k">ingest</span><span class="v">OTLP protobuf &#183; JSON &#183; a collector's file</span></div>
         <div class="row"><span class="k">proves</span><span class="v">record &#183; time &#183; agent &#183; run &#183; type</span></div>
         <div class="row"><span class="k">erasure</span><span class="v">crypto-erasure, per subject</span></div>
@@ -103,7 +103,7 @@
 <section class="sec" style="padding-top:8px">
   <div class="wrap">
     <div class="standalone rv">
-      <p><b>Where this sits today, stated rather than implied.</b> Trailryx reads the shared agent-event bus and seals it. That was the open gap on this page until 2026-08-27 and it is closed: a dedicated crate maps the envelope the other planes write, <span class="mono">stack-up</span> runs the sealing routine at 06:57 by default, and the Kubernetes install has a nightly job that packs the ledger and verifies the pack before it exits. It still takes plain OTLP as well, from a collector or straight over the wire, so it stays useful to somebody who has traces and no TAIPANBOX. <b>One gap is left and it is narrower:</b> the console has no panel for the record plane, so what is sealed is read with the CLI rather than in a browser.</p>
+      <p><b>Where this sits today, stated rather than implied.</b> Trailryx reads the shared agent-event bus and seals it. That was the open gap on this page until 2026-08-27 and it is closed: a dedicated crate maps the envelope the other planes write, <span class="mono">stack-up</span> runs the sealing routine at 06:57 by default, and the Kubernetes install has a nightly job that packs the ledger and verifies the pack before it exits. It still takes plain OTLP as well, from a collector or straight over the wire, so it stays useful to somebody who has traces and no TAIPANBOX. <b>Two gaps are left.</b> The console has no panel for the record plane, so what is sealed is read with the CLI rather than in a browser. Erasure is a library and the demo path today: trailryx-node has no erase command and keeps no payload plane, so an operator cannot yet erase one subject through the shipped binary.</p>
     </div>
   </div>
 </section>
@@ -130,7 +130,7 @@
     </div>
 
     <div class="diagram rv">
-      <svg viewBox="0 0 960 250" role="img" aria-label="A predicate on one of the five provable dimensions becomes an authenticated index range and the answer is Full; a predicate off them is still applied so the rows are right, and the answer is Partial with the reason named; an INSERT is planned but refused at execution.">
+      <svg viewBox="0 0 960 250" role="img" aria-label="A predicate on one of the five provable dimensions becomes an authenticated index range and the answer is Full; a predicate off them is still applied so the rows are right, and the answer is Partial with the reason named; an INSERT is refused by the gate before the engine sees it.">
         <defs><marker id="txa" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker></defs>
         <g font-family="ui-monospace,Menlo">
           <rect x="8" y="18" width="290" height="42" rx="9" fill="#141C27" stroke="#2a3547"/>
@@ -199,7 +199,7 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">the pair that is hard to have at once</div>
-      <h2>Erase one person, and the trail still verifies.</h2>
+      <h2>Erase one person in the library, and the trail still verifies.</h2>
       <p class="lede">An audit store that cannot forget anybody fails the first request it gets in Europe. One that forgets by deleting rows breaks every proof it ever issued. Trailryx separates the two planes so neither has to give way.</p>
     </div>
     <div class="bento" style="gap:22px">
@@ -221,13 +221,13 @@
     </div>
     <div class="bento" style="gap:22px">
       <div class="b-6"><div class="feature rv"><h3>With a disk that keeps its word</h3>
-        <p>400,000 seeds, roughly 800 million shard ticks, about 12 million crashes injected, nine days and six hours of simulated time in ten minutes and forty seconds of real time. Zero durability violations.</p></div></div>
+        <p>As recorded, undated, in the repository's VALIDATION.md: 400,000 seeds, roughly 800 million shard ticks, about 12 million crashes injected, nine days and six hours of simulated time in ten minutes and forty seconds of real time. Zero durability violations.</p></div></div>
       <div class="b-6"><div class="feature rv"><h3>With a disk that lies</h3>
-        <p>The same harness, the honest-disk assumption removed: 17,869 of 20,000 seeds fail, each naming its own seed and digest. That is what makes the zero above worth reading.</p></div></div>
+        <p>The same harness, the honest-disk assumption removed (as recorded, undated, in VALIDATION.md): 17,869 of 20,000 seeds fail, each naming its own seed and digest. That is what makes the zero above worth reading.</p></div></div>
     </div>
     <div class="rv" style="margin-top:22px">
-      <div class="install"><span class="cmd">trailryx-verify <b>incident-4471.trxevid</b></span><span class="note">zero third-party dependencies, because an auditor reads it rather than trusting it. A signed-off download on <a href="https://github.com/TAIPANBOX/trailryx/releases" target="_blank" rel="noopener">GitHub releases</a>, with a checksum, so nobody has to build it first</span></div>
-      <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px">What the installed profile seals today, stated beside the verdict rather than under it: the <span class="mono">record-seal</span> job the launchers run keeps the typed metadata plane and writes down that it declined the payload, because a node cannot choose an operator's custody for them. Its pack verifies as self-consistent, and <span class="mono">trailryx-verify</span> says in plain words that it carries no root signature and no witness until an operator configures both. So the verdict proves the chain was not altered, not who published it or when.</p>
+      <div class="install"><span class="cmd">trailryx-verify <b>incident-4471.trxevid</b></span><span class="note">zero third-party dependencies, because an auditor reads it rather than trusting it. A download on <a href="https://github.com/TAIPANBOX/trailryx/releases" target="_blank" rel="noopener">GitHub releases</a> with a SHA256SUMS file signed keyless by Sigstore, so nobody has to build it first</span></div>
+      <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px">What the installed profile seals today, stated beside the verdict rather than under it: the <span class="mono">record-seal</span> job the launchers run keeps the typed metadata plane and writes down that it declined the payload, because a node cannot choose an operator's custody for them. Its pack verifies as self-consistent, and <span class="mono">trailryx-verify</span> says in plain words that a pack carries no root signature and no witness, and the shipped node writes packs that way, because signing needs a key custodian the node does not have yet. So the verdict proves the chain was not altered, not who published it or when.</p>
       <details class="sheet" data-sheet-kicker="download" data-sheet-title="The offline verifier, every platform">
         <summary>Download the verifier</summary>
         <div class="sheet-in">
@@ -246,7 +246,7 @@
     <div class="sec-head rv">
       <div class="kicker">what it is sealing lately</div>
       <h2>The newest thing on the bus is a crew of agents.</h2>
-      <p class="lede"><a href="costcrew.html">CostCrew</a> writes twenty-two event types about money and about its own analysts. This plane seals the two about money with everything else and refuses the other twenty by name, because they record a practice rather than an agent's run. Measured on 2026-08-28: twenty-six events on the bus in one run, and nine of them sealed into records in that same run. The rest were refused by design rather than dropped, which is the distinction this store exists to keep.</p>
+      <p class="lede"><a href="costcrew.html">CostCrew</a> writes twenty-three event types about money and about its own analysts. This plane seals the two about money with everything else and refuses the other twenty-one by name, because they record a practice rather than an agent's run. The rest were refused by design rather than dropped, which is the distinction this store exists to keep.</p>
     </div>
   </div>
 </section>
@@ -302,7 +302,7 @@ Sim.mount(document.getElementById("tx-sim"),{
   title:"simulated replay · two questions, one erasure",
   window:60, duration:17000,
   clock:t=>t.toFixed(1)+"s",
-  badges:[{label:"0 third-party deps: core, verifier",color:"#34D399"},{label:"1,220 tests · 31 crates",color:"#E4626F"}],
+  badges:[{label:"0 third-party deps: core, verifier",color:"#34D399"},{label:"1,227 tests · 31 crates",color:"#E4626F"}],
   stage:{mode:"proof", fillTo:30, q1:36, q2:46, forget:54},
   series:[
     {id:"rec",label:"records sealed",color:"#8A97A6",max:120,points:[[0,0],[2,0],[30,120],[60,120]]}

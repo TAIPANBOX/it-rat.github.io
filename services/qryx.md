@@ -67,15 +67,7 @@ The agents connector inventories the governance stack's own trust surface: Agent
 
 ## You cannot migrate what you cannot see.
 
-A crypto audit and a CSPM checkbox both ask about cryptography. Neither one reads the binary.
-
-|  | Qryx | Annual crypto audit | CSPM checkbox |
-|---|---|---|---|
-| Cadence | Every commit | Yearly PDF | Weekly dashboard |
-| Sees binaries | Symbol-level, incl. static fallback | No | No |
-| Post-quantum grading | NCSC + CNSA milestones | A consultant's opinion | None |
-| Evidence | Signed, ML-DSA optional | Slide deck | Screenshot |
-| Cost of a finding | A failed CI run | A remediation project | A ticket nobody owns |
+Qryx reads binaries, container images, live TLS endpoints, certificates, dependencies, cloud KMS and source code, and puts them into one graph graded against the CNSA 2.0 and NCSC milestones.
 
 ### The inventory the rest of the stack borrows from.
 
@@ -83,7 +75,7 @@ Qryx emits every finding as an agent-event onto the shared bus that [Platform](h
 
 Crypto posture is one plane of a wider practice: [AI agent governance](https://it-rat.com/ai-agent-governance.html), and the defensive picture in [AI agent security](https://it-rat.com/ai-agent-security.html).
 
-Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source: the ML-DSA toolchain downloads itself on the first build, Go 1.27.
+Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.2 toolchain downloads itself on the first build.
 
 **Q: Download, any platform**
 

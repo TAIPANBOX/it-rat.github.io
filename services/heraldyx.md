@@ -2,19 +2,19 @@
 
 # Heraldyx, the alerts plane
 
-> The part of the agent stack that writes to you: it reads the shared event log, decides what is worth a human tonight, and mails it with one link.
+> The part of the agent stack that writes to you: it reads the shared event log, decides what is worth a human tonight, and mails it with links into your own console.
 
-Every other plane in the stack records what happened. None of them wakes anybody. Heraldyx reads the shared event log the others already write, decides which of those events a human should hear about tonight rather than tomorrow, and sends one mail. It comes from your own box, and it carries a link into your own console. It reads a file and sends mail: that narrowness is the design, because this is the one component of the box allowed to open a connection to anything outside it.
+Every other plane in the stack records what happened. None of them wakes anybody. Heraldyx reads the shared event log the others already write, decides which of those events a human should hear about tonight rather than tomorrow, and sends one mail. It comes from your own box, and it carries links into your own console. It reads a file and sends mail: that narrowness is the design, because this is the one component of the box allowed to open a connection to anything outside it.
 
 ## A hundred and twenty events arrive. Twenty-one messages leave.
 
-This is a simulation of a real run: `scripts/burst-demo.sh` in the repository feeds 120 events to the actual binary with the default limits and counts what comes out. Watch where the other hundred stop. An alerting system that forwards everything teaches its operator to filter the sender to trash, and then the one that mattered is in trash too.
+This is a scripted scenario: `scripts/burst-demo.sh` in the repository feeds 120 events to the real binary with the default limits and counts what comes out. Watch where the other hundred stop. An alerting system that forwards everything teaches its operator to filter the sender to trash, and then the one that mattered is in trash too.
 
 ## Four checks, in this order, and the order is the point.
 
-The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. The last cell was redrawn after a run on 2026-09-17: the v0.2.3 image sent one notice at the ceiling and then nothing for 28 minutes of high and critical events. Since v0.2.4 a critical passes the ceiling and whatever is held is summarised every ten minutes until the hour turns; the launchers pin v0.3.0.
+The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. The last cell was redrawn after a run on 2026-09-17: the v0.2.3 image sent one notice at the ceiling and then nothing for 28 minutes of high and critical events. Since v0.2.4 a critical passes the ceiling and whatever is held is summarised every ten minutes until the hour turns; the launchers pin v0.4.0.
 
-## Four short paragraphs, and one link that is a view.
+## Four short paragraphs, and three links that are views.
 
 What happened with its numbers, what the box already did about it, what happens if nobody acts, and where to look. Nothing in it is text a model wrote.
 
@@ -27,13 +27,13 @@ What happened with its numbers, what the box already did about it, what happens 
  Plain text, no images, no tracking pixel, and no button that acts. Open it to read the whole thing, headers included. 
  open ↗**
 
-### The link is a view, never an action
+### The links are views, never actions
 
 A link that acts is an unauthenticated capability held by anyone who sees or forwards the message. Mail gateways also prefetch links, which would fire the action before a human read the sentence next to it. You sign in at the console, and a destructive action asks for your passkey there.
 
 ### Identifiers and numbers, never content
 
-An event's data can hold anything a producer put there, and some producers sit next to prompts, model output and matched secrets. Mail leaves your perimeter through a server nobody here controls, so the renderer allows nineteen named keys and then checks the shape of every value on top. A live secret is perfectly identifier-shaped, so the key list is what stands between it and your inbox.
+An event's data can hold anything a producer put there, and some producers sit next to prompts, model output and matched secrets. Mail leaves your perimeter through a server nobody here controls, so the renderer allows twenty-two named keys and then checks the shape of every value on top. A live secret is perfectly identifier-shaped, so the key list is what stands between it and your inbox.
 
 ### Who is answerable comes from a passport
 
@@ -75,6 +75,6 @@ A first run starts at the end of the log. A month of old incidents arriving at o
 
 ## Two more sources arrived on the bus.
 
-This plane mails about what other planes wrote, so its reach grows when theirs does. [Vouchryx](https://it-rat.com/vouchryx.html) reports a delegation issued, denied or revoked, and [CostCrew](https://it-rat.com/costcrew.html) reports spend spikes, budget thresholds and every move its crew makes on a finding. Both are in the shared registry, so a mail about either needs no new code here.
+This plane mails about what other planes wrote, so its reach grows when theirs does. [Vouchryx](https://it-rat.com/vouchryx.html) reports a delegation issued, denied or revoked, and [CostCrew](https://it-rat.com/costcrew.html) reports spend spikes, budget thresholds and every move its crew makes on a finding. CostCrew's events have their own sentences here. Vouchryx's delegation events have none yet, so a mail about one says the box has no description for the event until one is written.
 
 Since v0.3.0 a line counts as the source it claims only when the file it came from may carry that source. Each plane's file carries its own name, `HERALDYX_STREAMS` declares anything else, and a line in the wrong file is refused, counted and raised once as `foreign_source`; a file nobody declared is raised once as `unknown_stream`. It does not stop a process that creates a plane's file before that plane does, or a writer forging its own stream: only signing closes those.

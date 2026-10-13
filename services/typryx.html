@@ -124,7 +124,7 @@
       <div>
         <div class="kicker rv">typed answers &#183; optional add-on</div>
         <h1 class="rv d1"><span class="nm">Typryx</span>. A typed answer with a probability, never a guess.</h1>
-        <p class="lede rv d2">Agents already ask each other, and their models, questions that have exactly one shape: choice (which option), score (how good, on an ordered scale) or yes/no. Typryx takes a question from a versioned template and returns a typed answer read off a probability distribution, or refuses with a named reason instead of inventing one. Only the fields the template names ever leave the box, and every answer, refusal or timeout lands on a hash-chained journal.</p>
+        <p class="lede rv d2">Agents already ask each other, and their models, questions that have exactly one shape: choice (which option), score (how good, on an ordered scale) or yes/no. Typryx takes a question from a versioned template and returns a typed answer read off a probability distribution, or refuses with a named reason instead of inventing one. Only the fields the template names leave the box unless an operator switches freeform questions on (TYPRYX_ALLOW_FREEFORM=1, off by default). Every answer, refusal or timeout lands on a hash-chained journal.</p>
         <div class="cta-row rv d3">
           <a class="btn primary" href="#sim">Watch the measured run <span class="mono">&#9654;</span></a>
           <a class="btn" href="#jev">Where Jev meets the stack</a>
@@ -137,7 +137,7 @@
         <div class="row"><span class="k">tests</span><span class="v">986 tests &#183; httptest fakes, no live calls</span></div>
         <div class="row"><span class="k">deps</span><span class="v">one direct dependency</span></div>
         <div class="row"><span class="k">spend cap</span><span class="v">1,000 calls an hour, by default</span></div>
-        <div class="row"><span class="k">image</span><span class="v">16.6 MB &#183; ghcr.io, signed</span></div>
+        <div class="row"><span class="k">image</span><span class="v">16.8 MB &#183; ghcr.io, signed</span></div>
         <div class="row"><span class="k">licence</span><span class="v">Apache-2.0 &#183; public on GitHub</span></div>
       </div>
     </div>
@@ -162,10 +162,10 @@
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
       <h2>The path of one ask.</h2>
-      <p class="lede">An agent reaches typryx over MCP, most often through tokenfuse's broker, both measured. Inside, a call crosses the door, the template lookup, the egress filter and the hourly cap before it reaches a swappable backend; the answer is read off the probability distribution, never taken as the backend's own claim. Everything is journaled. On the right: the calibration loop that scores a later truth, and the consumers, all still planned, that would read the journal.</p>
+      <p class="lede">An agent reaches typryx over MCP, most often through tokenfuse's broker, both built. Inside, a call crosses the door, the template lookup, the egress filter and the hourly cap before it reaches a swappable backend; the answer is read off the probability distribution, never taken as the backend's own claim. Everything is journaled. On the right: the calibration loop that scores a later truth, and the consumers, all still planned, that would read the journal.</p>
     </div>
     <div class="diagram rv">
-      <svg viewBox="0 0 960 660" role="img" aria-label="An agent over MCP, or through tokenfuse's broker, reaches typryx's door, template lookup, egress filter and hourly cap, then a swappable backend, stub, openai-logprobs or jev; the result is a typed answer and probability, or unanswered with a reason, either way journaled with a sha-384 of what left the box; a second, dashed path shows a call that is capped and turns ember before reaching a backend; on the right, the calibration loop scores a later truth, and journal readers Trailryx, Idryx and Genaryx are marked launcher wiring planned, along with six other planned consumers">
+      <svg viewBox="0 0 960 660" role="img" aria-label="An agent over MCP, or through tokenfuse's broker, reaches typryx's door, template lookup, egress filter and hourly cap, then a swappable backend, stub, openai-logprobs or jev; the result is a typed answer and probability, or unanswered with a reason, either way journaled with a sha-384 of what left the box; a second, dashed path shows a call that is capped and turns ember before reaching a backend; on the right, the calibration loop scores a later truth, and journal readers Trailryx, Idryx and Genaryx are marked launcher wiring planned, along with the consumers still planned">
         <defs>
           <marker id="txa1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker>
           <marker id="txa2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#8A97A6"/></marker>
@@ -173,11 +173,11 @@
         <g font-family="ui-monospace,Menlo" text-anchor="middle">
           <rect x="30" y="18" width="320" height="48" rx="10" fill="#141C27" stroke="#34D399"/>
           <text x="190" y="40" fill="#E9EFF6" font-size="12" font-weight="700">agent, over MCP</text>
-          <text x="190" y="56" fill="#34D399" font-size="10.5">measured: Claude Code 2.1.270</text>
+          <text x="190" y="56" fill="#34D399" font-size="10.5">built: Claude Code 2.1.270</text>
 
           <rect x="30" y="96" width="360" height="54" rx="10" fill="#141C27" stroke="#34D399"/>
           <text x="210" y="118" fill="#E9EFF6" font-size="11.5" font-weight="700">tokenfuse MCP broker</text>
-          <text x="210" y="135" fill="#34D399" font-size="10.5">measured: named upstream, tool_call recorded</text>
+          <text x="210" y="135" fill="#34D399" font-size="10.5">built: named upstream, tool_call recorded</text>
 
           <rect x="30" y="178" width="440" height="126" rx="14" fill="#10161F" stroke="#60A5FA" stroke-width="1.4"/>
           <text x="250" y="202" fill="#60A5FA" font-size="13.5" font-weight="700">typryx</text>
@@ -185,7 +185,7 @@
           <rect x="138" y="214" width="98" height="28" rx="7" fill="#141C27" stroke="#2a3547"/><text x="187" y="232" fill="#E9EFF6" font-size="10.5">template</text>
           <rect x="244" y="214" width="120" height="28" rx="7" fill="#141C27" stroke="#2a3547"/><text x="304" y="232" fill="#E9EFF6" font-size="10.5">egress filter</text>
           <rect x="372" y="214" width="88" height="28" rx="7" fill="#141C27" stroke="#2a3547"/><text x="416" y="232" fill="#E9EFF6" font-size="10.5">hourly cap</text>
-          <text x="250" y="268" fill="#8A97A6" font-size="10.5">only the fields a template names ever leave</text>
+          <text x="250" y="268" fill="#8A97A6" font-size="10.5">only the fields a template names leave; freeform is opt-in</text>
           <text x="250" y="285" fill="#5A6675" font-size="10.5">1,000 calls/hour by default, counted past door + template + filter</text>
 
           <rect x="30" y="326" width="440" height="98" rx="14" fill="#10161F" stroke="#2a3547" stroke-width="1.4"/>
@@ -214,15 +214,15 @@
           <text x="738" y="312" fill="#5A6675" font-size="10.5">a bound crossed, per template &#215; version &#215; backend &#215; model</text>
 
           <rect x="546" y="340" width="384" height="300" rx="14" fill="none" stroke="#5A6675" stroke-width="1.2" stroke-dasharray="4 5"/>
-          <text x="738" y="362" fill="#8A97A6" font-size="11" font-weight="700">planned, none of these consume typryx yet</text>
+          <text x="738" y="362" fill="#8A97A6" font-size="11" font-weight="700">still planned, or built and not run live</text>
           <rect x="555" y="376" width="366" height="30" rx="8" fill="#141C27" stroke="#FF7AA2" stroke-dasharray="3 3"/><text x="738" y="396" fill="#FF7AA2" font-size="10.5">verdryx: a typed grader beside the LLM judge</text>
           <rect x="555" y="414" width="366" height="30" rx="8" fill="#141C27" stroke="#2DD4BF" stroke-dasharray="3 3"/><text x="738" y="434" fill="#2DD4BF" font-size="10.5">wardryx: a signal that may become a hold, never a deny</text>
           <rect x="555" y="452" width="366" height="30" rx="8" fill="#141C27" stroke="#F4B23E" stroke-dasharray="3 3"/><text x="738" y="472" fill="#F4B23E" font-size="10.5">tokenfuse: router shadow mode</text>
-          <rect x="555" y="490" width="366" height="30" rx="8" fill="#141C27" stroke="#7DD3A0" stroke-dasharray="3 3"/><text x="738" y="510" fill="#7DD3A0" font-size="10.5">costcrew: a suggested class/priority at triage</text>
+          <rect x="555" y="490" width="366" height="30" rx="8" fill="#141C27" stroke="#7DD3A0" stroke-dasharray="3 3"/><text x="738" y="510" fill="#7DD3A0" font-size="10.5">costcrew: a suggested class or priority at triage (built, opt-in)</text>
           <rect x="555" y="528" width="366" height="30" rx="8" fill="#141C27" stroke="#B48CFF" stroke-dasharray="3 3"/><text x="738" y="548" fill="#B48CFF" font-size="10.5">genaryx: a panel, live only when configured</text>
           <rect x="555" y="566" width="366" height="30" rx="8" fill="#141C27" stroke="#6C7BFF" stroke-dasharray="3 3"/><text x="738" y="586" fill="#6C7BFF" font-size="10.5">engram: an optional importance score</text>
-          <text x="738" y="614" fill="#5A6675" font-size="10.5">journal readers Trailryx, Idryx, Genaryx:</text>
-          <text x="738" y="630" fill="#5A6675" font-size="10.5">launcher wiring planned</text>
+          <text x="738" y="614" fill="#5A6675" font-size="10.5">journal: on the shared events volume:</text>
+          <text x="738" y="630" fill="#5A6675" font-size="10.5">Trailryx refuses these four by design</text>
         </g>
         <g stroke="#5A6675" stroke-width="1.5" class="flow">
           <line x1="190" y1="66" x2="210" y2="94" marker-end="url(#txa1)"/>
@@ -382,7 +382,7 @@
         <thead><tr><th>template</th><th>type</th><th>options</th><th>who would ask it</th><th>status</th></tr></thead>
         <tbody>
           <tr><td>eval.outcome_met</td><td>noul (yes/no)</td><td>n/a</td><td>Verdryx's grading; the calibration run below used it</td><td><span class="chip chip-measured">measured 2026-09-25</span></td></tr>
-          <tr><td>eval.answer_quality</td><td>score</td><td>4 ordered levels</td><td>Verdryx grader</td><td><span class="chip chip-measured">measured 2026-09-25</span></td></tr>
+          <tr><td>eval.answer_quality</td><td>score</td><td>4 ordered levels</td><td>Verdryx grader</td><td><span class="chip chip-measured">README example, 2026-09-25</span></td></tr>
           <tr><td>request.complexity</td><td>choice</td><td>cheap / default / hard / reasoning</td><td>TokenFuse router, shadow mode only</td><td><span class="chip chip-planned">planned, shadow only</span></td></tr>
           <tr><td>action.risk_class</td><td>choice</td><td>read_only / reversible_change / destructive / external_send / financial</td><td>Wardryx, through <span class="mono" style="font-size:12.5px">wardryx-proxy</span>, from the tool, its arguments and its target only</td><td><span class="chip chip-builtnotlive" style="white-space:normal">released in v0.4.0, run on the stub only</span></td></tr>
         </tbody>
@@ -483,7 +483,7 @@
       </div>
       <div class="card hover feature b-4 rv d2">
         <h3>Why labels are human truths only</h3>
-        <p>The export labels a question with the truth a person posted and with nothing else. A hosted model's answer never becomes a training label, which matters because TypeSafe's agreement forbids using Jev's output to train another model.</p>
+        <p>The export labels a question with the truth a person posted and with nothing else. A hosted model's answer never becomes a training label, which matters because TypeSafe's agreement forbids using Jev's output for model distillation or to build a similar or competing product.</p>
         <p style="margin-top:10px">What typryx cannot see is how a person reached a truth. A label copied from a model's answer would get through, and the poster's own word is the only record of where it came from.</p>
       </div>
     </div>
@@ -498,7 +498,7 @@
       <div class="card b-8 rv">
         <div class="kicker">what leaves the box</div>
         <h3 style="margin-top:10px">Toggle the extra fields. The egress never changes.</h3>
-        <p style="margin-top:8px;color:var(--dim);font-size:14.5px;line-height:1.65">Only <span class="mono" style="font-size:12.5px">task</span> and <span class="mono" style="font-size:12.5px">final_answer</span> are in the template's <span class="mono" style="font-size:12.5px">fields</span>, so they are the only two that ever reach the backend, whatever else sits in the state. The type a backend receives is constructible only inside the template package, so a map or raw state cannot reach one even by an implementation mistake.</p>
+        <p style="margin-top:8px;color:var(--dim);font-size:14.5px;line-height:1.65">Only <span class="mono" style="font-size:12.5px">task</span> and <span class="mono" style="font-size:12.5px">final_answer</span> are in the template's <span class="mono" style="font-size:12.5px">fields</span>, so on a template ask they are the only two that reach the backend, whatever else sits in the state. The type a backend receives for a template ask is constructible only inside the template package, so a map or raw state cannot reach one on that path, even by an implementation mistake. The one exception is a freeform question, which sends the whole state when TYPRYX_ALLOW_FREEFORM=1 is set (off by default).</p>
         <div class="flight" style="margin-top:16px">
           <div class="fl-scroll"><svg id="eg-svg" viewBox="0 0 960 250" role="img" aria-label="Five field chips represent one state. Two, task and final_answer, always pass the egress filter. The other three can be toggled in or out of the state, and whichever are in, the filter still lets through only task and final_answer, held back and counted.">
             <defs><marker id="txeg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker></defs>
@@ -539,7 +539,7 @@
             <button class="fchip" type="button" data-f="customer_iban" aria-pressed="true">customer_iban</button>
             <button class="fchip" type="button" data-f="api_token" aria-pressed="true">api_token</button>
           </div>
-          <p class="fl-why">Measured on a live run: a five-field state carrying <span class="mono" style="font-size:12.5px">user_email</span> and, separately, <span class="mono" style="font-size:12.5px">customer_iban</span>, neither ever reached the backend or the record. Through Claude Code over MCP, an extra <span class="mono" style="font-size:12.5px">api_token</span> field never reached the record either (<span class="mono" style="font-size:12.5px">held_back_fields: 1</span>).</p>
+          <p class="fl-why">Measured (undated, see the typryx README): a five-field state carrying <span class="mono" style="font-size:12.5px">user_email</span> and, separately, <span class="mono" style="font-size:12.5px">customer_iban</span>, neither ever reached the backend or the record. Through Claude Code over MCP, an extra <span class="mono" style="font-size:12.5px">api_token</span> field never reached the record either (<span class="mono" style="font-size:12.5px">held_back_fields: 1</span>).</p>
         </div>
       </div>
       <div class="card feature b-4 rv d1">
@@ -579,7 +579,7 @@
         </tbody>
       </table>
     </div>
-    <p class="dim rv" style="margin-top:12px;font-size:13px;line-height:1.6">Against a hosted API the network dominates: on gpt-4.1-mini the shortcut was about 1.3&#215; faster than a short text verdict and gave up about a third of the accuracy, and gpt-5.4-mini, a current small reasoning model, was right on all 60 in about the same time as the shortcut. Locally, on qwen2.5:7b, the shortcut is about 10&#215; faster. A typed decision earns its place by the probability it carries and where it runs, not by speed; vendor speed claims are not on this page. Jev is not on this chart: it was measured on a different set of questions, the 434 in <a href="https://it-rat.com/services/typryx.html#modes" style="color:var(--accent)">Three modes</a>, and the two sets are never mixed.</p>
+    <p class="dim rv" style="margin-top:12px;font-size:13px;line-height:1.6">Against a hosted API the network dominates: on gpt-4.1-mini the shortcut was about 1.3&#215; faster than a short text verdict and gave up 28 points of accuracy (71.7% against 100%), and gpt-5.4-mini, a current small reasoning model, was right on all 60 in about the same time as the shortcut. Locally, on qwen2.5:7b, the shortcut is about 10&#215; faster. A typed decision earns its place by the probability it carries and where it runs, not by speed; vendor speed claims are not on this page. Jev is not on this chart: it was measured on a different set of questions, the 434 in <a href="https://it-rat.com/services/typryx.html#modes" style="color:var(--accent)">Three modes</a>, and the two sets are never mixed.</p>
   </div>
 </section>
 
@@ -604,7 +604,7 @@
         <span class="u" id="cl-name">pick a dot for its numbers</span>
         <span class="e" id="cl-detail"></span>
       </div>
-      <p class="fl-why">Every group was 96% to 100% confident on average, right 50% to 73% of the time, and the errors do not lean one way: three groups (gpt-4.1-nano in both wordings, and qwen2.5:3b) said "correct" to every one of 60 items, right exactly half the time, the base rate. gpt-4.1-mini mostly passed a wrong answer as right; gpt-4o-mini erred both ways; qwen2.5:7b never passed a wrong answer but failed a third of the right ones. Rewording (v1 to v2) barely moved accuracy, because a one-token judge has no room to work anything out before answering: it suits classification, not verification. OpenAI's current models, gpt-5.x and gpt-6, refuse token probabilities outright (probed 2026-09-25: "'logprobs' is not supported with this model"), so this backend reaches only earlier hosted models and open models.</p>
+      <p class="fl-why">Every group was 96% to 100% confident on average, right 50% to 73% of the time, and the errors do not lean one way: three groups (gpt-4.1-nano in both wordings, and qwen2.5:3b) said "correct" to every one of 60 items, right exactly half the time, the base rate. gpt-4.1-mini passed half of the wrong answers as right (15 of 30 in each wording); gpt-4o-mini erred both ways; qwen2.5:7b never passed a wrong answer but failed two-thirds of the right ones (20 of 30). Rewording (v1 to v2) barely moved accuracy, because a one-token judge has no room to work anything out before answering: it suits classification, not verification. OpenAI's current models, gpt-5.x and gpt-6, refuse token probabilities outright (the typryx README records this probe: "'logprobs' is not supported with this model"), so this backend reaches only earlier hosted models and open models.</p>
     </div>
 
     <div class="tbl-scroll rv" style="margin-top:20px">
@@ -623,7 +623,7 @@
       </table>
     </div>
 
-    <p class="dim rv" style="margin-top:12px;font-size:13px;line-height:1.6">Exact models: gpt-4.1-mini-2025-04-14, gpt-4o-mini-2024-07-18 and gpt-4.1-nano-2025-04-14 over OpenAI's API; qwen2.5:3b and qwen2.5:7b on Ollama on a development Mac. Wording v1 is the example template (<span class="mono" style="font-size:12.5px">2d3ecbdc</span>), v2 asks plainly whether the answer is exactly correct (<span class="mono" style="font-size:12.5px">781efaaf</span>); the local models ran v2 only. Every figure here is one run of 60 items, reproducible with <span class="mono" style="font-size:12.5px">examples/calibration</span> in the repository.</p>
+    <p class="dim rv" style="margin-top:12px;font-size:13px;line-height:1.6">Exact models: gpt-4.1-mini, gpt-4o-mini and gpt-4.1-nano over OpenAI's API; qwen2.5:3b and qwen2.5:7b on Ollama on a development Mac. Wording v1 is the example template (<span class="mono" style="font-size:12.5px">2d3ecbdc</span>), v2 asks plainly whether the answer is exactly correct (<span class="mono" style="font-size:12.5px">781efaaf</span>); the local models ran v2 only. Every figure here is one run of 60 items, reproducible with <span class="mono" style="font-size:12.5px">examples/calibration</span> in the repository.</p>
     <dl class="defs rv" style="margin-top:20px">
       <dt>stated confidence</dt><dd>The probability the model's own answer carried when it was given, averaged over the group.</dd>
       <dt>ECE</dt><dd>Expected calibration error: the average gap between stated confidence and actual accuracy across the bins, 0 is perfect.</dd>
@@ -638,11 +638,11 @@
     <div class="sec-head rv">
       <div class="kicker">where it plugs in</div>
       <h2>What each part of the stack would get.</h2>
-      <p class="lede">Three edges are measured live. The Wardryx edge is built and released and measured on the stub backend only; the rest are what a later integration would read, not something built. Click or focus a node.</p>
+      <p class="lede">Three edges are built and wired in, but none is recorded as a live run yet. The Wardryx edge is built and released and runs only against the stub backend; the rest are what a later integration would read, not something built. Click or focus a node.</p>
     </div>
     <div class="flight rv" id="hb-box">
-      <div class="fl-head"><span class="dot"></span>typryx, and nine possible readers <span class="n">solid mint = measured, dashed = planned or stub only</span></div>
-      <div class="fl-scroll"><svg id="hb-svg" viewBox="0 0 960 440" role="img" aria-label="A hub diagram: typryx at the centre, with edges to MCP clients, the tokenfuse broker and Verdryx, solid and measured; to Wardryx, dashed, built and released and measured on the stub only; and to TokenFuse router shadow, CostCrew, Genaryx, Engram and the journal readers Trailryx and Idryx, all dashed and planned. Selecting a node shows what typryx would give it, which template, what happens when typryx is absent, and its status."></svg></div>
+      <div class="fl-head"><span class="dot"></span>typryx, and nine possible readers <span class="n">solid mint = built and wired in, dashed = planned or stub only</span></div>
+      <div class="fl-scroll"><svg id="hb-svg" viewBox="0 0 960 440" role="img" aria-label="A hub diagram: typryx at the centre, with edges to MCP clients, the tokenfuse broker and Verdryx, solid and built; to Wardryx, dashed, built and released and run on the stub only; and to TokenFuse router shadow, CostCrew, Genaryx, Engram and the journal readers Trailryx and Idryx, all dashed and planned. Selecting a node shows what typryx would give it, which template, what happens when typryx is absent, and its status."></svg></div>
       <div class="fl-out">
         <span class="u" id="hb-name">pick a node</span>
         <span class="e" id="hb-status"></span>
@@ -654,15 +654,15 @@
       <table class="tbl">
         <thead><tr><th></th><th>what typryx gives it</th><th>status</th></tr></thead>
         <tbody>
-          <tr><td>MCP clients (Claude Code and others)</td><td>a typed answer with a probability, per call, over MCP</td><td class="yes">measured</td></tr>
-          <tr><td>TokenFuse, as broker</td><td>a named upstream; one tool_call recorded against the agent</td><td class="yes">measured</td></tr>
+          <tr><td>MCP clients (Claude Code and others)</td><td>a typed answer with a probability, per call, over MCP</td><td class="yes">built</td></tr>
+          <tr><td>TokenFuse, as broker</td><td>a named upstream; one tool_call recorded against the agent</td><td class="yes">built</td></tr>
           <tr><td>TokenFuse, router shadow mode</td><td>the class it would have routed to, alongside cost, recorded only</td><td class="warn">planned</td></tr>
-          <tr><td>Verdryx</td><td>a typed grader beside the existing LLM judge, opt-in per run with <span class="mono" style="font-size:12.5px">--typed-url</span></td><td class="yes">measured</td></tr>
-          <tr><td>Wardryx</td><td>an <span class="mono" style="font-size:12.5px">action.risk_class</span> signal a <span class="mono" style="font-size:12.5px">hold_if_signal</span> rule may turn into a hold, never a deny; opt-in in the launchers, off by default</td><td class="warn">built and released, measured on the stub only</td></tr>
-          <tr><td>CostCrew</td><td>a suggested class or priority at triage; a person still decides</td><td class="warn">planned</td></tr>
+          <tr><td>Verdryx</td><td>a typed grader beside the existing LLM judge, opt-in per run with <span class="mono" style="font-size:12.5px">--typed-url</span></td><td class="yes">built, not run live</td></tr>
+          <tr><td>Wardryx</td><td>an <span class="mono" style="font-size:12.5px">action.risk_class</span> signal a <span class="mono" style="font-size:12.5px">hold_if_signal</span> rule may turn into a hold, never a deny; opt-in in the launchers, off by default</td><td class="warn">built and released, run only against a loopback stand-in (v0.4.0 release notes)</td></tr>
+          <tr><td>CostCrew</td><td>a suggested class or priority at triage; a person still decides</td><td class="warn">built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL, not run live</td></tr>
           <tr><td>Genaryx</td><td>a panel, live only when <span class="mono" style="font-size:12.5px">GENARYX_TYPRYX_URL</span> resolves</td><td class="warn">planned</td></tr>
           <tr><td>Engram</td><td>an optional importance score</td><td class="warn">planned</td></tr>
-          <tr><td>Journal readers (Trailryx, Idryx)</td><td>the same agent-event envelope; Idryx will never call typryx, its detection stays deterministic</td><td class="warn">planned</td></tr>
+          <tr><td>Journal readers (Trailryx, Idryx)</td><td>the four event types reach the shared events volume; heraldyx renders them; Idryx lists typryx as a source and never calls it; Trailryx refuses them by design</td><td class="warn">on the shared bus</td></tr>
         </tbody>
       </table>
     </div>
@@ -695,13 +695,13 @@
         <div class="kicker">in the stack</div>
         <h3 style="margin-top:12px">Optional, and it changes nothing when it is absent.</h3>
         <p style="margin-top:10px;color:var(--dim);font-size:14.5px;line-height:1.65">
-          Typryx sits behind <a href="tokenfuse.html" data-dir="fwd" style="color:var(--amber)">TokenFuse</a>'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the <span class="mono" style="font-size:12.5px">request.complexity</span> template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. <a href="verdryx.html" data-dir="fwd" style="color:var(--rose)">Verdryx</a> can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; measured on 2026-09-25. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. <a href="wardryx.html" data-dir="fwd" style="color:var(--teal)">Wardryx</a> can read one: <span class="mono" style="font-size:12.5px">typryx wardryx-proxy</span> sits in front of it, asks <span class="mono" style="font-size:12.5px">action.risk_class</span> about a pending tool call, and adds the answer to the decision request, where a <span class="mono" style="font-size:12.5px">hold_if_signal</span> rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.</p>
+          Typryx sits behind <a href="tokenfuse.html" data-dir="fwd" style="color:var(--amber)">TokenFuse</a>'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the <span class="mono" style="font-size:12.5px">request.complexity</span> template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. <a href="verdryx.html" data-dir="fwd" style="color:var(--rose)">Verdryx</a> can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built and not yet run live. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. <a href="wardryx.html" data-dir="fwd" style="color:var(--teal)">Wardryx</a> can read one: <span class="mono" style="font-size:12.5px">typryx wardryx-proxy</span> sits in front of it, asks <span class="mono" style="font-size:12.5px">action.risk_class</span> about a pending tool call, and adds the answer to the decision request, where a <span class="mono" style="font-size:12.5px">hold_if_signal</span> rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.</p>
         <p style="margin-top:12px;color:var(--dim);font-size:14.5px;line-height:1.65">Without it, the rest of the stack behaves exactly as it does today: nothing here is consumed by anything else unless an operator wires it in.</p>
       </div>
       <div class="card b-4 rv d1" id="status">
         <div class="kicker" style="--accent:var(--mint)">status</div>
         <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
-          <p class="dim" style="font-size:13.5px;line-height:1.7">Released as v0.4.0 on 2026-10-04, adding the <span class="mono" style="font-size:12.5px">action.risk_class</span> template and <span class="mono" style="font-size:12.5px">wardryx-proxy</span>, after v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, CI green. Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.</p>
+          <p class="dim" style="font-size:13.5px;line-height:1.7">Released as v0.4.0 on 2026-10-04, adding the <span class="mono" style="font-size:12.5px">action.risk_class</span> template and <span class="mono" style="font-size:12.5px">wardryx-proxy</span>, after v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, with CI green on the v0.4.0 release run (2026-10-04). Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.</p>
           <p class="dim" style="font-size:13.5px;line-height:1.7">Not yet: a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers in the tables above.</p>
         </div>
       </div>
@@ -939,7 +939,7 @@ const CASES={
     ret:["label token probabilities","label_mass_too_low when too",
          "little lands on the labels"],
     chip:"measured on 5 models", chipCol:"#34D399",
-    why:"Reaches any OpenAI-compatible server, including a local Ollama or vLLM. OpenAI's current models, gpt-5.x and gpt-6, refuse logprobs outright (probed 2026-09-25), so this backend in practice reaches earlier hosted models and open models, five of which are the models in the calibration table below."},
+    why:"Reaches any OpenAI-compatible server, including a local Ollama or vLLM. OpenAI's current models, gpt-5.x and gpt-6, refuse logprobs outright (the typryx README records this probe), so this backend in practice reaches earlier hosted models and open models, five of which are the models in the calibration table below."},
   jev:{name:"jev",
     sent:["POST {base}/systemone","{state, model,","questions:{q:{type,",
           "instructions, criteria}}}"],
@@ -1225,15 +1225,15 @@ function el(name,attrs){const e=document.createElementNS(ns,name);for(const k in
 
 const CX=480,CY=210;
 const NODES=[
-  {id:"mcp",col:"#34D399",label:"MCP clients",x:200,y:60,measured:true,gives:"a typed answer with a probability, per call, over MCP",template:"any",absent:"the agent gets no typed answer; it decides however it already does",status:"measured"},
-  {id:"tf-broker",col:"#34D399",label:"TokenFuse broker",x:760,y:60,measured:true,gives:"a named upstream; one tool_call recorded against the agent",template:"any",absent:"typryx is simply not a configured upstream",status:"measured"},
+  {id:"mcp",col:"#34D399",label:"MCP clients",x:200,y:60,measured:true,gives:"a typed answer with a probability, per call, over MCP",template:"any",absent:"the agent gets no typed answer; it decides however it already does",status:"built"},
+  {id:"tf-broker",col:"#34D399",label:"TokenFuse broker",x:760,y:60,measured:true,gives:"a named upstream; one tool_call recorded against the agent",template:"any",absent:"typryx is simply not a configured upstream",status:"built"},
   {id:"tf-router",col:"#F4B23E",label:"TokenFuse router (shadow)",x:840,y:150,measured:false,gives:"the class it would have routed to, recorded only, never used to route",template:"request.complexity",absent:"the router keeps deciding the way it does today",status:"planned, shadow only"},
-  {id:"verdryx",col:"#FF7AA2",label:"Verdryx",x:840,y:270,measured:true,gives:"a typed grader beside the existing LLM judge, opt-in per run with --typed-url",template:"eval.outcome_met, eval.answer_quality",absent:"Verdryx keeps grading with its LLM judge alone",status:"measured"},
-  {id:"wardryx",col:"#2DD4BF",label:"Wardryx",x:740,y:360,measured:false,gives:"an action.risk_class signal, added by wardryx-proxy, that a hold_if_signal rule may turn into a hold, never a deny; opt-in, off by default",template:"action.risk_class",absent:"Wardryx's policy plane is unchanged",status:"built and released, measured on the stub only"},
-  {id:"costcrew",col:"#7DD3A0",label:"CostCrew",x:560,y:400,measured:false,gives:"a suggested class or priority shown at triage; a person still decides",template:"triage.anomaly_class",absent:"CostCrew's triage is unchanged",status:"planned"},
+  {id:"verdryx",col:"#FF7AA2",label:"Verdryx",x:840,y:270,measured:true,gives:"a typed grader beside the existing LLM judge, opt-in per run with --typed-url",template:"eval.outcome_met, eval.answer_quality",absent:"Verdryx keeps grading with its LLM judge alone",status:"built"},
+  {id:"wardryx",col:"#2DD4BF",label:"Wardryx",x:740,y:360,measured:false,gives:"an action.risk_class signal, added by wardryx-proxy, that a hold_if_signal rule may turn into a hold, never a deny; opt-in, off by default",template:"action.risk_class",absent:"Wardryx's policy plane is unchanged",status:"built and released, run only against a loopback stand-in (v0.4.0 release notes)"},
+  {id:"costcrew",col:"#7DD3A0",label:"CostCrew",x:560,y:400,measured:false,gives:"a suggested class or priority shown at triage; a person still decides",template:"triage.anomaly_class",absent:"CostCrew's triage is unchanged",status:"built in costcrew v0.4.0, not run live"},
   {id:"genaryx",col:"#B48CFF",label:"Genaryx",x:380,y:400,measured:false,gives:"a panel of calibration verdicts, live only when GENARYX_TYPRYX_URL resolves",template:"any",absent:"no typryx panel is shown",status:"planned"},
   {id:"engram",col:"#6C7BFF",label:"Engram",x:200,y:360,measured:false,gives:"an optional importance score",template:"any",absent:"Engram's importance scoring is unchanged",status:"planned"},
-  {id:"journal",col:"#E4626F",label:"Trailryx / Idryx",x:100,y:270,measured:false,gives:"the same agent-event envelope the rest of the stack writes; Idryx would only ever read it, never call typryx",template:"n/a, journal only",absent:"nothing to read; Idryx's detection stays deterministic either way",status:"planned"}
+  {id:"journal",col:"#E4626F",label:"Trailryx / Idryx",x:100,y:270,measured:false,gives:"the same agent-event envelope the rest of the stack writes; Idryx would only ever read it, never call typryx",template:"n/a, journal only",absent:"nothing to read; Idryx's detection stays deterministic either way",status:"on the shared bus"}
 ];
 
 const g=el("g",{"font-family":"ui-monospace,Menlo"}); svg.appendChild(g);

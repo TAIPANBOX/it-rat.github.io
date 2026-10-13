@@ -6,9 +6,7 @@
 
 **Q: what that means**
 
-**Where this sits today, stated rather than implied.** Pocket is
- part of the stack and it is the only part of it you do not run on your own
- box: it is the out-of-band control for TokenFuse, the way to pull the
+**Where this sits today, stated rather than implied.** Pocket is listed in the stack registry as not wired into a running stack yet. It is designed as the out-of-band control for TokenFuse, the way to pull the
  Breaker when the machine running the gateway, or the machine running your
  console, is itself the thing that has gone wrong. That is why the
  signature comes from the Secure Enclave on a device the agent's host never
@@ -23,16 +21,14 @@
  signature. The watch pairs on its own and carries the same flow, so a
  deauthorized device says it was deauthorized rather than pretending.
 
-**What is actually true today.** The
- interface is finished and every screen has been driven against a real
- control plane on a simulator. It is not connected to anything you are
+**What is actually true today.** The interface is finished. The iPhone app's repository records every screen as driven against a real control plane on a simulator, and no run of ours is recorded for it yet. It is not connected to anything you are
  running: there is no App Store build, no real push delivery, and no
- hardening pass or security review. Treat it as the shape of the control
+ hardening pass or whole-app security review; a narrower review on 2026-09-06 led to one transport-security fix. Treat it as the shape of the control
  rather than a control you have. The console you run today is the
  [Genaryx](https://it-rat.com/genaryx.html)
  web app.
 
-TokenFuse's gateway enforces the budget in the request path your agent runs on. Pocket asks what a control OUTSIDE that path should look like on a device you already carry: the fleet's burn rate live, and a kill signed by hardware the agent's host never touches. Both apps are built and every screen was driven live against a real control plane on the simulator, which is a long way from shipped: no production hardening pass, no security review, no App Store. The effort goes to the web console, and this moves when there is time for it.
+TokenFuse's gateway enforces the budget in the request path your agent runs on. Pocket asks what a control OUTSIDE that path should look like on a device you already carry: the fleet's burn rate live, and a kill signed by hardware the agent's host never touches. Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet. That is a long way from shipped: no production hardening pass, no security review, no App Store. The effort goes to the web console, and this moves when there is time for it.
 
 ## Watch the Breaker get pulled from a wrist.
 
@@ -40,7 +36,7 @@ This is a simulation, but it replays a shape the app is built for: a run drifts 
 
 ## Do not watch it. Drive it.
 
-An interactive design mock of the iPhone and Watch apps, running here as a web page. Five iPhone screens and five Watch screens, all live: the burn ticks and every screen is driveable. The ceremony the app implements is stricter than this mock: a kill is confirmed by name and signed on the device, and a killed run then leaves the pager, staying in the console and the audit trail. Drive it with the steps, the tab bar, or the Watch switch.
+An interactive design mock of the iPhone and Watch apps, running here as a web page. Seven iPhone screens, a Live Activity surface and five Watch screens, all live: the burn ticks and every screen is driveable. The ceremony the app implements is stricter than this mock: a kill is confirmed by name and signed on the device, and a killed run then leaves the pager, staying in the console and the audit trail. Drive it with the steps, the tab bar, or the Watch switch.
 
 ## One phone. One key. A path the gateway never sees.
 
@@ -54,7 +50,7 @@ Mint under budget, amber warming, ember at the cap. The run list, the Dynamic Is
 
 ### Hardware-signed kill
 
-The design signs every kill on-device, so a fully compromised server can neither forge that order nor block it. The same property is what the web console reaches for with a passkey, which is why this became the direction we are building first.
+The design signs every kill on-device, so a fully compromised server can neither forge that order nor change it. It can still refuse to pass the order on. The same property is what the web console reaches for with a passkey, which is why this became the direction we are building first.
 
 ### The fleet at a glance
 
@@ -62,7 +58,7 @@ Every run with its spend, its burn rate in dollars per minute, and how close it 
 
 ### Pairing in seconds
 
-Scan a QR code against your own Cloud plane. The app generates a key inside the Secure Enclave on the spot; the key never leaves it, not even to the app.
+Scan the QR code a Genaryx relay issues. No relay runs today, so nothing can be paired yet. The key is generated inside the Secure Enclave and never leaves it, not even to the app.
 
 ## Heraldyx mails you. Pocket buzzes. They are not the same control.
 
@@ -88,9 +84,9 @@ Nothing connects them. Pocket reads the control plane's own replay, not the reco
 
 ### The human end of a machine decision.
 
-Pocket is the human end of [TokenFuse](https://it-rat.com/tokenfuse.html): the gateway enforces the budget in the request path, Pocket lets you watch it happen and pull the kill switch from somewhere else entirely. A kill lands as an incident on the same event bus the rest of the [Platform](https://it-rat.com/platform.html) reads. What actually gets enforced was decided upstream, by [Wardryx](https://it-rat.com/wardryx.html) and the budgets you set. Pocket doesn't make that call; it gives you a fast, honest way to see it and override it.
+Pocket is the human end of [TokenFuse](https://it-rat.com/tokenfuse.html): the gateway enforces the budget in the request path, Pocket lets you watch it happen and pull the kill switch from somewhere else entirely. A kill is written as a run_killed event on the same agent-event bus the rest of the [Platform](https://it-rat.com/platform.html) reads. What actually gets enforced was decided upstream, by [Wardryx](https://it-rat.com/wardryx.html) and the budgets you set. Pocket doesn't make that call; it gives you a fast, honest way to see it and override it.
 
-Pocket pairs through [Genaryx](https://it-rat.com/genaryx.html) to a TokenFuse plane you host yourself. Both apps are built and open, and neither is
+Pocket was designed to pair through [Genaryx](https://it-rat.com/genaryx.html) to a TokenFuse plane you host yourself. That relay was removed from Genaryx on 2026-07-28, so nothing pairs today. Both apps are built and open, and neither is
  connected to a running stack: the console is what an operator uses today.
 
 The plane it reads is open today: [stand up the stack's live services locally in one command](https://it-rat.com/platform.html#run) and see the same money plane on your own machine.

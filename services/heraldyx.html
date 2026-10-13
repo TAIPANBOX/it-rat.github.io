@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Heraldyx - alerts from your own box · IT-RAT</title>
-<meta name="description" content="The part of the agent stack that writes to you: it reads the shared event log, decides what is worth a human tonight, and mails it with one link.">
+<meta name="description" content="The part of the agent stack that writes to you: it reads the event log, decides what is worth a human tonight, and mails it with links into your console.">
 <link rel="canonical" href="https://it-rat.com/services/heraldyx.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/services/heraldyx.html">
 <meta property="og:title" content="Heraldyx - alerts from your own box · IT-RAT">
-<meta property="og:description" content="Reads the agent stack's shared event log, applies a severity floor, a dedup window and an hourly ceiling, and mails what is left from your own box. One measured burst: 120 events in, 21 messages out: 20 alerts and one notice saying six more were held. The mail carries a link, never a button that acts.">
+<meta property="og:description" content="Reads the agent stack's shared event log, applies a severity floor, a dedup window and an hourly ceiling, and mails what is left from your own box. One scripted burst: 120 events in, 21 messages out (a scenario, not a fleet measurement): 20 alerts and one notice saying six more were not sent. The mail carries a link, never a button that acts.">
 <meta property="og:image" content="https://it-rat.com/assets/og/heraldyx.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Heraldyx - alerts from your own box · IT-RAT">
-<meta name="twitter:description" content="Reads the agent stack's shared event log, applies a severity floor, a dedup window and an hourly ceiling, and mails what is left from your own box. One measured burst: 120 events in, 21 messages out: 20 alerts and one notice saying six more were held. The mail carries a link, never a button that acts.">
+<meta name="twitter:description" content="Reads the agent stack's shared event log, applies a severity floor, a dedup window and an hourly ceiling, and mails what is left from your own box. One scripted burst: 120 events in, 21 messages out (a scenario, not a fleet measurement): 20 alerts and one notice saying six more were not sent. The mail carries a link, never a button that acts.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/heraldyx.png">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="icon" type="image/png" href="../favicon.png">
@@ -139,7 +139,7 @@
   .sh-ov:has(.mailbox) .sh-box{width:min(1140px,100%)}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Heraldyx","url":"https://it-rat.com/services/heraldyx.html","description":"The part of the agent stack that writes to you: it reads the shared event log, decides what is worth a human tonight, and mails it with one link.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/heraldyx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"Heraldyx","item":"https://it-rat.com/services/heraldyx.html"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Heraldyx","url":"https://it-rat.com/services/heraldyx.html","description":"The part of the agent stack that writes to you: it reads the shared event log, decides what is worth a human tonight, and mails it with links into your own console.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/heraldyx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"Heraldyx","item":"https://it-rat.com/services/heraldyx.html"}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-service="heraldyx" data-root="../">
@@ -163,14 +163,14 @@
       <div>
         <div class="kicker rv">alerts plane</div>
         <h1 class="rv d1"><span class="nm">Heraldyx</span>. Your agents run on your infrastructure. This is the part that writes to you.</h1>
-        <p class="lede rv d2">Every other plane in the stack records what happened. None of them wakes anybody. Heraldyx reads the shared event log the others already write, decides which of those events a human should hear about tonight rather than tomorrow, and sends one mail. It comes from your own box, and it carries a link into your own console. It reads a file and sends mail: that narrowness is the design, because this is the one component of the box allowed to open a connection to anything outside it.</p>
+        <p class="lede rv d2">Every other plane in the stack records what happened. None of them wakes anybody. Heraldyx reads the shared event log the others already write, decides which of those events a human should hear about tonight rather than tomorrow, and sends one mail. It comes from your own box, and it carries links into your own console. It reads a file and sends mail: that narrowness is the design, because this is the one component of the box allowed to open a connection to anything outside it.</p>
         <div class="cta-row rv d3">
           <a class="btn primary" href="#sim">Watch a burst arrive <span class="mono">&#9654;</span></a>
           <a class="btn" href="https://github.com/TAIPANBOX/heraldyx" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="flex:0 0 auto"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg> GitHub</a>
         </div>
       </div>
       <div class="hero-side rv d2">
-        <div class="row"><span class="k">shipped</span><span class="v">v0.3.0, pinned in the deploy</span></div>
+        <div class="row"><span class="k">shipped</span><span class="v">v0.4.0, pinned in the deploy</span></div>
         <div class="row"><span class="k">core</span><span class="v">Go 1.27 &#183; one direct dependency</span></div>
         <div class="row"><span class="k">one way out</span><span class="v">reads the log, speaks SMTP, nothing else</span></div>
         <div class="row"><span class="k">limits</span><span class="v">floor &#183; dedup 10 min &#183; 20 an hour</span></div>
@@ -185,9 +185,9 @@
 <section class="sec" id="sim" style="padding-top:26px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">one burst, measured</div>
+      <div class="kicker">one burst, scripted</div>
       <h2>A hundred and twenty events arrive. Twenty-one messages leave.</h2>
-      <p class="lede">This is a simulation of a real run: <span class="mono">scripts/burst-demo.sh</span> in the repository feeds 120 events to the actual binary with the default limits and counts what comes out. Watch where the other hundred stop. An alerting system that forwards everything teaches its operator to filter the sender to trash, and then the one that mattered is in trash too.</p>
+      <p class="lede">This is a scripted scenario: <span class="mono">scripts/burst-demo.sh</span> in the repository feeds 120 events to the real binary with the default limits and counts what comes out. Watch where the other hundred stop. An alerting system that forwards everything teaches its operator to filter the sender to trash, and then the one that mattered is in trash too.</p>
     </div>
     <div class="rv" id="hx-sim"></div>
   </div>
@@ -199,7 +199,7 @@
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
       <h2>Four checks, in this order, and the order is the point.</h2>
-      <p class="lede">The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. The last cell was redrawn after a run on 2026-09-17: the v0.2.3 image sent one notice at the ceiling and then nothing for 28 minutes of high and critical events. Since v0.2.4 a critical passes the ceiling and whatever is held is summarised every ten minutes until the hour turns; the launchers pin v0.3.0.</p>
+      <p class="lede">The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. The last cell was redrawn after a run on 2026-09-17: the v0.2.3 image sent one notice at the ceiling and then nothing for 28 minutes of high and critical events. Since v0.2.4 a critical passes the ceiling and whatever is held is summarised every ten minutes until the hour turns; the launchers pin v0.4.0.</p>
     </div>
 
     <div class="diagram rv">
@@ -279,7 +279,7 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">what actually arrives</div>
-      <h2>Four short paragraphs, and one link that is a view.</h2>
+      <h2>Four short paragraphs, and three links that are views.</h2>
       <p class="lede">What happened with its numbers, what the box already did about it, what happens if nobody acts, and where to look. Nothing in it is text a model wrote.</p>
     </div>
 
@@ -339,12 +339,12 @@
 
     <div class="bento" style="gap:22px;margin-top:30px">
       <div class="b-4">
-        <div class="feature rv"><h3>The link is a view, never an action</h3>
+        <div class="feature rv"><h3>The links are views, never actions</h3>
         <p>A link that acts is an unauthenticated capability held by anyone who sees or forwards the message. Mail gateways also prefetch links, which would fire the action before a human read the sentence next to it. You sign in at the console, and a destructive action asks for your passkey there.</p></div>
       </div>
       <div class="b-4">
         <div class="feature rv"><h3>Identifiers and numbers, never content</h3>
-        <p>An event's data can hold anything a producer put there, and some producers sit next to prompts, model output and matched secrets. Mail leaves your perimeter through a server nobody here controls, so the renderer allows nineteen named keys and then checks the shape of every value on top. A live secret is perfectly identifier-shaped, so the key list is what stands between it and your inbox.</p></div>
+        <p>An event's data can hold anything a producer put there, and some producers sit next to prompts, model output and matched secrets. Mail leaves your perimeter through a server nobody here controls, so the renderer allows twenty-two named keys and then checks the shape of every value on top. A live secret is perfectly identifier-shaped, so the key list is what stands between it and your inbox.</p></div>
       </div>
       <div class="b-4">
         <div class="feature rv"><h3>Who is answerable comes from a passport</h3>
@@ -403,7 +403,7 @@
     <div class="sec-head rv">
       <div class="kicker">who else writes to the log it reads</div>
       <h2>Two more sources arrived on the bus.</h2>
-      <p class="lede">This plane mails about what other planes wrote, so its reach grows when theirs does. <a href="vouchryx.html">Vouchryx</a> reports a delegation issued, denied or revoked, and <a href="costcrew.html">CostCrew</a> reports spend spikes, budget thresholds and every move its crew makes on a finding. Both are in the shared registry, so a mail about either needs no new code here.</p>
+      <p class="lede">This plane mails about what other planes wrote, so its reach grows when theirs does. <a href="vouchryx.html">Vouchryx</a> reports a delegation issued, denied or revoked, and <a href="costcrew.html">CostCrew</a> reports spend spikes, budget thresholds and every move its crew makes on a finding. CostCrew's events have their own sentences here. Vouchryx's delegation events have none yet, so a mail about one says the box has no description for the event until one is written.</p>
       <p class="lede" style="margin-top:12px">Since v0.3.0 a line counts as the source it claims only when the file it came from may carry that source. Each plane's file carries its own name, <span class="mono">HERALDYX_STREAMS</span> declares anything else, and a line in the wrong file is refused, counted and raised once as <span class="mono">foreign_source</span>; a file nobody declared is raised once as <span class="mono">unknown_stream</span>. It does not stop a process that creates a plane's file before that plane does, or a writer forging its own stream: only signing closes those.</p>
     </div>
   </div>
@@ -571,7 +571,7 @@
 </script>
 
 <script>
-/* The burst scenario. Every count is from a real run of scripts/burst-demo.sh
+/* The burst scenario. Every count is what scripts/burst-demo.sh is meant to print; no run is recorded yet
    against the actual binary with default limits: 120 events in, 21 messages
    out. Twenty are alerts; the twenty-first is the ceiling's own notice, saying
    six were held. The other 94 are 29 dropped as repeats and 65 kept for the

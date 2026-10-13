@@ -49,8 +49,9 @@
             <text x="448" y="238">on_behalf_of</text>
             <text x="448" y="255">data</text>
             <text x="448" y="272">prev_hash</text>
+            <text x="448" y="289">delegation_proof</text>
           </g>
-          <text x="352" y="289" fill="#5A6675" font-size="10">prev_hash: sha256 chain &#183; unknown fields ignored</text>
+          <text x="352" y="306" fill="#5A6675" font-size="10">prev_hash: sha256 chain &#183; unknown fields ignored</text>
           <!-- consumers. Five now: the record plane reads the same stream and
                seals it, which is what made this row too narrow at four. -->
           <g font-size="10.5" font-weight="700">
