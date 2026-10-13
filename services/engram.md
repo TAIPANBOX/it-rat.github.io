@@ -4,7 +4,7 @@
 
 > Embeddable agent memory in one SQLite file: bitemporal facts, hybrid BM25 and vector recall, why() provenance and GDPR forget. No server, no API key to start.
 
-Vector search finds text that looks similar. It cannot say when a fact was true, where a belief came from, or that two beliefs disagree. Engram can: an embeddable memory in one SQLite file that stores raw episodes, distills them into facts with confidence scores, and answers why() for every belief it holds. No server, no Docker, and writing the first memory needs zero API keys.
+Engram is an embeddable memory in one SQLite file. It stores raw episodes, distills them into facts with confidence scores, records when each fact was true, and answers why() for every belief it holds, with the episodes it came from. Two beliefs that disagree are recorded as a contradiction. No server, no Docker, and writing the first memory needs zero API keys.
 
 ## Watch five episodes become ten facts.
 
@@ -48,7 +48,7 @@ A fact in Engram carries `valid_from` and `valid_to`, which say when it was true
 
 With both, you can ask what the agent believed as of March and get March's answer rather than today's. That is the difference between an audit you can defend and a database that only ever shows the present. A support agent that promised a refund policy in March should be judged against the policy it knew in March.
 
-It also makes correction safe. When Ivan moves from Acme to Globex, the old fact is closed with an end date and the new one opens; nothing is overwritten, so the reason the agent said what it said in March survives the correction. A vector store has no concept to hang this on: an embedding does not know when it stopped being true.
+It also makes correction safe. When Ivan moves from Acme to Globex, the old fact is closed with an end date and the new one opens; nothing is overwritten, so the reason the agent said what it said in March survives the correction.
 
 ### Three ways to recall
 
@@ -82,9 +82,9 @@ Two erasures cross it on purpose. Facts and entities are shared by every agent i
 
 engram-mcp speaks stdio: no network listener, no port to guard. Claude Desktop, Claude Code and Cursor get remember, recall, why and forget against the same store with zero integration code. reflect() is deliberately not exposed to clients.
 
-## Similarity is a fraction of memory.
+## Recall is one part of a memory.
 
-Engram ships a vector index, in-process, and then answers the questions similarity cannot: when a fact was true, where it came from, and whether two beliefs disagree.
+Engram keeps a vector index in-process. It also keeps when each fact was true, where it came from, and whether two beliefs disagree.
 
 | Question an agent asks | What answers it |
 |---|---|
@@ -112,9 +112,6 @@ The PyPI name is engdbram (the plain name was taken); the import stays `from eng
 No per-platform binaries here either: this one is a Python library you import, so the package index is the download. The install command lives in the repository, next to the version it resolves.
 
 ## What a memory has to do that similarity search cannot
-
-**Q: How is this different from a vector database?**
-A vector store finds text that looks similar. It cannot tell you when a fact was true, where a belief came from, or that two beliefs disagree. Engram ships a vector index too, in-process, and adds the three answers similarity has no concept for: bitemporal validity, a `why()` chain back to source episodes, and contradiction detection.
 
 **Q: Does it need a server, a container or an API key?**
 None of the three to write a memory. It is one `.engram` file on SQLite plus sqlite-vec, in-process, installed with pip. A model only enters the picture when you ask for `reflect()`, and even that call can be pointed at a local model or routed through [TokenFuse](https://it-rat.com/tokenfuse.html) so thinking has a budget too.

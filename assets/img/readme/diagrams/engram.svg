@@ -12,7 +12,7 @@
           <rect x="196" y="52" width="300" height="196" rx="16" fill="#10161F" stroke="#6C7BFF" stroke-width="1.4"><animate attributeName="stroke-opacity" values="1;.45;1" dur="3.4s" repeatCount="indefinite"/></rect>
           <text x="346" y="80" fill="#6C7BFF" font-size="14" font-weight="700">engram.db &#183; SQLite + sqlite-vec</text>
           <g font-size="10.5" fill="#8A97A6">
-            <rect x="216" y="96" width="261" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="346" y="115" fill="#E9EFF6">episodic &#183; semantic &#183; procedural</text>
+            <rect x="216" y="96" width="261" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="346" y="115" fill="#E9EFF6">episodic &#183; semantic</text>
             <rect x="216" y="134" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="278" y="153" fill="#E9EFF6">bitemporal facts</text>
             <rect x="352" y="134" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="414" y="153" fill="#E9EFF6" font-size="10">spreading activation</text>
             <rect x="216" y="172" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="278" y="191" fill="#E9EFF6">Ebbinghaus decay</text>

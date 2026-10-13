@@ -33,19 +33,6 @@
       "slow": true
     },
     {
-      "page": "services/tokenfuse.html",
-      "claim": "1,731 tests",
-      "occurrences": 1,
-      "repo": "TAIPANBOX/tokenfuse",
-      "command": "cargo test --all, summed over every `test result` line",
-      "status": "measured",
-      "measured_on": "2026-10-08",
-      "note": "Moved to 1,127 on 2026-09-02 after TAIPANBOX/tokenfuse#249, #250 and #251 (the usage-cap settlement says so, the local trace reaches disk, the release workflow proves its binaries job); `cargo test --all` on main 9270fd4 summed to 1127. Measured 1107 on 2026-08-28 against a page saying 814: 293 behind, the largest gap this manifest has recorded. Found stale by this file's own first run: the page said 513 and `cargo test --all` sums to 709. The gap, not the number, is why this file exists, so it is recorded here rather than only in git history. Unlike trailryx, this repository has no gate on its own README figure, so nothing but this entry will notice the next drift. Re-measured 2026-08-29 by numbers-drift.sh --slow: 1,107 -> 1,111. Moved to 1,395 on 2026-09-18: the README badge at 3787ccd (#310), gated there by stated-numbers.sh, after the appliance run's fixes #303, #304, #306, #307, #310; the slow cargo check was not re-run here that day. Moved to 1,662 on 2026-10-05 from the README badge on tokenfuse main (6fcb985, release v1.6.0); the cargo check was not re-run here that day. Moved to 1,731 on 2026-10-08 from tokenfuse CI run 37754598396 on main 10ab5d6 (one commit past the v1.8.0 tag, README only): the `cargo test --all` step's `test result` lines summed to 1731 by this entry's own rule; the separate cluster_backend step adds 6 and is not counted. The slow check was not run on this machine.",
-      "repo_dir": "tokenfuse",
-      "check": "cargo test --all 2>&1 | grep -E '^test result' | awk '{s+=$4} END {print s}'",
-      "slow": true
-    },
-    {
       "page": "services/idryx.html",
       "claim": "27 detectors",
       "occurrences": 5,
@@ -56,32 +43,6 @@
       "note": "Two detectors were added since 2026-08-10 and the page did not move. The command counts DISTINCT detector names, not files: there are 25 non-test .go files and 27 names, so counting files would give the old figure and look right.",
       "repo_dir": "Idryx",
       "check": "grep -rhA1 'func (.*) Name() string' internal/detect/detectors/*.go | grep -oE 'return \"[a-z_]+\"' | sort -u | wc -l | tr -d ' '",
-      "slow": false
-    },
-    {
-      "page": "services/engram.html",
-      "claim": "517 tests",
-      "occurrences": 1,
-      "repo": "Engram",
-      "command": "python3 -m pytest --collect-only -q, in a venv with jsonschema, numpy, rfc8785, sqlite-vec and pytest-asyncio",
-      "status": "derived",
-      "measured_on": "2026-08-28",
-      "note": "NOT measured here, and the status says so. This machine has no virtualenv for engram and its suite pulls fastembed, which downloads ONNX models, so the drift tool reports MEASURED NOTHING rather than agreement. The figure comes from engram's own README, which its CI gates against a real collection: 517 on a plain install and 524 with the encryption extra. It was 510 here against 511 upstream before 2026-08-28, so it was already a test behind; six manifest tests were added that day. Was 424 on the page and collects 466. One file, tests/test_encryption.py, is SKIPPED for want of sqlcipher3, which has no wheel for Python 3.14, so the true figure on a machine that has it is higher than this. Recorded as the number this command reproduces, with the condition named, rather than as an estimate of the number it would reach elsewhere. `@decided 2026-08-29`: taken as established from the earlier runs and NOT to be re-measured; the suite needs a venv and pulls model weights, and the doubt was never here. Status stays as it is on purpose: he has established the figure, this repository has still not reproduced it, and those are two different sentences.",
-      "repo_dir": "Engram",
-      "check": "${PYTHON:-python3} -m pytest --collect-only -q 2>/dev/null | grep -oE '^[0-9]+ tests? collected' | grep -oE '^[0-9]+'",
-      "slow": false
-    },
-    {
-      "page": "services/verdryx.html",
-      "claim": "474 tests",
-      "occurrences": 2,
-      "repo": "verdryx",
-      "command": "python3 -m pytest --collect-only -q",
-      "status": "measured",
-      "measured_on": "2026-09-27",
-      "note": "Moved twice on 2026-08-28: 300 -> 361 when the check stopped printing nothing, then 361 -> 365 when four manifest tests were added to that repository the same day. The second was self-inflicted and the drift tool caught it, which is the argument for running the tool rather than trusting the morning's number. Was 300 and measured 361, sixty-one behind. The check printed NOTHING before today, which the drift tool reports as unmeasured rather than as agreement, and that is the only reason the gap was visible at all: system python3 has no pytest on this machine and the interpreter is EXTERNALLY-MANAGED. It now prefers the repository's own .venv when there is one, so the figure is measurable without installing anything. Re-measured 2026-08-29 in a fresh .venv (pip install -e . pytest jsonschema): 365, unchanged. Re-measured 2026-09-18 by numbers-drift.sh: 365 -> 367. Swept 2026-09-27.",
-      "repo_dir": "verdryx",
-      "check": "${PYTHON:-$([ -x .venv/bin/python ] && echo .venv/bin/python || echo python3)} -m pytest --collect-only -q 2>/dev/null | grep -oE '^[0-9]+ tests? collected' | grep -oE '^[0-9]+'",
       "slow": false
     },
     {
@@ -211,19 +172,6 @@
       "slow": false
     },
     {
-      "page": "services/verdryx.md",
-      "claim": "474 tests",
-      "occurrences": 1,
-      "repo": "verdryx",
-      "command": "python3 -m pytest --collect-only -q",
-      "status": "measured",
-      "measured_on": "2026-09-27",
-      "note": "Moved twice on 2026-08-28: 300 -> 361 when the check stopped printing nothing, then 361 -> 365 when four manifest tests were added to that repository the same day. The second was self-inflicted and the drift tool caught it, which is the argument for running the tool rather than trusting the morning's number. The .md twin is published and linked from llms.txt, and the sweep for unowned figures globs services/*.html, so this copy of the same claim was held by nothing. Re-measured 2026-08-29 in a fresh .venv (pip install -e . pytest jsonschema): 365, unchanged. Re-measured 2026-09-18 by numbers-drift.sh: 365 -> 367. Swept 2026-09-27.",
-      "repo_dir": "verdryx",
-      "check": "${PYTHON:-$([ -x .venv/bin/python ] && echo .venv/bin/python || echo python3)} -m pytest --collect-only -q 2>/dev/null | grep -oE '^[0-9]+ tests? collected' | grep -oE '^[0-9]+'",
-      "slow": false
-    },
-    {
       "page": "services/idryx.md",
       "claim": "27 detectors",
       "occurrences": 1,
@@ -248,32 +196,6 @@
       "repo_dir": "agent-stack-go",
       "check": "grep -h 'MaxDepth = ' chain/chain.go | grep -oE '[0-9]+'",
       "slow": false
-    },
-    {
-      "page": "services/costcrew.html",
-      "claim": "1,579 tests",
-      "occurrences": 1,
-      "repo": "TAIPANBOX/costcrew",
-      "command": "go test ./... -list '.*' | grep -c '^Test', run on an export of costcrew origin/main (5812d3b): 1579. The local checkout is 63 commits behind origin/main and reads 1042, so the check reads origin/main instead (slow: builds the test list).",
-      "status": "measured",
-      "measured_on": "2026-10-13",
-      "note": "Updated 2026-10-13 from 1,527 (measured 2026-10-08). The export of origin/main is the measurement; the local checkout is not.",
-      "repo_dir": "costcrew",
-      "check": "d=$(mktemp -d) && git archive origin/main | tar -x -C \"$d\" && (cd \"$d\" && go test ./... -list '.*' 2>/dev/null | grep -c '^Test'); rm -rf \"$d\"",
-      "slow": true
-    },
-    {
-      "page": "services/costcrew.md",
-      "claim": "1,579 tests",
-      "occurrences": 1,
-      "repo": "TAIPANBOX/costcrew",
-      "command": "go test ./... -list '.*' | grep -c '^Test', run on an export of costcrew origin/main (5812d3b): 1579. The local checkout is 63 commits behind origin/main and reads 1042, so the check reads origin/main instead (slow: builds the test list).",
-      "status": "measured",
-      "measured_on": "2026-10-13",
-      "note": "Updated 2026-10-13 from 1,527 (measured 2026-10-08). The export of origin/main is the measurement; the local checkout is not.",
-      "repo_dir": "costcrew",
-      "check": "d=$(mktemp -d) && git archive origin/main | tar -x -C \"$d\" && (cd \"$d\" && go test ./... -list '.*' 2>/dev/null | grep -c '^Test'); rm -rf \"$d\"",
-      "slow": true
     },
     {
       "page": "services/vouchryx.html",
@@ -1337,7 +1259,7 @@
     {
       "page": "services/wardryx.html",
       "claim": "v1.2.0",
-      "occurrences": 3,
+      "occurrences": 2,
       "repo": "TAIPANBOX/wardryx",
       "command": "gh api repos/TAIPANBOX/wardryx/releases/tags/v1.2.0 --jq .tag_name; the release that adds signals and tool_call on /v1/decide, hold_if_signal (invariant 27) and the approval bound to the tool call (invariant 28)",
       "status": "measured",
@@ -1519,7 +1441,7 @@
     {
       "page": "services/costcrew.html",
       "claim": "v0.6.0",
-      "occurrences": 1,
+      "occurrences": 2,
       "repo": "TAIPANBOX/costcrew",
       "command": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name",
       "status": "measured",
@@ -1532,7 +1454,7 @@
     {
       "page": "services/costcrew.md",
       "claim": "v0.6.0",
-      "occurrences": 1,
+      "occurrences": 2,
       "repo": "TAIPANBOX/costcrew",
       "command": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name",
       "status": "measured",
@@ -1579,6 +1501,19 @@
       "note": "Added 2026-10-13 for the platform page: the install record of 2026-09-17 has 22 checks ok on both runs.",
       "repo_dir": "stack-single",
       "check": "git show origin/main:README.md | grep -oE '[0-9]+ checks ok' | head -1 | grep -oE '^[0-9]+'",
+      "slow": false
+    },
+    {
+      "page": "services/wardryx.html",
+      "claim": "v1.3.2",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/wardryx",
+      "command": "gh api repos/TAIPANBOX/wardryx/releases/tags/v1.3.2 --jq .tag_name",
+      "status": "measured",
+      "measured_on": "2026-10-13",
+      "note": "Added 2026-10-13: v1.3.2 is the release the page names for the typed hold signal; the release exists on GitHub.",
+      "repo_dir": null,
+      "check": "gh api repos/TAIPANBOX/wardryx/releases/tags/v1.3.2 --jq .tag_name",
       "slow": false
     }
   ]

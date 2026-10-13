@@ -14,7 +14,7 @@ This is a simulation, and it says so. It replays the shape of the live validatio
 
 The PEP posts the proposed action: agent, tools, declared domains, step count, estimated cost, attestation. Wardryx matches policies by agent:// glob and applies the rules in a fixed order, where deny_above_usd outranks every approval and the hold check comes after it. The verdict returns with a cacheable flag, the caller's cache keys on agent, tool set and attestation, and every decision leaves as an event.
 
-## Six primitives. One fixed order. No moods.
+## Rules in one fixed order. No moods.
 
 ### Three verdicts, zero improvisation
 
@@ -60,19 +60,7 @@ Wardryx applies the same rule to itself. Started with no policy configured, it s
 
 ### Policy admin API + Terraform
 
-PUT, GET and DELETE /v1/policies/{id} manage a runtime policy layer with validate-then-apply semantics; the file-loaded set stays a permanent floor no API write can erase. The taipan_wardryx_policy resource drives the same API from Terraform.
-
-## Where the no comes from matters.
-
-Two substitutes get proposed for a policy plane: asking the model to behave in the system prompt, and pointing at the IAM you already run. Keep your IAM; it answers a different question. Neither substitute sees tools, dollars and runs in one place.
-
-|  | Wardryx | “Prompt the model to behave” | IAM alone |
-|---|---|---|---|
-| Deterministic | Yes: same input, same verdict | No | Yes |
-| Knows about cost | Holds above $X | No | No |
-| Human approval flow | Built in, token-bound | No | Ticket queue |
-| Sees declared-but-not-invoked tools | Yes, since the live-found bypass was fixed | n/a | No |
-| Auditability | Every decision an event | Vibes | Partial |
+PUT, GET and DELETE /v1/policies/{id} manage a runtime policy layer with validate-then-apply semantics; the file-loaded set stays a permanent floor no API write can erase. A PUT whose body holds a key the policy does not declare is refused with 400 and stores nothing (since 1.3.2). The taipan_wardryx_policy resource drives the same API from Terraform.
 
 ### The desk every expensive idea stops at.
 

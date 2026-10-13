@@ -4,7 +4,7 @@
 
 > A drop-in gateway that gives every agent run a budget and answers 402 when it is crossed. Anthropic and OpenAI wires, proven on three clouds and on premises.
 
-Observability tells you about the fire in next month's bill. TokenFuse is the extinguisher: a drop-in gateway that gives every run a budget, watches its burn in real time, and cuts the circuit with an HTTP 402 the moment a run crosses its budget. Adoption is one base-URL change; no agent framework rewrite, no SDK lock-in.
+A fire in next month's bill is too late to fight. TokenFuse is the extinguisher: a drop-in gateway that gives every run a budget, watches its burn in real time, and cuts the circuit with an HTTP 402 the moment a run crosses its budget. Adoption is one base-URL change; no agent framework rewrite, no SDK lock-in.
 
 ## Watch the breaker do its job.
 
@@ -12,7 +12,7 @@ This is a simulation, but not a fantasy: it replays the exact shape of the live 
 
 ## One gateway in the path. One ledger everyone trusts.
 
-Your agent's SDK points at TokenFuse instead of the provider. In the hot path: budgets, loop detection, a model router that downgrades routine calls, a semantic cache, DLP and the Wardryx policy hook. Behind it: the spend ledger, in one process by default; the optional cluster build replicates it with raft, so five gateways on five machines still admit exactly what one budget allows.
+Your agent's SDK points at TokenFuse instead of the provider. In the hot path: budgets, loop detection, a model router that downgrades routine calls, a semantic cache, DLP and the Wardryx policy hook. Behind it: the spend ledger, in one process by default; the optional cluster build replicates it with raft, so the gateways of one cluster still admit exactly what one budget allows.
 
 ## Not a dashboard. A set of hands on the wheel.
 
@@ -34,7 +34,7 @@ A retrying agent looks exactly like a compromised one from the budget's side. Su
 
 ### Burn forecast
 
-Reserve-then-settle accounting prices each call before it happens, with a built-in price book (the Claude 4.5 and GPT-4o families) and a deliberately high fallback rate for a model id it does not know, flagged on the response, so an unknown model is refused sooner rather than tracked never. The estimate is fast and honest about being an estimate.
+Reserve-then-settle accounting prices each call before it happens, with a built-in price book of the vendors' rates as they read on 2026-10-13, long-prompt tiers included, and a deliberately high fallback rate for a model id it does not know, flagged on the response, so an unknown model is refused sooner rather than tracked never. The estimate is fast and honest about being an estimate.
 
 ### Model router
 
@@ -42,11 +42,11 @@ Routine calls ride a cheaper model that still clears your quality bar; hard ones
 
 ### Cluster build: a raft-replicated ledger
 
-An optional build, not what the shipped images run. Three machines held one shared budget through a leader kill and a real network partition: majority kept serving, the isolated node could not overspend, nothing split-brained.
+An optional build, not what the shipped images run. Four nodes on four machines held one shared budget through a leader kill and a real network partition: the majority kept serving, the isolated node could not overspend, nothing split-brained.
 
 **Q: What it survives**
 
-The images every launcher installs run one gateway with its ledger in memory, and a restart no longer starts every run at zero. Since v1.4.1 the gateway reads each run's spend back from the Cloud before it serves, for runs active in the last 31 days, and since v1.6.0 a gateway at a remote site does the same through a read scoped to its own site. With no Cloud configured there is nothing to read back, and a run starts from zero. The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry, not yet on a live hub. A budget only means something if two gateways racing each other cannot both spend it, and that is what the cluster build is for, a separate build of the same binary: there the ledger is a raft state machine, and the affordability check is linearized across the whole fleet: five gateways on five machines admit exactly what one budget allows, not five copies of it.
+The images every launcher installs run one gateway with its ledger in memory, and a restart no longer starts every run at zero. Since v1.4.1 the gateway reads each run's spend back from the Cloud before it serves, for runs active in the last 31 days, and since v1.6.0 a gateway at a remote site does the same through a read scoped to its own site. With no Cloud configured there is nothing to read back, and a run starts from zero. The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry, not yet on a live hub. A budget only means something if two gateways racing each other cannot both spend it, and that is what the cluster build is for, a separate build of the same binary: there the ledger is a raft state machine, and the affordability check is linearized across the whole fleet: four nodes on four machines admit exactly what one budget allows, not four copies of it.
 
 In that build, with durable storage on redb, a budget outlives more than a node crash: it survives a full process restart, because a cap that resets when a process dies is a cap an unlucky deploy can hand back to a runaway.
 
@@ -58,7 +58,7 @@ Agent spend lands in the same FinOps Foundation format as the rest of your cloud
 
 ### The loud neighbor everyone listens to.
 
-TokenFuse asks [Wardryx](https://it-rat.com/wardryx.html) before letting a declared tool through, and stamps the verdict on the response. Its Parquet traces are the raw material [Verdryx](https://it-rat.com/verdryx.html) prices outcomes from. [Mockryx](https://it-rat.com/mockryx.html) attacks it on purpose in pre-prod. [Idryx](https://it-rat.com/idryx.html) correlates its events into the identity graph. Everything travels as one envelope, the agent-event, and [Genaryx](https://it-rat.com/genaryx.html) lifts that same signed kill into a console you reach over your own tunnel, where it becomes a passkey break-glass ceremony. [Typryx](https://it-rat.com/typryx.html) sits behind the MCP broker as a named upstream; its `request.complexity` template maps onto this router's own task classes, in shadow mode only, planned rather than built.
+TokenFuse asks [Wardryx](https://it-rat.com/wardryx.html) before letting a declared tool through, and stamps the verdict on the response. Its Parquet traces are the raw material [Verdryx](https://it-rat.com/verdryx.html) prices outcomes from. [Mockryx](https://it-rat.com/mockryx.html) attacks it on purpose in pre-prod. [Idryx](https://it-rat.com/idryx.html) correlates its events into the identity graph. Everything travels as one envelope, the agent-event, and [Genaryx](https://it-rat.com/genaryx.html) lifts that same signed kill into a console you reach over your own tunnel, where it becomes a passkey break-glass ceremony.
 
 Where this fits in the wider practice: [FinOps for AI](https://it-rat.com/finops-for-ai.html) on managing spend that creates itself, and [AI agent governance](https://it-rat.com/ai-agent-governance.html) on the rest of the runtime controls.
 
@@ -91,4 +91,4 @@ No. It is a one-line base-URL change to a gateway that speaks the Anthropic Mess
 That is the case it was built for. A sustained loop or a fan-out explosion looks the same as a compromised agent from the budget's side, and both trip the breaker. In the live campaign, the runaway that mattered was caught and killed on the day, not on the invoice.
 
 **Q: Does it still work with several gateways behind a load balancer?**
-In the cluster build, yes: the spend ledger is raft-replicated and the affordability check is linearized across the fleet, so five gateways on five machines admit exactly what one budget allows, and that was tested through a leader kill and a real network partition. That build is optional and not what the shipped images run; the default profile is one gateway whose ledger lives in memory and is read back from the Cloud when it starts, each run's spend over the last 31 days, so a restart does not hand a run its budget again. That read-back does not let two gateways share one budget; only the cluster build does.
+In the cluster build, yes: the spend ledger is raft-replicated and the affordability check is linearized across the fleet, so four nodes on four machines admit exactly what one budget allows. The cluster record tests that with 30 concurrent reserves against a 5-unit budget, a kill of the leader and a real network partition. That build is optional and not what the shipped images run; the default profile is one gateway whose ledger lives in memory and is read back from the Cloud when it starts, each run's spend over the last 31 days, so a restart does not hand a run its budget again. That read-back does not let two gateways share one budget; only the cluster build does.

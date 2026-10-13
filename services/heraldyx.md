@@ -2,7 +2,7 @@
 
 # Heraldyx, the alerts plane
 
-> The part of the agent stack that writes to you: it reads the shared event log, decides what is worth a human tonight, and mails it with links into your own console.
+> The part of the agent stack that writes to you: it reads the event log, decides what is worth a human tonight, and mails it with links into your console.
 
 Every other plane in the stack records what happened. None of them wakes anybody. Heraldyx reads the shared event log the others already write, decides which of those events a human should hear about tonight rather than tomorrow, and sends one mail. It comes from your own box, and it carries links into your own console. It reads a file and sends mail: that narrowness is the design, because this is the one component of the box allowed to open a connection to anything outside it.
 

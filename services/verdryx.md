@@ -4,11 +4,11 @@
 
 > Cost per correctly resolved case, not cost per token: six graders, statistical drift detection and a metered LLM judge, scored on your own outcome tags.
 
-Cost-per-token dashboards report what a call cost and stop there. They cannot tell a successful call from a wasted one. Verdryx grades the output, exact match, regex, a production outcome tag, or an LLM judge, and prices the result that actually matters: cost per resolved case, not cost per call. On the last live run: $0.00042 to resolve a case, $0.00025 spent on one that went nowhere.
+Verdryx grades each case by exact match, regex, a production outcome tag, the order of its tool calls or an LLM judge, and prices the result that matters: cost per resolved case, not cost per call. On the live run in VALIDATION.md, a resolved case cost $0.00042, and each abandoned attempt cost $0.00025 for nothing.
 
 ## Watch spend turn into a verdict.
 
-This is a simulation, but shaped by the real run: 176 real Claude calls read back as outcome-tagged traces. A shift's worth of support cases gets graded, a real cost per resolved case comes out the other side, and a drift check runs against a stored baseline before one OTLP span closes the loop.
+This is a simulation, but shaped by the real run: a live, Claude-backed support workload whose outcome-tagged traces were read back and graded. A shift's worth of support cases gets graded, a real cost per resolved case comes out the other side, and a drift check runs against a stored baseline before one OTLP span closes the loop.
 
 ## Six graders in, one honest number out.
 
@@ -54,22 +54,11 @@ The graders and drift maths use only the standard library. The one runtime depen
 
 ### Offline test suite
 
-474 tests run against a deterministic StubLLMAdapter, no network, no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.
+The suite runs against a deterministic StubLLMAdapter, with no network and no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.
 
 ### Defensive by design
 
 Grades an operator's own agents against an eval set or a production outcome tag. The README puts it plainly: it “never manipulates outputs, never crafts adversarial prompts, and never attacks anything.”
-
-## Cost per call was never the question.
-
-Cost-per-token dashboards answer the easy question: what a call cost. Verdryx answers the one that matters: what did getting it right cost, and did that number just get worse.
-
-|  | Verdryx | cost-per-token dashboards | “eyeball the transcripts” |
-|---|---|---|---|
-| Unit | Correct case | Token | Vibe |
-| Catches quality regressions | Drift vs baseline, significance-tested | No | Sometimes, too late |
-| Knows what an abandoned attempt cost | Yes, $0.00025 in the live run | No | No |
-| Needs a platform | pip install, one SQLite file | A SaaS contract | Nothing but staff time |
 
 ### The line that turns spend into a verdict.
 

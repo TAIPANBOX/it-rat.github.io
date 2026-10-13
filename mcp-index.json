@@ -184,7 +184,7 @@
       "markdown": "https://it-rat.com/services/heraldyx.md",
       "title": "Heraldyx, the alerts plane",
       "kind": "service",
-      "description": "The part of the agent stack that writes to you: it reads the shared event log, decides what is worth a human tonight, and mails it with links into your own console."
+      "description": "The part of the agent stack that writes to you: it reads the event log, decides what is worth a human tonight, and mails it with links into your console."
     },
     {
       "url": "https://it-rat.com/services/scopyx.html",

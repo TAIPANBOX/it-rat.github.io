@@ -4,11 +4,11 @@
 
 > Fire drills for your guardrails: YAML scenarios fired at a real gateway, asserting the 402, the 403 and the downstream reaction. Zero real spend, CI-native.
 
-A guardrail nobody has ever fired is a guess. Mockryx replays nine hostile scenarios (a fake secret in a prompt, a budget burn, a denied tool, a forged delegation chain, an unapproved action, an injected page, a quality drift, a reaction chain that has to reach the mail, and a provider outage) against the one URL you hand it: your own pre-production gateway, with a fake provider behind it. The enforcement path is the real one; the spend is not. CI reads the verdict as an exit code.
+A guardrail nobody has ever fired is a guess. Mockryx replays hostile scenarios (a fake secret in a prompt, a budget burn, a denied tool, a forged delegation chain, an unapproved action, an injected page, a quality drift, a reaction chain that has to reach the mail, and a provider outage) against the one URL you hand it: your own pre-production gateway, with a fake provider behind it. The enforcement path is the real one; the spend is not. CI reads the verdict as an exit code.
 
 ## Watch every guardrail answer for itself.
 
-This is a simulation replaying five of the nine drills, and the shape is the real record: three of those five ran live against a real gateway on disposable boxes, twice, and held both times, 0 gaps, $0 real spend. The other two are the Wardryx scenarios that ship in the same set. The provider behind the gateway is fake, so the burn the runaway drill attempts never reaches an invoice.
+This is a simulation replaying five of the drills, and the shape is the real record: three of those five ran live against a real gateway on disposable boxes, twice, and held both times, 0 gaps, $0 real spend. The other two are the Wardryx scenarios that ship in the same set. The provider behind the gateway is fake, so the burn the runaway drill attempts never reaches an invoice.
 
 ## One target URL. One report. Three exit codes.
 
@@ -57,18 +57,6 @@ Exit 0: every drill held. Exit 1: a real defensive gap, fail the build. Exit 2: 
 ### Zero real spend by design
 
 The provider behind the gateway is fake, so the runaway scenario can burn all it wants: the meter it trips is real, the invoice is not. And every hostile input stays inside your perimeter; Mockryx only ever talks to the one gateway URL you hand it.
-
-## The drill you can afford to run every release.
-
-A yearly pentest does real work Mockryx cannot: people, phishing, infrastructure. What it cannot do is tell you tomorrow morning that yesterday's config change broke the DLP. And unit tests with a mocked gateway mostly prove the mocks still pass. Mockryx drills the assembled thing.
-
-|  | Mockryx | Annual pentest | “Trust the unit tests” |
-|---|---|---|---|
-| Cadence | Every release | Yearly | Whenever |
-| Tests the assembled system | Real gateway, real policies | Sometimes | No: mocks all the way down |
-| Costs real tokens | No | n/a | Sometimes |
-| Proves off-path services react | Yes: expect.event | No | No |
-| Who reads the result | A CI gate, every merge | A PDF for the board | Nobody |
 
 ### It picks fights with the rest of the stack. On purpose, in pre-prod.
 
