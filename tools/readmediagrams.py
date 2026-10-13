@@ -43,7 +43,7 @@ ROOMS = {
                   "190487967423"),
     "verdryx":   ("services/verdryx.html", "#FF7AA2",
                   "Verdryx: outcomes judged and priced per resolved case, with drift watched over time",
-                  "28b6c4a3ba0d"),
+                  "c61935fe07c8"),
     "mockryx":   ("services/mockryx.html", "#FF8A5B",
                   "Mockryx: hostile scenarios driven at the gateway, with the guardrails asserted",
                   "ddbb636342e0"),
@@ -53,7 +53,7 @@ ROOMS = {
     "platform":  ("services/platform.html", "#93A8C4",
                   "Platform: fourteen registered sources write one envelope onto one NDJSON bus, "
                   "and five consumers read it back",
-                  "0d19536427a5"),
+                  "e155b3d82552"),
     "genaryx":   ("genaryx.html", "#B48CFF",
                   "Genaryx: one browser control room over the stack, reached only over the tunnel",
                   "81bdf83f6f14"),

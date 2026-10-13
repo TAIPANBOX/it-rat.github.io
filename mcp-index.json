@@ -170,7 +170,7 @@
       "markdown": "https://it-rat.com/services/verdryx.md",
       "title": "Verdryx, the quality plane",
       "kind": "service",
-      "description": "Cost per correctly resolved case, not cost per token: five graders, statistical drift detection and a metered LLM judge, scored on your own outcome tags."
+      "description": "Cost per correctly resolved case, not cost per token: six graders, statistical drift detection and a metered LLM judge, scored on your own outcome tags."
     },
     {
       "url": "https://it-rat.com/services/mockryx.html",

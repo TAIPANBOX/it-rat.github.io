@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Verdryx - AI quality and cost per resolved case · IT-RAT</title>
-<meta name="description" content="Cost per correctly resolved case, not cost per token: five graders, statistical drift detection and a metered LLM judge, scored on your own outcome tags.">
+<meta name="description" content="Cost per correctly resolved case, not cost per token: six graders, statistical drift detection and a metered LLM judge, scored on your own outcome tags.">
 <link rel="canonical" href="https://it-rat.com/services/verdryx.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="IT-RAT">
@@ -50,7 +50,7 @@
   .install .note{color:var(--faint);font-size:11.5px;margin-left:auto}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Verdryx","url":"https://it-rat.com/services/verdryx.html","description":"Cost per correctly resolved case, not cost per token: five graders, statistical drift detection and a metered LLM judge, scored on your own outcome tags.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/verdryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"Verdryx","item":"https://it-rat.com/services/verdryx.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I measure cost per correct answer?","acceptedAnswer":{"@type":"Answer","text":"Tag outcomes in production, then read them back off the gateway's own trace: resolved, escalated, abandoned. Verdryx turns that into a dollar figure per case, including the untagged intermediate calls a run made and the calls the breaker blocked, because both are part of what the outcome cost."}},{"@type":"Question","name":"How do I know when quality has actually dropped?","acceptedAnswer":{"@type":"Answer","text":"A flat threshold catches the obvious fall. Beside it, a two-sample significance check, Welch's t with a bootstrap interval, catches the small consistent regression a threshold tuned for noise would miss. Point it at a baseline whose source run is gone and it fails loudly rather than silently."}},{"@type":"Question","name":"Do I need an LLM judge to use it?","acceptedAnswer":{"@type":"Answer","text":"No. Four of the five graders are deterministic and free: exact, regex, outcome tag and tool trace. The judge is there for the cases a rubric can score and a pattern cannot, and when you use it, its own cost is priced against the same book the money plane uses rather than reported as zero."}},{"@type":"Question","name":"Does it need network access or a key?","acceptedAnswer":{"@type":"Answer","text":"Not for the common path. The eval runner, graders and drift maths import nothing but the standard library, and the whole suite runs against a deterministic stub adapter with no network and no key, which is exactly what its own CI runs."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Verdryx","url":"https://it-rat.com/services/verdryx.html","description":"Cost per correctly resolved case, not cost per token: six graders, statistical drift detection and a metered LLM judge, scored on your own outcome tags.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/verdryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/#stack"},{"@type":"ListItem","position":3,"name":"Verdryx","item":"https://it-rat.com/services/verdryx.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I measure cost per correct answer?","acceptedAnswer":{"@type":"Answer","text":"Tag outcomes in production, then read them back off the gateway's own trace: resolved, escalated, abandoned. Verdryx turns that into a dollar figure per case, including the untagged intermediate calls a run made and the calls the breaker blocked, because both are part of what the outcome cost."}},{"@type":"Question","name":"How do I know when quality has actually dropped?","acceptedAnswer":{"@type":"Answer","text":"A flat threshold catches the obvious fall. Beside it, a two-sample significance check, Welch's t with a bootstrap interval, catches the small consistent regression a threshold tuned for noise would miss. Point it at a baseline whose source run is gone and it fails loudly rather than silently."}},{"@type":"Question","name":"Do I need an LLM judge to use it?","acceptedAnswer":{"@type":"Answer","text":"No. Four of the six graders are deterministic and free: exact, regex, outcome tag and tool trace. The judge is there for the cases a rubric can score and a pattern cannot, and when you use it, its own cost is priced against the same book the money plane uses rather than reported as zero. The sixth, the typed grader, asks a separate Typryx service and runs only when a run is given its address."}},{"@type":"Question","name":"Does it need network access or a key?","acceptedAnswer":{"@type":"Answer","text":"Not for the common path. The graders and drift maths use only the standard library, the one runtime dependency is a canonical-JSON library, and the whole suite runs against a deterministic stub adapter with no network and no key, which is exactly what its own CI runs."}}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-service="verdryx" data-root="../">
@@ -83,7 +83,7 @@
       <div class="hero-side rv d2">
         <div class="row"><span class="k">version</span><span class="v">0.1.0 &#183; Python 3.11+</span></div>
         <div class="row"><span class="k">tests</span><span class="v">474 &#183; fully offline suite</span></div>
-        <div class="row"><span class="k">core deps</span><span class="v">zero (stdlib + optional extras)</span></div>
+        <div class="row"><span class="k">core deps</span><span class="v">one, rfc8785 (+ optional extras)</span></div>
         <div class="row"><span class="k">reads</span><span class="v">tokenfuse Parquet traces &#183; NDJSON &#183; CSV</span></div>
         <div class="row"><span class="k">exports</span><span class="v">agent-events v0.2 &#183; OTLP spans</span></div>
         <div class="row"><span class="k">licence</span><span class="v">Apache-2.0</span></div>
@@ -109,8 +109,8 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
-      <h2>Four graders in, one honest number out.</h2>
-      <p class="lede">Traces and eval sets go in. Exact match, regex, an outcome tag straight off the gateway, or an LLM judge decide what happened, and the judge's own calls get priced like everything else. What comes out: a cost-per-outcome report, a drift verdict against a stored baseline, a SQLite file, and an event or a span for whatever is already watching your stack.</p>
+      <h2>Six graders in, one honest number out.</h2>
+      <p class="lede">Traces and eval sets go in. Exact match, regex, an outcome tag straight off the gateway or the order of the tool calls decide what happened, and where a rule cannot, an LLM judge or a typed verdict from Typryx does, with its own cost counted like everything else. What comes out: a cost-per-outcome report, a drift verdict against a stored baseline, a SQLite file, and an event or a span for whatever is already watching your stack.</p>
     </div>
     <div class="diagram rv">
       <svg viewBox="0 0 960 330" role="img" aria-label="Verdryx architecture">
@@ -129,24 +129,26 @@
           <rect x="240" y="20" width="360" height="272" rx="16" fill="#10161F" stroke="#FF7AA2" stroke-width="1.4"/>
           <text x="420" y="48" fill="#FF7AA2" font-size="14" font-weight="700">verdryx core</text>
 
-          <text x="420" y="70" fill="#8A97A6" font-size="10">graders</text>
+          <text x="420" y="66" fill="#8A97A6" font-size="10">graders</text>
           <g font-size="10" fill="#E9EFF6">
-            <rect x="260" y="78" width="76" height="28" rx="8" fill="#141C27" stroke="#2a3547"/><text x="298" y="96">exact</text>
-            <rect x="344" y="78" width="76" height="28" rx="8" fill="#141C27" stroke="#2a3547"/><text x="382" y="96">regex</text>
-            <rect x="428" y="78" width="80" height="28" rx="8" fill="#141C27" stroke="#2a3547"/><text x="468" y="96">outcome-tag</text>
-            <rect x="516" y="78" width="64" height="28" rx="8" fill="#141C27" stroke="#FF7AA2"/><text x="548" y="96" fill="#FF7AA2">judge</text>
+            <rect x="260" y="72" width="101" height="24" rx="8" fill="#141C27" stroke="#2a3547"/><text x="310.5" y="88">exact</text>
+            <rect x="369" y="72" width="102" height="24" rx="8" fill="#141C27" stroke="#2a3547"/><text x="420" y="88">regex</text>
+            <rect x="479" y="72" width="101" height="24" rx="8" fill="#141C27" stroke="#2a3547"/><text x="529.5" y="88">outcome-tag</text>
+            <rect x="260" y="100" width="101" height="24" rx="8" fill="#141C27" stroke="#2a3547"/><text x="310.5" y="116">tool-trace</text>
+            <rect x="369" y="100" width="102" height="24" rx="8" fill="#141C27" stroke="#FF7AA2"/><text x="420" y="116" fill="#FF7AA2">judge</text>
+            <rect x="479" y="100" width="101" height="24" rx="8" fill="#141C27" stroke="#FF7AA2"/><text x="529.5" y="116" fill="#FF7AA2">typed</text>
           </g>
-          <text x="420" y="120" fill="#5A6675" font-size="10.5">the judge&#8217;s calls are priced too</text>
+          <text x="420" y="140" fill="#5A6675" font-size="10.5">opt-in: judge and typed verdicts carry their cost</text>
 
-          <rect x="260" y="134" width="320" height="42" rx="10" fill="#141C27" stroke="#2a3547"/>
-          <text x="420" y="152" fill="#E9EFF6" font-size="10.5" font-weight="700">cost model</text>
-          <text x="420" y="168" fill="#8A97A6" font-size="10">the evaluated model&#8217;s completion is priced too</text>
+          <rect x="260" y="150" width="320" height="38" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="420" y="166" fill="#E9EFF6" font-size="10.5" font-weight="700">cost model</text>
+          <text x="420" y="181" fill="#8A97A6" font-size="10">the evaluated model&#8217;s completion is priced too</text>
 
-          <rect x="260" y="188" width="320" height="42" rx="10" fill="#141C27" stroke="#2a3547"/>
-          <text x="420" y="206" fill="#E9EFF6" font-size="10.5" font-weight="700">multi-tag runs</text>
-          <text x="420" y="222" fill="#8A97A6" font-size="10.5">reduce to last outcome in step order</text>
+          <rect x="260" y="196" width="320" height="38" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="420" y="212" fill="#E9EFF6" font-size="10.5" font-weight="700">multi-tag runs</text>
+          <text x="420" y="227" fill="#8A97A6" font-size="10.5">reduce to last outcome in step order</text>
 
-          <text x="420" y="256" fill="#5A6675" font-size="10.5">every case resolves to a Score in [0.0, 1.0]</text>
+          <text x="420" y="258" fill="#5A6675" font-size="10.5">every case resolves to a Score in [0.0, 1.0]</text>
 
           <rect x="742" y="20" width="200" height="110" rx="14" fill="#10161F" stroke="#2a3547"/>
           <text x="842" y="46" fill="#E9EFF6" font-size="12.5" font-weight="700">reports</text>
@@ -197,17 +199,17 @@
       </div>
       <div class="card hover feature b-4 rv d1"><h3>Drift with statistics</h3><p>A flat threshold catches the obvious drop. A two-sample significance check beside it, Welch's t plus a bootstrap interval, catches the small, consistent regression a threshold tuned for noise would miss. Point it at a baseline whose source run is gone and it fails loudly, not silently.</p></div>
       <div class="card hover feature b-4 rv d2"><h3>The LLM judge is metered</h3><p>An llm_judge case's cost is a real dollar figure, priced against the same book TokenFuse uses, not the zero placeholder the deterministic graders leave behind.</p>
-        <details class="sheet" data-sheet-kicker="graders" data-sheet-title="Five graders, and which one of them costs money">
+        <details class="sheet" data-sheet-kicker="graders" data-sheet-title="Six graders, and which two of them can cost money">
           <summary>What grades a case</summary>
           <div class="sheet-in">
-            <p class="dim" style="font-size:14px;line-height:1.7">Every case resolves to a score between zero and one, and five graders share one shape, so a case simply asks for the one it needs.</p>
-            <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px"><b style="color:var(--fg)">Exact</b> and <b style="color:var(--fg)">regex</b> score a literal or a pattern: deterministic, free, and the right tool far more often than people expect. <b style="color:var(--fg)">Outcome tag</b> reads a production tag instead of an expected answer, scoring a resolved case at one, an escalation at a half and an abandonment at zero, with the whole table overridable; an unrecognised tag scores zero rather than raising, so one odd tag cannot take a report down. <b style="color:var(--fg)">Tool trace</b> scores the model's ordered tool calls against the calls it was supposed to make, which is the difference between a right answer and a right answer reached by touching things it should not have. <b style="color:var(--fg)">LLM judge</b> grades against a written rubric where the other four cannot.</p>
-            <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px">Only the last one spends money, and it says so. Its cost is priced against the same book the money plane uses, rather than the zero a deterministic grader honestly leaves behind. An eval suite is itself an agent workload; a quality tool that hides its own bill has no business auditing anyone else's.</p>
+            <p class="dim" style="font-size:14px;line-height:1.7">Every case resolves to a score between zero and one, whichever of the six graders it asks for, so a case simply names the one it needs.</p>
+            <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px"><b style="color:var(--fg)">Exact</b> and <b style="color:var(--fg)">regex</b> score a literal or a pattern: deterministic, free, and the right tool far more often than people expect. <b style="color:var(--fg)">Outcome tag</b> reads a production tag instead of an expected answer, scoring a resolved case at one, an escalation at a half and an abandonment at zero, with the whole table overridable; an unrecognised tag scores zero rather than raising, so one odd tag cannot take a report down. <b style="color:var(--fg)">Tool trace</b> scores the model's ordered tool calls against the calls it was supposed to make, which is the difference between a right answer and a right answer reached by touching things it should not have. <b style="color:var(--fg)">LLM judge</b> grades against a written rubric where those four cannot. <b style="color:var(--fg)">Typed</b> asks a separate <a href="typryx.html" data-dir="fwd" style="color:#60A5FA">Typryx</a> service a typed question about the output, a yes or no or a graded level, and scores the probability it returns; a case Typryx cannot answer is counted apart with its reason, never scored as a zero.</p>
+            <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px">Only the judge and the typed grader can spend money, neither runs by default, and both say so: the judge&#8217;s cost is priced against the same book the money plane uses, and a typed verdict carries whatever cost Typryx reports for it, rather than the zero a deterministic grader honestly leaves behind. The typed grader runs only when a run is given a Typryx address with <span class="mono" style="font-size:12.5px">--typed-url</span>. An eval suite is itself an agent workload; a quality tool that hides its own bill has no business auditing anyone else's.</p>
             <p class="dim" style="font-size:14px;line-height:1.7;margin-top:12px">The judge takes an injected adapter, so the same suite runs against a deterministic stub with no network and no key, which is what Verdryx's own tests use, or against a real model when you want the real verdict.</p>
           </div>
         </details>
       </div>
-      <div class="card hover feature b-4 rv"><h3>Zero-dependency core</h3><p>The eval runner, graders and drift math import nothing but the standard library. Anthropic and Parquet support are opt-in extras, not a tax on the common path.</p></div>
+      <div class="card hover feature b-4 rv"><h3>One-dependency core</h3><p>The graders and drift maths use only the standard library. The one runtime dependency is rfc8785, which canonicalises the JSON the event chain is hashed over. Anthropic and Parquet support are opt-in extras, not a tax on the common path.</p></div>
       <div class="card hover feature b-4 rv d1"><h3>Offline test suite</h3><p>474 tests run against a deterministic StubLLMAdapter, no network, no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.</p></div>
       <div class="card hover feature b-4 rv d2"><h3>Defensive by design</h3><p>Grades an operator's own agents against an eval set or a production outcome tag. The README puts it plainly: it &#8220;never manipulates outputs, never crafts adversarial prompts, and never attacks anything.&#8221;</p></div>
     </div>
@@ -244,7 +246,7 @@
         <div class="kicker">in the stack</div>
         <h3 style="margin-top:12px">The line that turns spend into a verdict.</h3>
         <p style="margin-top:10px;color:var(--dim);font-size:14.5px;line-height:1.65">
-          Verdryx prices the traces <a href="tokenfuse.html" data-dir="fwd" style="color:var(--amber)">TokenFuse</a> writes: outcome tags and spend data share the same request path, so cost and quality can never quietly drift apart. Its <span class="mono" style="font-size:12.5px">quality_drift</span> events ride the same bus as <a href="platform.html" data-dir="fwd" style="color:var(--steel)">Platform</a>'s Agent Passport contract. <a href="mockryx.html" data-dir="fwd" style="color:var(--coral)">Mockryx</a> can require an off-path reaction from Verdryx as part of a pre-prod drill. A typed grader from <a href="typryx.html" data-dir="fwd" style="color:#60A5FA">Typryx</a> is planned beside its LLM judge, not built.</p>
+          Verdryx prices the traces <a href="tokenfuse.html" data-dir="fwd" style="color:var(--amber)">TokenFuse</a> writes: outcome tags and spend data share the same request path, so cost and quality can never quietly drift apart. Its <span class="mono" style="font-size:12.5px">quality_drift</span> events ride the same bus as <a href="platform.html" data-dir="fwd" style="color:var(--steel)">Platform</a>'s Agent Passport contract. <a href="mockryx.html" data-dir="fwd" style="color:var(--coral)">Mockryx</a> can require an off-path reaction from Verdryx as part of a pre-prod drill. A typed grader from <a href="typryx.html" data-dir="fwd" style="color:#60A5FA">Typryx</a> sits beside its LLM judge, opt-in per run with <span class="mono" style="font-size:12.5px">--typed-url</span>.</p>
           <p style="margin-top:12px;color:var(--dim);font-size:14.5px;line-height:1.65">Cost per resolved case sits inside a wider practice: <a href="../finops-for-ai.html" style="color:var(--accent)">FinOps for AI</a>, and the controls around it in <a href="../ai-agent-governance.html" style="color:var(--accent)">AI agent governance</a>.</p>
       </div>
       <div class="card b-4 rv d1">
@@ -286,11 +288,11 @@
       </details>
       <details>
         <summary>Do I need an LLM judge to use it?</summary>
-        <div class="a"><p>No. Four of the five graders are deterministic and free: exact, regex, outcome tag and tool trace. The judge is there for the cases a rubric can score and a pattern cannot, and when you use it, its own cost is priced against the same book the money plane uses rather than reported as zero.</p></div>
+        <div class="a"><p>No. Four of the six graders are deterministic and free: exact, regex, outcome tag and tool trace. The judge is there for the cases a rubric can score and a pattern cannot, and when you use it, its own cost is priced against the same book the money plane uses rather than reported as zero. The sixth, the typed grader, asks a separate Typryx service and runs only when a run is given its address.</p></div>
       </details>
       <details>
         <summary>Does it need network access or a key?</summary>
-        <div class="a"><p>Not for the common path. The eval runner, graders and drift maths import nothing but the standard library, and the whole suite runs against a deterministic stub adapter with no network and no key, which is exactly what its own CI runs.</p></div>
+        <div class="a"><p>Not for the common path. The graders and drift maths use only the standard library, the one runtime dependency is a canonical-JSON library, and the whole suite runs against a deterministic stub adapter with no network and no key, which is exactly what its own CI runs.</p></div>
       </details>
     </div>
   </div>

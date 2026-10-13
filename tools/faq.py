@@ -230,9 +230,9 @@ FAQ = {
  ("How do I know when quality has actually dropped?",
   "<p>A flat threshold catches the obvious fall. Beside it, a two-sample significance check, Welch's t with a bootstrap interval, catches the small consistent regression a threshold tuned for noise would miss. Point it at a baseline whose source run is gone and it fails loudly rather than silently.</p>"),
  ("Do I need an LLM judge to use it?",
-  "<p>No. Four of the five graders are deterministic and free: exact, regex, outcome tag and tool trace. The judge is there for the cases a rubric can score and a pattern cannot, and when you use it, its own cost is priced against the same book the money plane uses rather than reported as zero.</p>"),
+  "<p>No. Four of the six graders are deterministic and free: exact, regex, outcome tag and tool trace. The judge is there for the cases a rubric can score and a pattern cannot, and when you use it, its own cost is priced against the same book the money plane uses rather than reported as zero. The sixth, the typed grader, asks a separate Typryx service and runs only when a run is given its address.</p>"),
  ("Does it need network access or a key?",
-  "<p>Not for the common path. The eval runner, graders and drift maths import nothing but the standard library, and the whole suite runs against a deterministic stub adapter with no network and no key, which is exactly what its own CI runs.</p>"),
+  "<p>Not for the common path. The graders and drift maths use only the standard library, the one runtime dependency is a canonical-JSON library, and the whole suite runs against a deterministic stub adapter with no network and no key, which is exactly what its own CI runs.</p>"),
 ]),
 
 "services/mockryx.html": ("common questions", "Rehearsing a defence before it is needed", [
@@ -248,11 +248,11 @@ FAQ = {
 
 "services/platform.html": ("common questions", "The contract every service agrees on", [
  ("What is an Agent Passport?",
-  "<p>One identifier and one document per agent: an <span class=\"mono\">agent://</span> URI of at most 255 bytes, aligned with SPIFFE without requiring it, and a document naming an owner, a runtime and one of five attestation methods. The delegation chain behind it is ordered root first, acyclic, and capped at 32 entries.</p>"),
+  "<p>One identifier and one document per agent: an <span class=\"mono\">agent://</span> URI of at most 255 bytes, aligned with SPIFFE without requiring it, and a document naming an owner, a runtime and one of six attestation methods. The delegation chain behind it is ordered root first, acyclic, and capped at 32 entries.</p>"),
  ("Do I have to adopt the whole stack to use the contract?",
   "<p>No. There is no shared runtime and no shared database. Adopting it is a naming agreement plus a few optional fields on events you already emit, which is why a service can add an event type without asking any other service for permission.</p>"),
  ("Can budgets and policies live in version control?",
-  "<p>Yes. Three Terraform resources cover budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending.</p>"),
+  "<p>Yes. Four Terraform resources cover run budgets, business-unit budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending.</p>"),
  ("How do I check that my events actually conform?",
   "<p>Run <span class=\"mono\">agent-conform</span>. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect.</p>"
   "<p>On a box, <span class=\"mono\">agent-conform watch-dir</span> re-checks every stream's hash chain and writes a <span class=\"mono\">chain_broken</span> event to its own stream when one breaks; it exits 2 on a usage or I/O error. Both launchers run it by default.</p>"),

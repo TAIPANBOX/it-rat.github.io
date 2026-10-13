@@ -18,24 +18,26 @@
           <rect x="240" y="20" width="360" height="272" rx="16" fill="#10161F" stroke="#FF7AA2" stroke-width="1.4"><animate attributeName="stroke-opacity" values="1;.45;1" dur="3.4s" repeatCount="indefinite"/></rect>
           <text x="420" y="48" fill="#FF7AA2" font-size="14" font-weight="700">verdryx core</text>
 
-          <text x="420" y="70" fill="#8A97A6" font-size="10">graders</text>
+          <text x="420" y="66" fill="#8A97A6" font-size="10">graders</text>
           <g font-size="10" fill="#E9EFF6">
-            <rect x="260" y="78" width="76" height="28" rx="8" fill="#141C27" stroke="#2a3547"/><text x="298" y="96">exact</text>
-            <rect x="344" y="78" width="76" height="28" rx="8" fill="#141C27" stroke="#2a3547"/><text x="382" y="96">regex</text>
-            <rect x="428" y="78" width="80" height="28" rx="8" fill="#141C27" stroke="#2a3547"/><text x="468" y="96">outcome-tag</text>
-            <rect x="516" y="78" width="64" height="28" rx="8" fill="#141C27" stroke="#FF7AA2"/><text x="548" y="96" fill="#FF7AA2">judge</text>
+            <rect x="260" y="72" width="101" height="24" rx="8" fill="#141C27" stroke="#2a3547"/><text x="310.5" y="88">exact</text>
+            <rect x="369" y="72" width="102" height="24" rx="8" fill="#141C27" stroke="#2a3547"/><text x="420" y="88">regex</text>
+            <rect x="479" y="72" width="101" height="24" rx="8" fill="#141C27" stroke="#2a3547"/><text x="529.5" y="88">outcome-tag</text>
+            <rect x="260" y="100" width="101" height="24" rx="8" fill="#141C27" stroke="#2a3547"/><text x="310.5" y="116">tool-trace</text>
+            <rect x="369" y="100" width="102" height="24" rx="8" fill="#141C27" stroke="#FF7AA2"/><text x="420" y="116" fill="#FF7AA2">judge</text>
+            <rect x="479" y="100" width="101" height="24" rx="8" fill="#141C27" stroke="#FF7AA2"/><text x="529.5" y="116" fill="#FF7AA2">typed</text>
           </g>
-          <text x="420" y="120" fill="#5A6675" font-size="10.5">the judge&#8217;s calls are priced too</text>
+          <text x="420" y="140" fill="#5A6675" font-size="10.5">opt-in: judge and typed verdicts carry their cost</text>
 
-          <rect x="260" y="134" width="320" height="42" rx="10" fill="#141C27" stroke="#2a3547"/>
-          <text x="420" y="152" fill="#E9EFF6" font-size="10.5" font-weight="700">cost model</text>
-          <text x="420" y="168" fill="#8A97A6" font-size="10">the evaluated model&#8217;s completion is priced too</text>
+          <rect x="260" y="150" width="320" height="38" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="420" y="166" fill="#E9EFF6" font-size="10.5" font-weight="700">cost model</text>
+          <text x="420" y="181" fill="#8A97A6" font-size="10">the evaluated model&#8217;s completion is priced too</text>
 
-          <rect x="260" y="188" width="320" height="42" rx="10" fill="#141C27" stroke="#2a3547"/>
-          <text x="420" y="206" fill="#E9EFF6" font-size="10.5" font-weight="700">multi-tag runs</text>
-          <text x="420" y="222" fill="#8A97A6" font-size="10.5">reduce to last outcome in step order</text>
+          <rect x="260" y="196" width="320" height="38" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="420" y="212" fill="#E9EFF6" font-size="10.5" font-weight="700">multi-tag runs</text>
+          <text x="420" y="227" fill="#8A97A6" font-size="10.5">reduce to last outcome in step order</text>
 
-          <text x="420" y="256" fill="#5A6675" font-size="10.5">every case resolves to a Score in [0.0, 1.0]</text>
+          <text x="420" y="258" fill="#5A6675" font-size="10.5">every case resolves to a Score in [0.0, 1.0]</text>
 
           <rect x="742" y="20" width="200" height="110" rx="14" fill="#10161F" stroke="#2a3547"/>
           <text x="842" y="46" fill="#E9EFF6" font-size="12.5" font-weight="700">reports</text>

@@ -18,15 +18,15 @@ Fourteen registered sources write one shape onto one NDJSON bus: five required f
 
 ### The passport
 
-One agent, one URI: agent://trust-domain/path, at most 255 bytes, aligned with SPIFFE without requiring it. The document behind the ID names an owner, a runtime and one of five attestation methods. The delegation chain is ordered root first, acyclic, and capped at 32 entries.
+One agent, one URI: agent://trust-domain/path, at most 255 bytes, aligned with SPIFFE without requiring it. The document behind the ID names an owner, a runtime and one of six attestation methods. The delegation chain is ordered root first, acyclic, and capped at 32 entries.
 
 ### The envelope
 
-Five required fields: schema, ts, source, type, agent_id. Two versions coexist by design: v0.1 with a closed source enum, v0.2 with an open string. Event types live in a per-source registry, so tokenfuse can add a type without asking engram.
+Five required fields: schema, ts, source, type, agent_id. Four versions stay live by design: v0.1 with a closed source enum, v0.2 with an open string, v0.3 adding a self-declared, claimed agent_id, and v1.0, which is v0.3's shape under the 1.0 compatibility promise. The passport document has two, v0.1 and v1.0. Event types live in a per-source registry, so tokenfuse can add a type without asking engram.
 
 ### The Go binding
 
-agent-stack-go ships passport.Parse, an append-only event.Writer and chain.Validate, stdlib only at runtime. It is the same validation Idryx runs on ingest: a passport that parses in your pipeline parses in the graph.
+agent-stack-go ships passport.Parse, an append-only event.Writer and chain.Validate. passport and chain need only the standard library; event adds one dependency, gowebpki/jcs, for the RFC 8785 canonical JSON its hash chain is computed over. It is the same validation Idryx runs on ingest: a passport that parses in your pipeline parses in the graph.
 
 ### agent-conform
 
@@ -34,7 +34,7 @@ A standalone conformance CLI with the canonical JSON Schemas embedded. Files are
 
 ### Governance as code
 
-Three Terraform resources: taipan_budget, taipan_agent_passport, taipan_wardryx_policy. Budgets and policies get PRs, plans and diffs like everything else, and edits made out of band surface on the next plan. Where the API has no delete, the provider says so instead of pretending.
+Four Terraform resources: taipan_budget, taipan_unit_budget, taipan_agent_passport, taipan_wardryx_policy. Run budgets, business-unit budgets, passports and policies get PRs, plans and diffs like everything else, and edits made out of band surface on the next plan. Where the API has no delete, the provider says so instead of pretending.
 
 ### Honest scope
 
@@ -89,7 +89,7 @@ Without a shared contract you get one of two outcomes: every tool logs its own J
 |  | the contract | “every tool logs its own JSON” | a vendor's proprietary schema |
 |---|---|---|---|
 | Cross-tool correlation | One agent_id everywhere | grep and hope | Inside one vendor only |
-| Versioning | Explicit schema field; v0.1 and v0.2 coexist | None | The vendor's roadmap |
+| Versioning | Explicit schema field; v0.1 to v1.0 all stay live | None | The vendor's roadmap |
 | Validation | JSON Schema + a conformance CLI | None | Closed |
 | Who can implement it | Anyone; Apache-2.0 | n/a | Licensees |
 
@@ -108,13 +108,13 @@ Every one of those addresses always serves the newest release, so a link saved t
 ## The contract every service agrees on
 
 **Q: What is an Agent Passport?**
-One identifier and one document per agent: an `agent://` URI of at most 255 bytes, aligned with SPIFFE without requiring it, and a document naming an owner, a runtime and one of five attestation methods. The delegation chain behind it is ordered root first, acyclic, and capped at 32 entries.
+One identifier and one document per agent: an `agent://` URI of at most 255 bytes, aligned with SPIFFE without requiring it, and a document naming an owner, a runtime and one of six attestation methods. The delegation chain behind it is ordered root first, acyclic, and capped at 32 entries.
 
 **Q: Do I have to adopt the whole stack to use the contract?**
 No. There is no shared runtime and no shared database. Adopting it is a naming agreement plus a few optional fields on events you already emit, which is why a service can add an event type without asking any other service for permission.
 
 **Q: Can budgets and policies live in version control?**
-Yes. Three Terraform resources cover budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending.
+Yes. Four Terraform resources cover run budgets, business-unit budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending.
 
 **Q: How do I check that my events actually conform?**
 Run `agent-conform`. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect. On a box, `agent-conform watch-dir` re-checks every stream's hash chain and writes a `chain_broken` event to its own stream when one breaks; it exits 2 on a usage or I/O error. Both launchers run it by default.

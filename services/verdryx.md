@@ -2,7 +2,7 @@
 
 # Verdryx, the quality plane
 
-> Cost per correctly resolved case, not cost per token: five graders, statistical drift detection and a metered LLM judge, scored on your own outcome tags.
+> Cost per correctly resolved case, not cost per token: six graders, statistical drift detection and a metered LLM judge, scored on your own outcome tags.
 
 Cost-per-token dashboards report what a call cost and stop there. They cannot tell a successful call from a wasted one. Verdryx grades the output, exact match, regex, a production outcome tag, or an LLM judge, and prices the result that actually matters: cost per resolved case, not cost per call. On the last live run: $0.00042 to resolve a case, $0.00025 spent on one that went nowhere.
 
@@ -10,9 +10,9 @@ Cost-per-token dashboards report what a call cost and stop there. They cannot te
 
 This is a simulation, but shaped by the real run: 176 real Claude calls read back as outcome-tagged traces. A shift's worth of support cases gets graded, a real cost per resolved case comes out the other side, and a drift check runs against a stored baseline before one OTLP span closes the loop.
 
-## Four graders in, one honest number out.
+## Six graders in, one honest number out.
 
-Traces and eval sets go in. Exact match, regex, an outcome tag straight off the gateway, or an LLM judge decide what happened, and the judge's own calls get priced like everything else. What comes out: a cost-per-outcome report, a drift verdict against a stored baseline, a SQLite file, and an event or a span for whatever is already watching your stack.
+Traces and eval sets go in. Exact match, regex, an outcome tag straight off the gateway or the order of the tool calls decide what happened, and where a rule cannot, an LLM judge or a typed verdict from Typryx does, with its own cost counted like everything else. What comes out: a cost-per-outcome report, a drift verdict against a stored baseline, a SQLite file, and an event or a span for whatever is already watching your stack.
 
 ## Not a bigger number. A truer one.
 
@@ -40,17 +40,17 @@ An llm_judge case's cost is a real dollar figure, priced against the same book T
 
 **Q: What grades a case**
 
-Every case resolves to a score between zero and one, and five graders share one shape, so a case simply asks for the one it needs.
+Every case resolves to a score between zero and one, whichever of the six graders it asks for, so a case simply names the one it needs.
 
-**Exact** and **regex** score a literal or a pattern: deterministic, free, and the right tool far more often than people expect. **Outcome tag** reads a production tag instead of an expected answer, scoring a resolved case at one, an escalation at a half and an abandonment at zero, with the whole table overridable; an unrecognised tag scores zero rather than raising, so one odd tag cannot take a report down. **Tool trace** scores the model's ordered tool calls against the calls it was supposed to make, which is the difference between a right answer and a right answer reached by touching things it should not have. **LLM judge** grades against a written rubric where the other four cannot.
+**Exact** and **regex** score a literal or a pattern: deterministic, free, and the right tool far more often than people expect. **Outcome tag** reads a production tag instead of an expected answer, scoring a resolved case at one, an escalation at a half and an abandonment at zero, with the whole table overridable; an unrecognised tag scores zero rather than raising, so one odd tag cannot take a report down. **Tool trace** scores the model's ordered tool calls against the calls it was supposed to make, which is the difference between a right answer and a right answer reached by touching things it should not have. **LLM judge** grades against a written rubric where those four cannot. **Typed** asks a separate [Typryx](https://it-rat.com/typryx.html) service a typed question about the output, a yes or no or a graded level, and scores the probability it returns; a case Typryx cannot answer is counted apart with its reason, never scored as a zero.
 
-Only the last one spends money, and it says so. Its cost is priced against the same book the money plane uses, rather than the zero a deterministic grader honestly leaves behind. An eval suite is itself an agent workload; a quality tool that hides its own bill has no business auditing anyone else's.
+Only the judge and the typed grader can spend money, neither runs by default, and both say so: the judge’s cost is priced against the same book the money plane uses, and a typed verdict carries whatever cost Typryx reports for it, rather than the zero a deterministic grader honestly leaves behind. The typed grader runs only when a run is given a Typryx address with `--typed-url`. An eval suite is itself an agent workload; a quality tool that hides its own bill has no business auditing anyone else's.
 
 The judge takes an injected adapter, so the same suite runs against a deterministic stub with no network and no key, which is what Verdryx's own tests use, or against a real model when you want the real verdict.
 
-### Zero-dependency core
+### One-dependency core
 
-The eval runner, graders and drift math import nothing but the standard library. Anthropic and Parquet support are opt-in extras, not a tax on the common path.
+The graders and drift maths use only the standard library. The one runtime dependency is rfc8785, which canonicalises the JSON the event chain is hashed over. Anthropic and Parquet support are opt-in extras, not a tax on the common path.
 
 ### Offline test suite
 
@@ -73,7 +73,7 @@ Cost-per-token dashboards answer the easy question: what a call cost. Verdryx an
 
 ### The line that turns spend into a verdict.
 
-Verdryx prices the traces [TokenFuse](https://it-rat.com/tokenfuse.html) writes: outcome tags and spend data share the same request path, so cost and quality can never quietly drift apart. Its `quality_drift` events ride the same bus as [Platform](https://it-rat.com/platform.html)'s Agent Passport contract. [Mockryx](https://it-rat.com/mockryx.html) can require an off-path reaction from Verdryx as part of a pre-prod drill. A typed grader from [Typryx](https://it-rat.com/typryx.html) is planned beside its LLM judge, not built.
+Verdryx prices the traces [TokenFuse](https://it-rat.com/tokenfuse.html) writes: outcome tags and spend data share the same request path, so cost and quality can never quietly drift apart. Its `quality_drift` events ride the same bus as [Platform](https://it-rat.com/platform.html)'s Agent Passport contract. [Mockryx](https://it-rat.com/mockryx.html) can require an off-path reaction from Verdryx as part of a pre-prod drill. A typed grader from [Typryx](https://it-rat.com/typryx.html) sits beside its LLM judge, opt-in per run with `--typed-url`.
 
 Cost per resolved case sits inside a wider practice: [FinOps for AI](https://it-rat.com/finops-for-ai.html), and the controls around it in [AI agent governance](https://it-rat.com/ai-agent-governance.html).
 
@@ -90,7 +90,7 @@ Tag outcomes in production, then read them back off the gateway's own trace: res
 A flat threshold catches the obvious fall. Beside it, a two-sample significance check, Welch's t with a bootstrap interval, catches the small consistent regression a threshold tuned for noise would miss. Point it at a baseline whose source run is gone and it fails loudly rather than silently.
 
 **Q: Do I need an LLM judge to use it?**
-No. Four of the five graders are deterministic and free: exact, regex, outcome tag and tool trace. The judge is there for the cases a rubric can score and a pattern cannot, and when you use it, its own cost is priced against the same book the money plane uses rather than reported as zero.
+No. Four of the six graders are deterministic and free: exact, regex, outcome tag and tool trace. The judge is there for the cases a rubric can score and a pattern cannot, and when you use it, its own cost is priced against the same book the money plane uses rather than reported as zero. The sixth, the typed grader, asks a separate Typryx service and runs only when a run is given its address.
 
 **Q: Does it need network access or a key?**
-Not for the common path. The eval runner, graders and drift maths import nothing but the standard library, and the whole suite runs against a deterministic stub adapter with no network and no key, which is exactly what its own CI runs.
+Not for the common path. The graders and drift maths use only the standard library, the one runtime dependency is a canonical-JSON library, and the whole suite runs against a deterministic stub adapter with no network and no key, which is exactly what its own CI runs.
