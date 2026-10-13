@@ -2,61 +2,61 @@
 
 # Three shapes of agent tooling
 
-> Three shapes of agent tooling exist and two of them cannot stop anything. What each is for, and twelve differences you can go and check for yourself.
+> The controls that answer before a call: what each one does, what it does not do yet, and how to check it.
 
-Three shapes of tooling exist today, and a team evaluating them usually compares one against another without noticing that two of the three answer only the first question: what did the agent do. The third can act, on the condition that the agent moves onto its platform first. Nobody in this list stands in front of an agent that stays where it is and answers before the call, which is the question that shows up on an invoice, in an incident review, and in front of an auditor.
+Watching an agent is useful after the fact. A budget, a policy and an egress check have to answer before the action, because by the time the invoice or the incident review arrives, the money is spent. The stack puts those answers in the path of the call. Each one is a decision that either happened or did not, and the rest of this page says what each one does and how to check it.
 
 ## Watch it happen.
 
-The same call, sent twice: once through a fleet that only watches, once through a fleet that can also refuse. Pick what the agent is trying to do and see where each one ends up.
+The same call, sent twice: once with the control plane in the path and once without it. Pick what the agent is trying to do and see where each one ends up.
 
-**The tap is the whole argument.** In both fleets a copy of the event goes sideways into the dashboard, and in both fleets it arrives after the thing already happened. The only difference is whether anything stood on the wire itself with the authority to stop it.
+**The copy is never the control.** Every event also goes sideways into the dashboard, and it arrives after the thing already happened. What decides the call is whether something stood on the wire itself with the authority to stop it.
 
-## What is actually on the market.
+## Where the stack answers.
 
-Named products change monthly. These shapes do not, and every tool a team is likely to already run falls into one of them.
+Each place answers a different question, and each one leaves a record you can check.
 
-***A**framework-native tracing*
+***A**the budget*
 
-### Deep inside the chain you wrote
+### A ceiling on every run
 
-Sold by the company behind an agent framework, and genuinely framework-agnostic: the SDKs cover the other frameworks and the model providers directly. Traces every step, captures prompts and responses, counts tokens and latency, runs evaluation suites online and offline, versions prompts, raises alerts, and clusters recurring failures into a root cause. Commercial, hosted by the vendor, with self-hosting on the enterprise tier only.
+A gateway sits in front of the model calls. It gives every run a budget, prices each call against it before the call goes out, and answers 402 on the one that would cross the line, without forwarding it. Spend is reserved before the call and settled after it. The rest of the spend story, including the cache, the model router and the FOCUS export, is on the TokenFuse room.
 
-**Best at:** why a chain produced a bad answer, and whether a model upgrade changed behaviour.
+**Answers:** may this call spend more money right now?
 
-**Says of itself:** observability and evaluation. It does not enforce or block anything at runtime.
+**Limit:** a budget governs spend. It does not judge whether an answer was good; that is measured in Verdryx.
 
-***B**open observability, self-hosted*
+***B**the policy point*
 
-### The same job, on your own metal
+### Allow, deny or hold, before the action
 
-An MIT-licensed core you run yourself, with its own SDKs for the common frameworks and an OpenTelemetry path for anything that already emits spans, plus prompt management, model-as-judge evaluation and per-model cost accounting. The whole observability surface is free; what a commercial key unlocks is the administration around it, which is worth noticing: role permissions, retention policies, audit logs, data masking, directory sync.
+Wardryx is the decision an agent asks for before it acts. It answers allow, deny or hold. A hold waits for a person, who grants it with a signed approval token. The token is bound to the agent, the run, the tool set and, where the policy names them, the arguments of the call. Holds nobody has decided are swept and reported, not left parked.
 
-**Best at:** the same as A, without sending prompts and completions to somebody else's cloud.
+**Answers:** may this action happen, and if not yet, who has to say yes?
 
-**Says of itself:** the run-time measures belong to separate guardrail libraries; its own job is judging afterwards whether they worked.
+**Limit:** it decides the actions that reach it. The gateway and the egress plane are the other places that stand in the path.
 
-***C**a vendor's hosted control plane*
+***C**identity and the record*
 
-### One pane over the agents that run on it
+### Whose action it was, and proof nothing is missing
 
-The large-vendor answer: a hosted console with a catalog, a gateway to models and tools, policy and lifecycle management. It no longer covers only agents built in its own builder, and this is the part most comparisons get wrong: agents written in other frameworks can be imported. What they cannot do is stay where they were. An imported agent is deployed onto the vendor's own infrastructure in order to be governed there.
+Idryx keeps one identity graph for humans, keys and agents, so a delegation chain ends at a person. Trailryx keeps the record. Every answer it gives comes with a completeness proof, a short receipt that the rows shown are all the rows that match the question, and the verifier that checks it has no dependencies.
 
-**Best at:** assembling agents quickly from a catalog, with support and a contract behind it.
+**Answers:** whose action was this, and can an auditor check that nothing is missing?
 
-**The entry:** tiered plans with a monthly floor and capacity ceilings above it, the lowest one in the hundreds per month and the next one an order of magnitude higher.
+**Limit:** an agent with no attestation on record is flagged as a finding, so a chain is only as strong as what it can prove.
 
-*what is left over*
+*and the planes around them*
 
 ### Planes that stand in the path and answer before the action
 
-A gateway that gives every run a budget and answers 402 the moment it is crossed. A policy plane the agent asks before acting, which can hold the expensive one for a person. An egress plane that decides the destination before anything leaves the machine. An identity graph that knows which human a key ultimately belongs to. A record built so that somebody who does not trust you can still check it is complete. None of that is a view of the past. Each one is a decision that either happened or did not.
+A gateway that gives every run a budget and answers 402 the moment it is crossed. A policy plane the agent asks before acting, which can hold the expensive one for a person. An egress plane that decides the destination before anything leaves the machine. An identity graph that knows which human a key ultimately belongs to. A record built so that somebody who does not trust you can still check it is complete. Each one is a decision that either happened or did not.
 
-**Not best at:** explaining why the model wanted to do it. That is what A and B are for, and this stack exports into them rather than competing.
+**Not covered:** why the model wanted to do it. The governance events can export over OTLP into your tracing backend when an endpoint is set.
 
-## Twelve differences, and how to check each one.
+## Twelve controls, and how to check each one.
 
-A comparison you cannot verify is an advertisement. Every claim below says what makes it true and where to go and look, because the only durable advantage in this market is being the one whose claims survive being checked. The first six are visible on a single request. The second six are the ones that actually decide whether a regulated organisation can buy anything at all.
+Every claim below says what makes it true and where to look, so it can be checked without trusting this page. The first six show up on a single request. The second six are the ones a regulated organisation asks about before it signs anything.
 
 ### It answers before the call, not after it
 
@@ -64,7 +64,7 @@ The gateway prices every call against the run's budget and, on the one that woul
 
 ### The agent stays where it is, and does not have to be declared at all
 
-Integration is one base URL. Nothing is rewritten, nothing is redeployed, no SDK enters the agent. Underneath, a kernel-level sensor reads real outbound connections, so an agent nobody registered anywhere still appears, along with the model providers it is quietly reaching.
+Integration is one base URL. Nothing is rewritten, nothing is redeployed, no SDK enters the agent. Underneath, an eBPF sensor finds agents that nobody registered, along with the model providers they reach.
 
 ### The record answers to somebody who does not trust you
 
@@ -74,17 +74,17 @@ Every query comes back with a completeness proof: a short receipt, checkable on 
 
 Adversarial scenarios run against a real gateway with a fake provider behind it. Burn the budget and require the 402. Ask for a forbidden tool and require the 403. Present a forged delegation chain and require it to be rejected. The exit codes differ on purpose, so the pipeline can tell a genuine hole in the defence from a broken test rig.
 
-### Governance is not the part you pay for
+### Governance is not behind a licence key
 
-Thirteen repositories, Apache-2.0 throughout, the console included. Nothing in the governance layer sits behind a licence key, a seat count or a tier.
+Apache-2.0 throughout, the console included. Nothing in the governance layer sits behind a licence key, a seat count or a tier.
 
 ### An alert is a coordinate, and a session is not an authority
 
-The mail that wakes somebody at night carries one link into a view, and never a button that acts. A link that acts is a permission held by everyone who received or forwarded the mail, and security gateways follow links before a human reads the sentence next to them. In the console, the privileged actions each require a fresh passkey assertion bound to that action and its arguments, rather than to whoever is signed in.
+The mail that wakes somebody at night carries one link into a view, and never a button that acts. A link that acts is a permission held by everyone who received or forwarded the mail, and security gateways follow links before a human reads the sentence next to them. In the console, closing a retained reservation takes a fresh passkey assertion, bound to that one reservation and its revision, rather than to whoever is signed in.
 
 ### Post-quantum sits inside the agent loop, and it has legal dates attached
 
-Every key, certificate and algorithm actually running is inventoried, graded for quantum risk and emitted as a CBOM in the CycloneDX format, scored against the published CNSA and NCSC timelines: new systems by 2027, legacy migration by 2030, everything by 2035. The cryptography agents themselves use is inventoried too, which is the part the established crypto-inventory vendors do not reach, because their products were designed before agents existed.
+The scan grades each key, certificate and algorithm it finds for quantum risk and emits a CBOM in the CycloneDX format. The grades are scored against the published CNSA timeline: new systems by 2027, legacy migration by 2030, everything by 2035.
 
 ### A person can be erased without breaking the audit trail
 
@@ -108,38 +108,32 @@ Token spend says how much was burned. It does not say whether the burning bought
 
 ### And what it costs, since none of this is free
 
-Standing in the request path buys the refusal and charges latency for it, on every call, including the overwhelming majority that were always going to be fine. It also forces a decision nobody enjoys making: what happens when the control plane itself is unreachable, fail-open or fail-closed. Observability never has to answer that question, because nothing waits on it. **That is the actual trade, and a vendor who will not name it has not thought about it.**
+Standing in the request path buys the refusal and charges latency for it, on every call, including the overwhelming majority that were always going to be fine. It also forces a decision: what happens when the control plane itself is unreachable. The policy plane is fail-closed. In the failure drill of 2026-09-17 it refused every governed call in about 0.3 s while it was down. **That is the trade, and it is named here on purpose.**
 
-## The half they do not cover, by service.
+## Where each part of the stack answers.
 
-A budget per run, and a 402 the moment it is crossed. A dashboard shows you the spend; this refuses it.
+A budget per run, and a 402 the moment it is crossed. The call is refused before the provider sees it.
 
 Allow, deny, or hold for a human, asked before the action, with a hard ceiling that outranks approvals.
 
-Every destination decided before anything leaves. Tracing sees the request; this sees whether it should exist.
+Every destination decided before anything leaves, and every redirect hop decided again.
 
 One identity graph for humans, keys, service accounts and agents, so "who did this" ends at a person.
 
 A record nobody can quietly change or shorten, where every answer carries a proof that it is complete.
 
-The one place we overlap on purpose: quality as a denominator, cost per correctly resolved case rather than per token.
+Quality as the denominator: cost per correctly resolved case, rather than per token.
 
-Fire drills for the guardrails themselves, asserting the 402 and the 403 in CI. No shape above has an analogue.
+Fire drills for the guardrails themselves, asserting the 402 and the 403 in CI.
 
-Decides what is worth waking a human for tonight, and mails it with one link. A dashboard waits to be opened.
+Decides what is worth waking a human for tonight, and mails it with one link and no button.
 
-All of it is Apache-2.0 and runs on infrastructure you own, and the governance planes export over OTLP into whatever tracing backend you already have. **Governance data belongs in your observability stack. The enforcement decision does not belong in a dashboard.**
+All of it is Apache-2.0 and runs on infrastructure you own. The governance planes export over OTLP when an endpoint is set, into whatever tracing backend you already run. **Governance data can sit in your observability stack. The enforcement decision is made on the call.**
 
 ## What people ask when they have already bought one
 
 **Q: Do we have to drop our tracing to use this?**
 No, and we would advise against it. Tracing answers a question this stack does not: why the model wanted to do the thing. Keep it, put the gateway in front of the model calls in shadow mode for a week, then turn on caps where the outliers are.
 
-**Q: Our observability tool already tracks cost. Is that not the same?**
-Cost tracking and a cost control are different products. One tells you a run spent the money. The other answers 402 and the run does not spend it. One arrives with the invoice, the other instead of it.
-
 **Q: Why describe products by shape instead of naming them?**
 Because a named comparison is wrong the week after a vendor ships a feature, and a reader who already runs one of these can map the shape to their tool in a second. The shapes are also more useful: they say what a category of tool can and cannot do architecturally, which is the part that does not change with a release note.
-
-**Q: Could one of them add enforcement later?**
-They could, and the sensible assumption is that somebody will. It is a different architecture though: standing in the path means owning an availability decision, fail-open or fail-closed, on every call. That is a heavier commitment than receiving a copy of a trace, and it is why the categories have stayed separate so far.

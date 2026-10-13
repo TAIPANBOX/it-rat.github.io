@@ -30,23 +30,23 @@ Cloud FinOps assumes somebody provisioned the thing. Agent spend appears when an
 
 The damage does not arrive as a sentence, it arrives as a tool call. Eight failure modes a fleet actually hits, the control that answers each, and what to rehearse in CI so a broken guardrail fails a build rather than an incident review.
 
-*the comparison*
+*the record and the control*
 
-## AI observability and governance are not rivals
+## The record and the control are different jobs
 
-One explains what happened, the other decides what may happen. The same incident seen by each, why governance without observability is opaque, and the single integration decision that makes them compose: one run id.
+One explains what happened, the other decides what may happen. The same incident seen by each, why the control alone is opaque, and the single integration decision that makes them meet: one run id.
 
-*the shapes*
+*the controls*
 
-## Three shapes of agent tooling, and what each cannot do
+## What the stack refuses before a call, and how to check it
 
-Named products change monthly and the shapes do not. What framework-native tracing, open self-hosted observability and a vendor's hosted control plane each answer, and twelve differences with a way to check every one of them.
+Twelve controls that answer before a call: what each one does, what it does not do yet, and how to check it, one at a time.
 
 *the operational half*
 
 ## What runs where, and what it costs
 
-One machine, a five-node cluster, or a hyperscaler. Six clusters measured across three clouds and then destroyed: what each burns per hour, the storage line that differs by a factor of 108, and a published conclusion we had to withdraw.
+One machine, a five-node cluster, or a hyperscaler. Six clusters measured across three clouds and then destroyed: how each performed, the storage line that differs by a factor of 108, and a published conclusion we had to withdraw.
 
 *the second site*
 

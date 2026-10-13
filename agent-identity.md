@@ -64,7 +64,7 @@ Identity says who is asking. It does not say yes. For the small set of actions t
 
 An identity you cannot switch off is a credential with a personality. Revocation has to be a single action with a visible effect, and it has to cover the paths the identity opened: its tokens, its device access, and the delegation others hold to it.
 
-**In practice:** revocation as a first-class operation, and an inventory that shows what each identity still reaches. [Idryx →](https://it-rat.com/services/idryx.html) One call ends a delegation at every enforcement point at once, whatever the token says about its own expiry. [Vouchryx →](https://it-rat.com/services/vouchryx.html)
+**In practice:** revocation as a first-class operation, and an inventory that shows what each identity still reaches. [Idryx →](https://it-rat.com/services/idryx.html) One call ends a delegation at every enforcement point that polls the revocation list, within one poll interval, whatever the token says about its own expiry. [Vouchryx →](https://it-rat.com/services/vouchryx.html)
 
 ## What tends to work.
 
@@ -94,7 +94,7 @@ An agent that holds a token holds it in the prompt, the trace, the logs and what
 
 ### Count the non-human identities you already have
 
-Almost every first inventory finds the same three things: service accounts unused for months, agents with no owner, and one credential appearing from many places at once. None of that is exotic and all of it is cheap to fix; the reason it persists is that nobody was counting.
+A first inventory looks for three things: service accounts unused for months, agents with no owner, and one credential appearing from many places at once. None of that is exotic and all of it is cheap to fix; the reason it persists is that nobody was counting.
 
 - **Can it name the actor?** If the finest grain it offers is an API key or a service, it cannot attribute an action to an agent, and neither will you.
 

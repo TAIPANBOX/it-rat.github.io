@@ -2,9 +2,9 @@
 
 # What runs where and what it costs
 
-> One machine, a five-node cluster, or three clouds: the measured shapes of this stack, what each burns per hour, and the storage line that changes by 108x.
+> One machine, a five-node cluster, or three clouds: the measured shapes of this stack, their throughput, and the storage line that changes by 108x.
 
-Governance software is bought on its promises and lived with on its bill. So this page is the operational half: the four shapes this stack has been measured in, what each one burns, and the numbers that came out of putting the same manifests on Hetzner, AWS and GCP between 25 and 27 July 2026, then the whole stack on a box behind a home router on 2026-09-17 with the agents in two clouds at once. Six clusters and two more clouds, all destroyed afterwards. **Two of the findings contradicted things we had already published**, and both are below with the correction attached.
+Governance software is bought on its promises and lived with on its bill. So this page is the operational half: the four shapes this stack has been measured in, what each one did under load, and the numbers that came out of putting the same manifests on Hetzner, AWS and GCP between 25 and 27 July 2026, then the whole stack on a box behind a home router on 2026-09-17 with the agents in two clouds at once. Six clusters across three clouds, all destroyed afterwards. **Two of the findings contradicted things we had already published**, and both are below with the correction attached.
 
 ## Pick by blast radius, not by fashion.
 
@@ -74,7 +74,6 @@ The policy plane is the busiest thing in the stack, because it answers on every 
 | p50 at 8 concurrent | 3.9 ms | **3.21 ms** | **3.22 ms** |
 | past 64 concurrent | collapse to 1,059 | no collapse, 2,331 at 256 | no collapse, 2,353 at 256 |
 | audit bytes per decision | 393 | 427.6 | 426.4 |
-| cost per million governed decisions | **EUR 0.024** | **USD 0.208** | **USD 0.229** |
 
 ### On the same silicon the two hyperscalers are the same machine
 
@@ -84,33 +83,17 @@ The policy plane is the busiest thing in the stack, because it answers on every 
 
 We published that throughput collapses past 64 concurrent callers and that a fleet should be designed against that cliff. It does not, and it should not. Neither dedicated-core cloud loses anything out to 256 concurrent on either chip generation; throughput holds and only latency grows. The collapse was a property of a **shared-vCPU instance**, which is to say it was a neighbour, not the software. The retraction sits next to the original claim in the source rather than replacing it quietly.
 
-### The newest generation is the cheapest work, not the dearest
+### The newest generation is the fastest measured here
 
-For reference, the same benchmark on AWS Genoa reached 4,028 decisions per second at a p50 of 1.92 ms. It costs 37% more per hour than Milan and returns 64% more throughput, which makes it **16% cheaper per governed decision** at USD 0.174 per million. Anyone sizing this for cost per unit of governance should reach for the newest generation available to them, and a quota that blocks it is a price increase in disguise.
+For reference, the same benchmark on AWS Genoa reached 4,028 decisions per second at a p50 of 1.92 ms. It returns 64% more throughput than Milan. Anyone sizing this for cost per unit of governance should reach for the newest generation available to them, and a quota that blocks it is a price increase in disguise.
 
 ### The audit volume belongs to the software, and it is the line that grows on its own
 
 427.6 and 426.4 bytes per decision on two different clouds from the same binary. That is the number to plan against, because every decision is audited rather than sampled: at a thousand governed calls a minute it is about 614 MB a day, and it is the only part of running this that grows without anyone deciding to grow it.
 
-## What it burns while it exists.
-
-|  | Hetzner | AWS | GCP |
-|---|---|---|---|
-| 5 nodes, 8 vCPU / 16 GB | EUR 137 / mo | USD 1,487 / mo | USD 1,291 / mo |
-| load balancer | EUR 7.49 / mo | USD 19.71 / mo + LCU | USD 21.90 / mo + traffic |
-| node disks, 5 x 100 GB | included | USD 47.60 / mo | USD 60.00 / mo |
-| public IPv4 | included | USD 18.25 / mo | USD 14.88 / mo |
-| **burn while running** | **about EUR 0.20 / h** | **about USD 2.16 / h** | **about USD 1.91 / h** |
-
-The hourly figure is the one that matters in practice, because a cluster like this is usually created for a purpose rather than left standing. On AWS a six hour working session is about USD 13, forgetting it overnight is about USD 26, and forgetting it for a month is about USD 1,575.
+## What it cost to run, where we can show it.
 
 The fourth shape, for comparison: the box is yours and costs nothing metered. On 2026-09-17 the two small VMs standing in for the customer's clusters ran 63 minutes each, about USD 0.11 together, and the real model calls came to USD 0.066, of which one call by the FinOps crew was USD 0.058. The whole run, with the failure matrix, was about USD 0.18, and both accounts read back empty by API before the day ended.
-
-Two smaller findings from the same exercise, both of which invert the intuition:
-
-- **GCP is the cheaper hyperscaler here**, by about 13% on compute, and the cheaper machine is the AMD one. On AWS the AMD part cost more than the Intel part; on GCP the AMD part is cheaper. The architecture-faithful choice is the cheap one on one cloud and the dear one on the other.
-
-- **The public address costs the same rate on both**, to the cent, and then GCP gives away the first 744 address-hours a month, which is one address running full time. A short five-node run pays nothing for its addresses on GCP and pays from the first hour on AWS. Hetzner includes them outright. Three pricing philosophies for the same commodity, and none of them visible in a monthly-rate comparison.
 
 They verified the deployment shape and the services coming up correctly on three clouds, and they benchmarked the policy plane. They did not drive the detectors at scale, produce quality numbers, or fire pre-production drills: those planes were left deliberately unseeded, so nothing about them is claimed from these runs. Separately, the storage figures are published rates rather than invoices, so treat them as what the provider says it will charge.
 
@@ -144,7 +127,7 @@ This is the infrastructure view. [One incident, end to end](https://it-rat.com/o
 No, and most teams should not start there. The same binaries, ports and wiring run as containers on one machine you own, with the gateway published to loopback by default so an install does not quietly create an internet-facing enforcement plane. A cluster buys node failure tolerance and matches an estate that already runs Kubernetes. It also costs you a shared-storage decision the single machine hides completely.
 
 **Q: Why does the shared storage line differ so much between clouds?**
-Because the planes couple through a shared NDJSON event log rather than through APIs, so on Kubernetes that directory needs a ReadWriteMany volume. For the same 5 GiB the published rates are EUR 0 in-cluster on Hetzner, USD 1.80 a month on EFS, and USD 194.56 a month on Filestore, which bills a whole TiB. Nothing about the software changes. One provider sells the capacity you use and the other sells a minimum you must buy, and a 5 GiB requirement lands inside a 1 TiB block.
+Because the planes couple through a shared NDJSON event log rather than through APIs, so on Kubernetes that directory needs a ReadWriteMany volume. Nothing about the software changes. One provider sells the capacity you use and the other sells a minimum you must buy, and a 5 GiB requirement lands inside a 1 TiB block.
 
 **Q: Is one cloud faster than the other for this?**
 Not measurably. On matched silicon the policy plane reached 2,449 decisions per second on AWS and 2,479 on GCP, which is 1.2% apart, with p50 latencies of 3.21 ms and 3.22 ms. An earlier comparison of ours put AWS 62% ahead, and that was a chip generation rather than a cloud: the AWS run used a newer instance family because the equivalent GCP part was quota-blocked. If a benchmark makes two clouds look different, check the instance families first.

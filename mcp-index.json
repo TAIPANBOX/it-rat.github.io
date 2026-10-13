@@ -72,7 +72,7 @@
       "markdown": "https://it-rat.com/ai-observability-vs-governance.md",
       "title": "AI observability vs governance",
       "kind": "guide",
-      "description": "LLM observability explains what an agent did; governance decides what it may do next. Where each fails, and how they meet on one run id."
+      "description": "The record explains what an agent did, the control decides what it may do next, and both meet on one run id. What each one answers and what it cannot."
     },
     {
       "url": "https://it-rat.com/one-incident-end-to-end.html",
@@ -86,7 +86,7 @@
       "markdown": "https://it-rat.com/what-runs-where.md",
       "title": "What runs where and what it costs",
       "kind": "guide",
-      "description": "One machine, a five-node cluster, or three clouds: the measured shapes of this stack, what each burns per hour, and the storage line that changes by 108x."
+      "description": "One machine, a five-node cluster, or three clouds: the measured shapes of this stack, their throughput, and the storage line that changes by 108x."
     },
     {
       "url": "https://it-rat.com/first-alert.html",
@@ -114,7 +114,7 @@
       "markdown": "https://it-rat.com/agent-tooling-compared.md",
       "title": "Three shapes of agent tooling",
       "kind": "guide",
-      "description": "Three shapes of agent tooling exist and two of them cannot stop anything. What each is for, and twelve differences you can go and check for yourself."
+      "description": "The controls that answer before a call: what each one does, what it does not do yet, and how to check it."
     },
     {
       "url": "https://it-rat.com/services/tokenfuse.html",

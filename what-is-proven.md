@@ -32,7 +32,7 @@ Measured on live five-node clusters on three clouds between 25 and 27 July 2026,
 
 ### All 500 questions of a public benchmark, not a fixture we wrote
 
-Recall was measured on LongMemEval-S in full, with every turn of every question's history ingested as its own episode, 246,738 in total, and no LLM anywhere in the loop. The per-question records are published alongside the numbers so the table can be recomputed rather than believed.
+Recall was measured on LongMemEval-S in full on 2026-07-30, with every turn of every question's history ingested as its own episode, 246,738 in total, and no LLM anywhere in the loop. The per-question records are published alongside the numbers so the table can be recomputed rather than believed.
 
 ### 25,586 real Linux binaries scanned, plus a live TLS endpoint
 
@@ -48,7 +48,7 @@ On 2026-09-17 the single-machine installer went onto a small Debian 13 box behin
 
 ### One cluster on three kinds of processor, then a second site with no VPN
 
-On 2026-09-26 the cluster launcher built one cluster from AMD, Intel and Ampere machines across three zones, in 13 minutes 46 seconds from bare VMs. Every plane moved onto the two Arm nodes in 49 seconds and back onto x86 in 111, the policy database's volume following it. A rolling upgrade under a probe asking every quarter second lost 1 health check of 256, and three later rolling restarts lost none of 825. That night and the next morning, a hub of three cloud VMs took a second site at home that reached it only over outbound HTTPS: one policy written at the hub refused calls at both sites, a run killed at the hub was refused at the site within 4 seconds, and a cut link failed closed at the site in 255 ms, its telemetry replayed afterwards with nothing lost. On 2026-09-27, on a three-node cluster at home, a delegated agent revoked mid-run was refused 2.2 seconds later, the OpenAI-compatible door priced and budgeted real calls, the console's own copilot ran through the stack's gateway under a budget, and the network sensor on an x86 kernel caught an agent reaching PyPI directly.
+On 2026-09-26 the cluster launcher built one cluster from AMD, Intel and Ampere machines across three zones, in 13 minutes 46 seconds from bare VMs. Every plane moved onto the two Arm nodes in 49 seconds and back onto x86 in 111, the policy database's volume following it. A rolling upgrade under a probe asking every quarter second lost 1 gateway probe of 1,152 logged, and three later rolling restarts lost none of 825. That night and the next morning, a hub of three cloud VMs took a second site at home that reached it only over outbound HTTPS: one policy written at the hub refused calls at both sites, a run killed at the hub was refused at the site within 4 seconds, and a cut link failed closed at the site in 255 ms, its telemetry replayed afterwards with nothing lost. On 2026-09-27, on a three-node cluster at home, a delegated agent revoked mid-run was refused 2.2 seconds later, the OpenAI-compatible door priced and budgeted real calls, the console's own copilot ran through the stack's gateway under a budget, and the network sensor on an x86 kernel caught an agent reaching PyPI directly.
 
 ## Sixteen ways to break it, and what each one did.
 
@@ -86,7 +86,7 @@ Accepted with no event while delegation verification was off. The record holds 3
 
 An hour forward, then NTP back: nothing changed on the tunnel or in the calls within three minutes. The clock that would matter is the box's own, not injected.
 
-Two things the tiles do not show. The control plane's own incidents never reached the notifier or the record on the released installer, because the control plane could not create its events file and said nothing about it; the installer now creates the file for it, and the images say so at startup. And the crew's runner reported its own estimate as spent, five times under what the gateway settled, because the gateway's price book lacked the model and fell back to its ceiling rate. Both are in the repositories' validation files with their dates.
+Two things the tiles do not show. The control plane's own incidents never reached the notifier or the record on the released installer, because the control plane could not create its events file and said nothing about it; the installer now creates the file for it, and the images say so at startup. And the crew's runner reported its own estimate as spent, five times under what the gateway settled. Both are in the repositories' validation files with their dates.
 
 ## Three things we published and had to withdraw.
 
@@ -108,7 +108,7 @@ This list is deliberately visible rather than tidy, and it is the section worth 
 
 - **No external audit of the cryptographic layer.** The primitives match their published vectors and two independent implementations of the verifier agree, which is a different and weaker claim than somebody outside this project having reviewed it.
 
-- **Six of the nine shipped pre-production drills have never been fired at a real gateway.** They were written after the campaigns that produced the published "no gaps" result, and that result covers the three that were.
+- **Not every shipped pre-production drill has been fired at a real gateway.** They were written after the campaigns that produced the published "no gaps" result, and that result covers only the drills that were fired.
 
 - **No years of simulated time, and no second I/O backend** to compare the first against.
 
@@ -116,7 +116,7 @@ This list is deliberately visible rather than tidy, and it is the section worth 
 
 - **The federation completeness rule is specified and its transport is unbuilt.** The rule exists; the wires do not.
 
-- **The figures on this site go stale, and did again this month.** Eleven of them name a source repository, the command that produces them and the date somebody last ran it, and a gate refuses a page that states a number nobody owns. That gate cannot tell you an owned number is still true, and on 2026-08-20 five of the eleven were not: two test counts out by six and ten, a detector count out by two, a trap count out by three, and a release a whole version behind. None was wrong when written. Re-measuring now costs one command rather than an afternoon, which is the actual fix; being more careful was never available.
+- **The figures on this site go stale, and did again this month.** 116 of them name a source repository, the command that produces them and the date somebody last ran it. A gate refuses a service page that states a number nobody owns, and the root pages are not in its scope. That gate cannot tell you an owned number is still true, and on 2026-08-20 five of the eleven were not: two test counts out by six and ten, a detector count out by two, a trap count out by three, and a release a whole version behind. None was wrong when written. Re-measuring now costs one command rather than an afternoon, which is the actual fix; being more careful was never available.
 
 Every figure quoted anywhere on this site or in these repositories is meant to carry three things: what produced it, when, and what it is a claim about. A measurement stays true about its moment and is not automatically true about the present, which is why a date is part of a number rather than decoration on it. If you find one here without those, that is a defect and worth telling us about.
 
@@ -152,7 +152,7 @@ Process-kill durability across three filesystems, policy-plane throughput on liv
 Three published conclusions. That throughput collapses past 64 concurrent callers, which turned out to be a shared-vCPU instance rather than the software. That one hyperscaler was 62% faster, which was a chip generation rather than a cloud. And a prediction that shared storage would be expensive on both, which was wrong on one by a factor of 108. All three retractions are published next to the claims they replace. A project with no retractions has either published nothing checkable or has not checked.
 
 **Q: What has not been established yet?**
-Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Six of the nine shipped pre-production drills have never been fired at a real gateway. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.
+Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Not every shipped pre-production drill has been fired at a real gateway; the ledger records the ones that have. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.
 
 **Q: Why publish the things that went wrong?**
 Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 123 entries and 55 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.

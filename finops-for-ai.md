@@ -28,7 +28,7 @@ Pick the run as the unit and make every plane key on it. That single decision is
 
 ### 2. Budgets that nest, enforced in the path
 
-A budget per run, rolling up to the agent, the team and the company, checked all-or-nothing so a run cannot fit under its own cap while breaking its team's. Accounting is reserve then settle: the call is priced before it happens, the reserve taken, the real cost settled afterwards, and the call that would cross the cap is refused before the provider sees it. Models the price book does not recognise get a fallback price rather than passing through untracked, because untracked spend is the failure mode this exists to remove. The fallback is deliberately high, and that cuts both ways: on 2026-09-17 a model the book did not yet carry was priced at five times its list rate, so the run was refused early rather than late, and the figure a team saw was the ceiling rather than the bill. Keep the book current and read the flag on the response that says a fallback was used.
+A budget per run, rolling up to the agent, the team and the company, checked all-or-nothing so a run cannot fit under its own cap while breaking its team's. Accounting is reserve then settle: the call is priced before it happens, the reserve taken, the real cost settled afterwards, and the call that would cross the cap is refused before the provider sees it. Models the price book does not recognise get a fallback price rather than passing through untracked, because untracked spend is the failure mode this exists to remove. The fallback is a conservative rate, so for a model the book does not yet carry, the figure a team sees is a ceiling rather than the bill. Keep the book current and read the flag on the response that says a fallback was used.
 
 - **Start in shadow mode.** Price and record everything, refuse nothing, and look at what would have been blocked before anything is.
 
@@ -46,11 +46,11 @@ Agent spend that lives only in an engineering dashboard is invisible to the peop
 
 ### 5. Unit economics, not just totals
 
-The number that changes a decision is not monthly spend. It is **cost per resolved case**: tag outcomes in production, then read the cost of every call in the run behind each one, including the intermediate calls nobody tagged and the calls the breaker refused. A support agent at forty cents a resolved case and one at four dollars are different businesses, and the total spend line cannot tell them apart. The tag is one request header, and the same 2026-09-17 run priced every outcome it carried, the refused calls included.
+The number that changes a decision is not monthly spend. It is **cost per resolved case**: tag outcomes in production, then read the cost of every call in the run behind each one, including the intermediate calls nobody tagged and the calls the breaker refused. Take two support agents, one at forty cents a resolved case and one at four dollars: they are different businesses, and the total spend line cannot tell them apart. The tag is one request header, and the same 2026-09-17 run priced every outcome it carried, the refused calls included.
 
 ### 6. The line item nobody forecasts: the evidence itself
 
-Every control above produces a record, and the records are the part of an agent programme that grows without anyone deciding to grow it. This is the rare budget line that can be forecast exactly, because it is linear in a quantity you already track: measure the bytes one governed decision writes, multiply by the decisions your fleet will make, add whatever retention your compliance function demands. On a control plane we measured across three clouds it came to 426 bytes per decision, with every decision audited rather than a sample, which is 614 MB a day at a thousand calls a minute and a 5 GiB volume filled in nine.
+Every control above produces a record, and the records are the part of an agent programme that grows without anyone deciding to grow it. This is the rare budget line that can be forecast exactly, because it is linear in a quantity you already track: measure the bytes one governed decision writes, multiply by the decisions your fleet will make, add whatever retention your compliance function demands. On AWS and GCP the control plane measured 427.6 and 426.4 bytes per decision, with every decision audited rather than a sample. At 426 bytes, a thousand calls a minute is 614 MB a day, and a 5 GiB volume fills in about nine days.
 
 ### 7. Somebody to actually do it
 

@@ -70,7 +70,7 @@ From the outside, an agent being driven by someone else and an agent stuck retry
 
 ### Nobody to call, nothing to revoke
 
-A privileged agent with no attestation and no named owner is not a governance gap, it is an unrotatable credential with a personality. It is also the most common finding on a first scan.
+A privileged agent with no attestation and no named owner is not a governance gap, it is an unrotatable credential with a personality.
 
 **Answer:** require attestation for privileged agents, flag missing owners, and keep the inventory as a bill of materials. [Idryx →](https://it-rat.com/services/idryx.html) · [the identity guide →](https://it-rat.com/agent-identity.html)
 
@@ -108,7 +108,7 @@ Every guardrail here is a claim, and a claim nobody tests decays. Fire the drill
 
 Every decision, refusal, kill and approval journalled when it happens, each record carrying the hash of the one before it, so the chain is verifiable by somebody who does not trust you. Security work that cannot be shown is security work that will be repeated under worse conditions.
 
-Everything here is defensive: it inspects, detects and refuses on your own estate. Nothing in the stack crafts adversarial prompts, manipulates another system's outputs, or attacks anything, and the drills are rehearsals fired at your own gateway with a fake provider behind it. Where we describe an attack, it is to say what to detect and what to stop, which is the only reason to name it.
+Everything here is defensive: it inspects, detects and refuses on your own estate. Mockryx crafts hostile requests, including a prompt-injected tool call and a prompt with a fake secret, and fires them only at a pre-production gateway the operator names, with a fake provider behind it. Nothing in the stack sends them anywhere else, and it does not attack systems you do not run. Where we describe an attack, it is to say what to detect and what to stop, which is the only reason to name it.
 
 ## The other two halves of the same job.
 
@@ -116,7 +116,7 @@ Security, cost and control are one conversation held in three rooms. If you came
 
 - **Where does it enforce: the prompt or the tool call?** Filtering model output is useful and is not a boundary. The call is the boundary, because that is where the damage happens.
 
-- **Does it model delegation as a chain?** One-hop \u201cacts on behalf of\u201d cannot show an agent reaching admin two hops away, which is the finding that matters most.
+- **Does it model delegation as a chain?** One-hop “acts on behalf of” cannot show an agent reaching admin two hops away, which is the finding that matters most.
 
 - **Is detection deterministic?** If a model sits in the detection path, a finding cannot be reproduced, and an auditor is entitled to ask you to reproduce it.
 

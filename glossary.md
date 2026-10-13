@@ -24,7 +24,7 @@ The ordered record of who an agent is acting for on this request: agent, then wh
 Evidence that the caller holds the key a token was issued to, rather than merely holding the token. The token carries a thumbprint of the caller's public key, and every request carries a fresh signature from that key, so a token lifted from a log buys nothing. This is the half a delegation chain deliberately does not cover, and it is what [Vouchryx](https://it-rat.com/services/vouchryx.html) adds.
 
 **Delegation revocation**
-Ending an agent's right to act for somebody, at every enforcement point at once, without waiting for a token to expire. Distinct from a kill switch, which ends spend: the money case is a runaway, the authority case is a delegation that should never have been made or should stop now. Both are one operation and both have to be attributable, so an actor and a reason are required.
+Ending an agent's right to act for somebody, at every enforcement point that polls the revocation list, within one poll interval, without waiting for a token to expire. Distinct from a kill switch, which ends spend: the money case is a runaway, the authority case is a delegation that should never have been made or should stop now. Both are one operation and both have to be attributable, so an actor and a reason are required.
 
 **Found, not saved**
 A FinOps distinction that decides whether anybody believes the rest of your numbers. A finding puts money on the table; nothing is saved until a person acts on it and the invoice changes. A console that reports found money as saved is disbelieved the first time finance checks it, and after that every other figure it prints is suspect too. See [CostCrew](https://it-rat.com/services/costcrew.html).
@@ -121,4 +121,4 @@ A gradual fall in output quality that a flat threshold misses. Detected properly
 
 ## Each of these has a guide behind it.
 
-The [six guides](https://it-rat.com/guides.html) cover governance, cost, security, MCP, identity and the line between observability and control, and the [stack](https://it-rat.com/index.html#stack) is the open implementation of everything named here.
+The [twelve guides](https://it-rat.com/guides.html) cover governance, cost, security, MCP, identity and the line between observability and control, and the [stack](https://it-rat.com/index.html#stack) is the open implementation of everything named here.

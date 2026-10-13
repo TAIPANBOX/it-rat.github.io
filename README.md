@@ -14,8 +14,8 @@
 
 The source of **[it-rat.com](https://it-rat.com)**: a product site for the TAIPANBOX agent-governance
 stack, built as an interactive control room rather than a brochure. Every service gets its own room
-with a scrubbable simulation of how it behaves over time, an animated architecture diagram, and an
-honest comparison against the alternatives we rejected.
+with a scrubbable simulation of how it behaves over time, an animated architecture diagram, and a plain account of
+what it does and how it is proven.
 
 The stack itself is **defensive**: it exists so the owner of an AI-agent fleet can see, price, govern
 and stop their own agents. Nothing here is offensive tooling, and the site is written to say so.

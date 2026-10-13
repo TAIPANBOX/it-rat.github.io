@@ -38,7 +38,7 @@ A description carrying instructions, or hidden characters the reviewer never saw
 
 The tool you audited is not the tool being served next week. Because clients re-fetch on connect, the change needs no deployment on your side and leaves no trace in your repository.
 
-**Answer:** pin a fingerprint of every approved tool's description and schema, and fail the build when one changes. It ships as a CI action for exactly this. [TokenFuse →](https://it-rat.com/services/tokenfuse.html)
+**Answer:** pin a fingerprint of every approved tool's description and schema, so a change shows up as a rug pull. The TokenFuse mcp-scan action runs that scan in CI and fails the build at a chosen severity, high by default. [TokenFuse →](https://it-rat.com/services/tokenfuse.html)
 
 *shadow server*
 
@@ -98,7 +98,7 @@ A description that tries to talk the model into something is only dangerous if t
 
 Every claim above is testable: fire a drill that presents the forbidden tool and assert the policy point denies it, against a real gateway with a fake provider behind it. A guardrail nobody exercises is a guardrail nobody has. [Mockryx](https://it-rat.com/services/mockryx.html) exists for that rehearsal.
 
-Everything here inspects, detects and refuses on your own estate. Nothing in this stack crafts adversarial tool descriptions, attacks an MCP server, or probes anyone else's infrastructure, and the scanner is meant to be pointed at servers you are entitled to review. Naming an attack is how you say what to stop.
+Everything here inspects, detects and refuses on your own estate. Mockryx ships a drill that crafts a poisoned tool description as a test input, and it sends that only to the operator's own gateway. Nothing in this stack attacks an MCP server or probes anyone else's infrastructure, and the scanner is meant to be pointed at servers you are entitled to review. Naming an attack is how you say what to stop.
 
 ## Where this sits.
 
@@ -122,7 +122,7 @@ MCP is one surface of a wider job: [AI agent security](https://it-rat.com/ai-age
 Two structural ones and the rest follow. A tool definition is a description the model reads as instructions, so it is content, not just a signature. And clients re-fetch definitions on connect, so the tool you approved is not necessarily the tool in use later. From those come poisoned descriptions, rug pulls, unsanctioned servers, credentials passing through the model, and drift nobody tracks.
 
 **Q: What is an MCP rug pull, and how do I catch one?**
-A tool whose description or schema changes after you approved it, with no deployment on your side and no trace in your repository. Catch it the way you catch a changed dependency: pin a fingerprint of every approved tool and fail the build when the fingerprint moves. It ships as a CI action for that reason.
+A tool whose description or schema changes after you approved it, with no deployment on your side and no trace in your repository. Catch it the way you catch a changed dependency: pin a fingerprint of every approved tool and fail the build when the fingerprint moves. The TokenFuse repository carries a CI action file (action.yml) for that reason.
 
 **Q: How do I find MCP servers nobody registered?**
 From the agent side, not the server side. Compare what your agents actually reach against the list of sanctioned servers and flag the difference; then join agents to servers on the tools they share, so an agent whose declared tools come from an unsanctioned server is a query rather than an incident.

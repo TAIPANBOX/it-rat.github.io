@@ -46,7 +46,7 @@ On 2026-09-26 and 2026-09-27, a hub of three virtual machines on a public cloud 
 
 - **From the public internet, the entry answered exactly as designed in 16 cases out of 16:** the site's calls with its key succeeded, a call with no key was refused, and the console and every other path answered 404 at the edge.
 
-- **The entry came up with both certificates in 66 seconds** after the load balancer existed.
+- **The hub script, certificates included, finished in 66 seconds.**
 
 - **One policy written once at the hub** refused calls at both sites' gateways, and both answered again within 5 seconds of its removal.
 
@@ -54,7 +54,7 @@ On 2026-09-26 and 2026-09-27, a hub of three virtual machines on a public cloud 
 
 - **A run killed through the hub** was refused at the site within 4 seconds.
 
-- **With the site idle,** its last report at the hub aged from 34 to 286 seconds in four minutes without the heartbeat; with it, it never passed 22 seconds.
+- **With the site idle,** its last report at the hub aged from 34 to 286 seconds in four minutes without the heartbeat; with it, the hub kept hearing from the site, so the gap between reports stayed short.
 
 ## Where this sits.
 
@@ -75,7 +75,7 @@ From the key the site pushed with. Each site gets its own pair of keys, bound to
 What you configured. With the policy plane set to fail closed, the site's gateway refuses calls until the hub is back, which is what a governed fleet should do. Its telemetry is kept in a queue meanwhile and sent when the link returns; in our run nothing was lost.
 
 **Q: How do I tell a quiet site from a dead one?**
-By its heartbeat. A gateway with nothing to report still checks in every 30 seconds by default, so the hub shows when each site last reported whether or not it had traffic. Without the heartbeat, an idle site in our run looked nearly five minutes stale; with it, never more than 22 seconds.
+By its heartbeat. A gateway with nothing to report still checks in every 30 seconds by default, so the hub shows when each site last reported whether or not it had traffic. Without the heartbeat, an idle site in our run looked nearly five minutes stale; with it, the hub kept hearing from the idle site.
 
 **Q: What does the public entry cost?**
 The software costs nothing. The entry is a load balancer, and your cloud bills it by the hour for as long as it exists, at that cloud's published rate. It is not part of the default install, so a cluster that never opens it pays nothing extra, and taking it down with the launcher's own script removes the billed part first.

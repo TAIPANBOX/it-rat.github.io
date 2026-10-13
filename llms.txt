@@ -17,13 +17,13 @@ Every page below is available as markdown at the same path with a .md extension.
 - [MCP security](https://it-rat.com/mcp-security.md): What changes when tools arrive over the Model Context Protocol: descriptions the model reads, servers nobody sanctioned, tools that change later.
 - [Agent identity and authentication](https://it-rat.com/agent-identity.md): Static keys are not identity. What an AI agent needs to be nameable, attributable, attestable and revocable, and when to demand a signature.
 - [Glossary of agent-governance terms](https://it-rat.com/glossary.md): Plain definitions for this field: agent passport, attestation, delegation chain, blast radius, per-run budget, rug pull, CBOM, FOCUS, drift.
-- [AI observability vs governance](https://it-rat.com/ai-observability-vs-governance.md): LLM observability explains what an agent did; governance decides what it may do next. Where each fails, and how they meet on one run id.
+- [AI observability vs governance](https://it-rat.com/ai-observability-vs-governance.md): The record explains what an agent did, the control decides what it may do next, and both meet on one run id. What each one answers and what it cannot.
 - [One incident, end to end](https://it-rat.com/one-incident-end-to-end.md): A single runaway agent followed through spend, policy, identity, memory, mail and evidence: what each plane sees, what it emits, and who is told.
-- [What runs where and what it costs](https://it-rat.com/what-runs-where.md): One machine, a five-node cluster, or three clouds: the measured shapes of this stack, what each burns per hour, and the storage line that changes by 108x.
+- [What runs where and what it costs](https://it-rat.com/what-runs-where.md): One machine, a five-node cluster, or three clouds: the measured shapes of this stack, their throughput, and the storage line that changes by 108x.
 - [From zero to your first alert](https://it-rat.com/first-alert.md): One command, one address, one mail: the shortest honest path from nothing to a governed agent that writes to you when it crosses a line.
 - [Two sites, one control plane, no VPN](https://it-rat.com/two-sites.md): Sites reach one hub over outbound HTTPS through one narrow door: every site by name, one policy everywhere, and a quiet site never mistaken for a dead one.
 - [What is proven and what is not](https://it-rat.com/what-is-proven.md): How to read a validation claim: what was measured on this stack, what the measurement does not cover, and the conclusions we published and had to withdraw.
-- [Three shapes of agent tooling](https://it-rat.com/agent-tooling-compared.md): Three shapes of agent tooling exist and two of them cannot stop anything. What each is for, and twelve differences you can go and check for yourself.
+- [Three shapes of agent tooling](https://it-rat.com/agent-tooling-compared.md): The controls that answer before a call: what each one does, what it does not do yet, and how to check it.
 
 ## Services
 

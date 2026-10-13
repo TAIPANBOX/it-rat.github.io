@@ -54,7 +54,7 @@ The mail itself carries identifiers and numbers and never content, because the e
 
 Following the link opens the panel showing that exact incident. It does not kill anything, and the difference is not fussiness. A link that acts is an unauthenticated capability held by whoever can see or forward the message, and mail security gateways **prefetch links**, so a one-click kill would fire before a human read the sentence next to it.
 
-So the action happens in the console, behind a sign-in, and for anything destructive behind a fresh passkey confirmation bound to that exact command and its arguments. Not a session, not a role check alone: per action, because the point is that a stolen session cannot pull the switch. What the operator typed as a reason is journaled with it.
+So the action happens in the console, behind a sign-in. Closing a retained reservation also takes a fresh passkey confirmation, bound to that one reservation and its revision, because a stolen session should not be able to close one. What the operator typed as a reason is journaled with it.
 
 ### The same failure, rehearsed before it was real
 
@@ -72,9 +72,9 @@ One class of event never reaches your inbox at all, and it is worth knowing why.
 
 ## Four things that only appear in order.
 
-### Two planes are in the path, five are not
+### For this incident, two planes are in the path, and five are not
 
-Only money and policy can stop a call, and they pay for that with latency on every request. Everything else reads the same event stream afterwards. That split is why the stack can add a plane without slowing anything down, and also why a plane that reads the log cannot save you in the moment: by the time identity has an opinion, the call is finished.
+For this incident only money and policy stop the call, and they pay for that with latency on every request. Across the stack the egress plane also sits in the path, for web fetches. Everything else reads the same event stream afterwards. That split is why the stack can add a plane without slowing anything down, and also why a plane that reads the log cannot save you in the moment: by the time identity has an opinion, the call is finished.
 
 ### The interesting finding belonged to nobody
 
@@ -102,7 +102,7 @@ Each line under a step is a real event on a shared contract, which is why an inc
 
 ## Where this sits.
 
-Two moves in this walk are newer than the walk itself. Stopping the spend and stopping the authority are different acts, and the second one is [a revocation](https://it-rat.com/services/vouchryx.html) that lands at every enforcement point at once rather than a 402 on the next call. And what the incident leaves behind is [sealed](https://it-rat.com/services/trailryx.html) nightly, so the record of it can be shown to somebody who was not there. This walk is the products in motion. [AI agent governance](https://it-rat.com/ai-agent-governance.html) is the field it belongs to, [observability versus governance](https://it-rat.com/ai-observability-vs-governance.html) is why watching is not the same as stopping, and [what runs where and what it costs](https://it-rat.com/what-runs-where.html) is the same stack seen from the infrastructure side. Every service named above is Apache-2.0 and runs on hardware you own; the whole set opens from [the corridor](https://it-rat.com/index.html#stack).
+Two moves in this walk are newer than the walk itself. Stopping the spend and stopping the authority are different acts, and the second one is [a revocation](https://it-rat.com/services/vouchryx.html) that lands at every enforcement point that polls, within one poll interval, rather than a 402 on the next call. And what the incident leaves behind is [sealed](https://it-rat.com/services/trailryx.html) daily by default, so the record of it can be shown to somebody who was not there. This walk is the products in motion. [AI agent governance](https://it-rat.com/ai-agent-governance.html) is the field it belongs to, [the record and the control](https://it-rat.com/ai-observability-vs-governance.html) is why watching is not the same as stopping, and [what runs where and what it costs](https://it-rat.com/what-runs-where.html) is the same stack seen from the infrastructure side. Every service named above is Apache-2.0 and runs on hardware you own; the whole set opens from [the corridor](https://it-rat.com/index.html#stack).
 
 ## What people ask about the incident path
 
@@ -110,7 +110,7 @@ Two moves in this walk are newer than the walk itself. Stopping the spend and st
 Two: the money plane and the policy plane, because both sit in the request path. The gateway answers 402 before the provider is asked, and the policy decision point answers allow, deny or hold on every call. The other five read the shared event stream afterwards. That is a deliberate split, and it has a cost worth knowing: by the time the identity plane has an opinion about a run, the call it is reasoning about has already finished.
 
 **Q: Why does a spend incident alone not raise a high-severity finding?**
-Because on its own it is an agent having a bad afternoon. The detector wants at least two corroborating facts before it will call something high, and in this walk it gets three: the spend incident, an agent with no attestation on record, and a delegation chain two hops deep. None of the three services holds all three facts. The severity comes from the join, which is the argument for a separate identity plane rather than a rule inside the gateway.
+Because on its own it is an agent having a bad afternoon. The detector wants at least two corroborating facts before it will call something high, and in this walk it gets two on top of the spend event: an agent with no attestation on record, and a delegation chain two hops deep. None of the three services holds all three facts. The severity comes from the join, which is the argument for a separate identity plane rather than a rule inside the gateway.
 
 **Q: Why does the alert email contain a link instead of a kill button?**
 Because a link that acts is an unauthenticated capability held by whoever can see or forward the message, and mail security gateways prefetch links, so the action would fire before a human read the sentence beside it. The link is a coordinate: it opens the panel showing that incident in your own console. The action happens there, behind a sign-in, and anything destructive additionally needs a fresh passkey confirmation bound to that exact command.

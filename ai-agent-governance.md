@@ -40,7 +40,7 @@ One graph of humans, service accounts, keys and agents, with delegation chains a
 
 ### Whose authority is it borrowing?
 
-A short-lived token an agent can prove it holds and cannot lend, carrying the chain of who asked for what on whose behalf. Revoking it ends the right to act for somebody everywhere at once, whatever the token still says about its own expiry.
+A short-lived token an agent can prove it holds and cannot lend, carrying the chain of who asked for what on whose behalf. Revoking it ends the right to act for somebody at every enforcement point that polls the revocation list, within one poll interval, whatever the token still says about its own expiry.
 
 *egress*
 
