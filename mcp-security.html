@@ -117,7 +117,7 @@
         <div class="n">rug pull</div>
         <h3>Approved once, changed later</h3>
         <p>The tool you audited is not the tool being served next week. Because clients re-fetch on connect, the change needs no deployment on your side and leaves no trace in your repository.</p>
-        <div class="fix"><b>Answer:</b> pin a fingerprint of every approved tool's description and schema, and fail the build when one changes. It ships as a CI action for exactly this. <a href="services/tokenfuse.html">TokenFuse &#8594;</a></div>
+        <div class="fix"><b>Answer:</b> pin a fingerprint of every approved tool's description and schema, so a change shows up as a rug pull. The TokenFuse mcp-scan action runs that scan in CI and fails the build at a chosen severity, high by default. <a href="services/tokenfuse.html">TokenFuse &#8594;</a></div>
       </div>
       <div class="q" style="--c:#34D399">
         <div class="n">shadow server</div>
@@ -175,7 +175,7 @@
 
     <div class="note rv">
       <div class="t">defensive scope</div>
-      <p>Everything here inspects, detects and refuses on your own estate. Nothing in this stack crafts adversarial tool descriptions, attacks an MCP server, or probes anyone else's infrastructure, and the scanner is meant to be pointed at servers you are entitled to review. Naming an attack is how you say what to stop.</p>
+      <p>Everything here inspects, detects and refuses on your own estate. Mockryx ships a drill that crafts a poisoned tool description as a test input, and it sends that only to the operator's own gateway. Nothing in this stack attacks an MCP server or probes anyone else's infrastructure, and the scanner is meant to be pointed at servers you are entitled to review. Naming an attack is how you say what to stop.</p>
     </div>
   </div>
 </section>

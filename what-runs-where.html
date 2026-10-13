@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>What runs where, and what it costs · IT-RAT</title>
-<meta name="description" content="One machine, a five-node cluster, or three clouds: the measured shapes of this stack, what each burns per hour, and the storage line that changes by 108x.">
+<meta name="description" content="One machine, a five-node cluster, or three clouds: the measured shapes of this stack, their throughput, and the storage line that changes by 108x.">
 <link rel="canonical" href="https://it-rat.com/what-runs-where.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/what-runs-where.html">
 <meta property="og:title" content="What runs where, and what it costs · IT-RAT">
-<meta property="og:description" content="Six clusters across three clouds, measured and then destroyed. What the same stack costs on each, the shared-storage line that differs by a factor of 108, and a published conclusion we had to withdraw.">
+<meta property="og:description" content="Six clusters across three clouds, measured and then destroyed. How the same stack performed on each, the shared-storage line that differs by a factor of 108, and a published conclusion we had to withdraw.">
 <meta property="og:image" content="https://it-rat.com/assets/og/tokenfuse.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What runs where, and what it costs · IT-RAT">
-<meta name="twitter:description" content="Six clusters across three clouds, measured and then destroyed. What the same stack costs on each, the shared-storage line that differs by a factor of 108, and a published conclusion we had to withdraw.">
+<meta name="twitter:description" content="Six clusters across three clouds, measured and then destroyed. How the same stack performed on each, the shared-storage line that differs by a factor of 108, and a published conclusion we had to withdraw.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/tokenfuse.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -102,7 +102,7 @@
   <div class="wrap">
     <div class="kicker rv">a guide &#183; what runs where</div>
     <h1 class="rv d1">What runs where, and what it costs.</h1>
-    <p class="lede rv d2">Governance software is bought on its promises and lived with on its bill. So this page is the operational half: the four shapes this stack has been measured in, what each one burns, and the numbers that came out of putting the same manifests on Hetzner, AWS and GCP between 25 and 27 July 2026, then the whole stack on a box behind a home router on 2026-09-17 with the agents in two clouds at once. Six clusters and two more clouds, all destroyed afterwards. <b>Two of the findings contradicted things we had already published</b>, and both are below with the correction attached.</p>
+    <p class="lede rv d2">Governance software is bought on its promises and lived with on its bill. So this page is the operational half: the four shapes this stack has been measured in, what each one did under load, and the numbers that came out of putting the same manifests on Hetzner, AWS and GCP between 25 and 27 July 2026, then the whole stack on a box behind a home router on 2026-09-17 with the agents in two clouds at once. Six clusters across three clouds, all destroyed afterwards. <b>Two of the findings contradicted things we had already published</b>, and both are below with the correction attached.</p>
   </div>
 </section>
 
@@ -119,21 +119,21 @@
         <h3>One machine</h3>
         <p>Compose on a box you own. The gateway publishes to loopback by default, so a machine that just ran an install script does not acquire an internet-facing enforcement plane because nobody typed anything. Opening it to the agents you actually have is one variable.</p>
         <p>Survives a reboot, has a console behind its own tunnel, and is a real deployment rather than a demo. Most teams should start here and many should stop here.</p>
-        <div class="cost">a VPS you already pay for<span>nine containers, one network</span></div>
+        <div class="cost">a VPS you already pay for<span>one compose file, one network</span></div>
       </div>
       <div class="shape" style="--c:#F4B23E">
         <div class="n">shape two</div>
         <h3>A five-node cluster</h3>
         <p>The same stack as Kubernetes manifests: plain YAML and a kustomization, applied with one <span class="mono">kubectl -k</span>, no Helm. Default-deny networking, then exactly the paths the stack needs.</p>
         <p>It buys you node failure tolerance and costs you a shared-storage decision that a single machine hides completely. That decision is the next section.</p>
-        <div class="cost">EUR 137 / month on Hetzner<span>5 nodes, 8 vCPU and 16 GB each</span></div>
+        <div class="cost">5 nodes, 8 vCPU and 16 GB each<span>one kustomization, no Helm</span></div>
       </div>
       <div class="shape" style="--c:#6C7BFF">
         <div class="n">shape three</div>
         <h3>The same, on a hyperscaler</h3>
         <p>One line of Kubernetes configuration differs between the three clouds, and it is a Calico encapsulation mode: a Google VPC has no layer 2 at all, so on GCP the encapsulation becomes unconditional. On AWS the equivalent fix was one Terraform line and the Kubernetes side stayed byte for byte identical to Hetzner.</p>
         <p>You are paying for managed everything, and the bill reflects it.</p>
-        <div class="cost">about 10x the compute<span>USD 1,291 to 1,487 / month</span></div>
+        <div class="cost">managed services<span>billed by the hour and by use</span></div>
       </div>
       <div class="shape" style="--c:#B48CFF">
         <div class="n">shape four</div>
@@ -295,7 +295,6 @@
           <tr><td>p50 at 8 concurrent</td><td>3.9 ms</td><td><b>3.21 ms</b></td><td><b>3.22 ms</b></td></tr>
           <tr><td>past 64 concurrent</td><td>collapse to 1,059</td><td>no collapse, 2,331 at 256</td><td>no collapse, 2,353 at 256</td></tr>
           <tr><td>audit bytes per decision</td><td>393</td><td>427.6</td><td>426.4</td></tr>
-          <tr><td>cost per million governed decisions</td><td><b>EUR 0.024</b></td><td><b>USD 0.208</b></td><td><b>USD 0.229</b></td></tr>
         </tbody>
       </table>
       <div class="src">Measured on live five-node k3s clusters, 25 to 27 July 2026. All three destroyed afterwards and both cloud accounts verified empty by direct API query.</div>
@@ -308,8 +307,8 @@
       <h3>The number we had to withdraw</h3>
       <p>We published that throughput collapses past 64 concurrent callers and that a fleet should be designed against that cliff. It does not, and it should not. Neither dedicated-core cloud loses anything out to 256 concurrent on either chip generation; throughput holds and only latency grows. The collapse was a property of a <b>shared-vCPU instance</b>, which is to say it was a neighbour, not the software. The retraction sits next to the original claim in the source rather than replacing it quietly.</p>
 
-      <h3>The newest generation is the cheapest work, not the dearest</h3>
-      <p>For reference, the same benchmark on AWS Genoa reached 4,028 decisions per second at a p50 of 1.92 ms. It costs 37% more per hour than Milan and returns 64% more throughput, which makes it <b>16% cheaper per governed decision</b> at USD 0.174 per million. Anyone sizing this for cost per unit of governance should reach for the newest generation available to them, and a quota that blocks it is a price increase in disguise.</p>
+      <h3>The newest generation is the fastest measured here</h3>
+      <p>For reference, the same benchmark on AWS Genoa reached 4,028 decisions per second at a p50 of 1.92 ms. It returns 64% more throughput than Milan. Anyone sizing this for cost per unit of governance should reach for the newest generation available to them, and a quota that blocks it is a price increase in disguise.</p>
 
       <h3>The audit volume belongs to the software, and it is the line that grows on its own</h3>
       <p>427.6 and 426.4 bytes per decision on two different clouds from the same binary. That is the number to plan against, because every decision is audited rather than sampled: at a thousand governed calls a minute it is about 614 MB a day, and it is the only part of running this that grows without anyone deciding to grow it.</p>
@@ -321,31 +320,12 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">the operational numbers</div>
-      <h2>What it burns while it exists.</h2>
+      <h2>What it cost to run, where we can show it.</h2>
     </div>
-    <div class="tbl rv">
-      <table>
-        <thead><tr><th></th><th>Hetzner</th><th>AWS</th><th>GCP</th></tr></thead>
-        <tbody>
-          <tr><td>5 nodes, 8 vCPU / 16 GB</td><td>EUR 137 / mo</td><td>USD 1,487 / mo</td><td>USD 1,291 / mo</td></tr>
-          <tr><td>load balancer</td><td>EUR 7.49 / mo</td><td>USD 19.71 / mo + LCU</td><td>USD 21.90 / mo + traffic</td></tr>
-          <tr><td>node disks, 5 x 100 GB</td><td>included</td><td>USD 47.60 / mo</td><td>USD 60.00 / mo</td></tr>
-          <tr><td>public IPv4</td><td>included</td><td>USD 18.25 / mo</td><td>USD 14.88 / mo</td></tr>
-          <tr><td><b>burn while running</b></td><td><b>about EUR 0.20 / h</b></td><td><b>about USD 2.16 / h</b></td><td><b>about USD 1.91 / h</b></td></tr>
-        </tbody>
-      </table>
-      <div class="src">Same sources and regions as above. Monthly figures use 730 hours.</div>
-    </div>
-
+    
     <div class="prose rv">
-      <p>The hourly figure is the one that matters in practice, because a cluster like this is usually created for a purpose rather than left standing. On AWS a six hour working session is about USD 13, forgetting it overnight is about USD 26, and forgetting it for a month is about USD 1,575.</p>
       <p>The fourth shape, for comparison: the box is yours and costs nothing metered. On 2026-09-17 the two small VMs standing in for the customer's clusters ran 63 minutes each, about USD 0.11 together, and the real model calls came to USD 0.066, of which one call by the FinOps crew was USD 0.058. The whole run, with the failure matrix, was about USD 0.18, and both accounts read back empty by API before the day ended.</p>
-      <p>Two smaller findings from the same exercise, both of which invert the intuition:</p>
-      <ul>
-        <li><b>GCP is the cheaper hyperscaler here</b>, by about 13% on compute, and the cheaper machine is the AMD one. On AWS the AMD part cost more than the Intel part; on GCP the AMD part is cheaper. The architecture-faithful choice is the cheap one on one cloud and the dear one on the other.</li>
-        <li><b>The public address costs the same rate on both</b>, to the cent, and then GCP gives away the first 744 address-hours a month, which is one address running full time. A short five-node run pays nothing for its addresses on GCP and pays from the first hour on AWS. Hetzner includes them outright. Three pricing philosophies for the same commodity, and none of them visible in a monthly-rate comparison.</li>
-      </ul>
-    </div>
+          </div>
 
     <div class="note rv">
       <div class="t">what these runs did not prove</div>
@@ -500,9 +480,9 @@
     pdp:    { dur: 6.6,
       cap: "<b>The policy plane stopped, and the box failed closed.</b> Every call from both clouds was refused in 0.3 s, none reached the provider, one dependency event per call, and the first call after the restart went through. This is the launchers' setting rather than the binary's default, and it was fired on purpose." },
     reboot: { dur: 7.6,
-      cap: "<b>The first reboot took the door down and nothing brought it back.</b> Docker bound the port before the tunnel held the address, the failed start was never retried, and 44 calls were refused in two and a half minutes. Ordering Docker after the tunnel fixed it: the second reboot brought the gateway back on its own in 40 s, and the installer writes both settings now." },
+      cap: "<b>The first reboot took the door down and nothing brought it back.</b> Docker bound the port before the tunnel held the address, the failed start was never retried, and 44 calls failed over about two and a half minutes. Ordering Docker after the tunnel fixed it: the second reboot brought the gateway back on its own, and the installer writes both settings now." },
     node:   { dur: 6.6,
-      cap: "<b>A node died and nobody noticed.</b> The AWS cluster was killed mid-run; the run froze at step seven and no plane said anything at five seconds or at sixty. Absence is a gap the run found rather than a failure it held. A stalled-run detector exists on main since the next day; the released images do not have it yet." }
+      cap: "<b>A node died and nobody noticed.</b> The AWS cluster was killed mid-run; the run froze at step seven and no plane said anything at five seconds or at sixty. Absence is a gap the run found rather than a failure it held. A stalled-run detector is in TokenFuse main now." }
   };
 
   var scene = "both", t0 = 0, raf = 0;

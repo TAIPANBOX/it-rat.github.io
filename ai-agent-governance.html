@@ -125,7 +125,7 @@
       <div class="q" style="--c:#8B9DFF">
         <div class="n">delegation</div>
         <h3>Whose authority is it borrowing?</h3>
-        <p>A short-lived token an agent can prove it holds and cannot lend, carrying the chain of who asked for what on whose behalf. Revoking it ends the right to act for somebody everywhere at once, whatever the token still says about its own expiry.</p>
+        <p>A short-lived token an agent can prove it holds and cannot lend, carrying the chain of who asked for what on whose behalf. Revoking it ends the right to act for somebody at every enforcement point that polls the revocation list, within one poll interval, whatever the token still says about its own expiry.</p>
         <a href="services/vouchryx.html">Vouchryx, the delegation plane &#8594;</a>
       </div>
       <div class="q" style="--c:#F0ABFC">
@@ -221,7 +221,7 @@
     <div class="steps rv">
       <div class="step"><div><b>Meter before you enforce.</b> Put the money plane in the path in shadow mode. Within a week you know what your fleet actually costs per run, which agent is the outlier, and what a cap would have blocked. This is also the step that pays for the rest.</div></div>
       <div class="step"><div><b>Turn on the ceiling.</b> Budgets per run, nested up to the team. The first runaway it refuses tends to settle the argument about whether runtime control was worth the effort.</div></div>
-      <div class="step"><div><b>Put a decision in front of the web.</b> The cheapest severe failure in a fleet is an agent taking its next instruction from a page it fetched, or posting your data to an address a prompt gave it. This is a proxy in front of the fetch tool you already run, and it costs about what the gateway cost.</div></div>
+      <div class="step"><div><b>Put a decision in front of the web.</b> The cheapest severe failure in a fleet is an agent taking its next instruction from a page it fetched, or posting your data to an address a prompt gave it. This is a proxy in front of the fetch tool you already run.</div></div>
       <div class="step"><div><b>Name the actions that need a human.</b> Usually a small list: money above a threshold, anything that writes to a system of record, anything that touches customer data. A hold with a signed approval is enough; a committee is not.</div></div>
       <div class="step"><div><b>Draw the identities.</b> Most fleets discover here that half their agents have no owner and a third run on a key nobody rotates. The graph is uncomfortable reading and it is the cheapest security work available.</div></div>
       <div class="step"><div><b>Make the borrowed authority provable.</b> Once the identities are named, the question stops being who an agent is and becomes whose rights it is using this minute. A short-lived token bound to its key, with the chain inside it, and one revocation that ends the loan everywhere rather than in each service that remembers to check.</div></div>

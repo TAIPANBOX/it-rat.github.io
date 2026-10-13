@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Three shapes of agent tooling, and what each cannot do · IT-RAT</title>
-<meta name="description" content="Three shapes of agent tooling exist and two of them cannot stop anything. What each is for, and twelve differences you can go and check for yourself.">
+<title>What the stack refuses before a call, and how to check it · IT-RAT</title>
+<meta name="description" content="The controls that answer before a call: what each one does, what it does not do yet, and how to check it.">
 <link rel="canonical" href="https://it-rat.com/agent-tooling-compared.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/agent-tooling-compared.html">
-<meta property="og:title" content="Three shapes of agent tooling, and what each cannot do · IT-RAT">
-<meta property="og:description" content="Named products change monthly; the shapes do not. What framework-native tracing, open self-hosted observability and a vendor's hosted control plane each answer, and twelve differences with a way to check every one.">
+<meta property="og:title" content="What the stack refuses before a call, and how to check it · IT-RAT">
+<meta property="og:description" content="Twelve controls that answer before a call, each with a way to check it and the limit that still applies.">
 <meta property="og:image" content="https://it-rat.com/assets/og/index.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Three shapes of agent tooling, and what each cannot do · IT-RAT">
-<meta name="twitter:description" content="Named products change monthly; the shapes do not. What framework-native tracing, open self-hosted observability and a vendor's hosted control plane each answer, and twelve differences with a way to check every one.">
+<meta name="twitter:title" content="What the stack refuses before a call, and how to check it · IT-RAT">
+<meta name="twitter:description" content="Twelve controls that answer before a call, each with a way to check it and the limit that still applies.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/index.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -121,25 +121,25 @@
 
 <section class="guide-hero">
   <div class="wrap">
-    <div class="kicker rv">a comparison &#183; three tool shapes, and the half they leave</div>
-    <h1 class="rv d1">Every agent tool on the market can tell you what happened. Almost none of them can say no.</h1>
-    <p class="lede rv d2">Three shapes of tooling exist today, and a team evaluating them usually compares one against another without noticing that two of the three answer only the first question: what did the agent do. The third can act, on the condition that the agent moves onto its platform first. Nobody in this list stands in front of an agent that stays where it is and answers before the call, which is the question that shows up on an invoice, in an incident review, and in front of an auditor.</p>
+    <div class="kicker rv">a guide &#183; what answers before the call</div>
+    <h1 class="rv d1">This stack can say no before the call, and every refusal leaves a record.</h1>
+    <p class="lede rv d2">Watching an agent is useful after the fact. A budget, a policy and an egress check have to answer before the action, because by the time the invoice or the incident review arrives, the money is spent. The stack puts those answers in the path of the call. Each one is a decision that either happened or did not, and the rest of this page says what each one does and how to check it.</p>
     </div>
 </section>
 
 <section class="sec" style="padding-top:6px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">one request, three ways</div>
+      <div class="kicker">one request, two paths</div>
       <h2>Watch it happen.</h2>
-      <p class="lede">The same call, sent twice: once through a fleet that only watches, once through a fleet that can also refuse. Pick what the agent is trying to do and see where each one ends up.</p>
+      <p class="lede">The same call, sent twice: once with the control plane in the path and once without it. Pick what the agent is trying to do and see where each one ends up.</p>
     </div>
 
     <div class="rig rv">
       <div class="rig-ctl">
-        <span class="lbl">the fleet</span>
-        <button class="rig-b" type="button" data-mode="watch" aria-pressed="true">Tracing only</button>
-        <button class="rig-b amb" type="button" data-mode="govern" aria-pressed="false">Tracing and control</button>
+        <span class="lbl">the path</span>
+        <button class="rig-b" type="button" data-mode="watch" aria-pressed="true">Without the control plane</button>
+        <button class="rig-b amb" type="button" data-mode="govern" aria-pressed="false">With the control plane</button>
         <span class="sep"></span>
         <span class="lbl">the call</span>
         <button class="rig-b" type="button" data-case="ok" aria-pressed="true">Within budget</button>
@@ -182,7 +182,7 @@
         <text class="sv-lbl" x="716" y="231" fill="#5c6b82">traces, tokens, cost</text>
         <g id="dash-fill" opacity="0">
           <rect x="716" y="244" width="182" height="1.5" rx="1" fill="#252a35"/>
-          <text class="sv-mono" id="dash-line" x="716" y="268" fill="#93a8c4">&#8212;</text>
+          <text class="sv-mono" id="dash-line" x="716" y="268" fill="#93a8c4">-</text>
           <text class="sv-lbl" id="dash-when" x="716" y="284" fill="#5c6b82"></text>
         </g>
 
@@ -201,7 +201,7 @@
     </div>
 
     <div class="prose rv" style="margin-top:18px">
-      <p><b>The tap is the whole argument.</b> In both fleets a copy of the event goes sideways into the dashboard, and in both fleets it arrives after the thing already happened. The only difference is whether anything stood on the wire itself with the authority to stop it.</p>
+      <p><b>The copy is never the control.</b> Every event also goes sideways into the dashboard, and it arrives after the thing already happened. What decides the call is whether something stood on the wire itself with the authority to stop it.</p>
     </div>
   </div>
 </section>
@@ -209,38 +209,38 @@
 <section class="sec" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">the three shapes</div>
-      <h2>What is actually on the market.</h2>
-      <p class="lede">Named products change monthly. These shapes do not, and every tool a team is likely to already run falls into one of them.</p>
+      <div class="kicker">the three places</div>
+      <h2>Where the stack answers.</h2>
+      <p class="lede">Each place answers a different question, and each one leaves a record you can check.</p>
     </div>
     <div class="three rv">
       <div class="side">
-        <div class="n"><b>A</b>framework-native tracing</div>
-        <h3>Deep inside the chain you wrote</h3>
-        <p>Sold by the company behind an agent framework, and genuinely framework-agnostic: the SDKs cover the other frameworks and the model providers directly. Traces every step, captures prompts and responses, counts tokens and latency, runs evaluation suites online and offline, versions prompts, raises alerts, and clusters recurring failures into a root cause. Commercial, hosted by the vendor, with self-hosting on the enterprise tier only.</p>
-        <div class="k"><b>Best at:</b> why a chain produced a bad answer, and whether a model upgrade changed behaviour.</div>
-        <div class="k"><b>Says of itself:</b> observability and evaluation. It does not enforce or block anything at runtime.</div>
+        <div class="n"><b>A</b>the budget</div>
+        <h3>A ceiling on every run</h3>
+        <p>A gateway sits in front of the model calls. It gives every run a budget, prices each call against it before the call goes out, and answers 402 on the one that would cross the line, without forwarding it. Spend is reserved before the call and settled after it. The rest of the spend story, including the cache, the model router and the FOCUS export, is on the TokenFuse room.</p>
+        <div class="k"><b>Answers:</b> may this call spend more money right now?</div>
+        <div class="k"><b>Limit:</b> a budget governs spend. It does not judge whether an answer was good; that is measured in Verdryx.</div>
       </div>
       <div class="side">
-        <div class="n"><b>B</b>open observability, self-hosted</div>
-        <h3>The same job, on your own metal</h3>
-        <p>An MIT-licensed core you run yourself, with its own SDKs for the common frameworks and an OpenTelemetry path for anything that already emits spans, plus prompt management, model-as-judge evaluation and per-model cost accounting. The whole observability surface is free; what a commercial key unlocks is the administration around it, which is worth noticing: role permissions, retention policies, audit logs, data masking, directory sync.</p>
-        <div class="k"><b>Best at:</b> the same as A, without sending prompts and completions to somebody else's cloud.</div>
-        <div class="k"><b>Says of itself:</b> the run-time measures belong to separate guardrail libraries; its own job is judging afterwards whether they worked.</div>
+        <div class="n"><b>B</b>the policy point</div>
+        <h3>Allow, deny or hold, before the action</h3>
+        <p>Wardryx is the decision an agent asks for before it acts. It answers allow, deny or hold. A hold waits for a person, who grants it with a signed approval token. The token is bound to the agent, the run, the tool set and, where the policy names them, the arguments of the call. Holds nobody has decided are swept and reported, not left parked.</p>
+        <div class="k"><b>Answers:</b> may this action happen, and if not yet, who has to say yes?</div>
+        <div class="k"><b>Limit:</b> it decides the actions that reach it. The gateway and the egress plane are the other places that stand in the path.</div>
       </div>
       <div class="side">
-        <div class="n"><b>C</b>a vendor's hosted control plane</div>
-        <h3>One pane over the agents that run on it</h3>
-        <p>The large-vendor answer: a hosted console with a catalog, a gateway to models and tools, policy and lifecycle management. It no longer covers only agents built in its own builder, and this is the part most comparisons get wrong: agents written in other frameworks can be imported. What they cannot do is stay where they were. An imported agent is deployed onto the vendor's own infrastructure in order to be governed there.</p>
-        <div class="k"><b>Best at:</b> assembling agents quickly from a catalog, with support and a contract behind it.</div>
-        <div class="k"><b>The entry:</b> tiered plans with a monthly floor and capacity ceilings above it, the lowest one in the hundreds per month and the next one an order of magnitude higher.</div>
+        <div class="n"><b>C</b>identity and the record</div>
+        <h3>Whose action it was, and proof nothing is missing</h3>
+        <p>Idryx keeps one identity graph for humans, keys and agents, so a delegation chain ends at a person. Trailryx keeps the record. Every answer it gives comes with a completeness proof, a short receipt that the rows shown are all the rows that match the question, and the verifier that checks it has no dependencies.</p>
+        <div class="k"><b>Answers:</b> whose action was this, and can an auditor check that nothing is missing?</div>
+        <div class="k"><b>Limit:</b> an agent with no attestation on record is flagged as a finding, so a chain is only as strong as what it can prove.</div>
       </div>
     </div>
     <div class="wide rv">
-      <div class="n">what is left over</div>
+      <div class="n">and the planes around them</div>
       <h3>Planes that stand in the path and answer before the action</h3>
-      <p>A gateway that gives every run a budget and answers 402 the moment it is crossed. A policy plane the agent asks before acting, which can hold the expensive one for a person. An egress plane that decides the destination before anything leaves the machine. An identity graph that knows which human a key ultimately belongs to. A record built so that somebody who does not trust you can still check it is complete. None of that is a view of the past. Each one is a decision that either happened or did not.</p>
-      <div class="k"><b>Not best at:</b> explaining why the model wanted to do it. That is what A and B are for, and this stack exports into them rather than competing.</div>
+      <p>A gateway that gives every run a budget and answers 402 the moment it is crossed. A policy plane the agent asks before acting, which can hold the expensive one for a person. An egress plane that decides the destination before anything leaves the machine. An identity graph that knows which human a key ultimately belongs to. A record built so that somebody who does not trust you can still check it is complete. Each one is a decision that either happened or did not.</p>
+      <div class="k"><b>Not covered:</b> why the model wanted to do it. The governance events can export over OTLP into your tracing backend when an endpoint is set.</div>
     </div>
   </div>
 </section>
@@ -248,16 +248,16 @@
 <section class="sec" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">why this one</div>
-      <h2>Twelve differences, and how to check each one.</h2>
-      <p class="lede">A comparison you cannot verify is an advertisement. Every claim below says what makes it true and where to go and look, because the only durable advantage in this market is being the one whose claims survive being checked. The first six are visible on a single request. The second six are the ones that actually decide whether a regulated organisation can buy anything at all.</p>
+      <div class="kicker">how to check it</div>
+      <h2>Twelve controls, and how to check each one.</h2>
+      <p class="lede">Every claim below says what makes it true and where to look, so it can be checked without trusting this page. The first six show up on a single request. The second six are the ones a regulated organisation asks about before it signs anything.</p>
     </div>
 
     <div class="edges rv">
 
       <div class="band" style="margin-top:0;padding-top:0;border-top:0">
         <span class="b-k">first six &#183; in the path</span>
-        <span class="b-t">Differences you can see on a single request. These are the ones an engineer evaluates.</span>
+        <span class="b-t">What you can see on a single request. These are the ones an engineer checks first.</span>
       </div>
 
       <div class="edge">
@@ -265,8 +265,8 @@
         <div>
           <h3>It answers before the call, not after it</h3>
           <p>The gateway prices every call against the run's budget and, on the one that would cross it, replies 402 with a stable error and never forwards the request to the provider. The policy plane answers allow, deny or hold before the action, and never performs the action itself. Neither of those is a notification.</p>
-          <div class="e-x"><b>The other three:</b> shape A's own documentation says it does not enforce or block anything at runtime. Shape B's says the run-time measures belong to separate guardrail libraries, and its own job is judging afterwards whether they worked. Shape C can act, on agents that run on its platform.</div>
-          <div class="e-c"><b>Check it:</b> the refusal is five call sites in the gateway proxy, and the comment above them says the request never reaches the provider. A drill in CI asserts the exact status.</div>
+          <div class="e-x"><b>Limit:</b> a budget stops the spend, not the reasoning. A run inside its budget can still do something you would not have chosen, which is what the policy plane is for.</div>
+          <div class="e-c"><b>Check it:</b> the 402 is built in one function, breaker_error_response, in the gateway proxy. A drill in CI asserts the exact status.</div>
         </div>
       </div>
 
@@ -274,8 +274,8 @@
         <div class="e-n">02</div>
         <div>
           <h3>The agent stays where it is, and does not have to be declared at all</h3>
-          <p>Integration is one base URL. Nothing is rewritten, nothing is redeployed, no SDK enters the agent. Underneath, a kernel-level sensor reads real outbound connections, so an agent nobody registered anywhere still appears, along with the model providers it is quietly reaching.</p>
-          <div class="e-x"><b>The other three:</b> A and B see what somebody instrumented. C sees what somebody registered, and an imported agent moves inside its runtime to be governed there, capped at three per tenant and only in cloud regions.</div>
+          <p>Integration is one base URL. Nothing is rewritten, nothing is redeployed, no SDK enters the agent. Underneath, an eBPF sensor finds agents that nobody registered, along with the model providers they reach.</p>
+          <div class="e-x"><b>Limit:</b> the sensor sees the hosts it runs on. An agent on a machine without it does not appear.</div>
           <div class="e-c"><b>Check it:</b> the detectors are called shadow_ai, unmanaged_egress, undeclared_llm and unrouted_egress, and every one of them is deterministic, with no model in the decision path.</div>
           <div class="e-p">The agent that causes the incident is the one nobody wrote down.</div>
         </div>
@@ -286,9 +286,9 @@
         <div>
           <h3>The record answers to somebody who does not trust you</h3>
           <p>Every query comes back with a completeness proof: a short receipt, checkable on its own, that the rows shown are all the rows matching the question. The verifier that checks it carries zero dependencies, so an auditor can read the whole of it before believing any of it.</p>
-          <div class="e-x"><b>The other three:</b> developer telemetry, sampled, editable and retention-bound. In shape B, retention policies and audit logs are precisely what the commercial key unlocks.</div>
+          <div class="e-x"><b>Limit:</b> the record holds what reached the stack. A call that never went through the gateway leaves no line, which is why the gate sits in the path.</div>
           <div class="e-c"><b>Check it:</b> the verifier's dependency list is empty in its manifest. That is a design constraint, not an aesthetic: every library pulled in there is one more thing an auditor is asked to take on faith.</div>
-          <div class="e-p">Their record proves what it shows. This one proves that what it does not show is nothing.</div>
+          <div class="e-p">The proof covers the rows the question asks for, so a missing row is a fact, not a guess.</div>
         </div>
       </div>
 
@@ -297,7 +297,7 @@
         <div>
           <h3>The guardrails are themselves fired, in CI, before release</h3>
           <p>Adversarial scenarios run against a real gateway with a fake provider behind it. Burn the budget and require the 402. Ask for a forbidden tool and require the 403. Present a forged delegation chain and require it to be rejected. The exit codes differ on purpose, so the pipeline can tell a genuine hole in the defence from a broken test rig.</p>
-          <div class="e-x"><b>The other three:</b> no analogue in any of them. Evaluation suites measure the model's answers, not whether the brakes hold.</div>
+          <div class="e-x"><b>Limit:</b> the drills use scripted requests. They show the brakes hold for those requests, not for every request an agent could make.</div>
           <div class="e-c"><b>Check it:</b> a scenario has a required status field and it takes 402, 403 or 200, nothing vaguer than that.</div>
           <div class="e-p">A guardrail nobody has ever fired is a comment with a name.</div>
         </div>
@@ -306,11 +306,11 @@
       <div class="edge">
         <div class="e-n">05</div>
         <div>
-          <h3>Governance is not the part you pay for</h3>
-          <p>Thirteen repositories, Apache-2.0 throughout, the console included. Nothing in the governance layer sits behind a licence key, a seat count or a tier.</p>
-          <div class="e-x"><b>The other three:</b> A is commercial and closed, with self-hosting on the enterprise tier only. B's core is MIT, and what its commercial key gates is exactly the governance layer: role permissions, retention, audit logs, data masking, directory sync. C starts at a monthly floor in the hundreds, with the next tier an order of magnitude above it.</div>
+          <h3>Governance is not behind a licence key</h3>
+          <p>Apache-2.0 throughout, the console included. Nothing in the governance layer sits behind a licence key, a seat count or a tier.</p>
+          <div class="e-x"><b>Limit:</b> the licence covers the code. It does not cover the machines the stack runs on or the model calls it makes.</div>
           <div class="e-c"><b>Check it:</b> open the licence file in any repository in the stack. This is the cheapest claim on the page to falsify, which is the point of putting it here.</div>
-          <div class="e-p">The thing an auditor asks for is the thing the others charge for.</div>
+          <div class="e-p">The thing an auditor asks for is not a feature behind a tier.</div>
         </div>
       </div>
 
@@ -318,25 +318,25 @@
         <div class="e-n">06</div>
         <div>
           <h3>An alert is a coordinate, and a session is not an authority</h3>
-          <p>The mail that wakes somebody at night carries one link into a view, and never a button that acts. A link that acts is a permission held by everyone who received or forwarded the mail, and security gateways follow links before a human reads the sentence next to them. In the console, the privileged actions each require a fresh passkey assertion bound to that action and its arguments, rather than to whoever is signed in.</p>
-          <div class="e-x"><b>The other three:</b> a dashboard waits to be opened, and a console button rides on the session that opened it.</div>
-          <div class="e-c"><b>Check it:</b> the ceremony writes the signature algorithm and the credential fingerprint into the record beside the action, so a decision can be traced to a device rather than to an account.</div>
+          <p>The mail that wakes somebody at night carries one link into a view, and never a button that acts. A link that acts is a permission held by everyone who received or forwarded the mail, and security gateways follow links before a human reads the sentence next to them. In the console, closing a retained reservation takes a fresh passkey assertion, bound to that one reservation and its revision, rather than to whoever is signed in.</p>
+          <div class="e-x"><b>Limit:</b> the passkey step covers closing a retained reservation. Other console actions are not described here as passkey-bound.</div>
+          <div class="e-c"><b>Check it:</b> the closure token is bound to one reservation id and its revision, and the gateway refuses a stale revision. The rule is in the gateway's closure code.</div>
           <div class="e-p">A stolen session should not be able to pull the lever.</div>
         </div>
       </div>
 
       <div class="band">
         <span class="b-k">next six &#183; in the room</span>
-        <span class="b-t"><b>These are the ones that decide a purchase.</b> Nobody signs off on a tool because of its architecture. They sign off because of what it answers when the auditor, the regulator or the finance director asks.</span>
+        <span class="b-t"><b>These are the ones an auditor asks about.</b> Architecture matters less than what the system can answer when the auditor, the regulator or the finance director asks.</span>
       </div>
 
       <div class="edge">
         <div class="e-n">07</div>
         <div>
           <h3>Post-quantum sits inside the agent loop, and it has legal dates attached</h3>
-          <p>Every key, certificate and algorithm actually running is inventoried, graded for quantum risk and emitted as a CBOM in the CycloneDX format, scored against the published CNSA and NCSC timelines: new systems by 2027, legacy migration by 2030, everything by 2035. The cryptography agents themselves use is inventoried too, which is the part the established crypto-inventory vendors do not reach, because their products were designed before agents existed.</p>
-          <div class="e-x"><b>The other three:</b> nothing at all. Observability has no view of cryptography, and the hosted control plane has none inside the agent loop.</div>
-          <div class="e-c"><b>Check it:</b> the output formats are standards rather than ours, a CycloneDX CBOM and the NCSC timeline, so a security team can compare the result against a public reference instead of against our description of it.</div>
+          <p>The scan grades each key, certificate and algorithm it finds for quantum risk and emits a CBOM in the CycloneDX format. The grades are scored against the published CNSA timeline: new systems by 2027, legacy migration by 2030, everything by 2035.</p>
+          <div class="e-x"><b>Limit:</b> the dates are the published ones, not ours. The scan only finds what it can read from the estate it is pointed at.</div>
+          <div class="e-c"><b>Check it:</b> the output formats are standards rather than ours, a CycloneDX CBOM and the CNSA timeline, so a security team can compare the result against a public reference instead of against our description of it.</div>
           <div class="e-p">A migration with a legal deadline begins with an inventory, and the inventory is the part nobody has.</div>
         </div>
       </div>
@@ -346,7 +346,7 @@
         <div>
           <h3>A person can be erased without breaking the audit trail</h3>
           <p>Every payload is encrypted under its own key, so erasing a person means destroying their keys. The content becomes unrecoverable, every earlier proof still verifies, and the record itself carries the fact that an erasure happened. Nothing is re-encrypted afterwards, and records written later are reached by the same erasure.</p>
-          <div class="e-x"><b>The other three:</b> deletion in a telemetry store is deletion. Whatever it breaks, it breaks silently, and the question of what the trail looked like before is unanswerable afterwards.</div>
+          <div class="e-x"><b>Limit:</b> erasure covers payloads written under a key. Copies made outside the record, such as an export, are not reached by it.</div>
           <div class="e-c"><b>Check it:</b> erasure is its own component, small enough to read, and the property to test is exactly this one: destroy the keys and confirm the proofs still verify.</div>
           <div class="e-p">"Delete their data" and "keep the audit trail" stop being a contradiction you have to argue about with legal.</div>
         </div>
@@ -357,7 +357,7 @@
         <div>
           <h3>A refusal is a pure function, so an auditor can rerun it</h3>
           <p>No model anywhere in the decision path. Given the same policy set and the same request, the answer is always the same, which means a refusal from six months ago can be reproduced today in front of somebody who wants to see it. The policy primitives are deliberately dull: deny a tool, deny an unattested agent, cap the number of steps, restrict the destinations, require a human above a sum.</p>
-          <div class="e-x"><b>The other three:</b> a model-as-judge score is not reproducible, and was never meant to be. It is a measurement, not a ruling, and it moves when the judging model is upgraded.</div>
+          <div class="e-x"><b>Limit:</b> the same rule covers refusals, not the quality of the answers. Quality is measured separately, in Verdryx.</div>
           <div class="e-c"><b>Check it:</b> the decision function is documented as pure, and the identity detectors follow the same rule, deterministic with no model in the path.</div>
           <div class="e-p">"Why was this refused" needs an answer that does not depend on which model version happened to answer.</div>
         </div>
@@ -368,8 +368,8 @@
         <div>
           <h3>The kill switch does not run through the thing it kills</h3>
           <p>The out-of-band control is a phone and a watch. The signing key is generated inside the device's secure element and never leaves it, not even to the app. A kill is signed on the device and the control plane verifies that signature before it acts, so the stop still works when the agent's own host is precisely what is misbehaving or compromised.</p>
-          <div class="e-x"><b>The other three:</b> the stop button, where one exists at all, lives in the same console, on the same session, reached over the same network as everything else it is meant to stop.</div>
-          <div class="e-c"><b>Check it honestly:</b> this one is built and not yet wired into a running stack, and its own page on this site says so in its fact table. Judge it as a design decision, not as a shipped feature.</div>
+          <div class="e-x"><b>Limit:</b> the device stop is not wired into a running stack yet, so there is no stop from a device today.</div>
+          <div class="e-c"><b>Check it:</b> its room on this site states the same limit in its fact table. Judge it as a design, not as a shipped feature.</div>
           <div class="e-p">The control worth having in an incident is the one that does not share fate with the incident.</div>
         </div>
       </div>
@@ -379,8 +379,8 @@
         <div>
           <h3>Changing a limit goes through code review, like changing a firewall rule</h3>
           <p>Budgets, agent passports and policies are ordinary Terraform resources: in version control, reviewed in a pull request the way an IAM policy or a security group is, planned before they apply, and diffed when somebody has changed them outside the process.</p>
-          <div class="e-x"><b>The other three:</b> a setting in a console, changed by whoever is signed in, leaving whatever audit trail that console happens to keep.</div>
-          <div class="e-c"><b>Check it:</b> the provider is published on the public Terraform registry, so the resource types can be read without anyone talking to us first.</div>
+          <div class="e-x"><b>Limit:</b> the provider covers the resources it declares. A setting changed by hand in a console stays outside it until somebody brings it back into code.</div>
+          <div class="e-c"><b>Check it:</b> the provider source is public, so the resource types can be read without anyone talking to us first.</div>
           <div class="e-p">"Who raised the spend limit, and when" is a question that has an answer, or it is not.</div>
         </div>
       </div>
@@ -390,7 +390,7 @@
         <div>
           <h3>The money is counted per resolved case, not per token</h3>
           <p>Token spend says how much was burned. It does not say whether the burning bought anything. The quality plane joins the cost trace to your own outcome tags and returns the price of a resolved case beside the price of an escalated one and an abandoned one, which is the same arithmetic a finance function already applies to everything else it funds.</p>
-          <div class="e-x"><b>The other three:</b> cost per model, per trace, per user, per project. All true, and none of them an answer to whether it was worth doing.</div>
+          <div class="e-x"><b>Limit:</b> cost per case needs an outcome tag on each call. Without one, the stack reports spend but not what the spend bought.</div>
           <div class="e-c"><b>Check it:</b> the computation is a small named script over a flat export of outcome and cost, so the arithmetic can be repeated on your own numbers without trusting ours.</div>
           <div class="e-p">Nobody buys a lower cost per token. They buy a lower cost per case closed.</div>
         </div>
@@ -400,7 +400,7 @@
 
     <div class="prose rv" style="margin-top:22px">
       <h3>And what it costs, since none of this is free</h3>
-      <p>Standing in the request path buys the refusal and charges latency for it, on every call, including the overwhelming majority that were always going to be fine. It also forces a decision nobody enjoys making: what happens when the control plane itself is unreachable, fail-open or fail-closed. Observability never has to answer that question, because nothing waits on it. <b>That is the actual trade, and a vendor who will not name it has not thought about it.</b></p>
+      <p>Standing in the request path buys the refusal and charges latency for it, on every call, including the overwhelming majority that were always going to be fine. It also forces a decision: what happens when the control plane itself is unreachable. The policy plane is fail-closed. In the failure drill of 2026-09-17 it refused every governed call in about 0.3 s while it was down. <b>That is the trade, and it is named here on purpose.</b></p>
     </div>
   </div>
 </section>
@@ -409,20 +409,20 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">what does what</div>
-      <h2>The half they do not cover, by service.</h2>
+      <h2>Where each part of the stack answers.</h2>
     </div>
     <div class="map rv">
-      <a class="row" href="services/tokenfuse.html"><div class="s"><i style="background:#F4B23E"></i>TokenFuse<span class="go">the room &#8594;</span></div><p>A budget per run, and a 402 the moment it is crossed. A dashboard shows you the spend; this refuses it.</p></a>
+      <a class="row" href="services/tokenfuse.html"><div class="s"><i style="background:#F4B23E"></i>TokenFuse<span class="go">the room &#8594;</span></div><p>A budget per run, and a 402 the moment it is crossed. The call is refused before the provider sees it.</p></a>
       <a class="row" href="services/wardryx.html"><div class="s"><i style="background:#2DD4BF"></i>Wardryx<span class="go">the room &#8594;</span></div><p>Allow, deny, or hold for a human, asked before the action, with a hard ceiling that outranks approvals.</p></a>
-      <a class="row" href="services/scopyx.html"><div class="s"><i style="background:#F0ABFC"></i>Scopyx<span class="go">the room &#8594;</span></div><p>Every destination decided before anything leaves. Tracing sees the request; this sees whether it should exist.</p></a>
+      <a class="row" href="services/scopyx.html"><div class="s"><i style="background:#F0ABFC"></i>Scopyx<span class="go">the room &#8594;</span></div><p>Every destination decided before anything leaves, and every redirect hop decided again.</p></a>
       <a class="row" href="services/idryx.html"><div class="s"><i style="background:#34D399"></i>Idryx<span class="go">the room &#8594;</span></div><p>One identity graph for humans, keys, service accounts and agents, so "who did this" ends at a person.</p></a>
       <a class="row" href="services/trailryx.html"><div class="s"><i style="background:#E4626F"></i>Trailryx<span class="go">the room &#8594;</span></div><p>A record nobody can quietly change or shorten, where every answer carries a proof that it is complete.</p></a>
-      <a class="row" href="services/verdryx.html"><div class="s"><i style="background:#FF7AA2"></i>Verdryx<span class="go">the room &#8594;</span></div><p>The one place we overlap on purpose: quality as a denominator, cost per correctly resolved case rather than per token.</p></a>
-      <a class="row" href="services/mockryx.html"><div class="s"><i style="background:#FF8A5B"></i>Mockryx<span class="go">the room &#8594;</span></div><p>Fire drills for the guardrails themselves, asserting the 402 and the 403 in CI. No shape above has an analogue.</p></a>
-      <a class="row" href="services/heraldyx.html"><div class="s"><i style="background:#5BC8F5"></i>Heraldyx<span class="go">the room &#8594;</span></div><p>Decides what is worth waking a human for tonight, and mails it with one link. A dashboard waits to be opened.</p></a>
+      <a class="row" href="services/verdryx.html"><div class="s"><i style="background:#FF7AA2"></i>Verdryx<span class="go">the room &#8594;</span></div><p>Quality as the denominator: cost per correctly resolved case, rather than per token.</p></a>
+      <a class="row" href="services/mockryx.html"><div class="s"><i style="background:#FF8A5B"></i>Mockryx<span class="go">the room &#8594;</span></div><p>Fire drills for the guardrails themselves, asserting the 402 and the 403 in CI.</p></a>
+      <a class="row" href="services/heraldyx.html"><div class="s"><i style="background:#5BC8F5"></i>Heraldyx<span class="go">the room &#8594;</span></div><p>Decides what is worth waking a human for tonight, and mails it with one link and no button.</p></a>
     </div>
     <div class="prose rv" style="margin-top:20px">
-      <p>All of it is Apache-2.0 and runs on infrastructure you own, and the governance planes export over OTLP into whatever tracing backend you already have. <b>Governance data belongs in your observability stack. The enforcement decision does not belong in a dashboard.</b></p>
+      <p>All of it is Apache-2.0 and runs on infrastructure you own. The governance planes export over OTLP when an endpoint is set, into whatever tracing backend you already run. <b>Governance data can sit in your observability stack. The enforcement decision is made on the call.</b></p>
     </div>
   </div>
 </section>
@@ -520,9 +520,9 @@
   };
 
   var COPY = {
-    "watch|ok":    "<b>Nothing to stop, and nothing that could have.</b> The call was within budget, so both fleets look identical here. That is the case people evaluate on, and it is the one that hides the difference.",
-    "watch|over":  "<b>The money is gone before the chart exists.</b> The trace is faithful and complete: it records, correctly, that four hundred and twelve dollars left the account. Reading it tomorrow does not bring them back.",
-    "watch|risk":  "<b>The trace ends at the model's answer.</b> What the agent did next, in a cloud API, is outside what a tracing tool was ever pointed at. The bucket is gone and the dashboard shows a normal-looking run.",
+    "watch|ok":    "<b>Nothing to stop, and nothing that could have.</b> The call was within budget, so the path is the same either way. The difference only shows on a call that should not go through.",
+    "watch|over":  "<b>The money is gone before anyone decides anything.</b> Without the control plane the call goes through, and the record shows, correctly, that four hundred and twelve dollars left the account. Reading it tomorrow does not bring them back.",
+    "watch|risk":  "<b>Nothing decides the action before it runs.</b> The agent's next step, in a cloud API, is not checked by anything on the path. The bucket is gone, and nothing on the path ever had a chance to say no.",
     "govern|ok":   "<b>The common case costs one policy lookup.</b> Allowed, forwarded, and the dashboard still gets its copy. Enforcement is not a tax on the calls that were fine.",
     "govern|over": "<b>402, and the provider never hears the request.</b> The budget is a ceiling, not a report, so the money is not spent and then noticed. The dashboard records a refusal instead of an invoice.",
     "govern|risk": "<b>Held, with a person on the other end.</b> The destructive action is not refused outright and not allowed outright: it waits for an approval that carries a signature, and the record keeps who gave it."

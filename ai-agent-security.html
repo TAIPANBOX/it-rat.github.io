@@ -137,7 +137,7 @@
       <div class="q" style="--c:#B48CFF">
         <div class="n">unattested and unowned</div>
         <h3>Nobody to call, nothing to revoke</h3>
-        <p>A privileged agent with no attestation and no named owner is not a governance gap, it is an unrotatable credential with a personality. It is also the most common finding on a first scan.</p>
+        <p>A privileged agent with no attestation and no named owner is not a governance gap, it is an unrotatable credential with a personality.</p>
         <div class="fix"><b>Answer:</b> require attestation for privileged agents, flag missing owners, and keep the inventory as a bill of materials. <a href="services/idryx.html">Idryx &#8594;</a> &#183; <a href="agent-identity.html">the identity guide &#8594;</a></div>
       </div>
       <div class="q" style="--c:#FF8A5B">
@@ -178,7 +178,7 @@
 
     <div class="note rv">
       <div class="t">what this stack does not do</div>
-      <p>Everything here is defensive: it inspects, detects and refuses on your own estate. Nothing in the stack crafts adversarial prompts, manipulates another system's outputs, or attacks anything, and the drills are rehearsals fired at your own gateway with a fake provider behind it. Where we describe an attack, it is to say what to detect and what to stop, which is the only reason to name it.</p>
+      <p>Everything here is defensive: it inspects, detects and refuses on your own estate. Mockryx crafts hostile requests, including a prompt-injected tool call and a prompt with a fake secret, and fires them only at a pre-production gateway the operator names, with a fake provider behind it. Nothing in the stack sends them anywhere else, and it does not attack systems you do not run. Where we describe an attack, it is to say what to detect and what to stop, which is the only reason to name it.</p>
     </div>
   </div>
 </section>
@@ -194,7 +194,7 @@
       <div class="t">how to judge an agent security tool</div>
       <ol>
         <li><b>Where does it enforce: the prompt or the tool call?</b> Filtering model output is useful and is not a boundary. The call is the boundary, because that is where the damage happens.</li>
-        <li><b>Does it model delegation as a chain?</b> One-hop \u201cacts on behalf of\u201d cannot show an agent reaching admin two hops away, which is the finding that matters most.</li>
+        <li><b>Does it model delegation as a chain?</b> One-hop &ldquo;acts on behalf of&rdquo; cannot show an agent reaching admin two hops away, which is the finding that matters most.</li>
         <li><b>Is detection deterministic?</b> If a model sits in the detection path, a finding cannot be reproduced, and an auditor is entitled to ask you to reproduce it.</li>
         <li><b>Does it distinguish a gap from an unconfigured feature?</b> A tool that reports a missing guardrail as a pass, or an absent feature as a breach, is teaching you to ignore it.</li>
         <li><b>Can the guardrails be exercised on demand?</b> A defence nobody tests decays quietly. Ask how you would prove, today, that it still holds.</li>
