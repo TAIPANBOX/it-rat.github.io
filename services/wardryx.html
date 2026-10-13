@@ -81,10 +81,10 @@
         </div>
       </div>
       <div class="hero-side rv d2">
-        <div class="row"><span class="k">status</span><span class="v">v1.2.0, surface frozen at 1.0 &#183; main is supported</span></div>
+        <div class="row"><span class="k">status</span><span class="v">v1.3.2, surface frozen at 1.0 &#183; main is supported</span></div>
         <div class="row"><span class="k">core</span><span class="v">Go 1.27 &#183; deterministic PDP</span></div>
         <div class="row"><span class="k">API</span><span class="v">POST /v1/decide on :8090</span></div>
-        <div class="row"><span class="k">primitives</span><span class="v" style="text-align:right">deny_tool &#183; deny_if_unattested &#183; require_human_above_usd &#183; deny_above_usd &#183; max_steps &#183; allow_domains</span></div>
+        <div class="row"><span class="k">rules</span><span class="v" style="text-align:right">deny_tool &#183; allow_tool &#183; deny_if_unattested &#183; deny_if_chain_unproven &#183; max_steps &#183; allow_domains &#183; deny_above_usd &#183; require_human_above_usd &#183; hold_if_signal</span></div>
         <div class="row"><span class="k">lineage</span><span class="v">PDP/PEP &#183; XACML's good ideas</span></div>
         <div class="row"><span class="k">licence</span><span class="v">Apache-2.0</span></div>
       </div>
@@ -184,7 +184,7 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">what it decides</div>
-      <h2>Six primitives. One fixed order. No moods.</h2>
+      <h2>Rules in one fixed order. No moods.</h2>
     </div>
     <div class="bento">
       <div class="card hover feature b-4 rv"><h3>Three verdicts, zero improvisation</h3><p>Every answer is allow, deny or hold. No LLM sits in the decision path, so the same policy set and the same request return the same verdict, every time. A decision you can replay in a test is a decision you can defend in an audit.</p></div>
@@ -213,30 +213,7 @@
           </div>
         </details>
       </div>
-      <div class="card hover feature b-4 rv d2"><h3>Policy admin API + Terraform</h3><p>PUT, GET and DELETE /v1/policies/{id} manage a runtime policy layer with validate-then-apply semantics; the file-loaded set stays a permanent floor no API write can erase. The taipan_wardryx_policy resource drives the same API from Terraform.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= COMPARISON ================= -->
-<section class="sec" style="padding-top:14px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="kicker">an honest comparison</div>
-      <h2>Where the no comes from matters.</h2>
-      <p class="lede">Two substitutes get proposed for a policy plane: asking the model to behave in the system prompt, and pointing at the IAM you already run. Keep your IAM; it answers a different question. Neither substitute sees tools, dollars and runs in one place.</p>
-    </div>
-    <div class="tbl-scroll rv">
-      <table class="tbl">
-        <thead><tr><th></th><th>Wardryx</th><th>&#8220;Prompt the model to behave&#8221;</th><th>IAM alone</th></tr></thead>
-        <tbody>
-          <tr><td>Deterministic</td><td class="yes">Yes: same input, same verdict</td><td class="no">No</td><td class="yes">Yes</td></tr>
-          <tr><td>Knows about cost</td><td class="yes">Holds above $X</td><td class="no">No</td><td class="no">No</td></tr>
-          <tr><td>Human approval flow</td><td class="yes">Built in, token-bound</td><td class="no">No</td><td class="warn">Ticket queue</td></tr>
-          <tr><td>Sees declared-but-not-invoked tools</td><td class="yes">Yes, since the live-found bypass was fixed</td><td class="no">n/a</td><td class="no">No</td></tr>
-          <tr><td>Auditability</td><td class="yes">Every decision an event</td><td class="no">Vibes</td><td class="warn">Partial</td></tr>
-        </tbody>
-      </table>
+      <div class="card hover feature b-4 rv d2"><h3>Policy admin API + Terraform</h3><p>PUT, GET and DELETE /v1/policies/{id} manage a runtime policy layer with validate-then-apply semantics; the file-loaded set stays a permanent floor no API write can erase. A PUT whose body holds a key the policy does not declare is refused with 400 and stores nothing (since 1.3.2). The taipan_wardryx_policy resource drives the same API from Terraform.</p></div>
     </div>
   </div>
 </section>
