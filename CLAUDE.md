@@ -196,9 +196,11 @@ true.
    now runs the gate on the UNMUTATED tree first and reports `UNJUDGEABLE`
    rather than a pass. Verified by writing exactly that case and watching it
    refuse.
-   *(gate: `scripts/gates-have-teeth.sh`, 38 cases: twenty-five real faults, seven
-   non-faults, and six subjects taken away entirely, counted from the
-   harness's own "OK: 38 cases" on 2026-10-19, after the demo was rebuilt (31 cases
+   *(gate: `scripts/gates-have-teeth.sh`, 46 cases: thirty real faults, eight
+   non-faults, and eight subjects taken away entirely, counted from the
+   harness's own "OK: 46 cases" on 2026-10-26, after invariant 14's eight
+   cases were added. Before that it was 38, counted from "OK: 38 cases" on
+   2026-10-19, after the demo was rebuilt (31 cases
    that must fail, 7 that must pass; before that rebuild demo-bundle-current was
    UNJUDGEABLE, which is invariant 7 doing its job). The non-faults are the
    ones worth keeping: prose that happens to contain digits is not a claim with
@@ -207,8 +209,9 @@ true.
    comment added to the stylesheet is not a generator that stopped running,
    a sentence added to a room under its ceiling is not a room outgrowing
    its guide, an apostrophe inside a description is not where the
-   description ends, and one span holding bold, code and a link is not a list
-   item split into columns. A gate flagging any of them would be switched off inside a week. This line said
+   description ends, one span holding bold, code and a link is not a list
+   item split into columns, and a new cache-busting version on the backdrop
+   script is not a room losing its backdrop. A gate flagging any of them would be switched off inside a week. This line said
    nine until 2026-08-29 while eleven cases ran, which is the same class of
    drift the site's own figures have: a count restated by hand and never
    measured.)*
