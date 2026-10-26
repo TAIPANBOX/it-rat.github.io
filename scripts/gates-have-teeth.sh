@@ -464,6 +464,38 @@ assert ".prose li{display:flex" in s2, p + " writes its flex rule another way"
 open(p, "w").write(s2.replace(".prose li{display:flex", ".prose li,.prose ol li{display:flex", 1))')" \
 	"splits into columns"
 
+# invariant 14: every room draws a backdrop of its own. The first case is the
+# fault found on 2026-10-26: the Genaryx room never loaded the script.
+run_case "room-backdrop: a room stops loading the deep field" fail \
+	'./scripts/room-backdrop.sh' \
+	"$(py 'edit("genaryx.html", "<script src=\"assets/ambient.js?v=e07\"></script>\n", "")')" \
+	"does not load assets/ambient.js"
+
+# The second half of the same day: Pocket loaded the script and was in no map.
+run_case "room-backdrop: a room drops out of the motif map" fail \
+	'./scripts/room-backdrop.sh' \
+	"$(py 'edit("assets/ambient.js", ",pocket:\"channels\"", "")')" \
+	"no motif in assets/ambient.js MAP"
+
+# The older shape: a room borrows another room's figure. trailryx once declared
+# engram's `web`, so two rooms in the corridor drew one graph.
+run_case "room-backdrop: two rooms draw one motif" fail \
+	'./scripts/room-backdrop.sh' \
+	"$(py 'edit("assets/ambient.js", "trailryx:\"contiguity\"", "trailryx:\"web\"")')" \
+	"share the motif"
+
+run_case "room-backdrop: a room names a motif nothing defines" fail \
+	'./scripts/room-backdrop.sh' \
+	"$(py 'edit("assets/ambient.js", "genaryx:\"attend\"", "genaryx:\"attention\"")')" \
+	"defines no such motif"
+
+# The script looks a motif up by <body data-service>, not by the registry, so
+# a page whose body says another name draws nothing while MAP looks complete.
+run_case "room-backdrop: a page body names another service" fail \
+	'./scripts/room-backdrop.sh' \
+	"$(py 'edit("genaryx.html", "<body data-service=\"genaryx\"", "<body data-service=\"enterprise\"")')" \
+	"data-service"
+
 echo "=== and what they must NOT catch ==="
 
 # Prose that happens to contain digits is not a claim with an owner. A gate
@@ -510,6 +542,13 @@ run_case "list-items: one span holding bold, code and a link" pass \
 	'./scripts/list-items-are-one-block.sh' \
 	"$(py 'edit("what-is-proven.html", "<li><span><b>One machine has lost power, once.</b>",
      "<li><span><b>A lead.</b> Text with <span class=\"mono\">code</span> and <a href=\"#\">a link</a>.</span></li>\n        <li><span><b>One machine has lost power, once.</b>")')"
+
+# A cache-busting query on the script is how a release reaches browsers, and
+# the same file is still loaded. A gate that failed on it would be failing on
+# every deploy that touches the script.
+run_case "room-backdrop: the script's cache-busting version changes" pass \
+	'./scripts/room-backdrop.sh' \
+	"$(py 'edit("genaryx.html", "assets/ambient.js?v=e07", "assets/ambient.js?v=e99")')"
 
 echo
 echo "=== and the one this estate learned the hard way ==="
@@ -581,6 +620,26 @@ for f in sorted(pathlib.Path(".").rglob("*.html")):
         f.write_text(s2, encoding="utf-8")
         n += 1
 assert n, "no page sets .prose li to flex"')" \
+	"measured nothing"
+
+run_case "room-backdrop: no rooms left in the registry to check" fail \
+	'./scripts/room-backdrop.sh' \
+	"$(py 'import re
+p = "assets/site.js"
+s = open(p).read()
+m = re.search(r"const STACK = \[.*?\n\];", s, re.S)
+assert m, "site.js has no STACK registry"
+open(p, "w").write(s.replace(m.group(0), "", 1))')" \
+	"measured nothing"
+
+run_case "room-backdrop: the motif map it reads is gone" fail \
+	'./scripts/room-backdrop.sh' \
+	"$(py 'import re
+p = "assets/ambient.js"
+s = open(p).read()
+m = re.search(r"const MAP=\{.*?\};", s, re.S)
+assert m, "ambient.js has no MAP"
+open(p, "w").write(s.replace(m.group(0), "const MAP={};", 1))')" \
 	"measured nothing"
 
 echo

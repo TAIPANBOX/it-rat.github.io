@@ -125,6 +125,13 @@ jobs:
         ## the house form <li><span>...</span></li>.
         run: ./scripts/list-items-are-one-block.sh
 
+      - name: Fail on a room that draws no backdrop of its own
+        ## Invariant 14: every room in STACK loads assets/ambient.js (the deep
+        ## field) and is mapped to a hero motif that exists and that no other
+        ## room draws. The Genaryx room had never loaded the script, and
+        ## nothing read it until a person compared two rooms.
+        run: ./scripts/room-backdrop.sh
+
       # Last, because it mutates tracked files and restores them. It needs a
       # clean tree and says so plainly, so it also reports any earlier step
       # that starts writing into the checkout.

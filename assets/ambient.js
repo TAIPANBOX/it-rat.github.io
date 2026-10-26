@@ -27,6 +27,19 @@ const C={mint:"52,211,153",amber:"244,178,62",ember:"255,87,75",iris:"108,123,25
 const MQ_CUSTODY=typeof matchMedia==="function"?matchMedia("(max-width:940px)"):null;
 let custodySpin=0, custodyT=null;
 
+/* genaryx's lanes, one per room in the STACK registry (assets/site.js loads
+   first), read once, so a room added there gets a lane without being listed */
+let attendLanes=null;
+function lanesFromStack(){
+  if(attendLanes) return attendLanes;
+  const st=Array.isArray(window.STACK)?window.STACK:[];
+  const rgb=hex=>{const m=/^#?([0-9a-f]{6})$/i.exec(hex||"");
+    return m?[0,2,4].map(i=>parseInt(m[1].slice(i,i+2),16)).join(","):null;};
+  attendLanes=st.filter(s=>s.id!=="genaryx").map(s=>rgb(s.color)).filter(Boolean);
+  if(!attendLanes.length) attendLanes=[C.amber,C.mint,C.teal,C.violet,C.rose,C.iris,C.cyan,C.coral];
+  return attendLanes;
+}
+
 const MOTIFS={
 
 /* vouchryx - the delegation plane: a right that travels, proves itself, and
@@ -933,6 +946,244 @@ custody(ctx,w,h,t,ptr){
   }
 },
 
+/* genaryx - the control room: one attention over every plane.
+
+   Each lane is one room of the stack, in that room's own colour, read from
+   the STACK registry at draw time. The lanes fan in from the left and meet
+   at the room on the right. How bright a lane is, is its share of a softmax
+   over the planes: the weights breathe as the fleet shifts and always sum to
+   one, which is what attention is.
+
+   Once a cycle one event on one lane runs hot, amber turning ember. The
+   temperature drops and the softmax sharpens onto that lane; the other
+   planes are not dropped, only quieter. A passkey signs at the room, the
+   signed kill travels back down the lane, the runaway stops where it is met
+   and greys out, and the temperature comes back. Nothing reaches a runaway
+   but a signature: the console's own rule, one key per action.
+
+   On a wide hero the room sits in the right-hand margin, past the fact
+   rail, because the rail fills the hero's height; on a narrow one the fan
+   is a band across the top. Pure function of t; the lanes are read once.
+
+   Written 2026-10-26. Genaryx was the first room in the corridor and the
+   only one that had never loaded this script. */
+attend(ctx,w,h,t){
+  const lanes=lanesFromStack(), N=lanes.length;
+  /* the same 940px query that stacks this hero's grid */
+  const wide=MQ_CUSTODY?!MQ_CUSTODY.matches:w>=941;
+  const rx=wide?w*0.935:w-14, ry=wide?h*0.46:Math.min(h*0.15,26);
+  const top=wide?0.07:0.01, bot=wide?0.93:0.30;
+  const font=px=>ctx.font=px+"px ui-monospace,Menlo,monospace";
+  /* on a narrow hero the fan runs behind the headline, so it is quieter and
+     says nothing in words: the deep field carries the formulas there */
+  ctx.save(); if(!wide) ctx.globalAlpha=0.7;
+  /* each lane is a cubic from the left edge to the room */
+  const P=[];
+  for(let i=0;i<N;i++){
+    const y=h*(top+(bot-top)*(i+0.5)/N);
+    P.push([0,y, w*0.38,y, w*0.72,ry+(y-ry)*0.22, rx,ry]);
+  }
+  const at=(i,u)=>{const p=P[i],v=1-u,a=v*v*v,b=3*v*v*u,c=3*v*u*u,d=u*u*u;
+    return [a*p[0]+b*p[2]+c*p[4]+d*p[6], a*p[1]+b*p[3]+c*p[5]+d*p[7]];};
+
+  /* the cycle: a runaway on one lane, the lock, the signature, the release */
+  const CYC=12, k=Math.floor(t/CYC), c=t-k*CYC;
+  const hot=Math.floor(rng(k*31+5)()*N);
+  const vR=0.11, rS=0.5, cSign=5.8, vP=0.5;
+  const cMeet=(1+cSign*vP+rS*vR)/(vR+vP);   /* where the kill meets the runaway */
+  const sm=e=>e*e*(3-2*e);
+  const lock=sm(U_clamp((c-4.2)/0.8,0,1))*(1-sm(U_clamp((c-7.0)/1.5,0,1)));
+  const tau=1-0.92*lock;
+
+  /* softmax over the planes, at temperature tau */
+  const z=[];
+  for(let i=0;i<N;i++) z.push(Math.sin(t*(0.21+0.017*i)+i*1.9)+0.6*Math.sin(t*0.13+i*0.7)+(i===hot?2.4*lock:0));
+  const zm=Math.max(...z);
+  const e=z.map(v=>Math.exp((v-zm)/tau)), sum=e.reduce((a,b)=>a+b,0);
+  const wgt=e.map(v=>v/sum);
+  const share=i=>Math.min(1,wgt[i]*N/3);
+
+  for(let i=0;i<N;i++){
+    const s=share(i);
+    ctx.strokeStyle=`rgba(${lanes[i]},${0.05+0.32*s})`;ctx.lineWidth=0.8+1.4*s;
+    ctx.beginPath();
+    for(let j=0;j<=28;j++){const q=at(i,j/28); j?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]);}
+    ctx.stroke();
+    /* the plane's own events, travelling in */
+    const rr=rng(i*17+3);
+    for(let n=0;n<2;n++){
+      const u=((t*(0.07+rr()*0.05)+rr())%1), q=at(i,u);
+      dot(ctx,q[0],q[1],1.2,lanes[i],0.08+0.32*s);
+    }
+  }
+
+  /* the runaway: amber, then ember, until the signed kill meets it */
+  if(c>rS&&c<cMeet+2.4){
+    const u=(Math.min(c,cMeet)-rS)*vR;
+    const q=at(hot,u);
+    if(c<cMeet){
+      const heat=U_clamp((c-rS)/3.2,0,1);
+      dot(ctx,q[0],q[1],1.6+1.4*heat,heat>0.6?C.ember:C.amber,0.30+0.30*heat);
+    }else{
+      const d=c-cMeet, fade=1-d/2.4;
+      dot(ctx,q[0],q[1]+d*d*5,2.2,C.dim,0.40*fade);
+      if(wide){ font(9);ctx.textAlign="left";ctx.fillStyle=`rgba(${C.dim},${0.40*fade})`;
+      ctx.fillText("killed \u00B7 signed",q[0]+8,q[1]-7+d*d*5); }
+    }
+  }
+  /* the signed kill, travelling back down the lane */
+  if(c>cSign&&c<cMeet){
+    const u=1-(c-cSign)*vP;
+    for(let j=4;j>=0;j--){
+      const q=at(hot,Math.min(1,u+j*0.012));
+      dot(ctx,q[0],q[1],j?1.1:1.9,C.violet,j?0.12*(5-j)/5:0.6);
+    }
+  }
+
+  /* the room */
+  const sign=U_clamp((c-5.0)/0.8,0,1)*(1-U_clamp((c-6.8)/0.6,0,1));
+  ctx.strokeStyle=`rgba(${C.violet},${0.20+0.30*lock})`;ctx.lineWidth=1.2;
+  ctx.beginPath();ctx.arc(rx,ry,9,0,TAU);ctx.stroke();
+  ctx.strokeStyle=`rgba(${C.violet},${0.08+0.16*lock})`;
+  ctx.beginPath();ctx.arc(rx,ry,16+3*lock,0,TAU);ctx.stroke();
+  dot(ctx,rx,ry,2.2,C.violet,0.35+0.3*lock);
+  if(sign>0){                                  /* a passkey, at the room */
+    const kx=wide?rx-4:rx-38, ky=wide?ry-28:ry;
+    ctx.strokeStyle=`rgba(${C.violet},${0.6*sign})`;ctx.lineWidth=1.2;
+    ctx.beginPath();ctx.arc(kx,ky,2.6,0,TAU);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(kx+2.6,ky);ctx.lineTo(kx+10,ky);
+    ctx.moveTo(kx+7.6,ky);ctx.lineTo(kx+7.6,ky+3);ctx.moveTo(kx+9.6,ky);ctx.lineTo(kx+9.6,ky+2.2);ctx.stroke();
+    if(wide){ font(9);ctx.textAlign="right";ctx.fillStyle=`rgba(${C.violet},${0.45*sign})`;
+    ctx.fillText("passkey \u00B7 ES256",rx+14,ky-8); }
+  }
+  /* the formula the lanes are drawn from, with its live temperature */
+  if(wide){
+  font(10);ctx.textAlign="right";ctx.fillStyle=`rgba(${C.dim},.42)`;
+  ctx.fillText("softmax(z/\u03C4)",Math.min(w-8,rx+40),ry+36);
+  ctx.fillStyle=`rgba(${lock>0.5?C.violet:C.dim},${0.42+0.2*lock})`;
+  ctx.fillText("\u03C4 = "+tau.toFixed(2),Math.min(w-8,rx+40),ry+50);
+  }
+  ctx.textAlign="left";
+  ctx.restore();
+},
+
+/* pocket - out of band: two channels on one timebase, like a scope.
+
+   The upper trace is in band: the fleet's burn on the request path the agent
+   runs on, scrolling right to left with now at the right. It reads the fuse
+   the way the page does: mint under budget, amber warming, ember at the cap,
+   and the dashed line is the cap. The lower trace is the other channel, the
+   one the agent's host never touches, and it is nearly always flat.
+
+   Once a cycle a run drifts hot and crosses the cap. A small notch on the
+   lower channel is the alert reaching the wrist; then one clean square pulse
+   leaves it, signed on the device by the Secure Enclave (the hexagon), and a
+   moment later the upper trace falls off a cliff back to baseline: the
+   breaker opened. Both marks then scroll away together, the pulse under the
+   cliff it caused, and the two channels never share a line.
+
+   Drawn inside one region, upper right above the fact rail on a wide hero,
+   a band across the top on a narrow one. This is the shape the app is built
+   for; nothing in a running stack talks to it yet, as the page says. Pure
+   function of t.
+
+   Written 2026-10-26. */
+channels(ctx,w,h,t){
+  const wide=MQ_CUSTODY?!MQ_CUSTODY.matches:w>=941;
+  const R=wide?{x0:w*0.60,x1:w*0.97,y0:h*0.07,y1:h*0.38}
+              :{x0:w*0.04,x1:w*0.96,y0:h*0.02,y1:h*0.02+Math.min(h*0.28,190)};
+  const RW=R.x1-R.x0, RH=R.y1-R.y0;
+  const X=u=>R.x0+RW*u, Y=v=>R.y0+RH*v;
+  const font=px=>ctx.font=px+"px ui-monospace,Menlo,monospace";
+  const nowX=X(0.88), win=8, pps=(nowX-X(0))/win;   /* an 8 s window */
+  const yA=Y(0.52), yB=Y(0.90), amp=RH*0.36/1.4;     /* 2.4x baseline at the top */
+  const capM=1.8, CYC=11;
+  const sm=e=>e*e*(3-2*e);
+  /* narrow: the band sits behind the kicker and the headline, so it is
+     quieter and carries no labels */
+  ctx.save(); if(!wide) ctx.globalAlpha=0.6;
+  /* burn as a multiple of baseline, at signal time s */
+  function burn(s){
+    const k=Math.floor(s/CYC), p=s-k*CYC;
+    let m=1;
+    if(p>=3&&p<6.6) m=1+1.4*sm(U_clamp((p-3)/3.2,0,1));
+    else if(p>=6.6) m=1+1.4*Math.exp(-(p-6.6)/0.12);
+    return m+0.05*Math.sin(s*7.3)+0.035*Math.sin(s*13.1+1)+0.03*Math.sin(s*3.1);
+  }
+  const yOf=m=>yA-(m-1)*amp;
+
+  /* the scope's graticule */
+  ctx.strokeStyle=`rgba(${C.dim},.07)`;ctx.lineWidth=1;ctx.setLineDash([2,5]);
+  for(let d=0;d<=8;d++){const x=X(0)+(nowX-X(0))*d/8;ctx.beginPath();ctx.moveTo(x,Y(0.08));ctx.lineTo(x,yB+6);ctx.stroke();}
+  ctx.setLineDash([]);
+  /* the cap */
+  ctx.strokeStyle=`rgba(${C.ember},.20)`;ctx.setLineDash([4,5]);
+  ctx.beginPath();ctx.moveTo(X(0),yOf(capM));ctx.lineTo(nowX,yOf(capM));ctx.stroke();ctx.setLineDash([]);
+  if(wide){
+    font(9);ctx.textAlign="left";
+    ctx.fillStyle=`rgba(${C.ember},.45)`;ctx.fillText("cap",X(0),yOf(capM)-4);
+    ctx.fillStyle=`rgba(${C.dim},.48)`;ctx.fillText("in band \u00B7 burn",X(0),Y(0.06));
+    ctx.fillStyle=`rgba(${C.cyan},.48)`;ctx.fillText("out of band \u00B7 signed",X(0),yB-RH*0.20);
+  }
+
+  /* the upper trace, coloured by the fuse */
+  ctx.lineWidth=1.3;
+  let px=null,py=null;
+  for(let x=X(0);x<=nowX;x+=3){
+    const m=burn(t-(nowX-x)/pps), y=yOf(m);
+    if(px!==null){
+      const col=m>=capM?C.ember:m>=1.3?C.amber:C.mint;
+      ctx.strokeStyle=`rgba(${col},${m>=capM?0.48:0.30})`;
+      ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(x,y);ctx.stroke();
+    }
+    px=x;py=y;
+  }
+  /* the lower trace: quiet but for the alert in and the signed kill out */
+  const pulse=s=>{const p=s-Math.floor(s/CYC)*CYC;
+    return p>=6.0&&p<6.38?1:p>=4.9&&p<5.05?-0.35:0;};
+  ctx.strokeStyle=`rgba(${C.cyan},.34)`;ctx.lineWidth=1.2;ctx.beginPath();
+  for(let x=X(0);x<=nowX;x+=2){
+    const v=pulse(t-(nowX-x)/pps), y=yB-v*RH*0.16;
+    x===X(0)?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+  /* the Enclave's mark on each signed pulse in the window */
+  for(let k=Math.floor((t-win)/CYC);k<=Math.floor(t/CYC);k++){
+    const s=k*CYC+6.19, x=nowX-(t-s)*pps;
+    if(x<X(0)||x>nowX) continue;
+    const hy=yB-RH*0.16-8;
+    ctx.strokeStyle=`rgba(${C.cyan},.45)`;ctx.lineWidth=1;ctx.beginPath();
+    for(let j=0;j<6;j++){const a=j*TAU/6+Math.PI/6;j?ctx.lineTo(x+Math.cos(a)*4,hy+Math.sin(a)*4):ctx.moveTo(x+Math.cos(a)*4,hy+Math.sin(a)*4);}
+    ctx.closePath();ctx.stroke();
+  }
+
+  /* now: the gateway on the upper trace, the wrist on the lower */
+  const p=t-Math.floor(t/CYC)*CYC;
+  const open=p>=6.6&&p<7.6;
+  const gy=yOf(burn(t));
+  if(open){                                    /* the breaker, open */
+    ctx.strokeStyle=`rgba(${C.mint},${0.55*(1-(p-6.6))})`;ctx.lineWidth=1.4;
+    ctx.beginPath();ctx.moveTo(nowX+4,gy);ctx.lineTo(nowX+14,gy-7);ctx.stroke();
+    dot(ctx,nowX+4,gy,1.6,C.mint,0.45);
+  }else{
+    dot(ctx,nowX+4,gy,1.9,burn(t)>=capM?C.ember:C.dim,0.40);
+  }
+  const lit=p>=4.9&&p<6.5;
+  const wx=nowX+10, wy=yB-6;
+  ctx.strokeStyle=`rgba(${C.cyan},${lit?0.6:0.28})`;ctx.lineWidth=1.2;
+  ctx.beginPath();
+  if(ctx.roundRect) ctx.roundRect(wx-5,wy-7,10,13,3); else ctx.rect(wx-5,wy-7,10,13);
+  ctx.stroke();
+  ctx.beginPath();ctx.moveTo(wx+5,wy-2);ctx.lineTo(wx+7,wy-2);ctx.stroke();   /* the crown */
+  if(p>=6.0&&p<6.5){
+    dot(ctx,wx,wy-0.5,1.6,C.cyan,0.6);
+    if(wide){ font(9);ctx.textAlign="right";ctx.fillStyle=`rgba(${C.cyan},.45)`;
+    ctx.fillText("Secure Enclave",nowX-4,yB+14); }
+  }
+  ctx.textAlign="left";
+  ctx.restore();
+},
+
 /* platform - tiled matrix multiply: activation waves sweep a grid of
    cells diagonally, the tensor language every event speaks. */
 tensor(ctx,w,h,t){
@@ -959,7 +1210,8 @@ tensor(ctx,w,h,t){
 const MAP={tokenfuse:"descent",wardryx:"boundary",engram:"web",idryx:"graphid",
   scopyx:"egress",heraldyx:"dispatch",trailryx:"contiguity",
   qryx:"lattice",verdryx:"train",mockryx:"adversary",platform:"tensor",
-  vouchryx:"delegate",costcrew:"ledger",typryx:"typed",keyryx:"custody"};
+  vouchryx:"delegate",costcrew:"ledger",typryx:"typed",keyryx:"custody",
+  genaryx:"attend",pocket:"channels"};
 
 /* ---- the deep field: a page-length backdrop that keeps the dark canvas
    alive below the hero. One fixed layer behind all content, evolving with
