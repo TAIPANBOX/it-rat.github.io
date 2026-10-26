@@ -27,6 +27,7 @@ committed is published.
 ./scripts/generated-blocks.sh     # invariant 11
 ./scripts/room-budget.sh          # invariant 12
 ./scripts/list-items-are-one-block.sh  # invariant 13
+./scripts/room-backdrop.sh        # invariant 14
 ./scripts/demo-bundle-current.sh
 ./scripts/deploy-target-current.sh  # invariant 9; needs network
 # demo-bundle-current.sh also runs daily on its own schedule; see invariant 7
@@ -195,9 +196,11 @@ true.
    now runs the gate on the UNMUTATED tree first and reports `UNJUDGEABLE`
    rather than a pass. Verified by writing exactly that case and watching it
    refuse.
-   *(gate: `scripts/gates-have-teeth.sh`, 38 cases: twenty-five real faults, seven
-   non-faults, and six subjects taken away entirely, counted from the
-   harness's own "OK: 38 cases" on 2026-10-19, after the demo was rebuilt (31 cases
+   *(gate: `scripts/gates-have-teeth.sh`, 46 cases: thirty real faults, eight
+   non-faults, and eight subjects taken away entirely, counted from the
+   harness's own "OK: 46 cases" on 2026-10-26, after invariant 14's eight
+   cases were added. Before that it was 38, counted from "OK: 38 cases" on
+   2026-10-19, after the demo was rebuilt (31 cases
    that must fail, 7 that must pass; before that rebuild demo-bundle-current was
    UNJUDGEABLE, which is invariant 7 doing its job). The non-faults are the
    ones worth keeping: prose that happens to contain digits is not a claim with
@@ -206,8 +209,9 @@ true.
    comment added to the stylesheet is not a generator that stopped running,
    a sentence added to a room under its ceiling is not a room outgrowing
    its guide, an apostrophe inside a description is not where the
-   description ends, and one span holding bold, code and a link is not a list
-   item split into columns. A gate flagging any of them would be switched off inside a week. This line said
+   description ends, one span holding bold, code and a link is not a list
+   item split into columns, and a new cache-busting version on the backdrop
+   script is not a room losing its backdrop. A gate flagging any of them would be switched off inside a week. This line said
    nine until 2026-08-29 while eleven cases ran, which is the same class of
    drift the site's own figures have: a count restated by hand and never
    measured.)*
@@ -449,6 +453,34 @@ true.
    rather than closing everything, the two ways a review found it could pass a
    split item. It does not judge a list outside `.prose` or one styled another
    way.)*
+
+14. **Every room draws a backdrop of its own.** `assets/ambient.js` draws two
+   layers: the deep field, a fixed canvas behind the whole page (a drifting
+   node graph, formulas and math glyphs in the page accent), and a motif in
+   the hero, drawn from that room's own domain. A page gets the first by
+   loading the script and the second by being named in the script's `MAP`
+   under its `<body data-service>`. Both are opt-in, and missing either is
+   silent.
+
+   `@claude 2026-10-26`: found by a reader comparing two rooms. The Genaryx
+   room, first in the corridor, had never loaded the script, not since it was
+   born as `enterprise.html` in July, so it was the one flat page in the
+   corridor; Pocket loaded it and was absent from `MAP`, so its hero was
+   blank. Both now have motifs: Genaryx's `attend` (a softmax over every
+   room's lane, read from `STACK`, sharpening onto a runaway until a passkey
+   signs the kill) and Pocket's `channels` (two scope traces, the burn in band
+   and one signed pulse out of band). Three earlier rooms had borrowed another
+   room's motif by hand, which is the same fault drawn twice instead of not
+   at all.
+   *(gate: `scripts/room-backdrop.sh`, in the Pages workflow before the upload.
+   It finds the rooms from STACK and refuses with "measured nothing" when it
+   finds none or when `ambient.js` has no `MAP` or no motifs. Per room it
+   requires the script to be loaded, `data-service` to be the room's id, a
+   `svc-hero` to mount in, a motif named (the hero's own `data-motif` first,
+   then `MAP`) that `MOTIFS` defines, and no other room drawing the same one.
+   It does not judge whether a motif looks like anything, says anything true,
+   or can be seen behind the hero's text; that still needs somebody to open
+   the page, at desktop width and on a phone.)*
 
 ## Decisions that have no gate yet
 
