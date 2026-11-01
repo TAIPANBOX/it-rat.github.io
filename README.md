@@ -44,7 +44,7 @@ and stop their own agents. Nothing here is offensive tooling, and the site is wr
 
 Push to `master`. That is the whole procedure.
 
-[`.github/workflows/pages.yml`](.github/workflows/pages.yml) checks out the tree, runs nine gates,
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) checks out the tree, runs eleven gates,
 and publishes only when all of them pass. Most exist because this repo actually shipped the mistake
 each one catches:
 
@@ -54,6 +54,8 @@ each one catches:
 - `scripts/footer-shelves.sh`: the footer's shelves and the stylesheet's columns agree;
 - `scripts/generated-blocks.sh`: every generated block is on its page, and every generator is a no-op;
 - `scripts/room-budget.sh`: each service page stays under 1000 words of prose and links to its guide;
+- `scripts/list-items-are-one-block.sh`: a list item in prose is drawn as one block, not split into columns;
+- `scripts/room-backdrop.sh`: every service page draws a backdrop and a hero motif of its own;
 - `scripts/gates-have-teeth.sh`: every gate above still fails on its own planted fault;
 - `scripts/demo-bundle-current.sh`: `/demo` is a build of the current Genaryx;
 - `scripts/deploy-target-current.sh`: the live domain is not behind the mirror.
