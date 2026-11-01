@@ -108,9 +108,23 @@ Cost per resolved case sits inside a wider practice: [FinOps for AI](https://it-
 
 ## Grade with a stub, then price the traces.
 
+```
+git clone https://github.com/TAIPANBOX/verdryx && cd verdryx
+python -m venv .venv && source .venv/bin/activate
+pip install -e .
+```
+
 Into a virtual environment: system Python is usually externally managed. There is no PyPI package, so the version you run is the commit you can read.
 
+```
+verdryx eval evalset.json --model stub --db verdryx.db
+```
+
 No network, no key: `--model stub` is deterministic. Then price the traces it left behind.
+
+```
+verdryx cost-per-correct --traces $TOKENFUSE_DATA_DIR
+```
 
 ## What changed from 1 to 15 October
 

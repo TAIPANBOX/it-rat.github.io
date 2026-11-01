@@ -117,6 +117,14 @@ Crypto posture is one plane of a wider practice: [AI agent governance](https://i
 
 ## One binary, any platform.
 
+```
+qryx scan .
+```
+
+```
+qryx tls api.anthropic.com:443
+```
+
 Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.2 toolchain downloads itself on the first build.
 
 ### Download, any platform

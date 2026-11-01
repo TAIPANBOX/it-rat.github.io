@@ -84,9 +84,18 @@ Two ways in, and they are for different machines. On your own laptop the sandbox
 
 ### On a box you own, fastest
 
+```
+curl -fsSL https://raw.githubusercontent.com/TAIPANBOX/stack-single/main/install.sh | bash
+```
+
 Nothing is compiled: every plane is pulled from the public registry at a pinned version. Measured on 2026-09-13 on a fresh 2-vCPU cloud machine, from that line to a console answering on loopback: **109 seconds**, with every one of the installer's own checks green; on 2026-09-17, on a mini PC that already had Docker, **61 seconds** for the first run (exit 1: 22 checks ok, and one that fails by construction, since it probed loopback whatever the bind address was; fixed by stack-single #59) and 36 seconds for the second, with the same 22 checks ok. It needs root on Debian or Ubuntu, and docker and git; it comes back after a reboot (measured once, on 2026-09-17, on a box whose gateway sat on a tailnet address: the first reboot lost the gateway until the installer learned to order Docker after the tunnel, the second brought it back on its own); and it is reachable by agents running anywhere else, which the same day proved from two clouds at once.
 
 ### On your laptop, no Docker
+
+```
+git clone https://github.com/TAIPANBOX/stack-up
+cd stack-up && ./up.sh
+```
 
 The sandbox, and it builds from source on purpose: nothing but your own compilers touches it. That is the cost as well as the point, so it wants Rust, Go, Node and Python already installed. Measured on 2026-09-01 from an empty build cache: **221 seconds** to a working dashboard. A cold run with both optional planes took **325 seconds** on 2026-09-13. Binds `127.0.0.1` only, stops on Ctrl-C, keeps nothing.
 
@@ -126,6 +135,13 @@ The shape the stack is actually built for: the planes share a filesystem, which 
 
 **The commands, and the checks that have to fail to pass.**
 
+```
+git clone https://github.com/TAIPANBOX/stack-single
+cd stack-single && ./install.sh
+GATEWAY_BIND=0.0.0.0 ./install.sh
+ANTHROPIC_BASE_URL=http://<your box>:4100
+```
+
 It comes up closed: the gateway lands on the host's loopback and everything else has no host port at all, so a box that just ran an install script is not serving an enforcement plane to the internet because nobody typed anything. One variable publishes the gateway when you mean to. Same images and same service names as the cluster deployment, because Docker resolves `http://wardryx:8090` exactly the way a Kubernetes Service did.
 
 [The sandbox above](https://it-rat.com/platform-guide.html#run) is this shape already, with one deliberate difference: it binds loopback only, so nothing on it is reachable by an agent on another machine. That is correct for trying it and wrong for serving a fleet.
@@ -147,11 +163,21 @@ For teams whose answer to everything is a cluster. One script brings up k3s acro
 
 **The commands, and the one thing a cluster costs you.**
 
+```
+git clone https://github.com/TAIPANBOX/stack-k8s
+cd stack-k8s && ./deploy.sh --servers ... --hcloud-token ... --trust-domain <your domain>
+```
+
 Both paths are one command, and both ask what they need before the long part rather than failing on it afterwards. So the trade is not convenience. Kubernetes buys high availability and costs you the one thing a single box gets for free: the planes couple through a shared event log, so a cluster needs a ReadWriteMany volume for it.
 
 That trade, and every other thing that bites, are documented in the repositories rather than discovered by you. The same manifests came up on six clusters across Hetzner, AWS and GCP, and exactly one line of Kubernetes configuration differs between the three: Calico has to encapsulate unconditionally on GCP, because a GCE VPC routes every packet by destination and a pod address matches no route. Every trap we hit is written down and already fixed in the files.
 
 ## The contract for an agent of your own.
+
+```
+# install: https://github.com/TAIPANBOX/agent-stack-go#install
+agent-conform passport.json events.ndjson
+```
 
 This installs nothing of the stack: it is the contract itself, for an agent of your own. Exit 0 means every file and every NDJSON line conforms; exit 1 means at least one did not. That is the whole interface.
 

@@ -82,6 +82,10 @@ A tool that could mend the chain would be a tool that could forge it. It exits n
 
 ## Reading the dispatch record.
 
+```
+heraldyx --journal
+```
+
 The image is distroless: there is no shell in it to read the file with.
 
 Since v0.3.0 a line counts as the source it claims only when the file it came from may carry that source. Each plane's file carries its own name, `HERALDYX_STREAMS` declares anything else, and a line in the wrong file is refused, counted and raised once as `foreign_source`; a file nobody declared is raised once as `unknown_stream`. It does not stop a process that creates a plane's file before that plane does, or a writer forging its own stream. The checkpoint gate, from v0.8.0, answers that for streams a producer signs, and it is off by default.

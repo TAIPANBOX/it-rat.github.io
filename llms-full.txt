@@ -1325,11 +1325,21 @@ One installer brings up the whole governed set as containers on one Docker netwo
 
 It comes up **closed**. The gateway publishes to the host's loopback, so a machine that just ran an install script has not acquired an internet-facing enforcement plane because nobody typed anything. Opening it to the agents you actually have is one variable, and it is a decision you make rather than a default you inherit.
 
+```
+# the launcher, its flags and its second-run behaviour:
+github.com/TAIPANBOX/stack-single
+```
+
 ### Point one agent at it
 
 The integration is a base URL. Whatever your agent already uses to reach its provider now points at the gateway instead, and from that moment every call it makes is priced, budgeted and policy-checked in the request path. No SDK to adopt, no framework to migrate to, no code change beyond an environment variable.
 
 Send the agent's run a budget along with the request, and you have the thing worth having: a ceiling that is enforced before the provider is called rather than noticed afterwards on a bill.
+
+```
+# one variable, wherever your agent reads its provider URL
+ANTHROPIC_BASE_URL=http://<your box>:4100
+```
 
 ### Give it an address to write to
 
@@ -1337,11 +1347,21 @@ The notifier reads the shared event log and mails you when one of your own agent
 
 What it will not do is more interesting than what it will. It holds no credential for any plane, opens no connection to one, has no API of its own, and can take no action on any agent. It reads a file and sends mail. That narrowness is the point: it is the one component allowed to reach the outside world, so its blast radius stays small enough to say in a sentence.
 
+```
+# recipient, SMTP host, and the severity floor:
+github.com/TAIPANBOX/heraldyx
+```
+
 ### Make it fire on purpose
 
 Do not wait for a real incident to find out whether any of this works. Give a run a budget of a fraction of a cent and let an agent loop against it: the gateway answers 402 in the request path, the event lands in the log, and the mail arrives. That is the whole chain, exercised in a minute, at no cost. Know which mail you are waiting for: at the notifier's default floor a single refusal is below it, and the message comes from the control plane once a run has been refused three times, as `budget_exhausted`. A run on 2026-09-17 found that on the installer's released versions that message never reached the log at all, because the control plane could not create its own events file and said nothing; the installer on `main` creates the file for it, which is what the one-line command installs.
 
 Then read the mail carefully, because it is deliberately almost nothing: identifiers and numbers, never content, and one link into your own console rather than a button. Following it opens the panel showing that event. The action happens there, behind your sign-in.
+
+```
+# or fire the rehearsal harness at a pre-prod gateway:
+github.com/TAIPANBOX/mockryx
+```
 
 Every exact flag lives in the repository that owns it, and this guide points at those rather than repeating them. A copy here would be a second place to keep true, and it would drift the first time an installer grew a flag: you would follow the pretty page and hit the error the README already documents. What a guide can add is the part a README cannot, which is what the step is for and how it fails.
 
@@ -1422,13 +1442,29 @@ One of the eight lets a site's gateway read back what its own runs have spent, s
 
 One script applies the entry, waits for the cloud to hand it an address, derives a name for that address, waits until both certificates are issued, and prints the two addresses a site needs. It is not part of the default install: a cluster that never runs it publishes nothing new.
 
+```
+# on the hub, from the cluster launcher
+./hub/up.sh
+```
+
 ### Give each site its own keys
 
 One command per site mints two keys: one the control plane accepts only for pushing and reading, bound to that site's name, and one the policy plane accepts for reading decisions. It writes them to a file only the operator can read and prints no secret. Asked again for a site that already has keys, it refuses rather than minting a second pair.
 
+```
+# on the hub, once per site
+./hub/add-site.sh warehouse-east
+```
+
 ### Point the site's gateway at the hub
 
 At the site, four variables on the gateway: where the control plane is and its key, where the policy plane is and its key. That is the whole change. Calls keep flowing through the same gateway, and from then on its spend appears at the hub under the site's name and its calls are decided by the hub's policy.
+
+```
+# on the site's gateway
+TOKENFUSE_CLOUD_URL, TOKENFUSE_CLOUD_KEY
+TOKENFUSE_WARDRYX_URL, TOKENFUSE_WARDRYX_KEY
+```
 
 ## One view, one policy, and a quiet site that is not mistaken for a dead one.
 
@@ -2160,13 +2196,29 @@ Any single service from its own repository. Most run on their own; the list says
 
 You need a Debian or Ubuntu machine you control, root on it, and outbound internet. Everything else the installer brings: it adds Docker if the machine has none, pulls every service as a published image, and compiles nothing.
 
+```
+curl -fsSL https://raw.githubusercontent.com/TAIPANBOX/stack-single/main/install.sh | bash
+```
+
 It brings up the core: the gateway and the ledger behind it, policy, identity, key custody and its witness, alerts by mail, a check on the record's chain, the console, and the tunnel an operator uses to reach it. It ends by checking itself, and the last line it prints says whether every check passed.
 
 **It comes up closed.** The gateway listens on the machine's loopback, so nothing faces the internet until you open it, and opening it is one word:
 
+```
+GATEWAY_BIND=0.0.0.0 ./install.sh
+```
+
 Then point an agent at the gateway, wherever that agent runs. Every call carries a client key, and the installer mints one for your agents when you bring none, in **/opt/agent-stack/agent-key**.
 
+```
+ANTHROPIC_BASE_URL=http://<your box>:4100
+```
+
 To check an installed box again without changing anything on it:
+
+```
+STACK_DIR=/opt/agent-stack ./install.sh status
+```
 
 ### Add the rest when you want it
 
@@ -2184,13 +2236,27 @@ Every flag, and what a second run does and does not change, is in the [stack-sin
 
 The same services as plain YAML and a kustomization, with no Helm. On bare servers, one script builds the cluster and the stack together:
 
+```
+git clone https://github.com/TAIPANBOX/stack-k8s && cd stack-k8s
+./deploy.sh --servers ip1,ip2,ip3 --agents ip4,ip5 --hcloud-token <token> \
+  --trust-domain <your domain>
+```
+
 That script is written for Hetzner: it puts up the cloud firewall, a cluster with secrets encrypted at rest and network policy that is actually enforced, and storage, then applies the manifests and runs the stack's own checks and its containment tests. AWS and GCP have deploy scripts of their own, and on a cluster you already run the manifests apply with one command:
+
+```
+kubectl apply -k manifests/
+```
 
 Some services are opt-in on a cluster too, each one more manifest to apply. The [stack-k8s repository](https://github.com/TAIPANBOX/stack-k8s#readme) names them, along with every trap found while building it.
 
 ## On your laptop, to look around.
 
 A sandbox, not a deployment. It builds each service from source and runs it natively, with no Docker, binds everything to 127.0.0.1, and stops cleanly when you press Ctrl-C. If a toolchain or a port is missing, it says which.
+
+```
+git clone https://github.com/TAIPANBOX/stack-up && cd stack-up && ./up.sh
+```
 
 Delegation, the FinOps console and typed answers join with `--with-delegation`, `--with-finops` and `--with-typed`. The [stack-up repository](https://github.com/TAIPANBOX/stack-up#readme) has the port map and the rest.
 
@@ -3291,6 +3357,16 @@ Per-agent attribution of AI spend is not possible from an invoice: the charge ca
 
 No interpreter, no virtual environment, no second database engine in the process. It listens on loopback by default and expects a proxy in front of it for TLS. First account created at /signup becomes the admin of that installation, so make one before you hand anybody the address.
 
+```
+go install github.com/TAIPANBOX/costcrew/cmd/costcrew@latest
+# then: costcrew -data ./local
+```
+
+```
+# the whole local stack with the console on :8321, from TAIPANBOX/stack-up
+./up.sh --with-finops
+```
+
 ### A measured run
 
 Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.6.0, and it has one.
@@ -3602,7 +3678,15 @@ This plane answers about an action. What it cannot answer is whether the caller 
 
 ## Running it.
 
+```
+make serve
+```
+
 Boots on `127.0.0.1:8090` with an in-memory store. `serve` refuses to start without `WARDRYX_KEYS`, so `make serve` opts in to the dev key on loopback only: allow-all until you load a policy, and it logs that choice. Then dry-run a policy offline against a directory of Agent Passports:
+
+```
+./bin/wardryx check ./passports ./policies/finance.yaml
+```
 
 ## What the policy plane gained from 1 to 15 October
 
@@ -3757,6 +3841,14 @@ Blast radius, shadow tooling and unattested agents are covered as failure modes 
 The delegation chain here is a record: each identity lists the on_behalf_of chain it acts under, root first, and the graph walks that chain to show what the identity can reach. [Vouchryx](https://it-rat.com/services/vouchryx.html) is the other half, proof of possession per request and a revocation an incident can actually use, and every finding it produces lands on the same bus this graph is folded from.
 
 ## Running it.
+
+```
+idryx detect events.ndjson
+```
+
+```
+idryx serve events.ndjson
+```
 
 Download [the latest release binary](https://github.com/TAIPANBOX/idryx/releases) (SHA256SUMS ships next to it), run detect against a log, then serve for the read-only dashboard on `:8080`.
 
@@ -3919,6 +4011,16 @@ A fabricated subject makes every downstream count wrong and puts a name on an al
 
 ## Two images: default and -chromium.
 
+```
+# full command, environment and volume: https://github.com/TAIPANBOX/scopyx#run-it
+# it refuses to start bound wide with no credentials, deliberately
+```
+
+```
+# the -chromium image, the same service with a browser: https://github.com/TAIPANBOX/scopyx#backends
+# 267 MB to pull against 3.5 MB (measured on v0.1.2, 2026-08-10)
+```
+
 ### Configuration the room names
 
 - **SCOPYX_EXTERNAL_ENDPOINT:** point it at the fetching service you already run, through an HTTP endpoint that speaks scopyx's external contract. A vendor API needs an adapter in front of it, and this repository ships none.
@@ -4048,6 +4150,16 @@ In the stack-single launcher from 1.3.0 (released 2026-10-19), vouchryx starts o
 ## Mint it, prove it, then end it.
 
 An RFC 8693 exchange takes two signed input tokens and a DPoP proof whose public key travels in the JWS header, which is a JOSE client before it is a curl command. So the client ships with the service: `vouchryx-demo` makes the keys, performs the exchange and prints a proof.
+
+```
+# the whole local stack with the delegation door open, from TAIPANBOX/stack-up
+./up.sh --with-delegation
+```
+
+```
+# prints the token, its nested act and the key thumbprint bound to it
+vouchryx-demo exchange -url http://127.0.0.1:4310 -idp-key idp.pem -kid idp-1 -iss https://idp.local -aud http://127.0.0.1:4310 -subject user://acme/ada -actor agent://acme/triage -holder-key holder.pem
+```
 
 ### A measured run
 
@@ -4201,6 +4313,14 @@ Crypto posture is one plane of a wider practice: [AI agent governance](https://i
 
 ## One binary, any platform.
 
+```
+qryx scan .
+```
+
+```
+qryx tls api.anthropic.com:443
+```
+
 Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.2 toolchain downloads itself on the first build.
 
 ### Download, any platform
@@ -4338,7 +4458,23 @@ The witness pins the delegation root the first time it reads it, unless an opera
 
 Build with `go build -o keyryx ./cmd/keyryx`, then start custody and the witness with their own variables, each as its own process and under its own account:
 
+```
+KEYRYX_DATA=/var/lib/keyryx KEYRYX_ROOT_KEY_FILE=/run/secrets/keyryx-root \
+  KEYRYX_POLICY=/etc/keyryx/policy.json ./keyryx custody
+KEYRYX_WITNESS_DATA=/var/lib/keyryx-witness KEYRYX_WITNESS_ROOT_KEY_FILE=/run/secrets/keyryx-witness-root \
+  KEYRYX_WITNESS_EVENTS=/var/lib/agent-stack/events ./keyryx witness
+```
+
 The health checks are `/healthz` on the two listeners. Outputs can be checked with no service running:
+
+```
+# the witness log, against the key set it published
+keyryx verify log --dir /var/lib/keyryx-witness --keys witness-keys.json
+# streams and their checkpoints, against saved statements and the delegation root
+keyryx verify streams --events events/ --checkpoints checkpoints/ \
+  --statements statements/ --stream-keys 'wardryx.ndjson|wardryx-stream' \
+  --roots delegation-root.json
+```
 
 Each check prints ok, weak or broken for each item and ends with VERIFIED (exit 0) or NOT VERIFIED (exit 1). A directory with nothing in it is reported as measured nothing, never as verified.
 
@@ -4501,9 +4637,23 @@ Cost per resolved case sits inside a wider practice: [FinOps for AI](https://it-
 
 ## Grade with a stub, then price the traces.
 
+```
+git clone https://github.com/TAIPANBOX/verdryx && cd verdryx
+python -m venv .venv && source .venv/bin/activate
+pip install -e .
+```
+
 Into a virtual environment: system Python is usually externally managed. There is no PyPI package, so the version you run is the commit you can read.
 
+```
+verdryx eval evalset.json --model stub --db verdryx.db
+```
+
 No network, no key: `--model stub` is deterministic. Then price the traces it left behind.
+
+```
+verdryx cost-per-correct --traces $TOKENFUSE_DATA_DIR
+```
 
 ## What changed from 1 to 15 October
 
@@ -4735,6 +4885,13 @@ Without it, the rest of the stack behaves exactly as it does today: nothing here
 
 ## How to choose it at install.
 
+```
+# stack-single
+TYPED_MODE=jev|own-model|off
+# stack-k8s and stack-up
+--typed-mode jev|own-model|off
+```
+
 `TYPED_MODE=jev|own-model|off` for stack-single, and `--typed-mode jev|own-model|off` for stack-k8s and stack-up. Off is the default. A key is only ever a file you point at, never an environment value. released in stack-single v1.1.16 and stack-k8s v1.1.22; stack-up runs from main
 
 ## What changed, release by release.
@@ -4868,6 +5025,11 @@ Why rehearsal belongs in CI, and what else it sits beside: [AI agent security](h
 
 ## Two commands, one gateway URL.
 
+```
+./bin/mockryx run --gateway http://127.0.0.1:8080 ./scenarios
+./bin/mockryx report out/report.json
+```
+
 Add `--save out/report.json` to keep the evidence. Point it at pre-prod, never at prod: the URL you pass is the only place it will ever send traffic.
 
 ### Download, any platform
@@ -4983,6 +5145,10 @@ The same harness, the honest-disk assumption removed (as recorded, undated, in V
 What the installed profile seals today, stated beside the verdict rather than under it: the `record-seal` job the launchers run keeps the typed metadata plane and writes down that it declined the payload, because a node cannot choose an operator's custody for them. Its pack verifies as self-consistent, and `trailryx-verify` says in plain words that a pack carries no root signature and no witness, and a stack-single pack is written that way, because stack-single sets neither the Keyryx signer nor the witness's attestations folder, both opt-in since 1.3.0. Since 2026-10-19 stack-up signs each sealed root through Keyryx by default and attaches the witness's attestations, and stack-k8s has done the same since v1.6.1, tagged on 2026-10-20; neither witness is an outside party, since stack-up's runs on the same host as the same user and stack-k8s's runs in the same cluster, as its own user in the record plane's group, and trailryx-verify does not warn about that; none of this has run live. So a stack-single pack's verdict proves the chain was not altered, not who published it or when.
 
 ## The offline verifier.
+
+```
+trailryx-verify incident-4471.trxevid
+```
 
 Zero third-party dependencies, because an auditor reads it rather than trusting it. A download on [GitHub releases](https://github.com/TAIPANBOX/trailryx/releases) with a SHA256SUMS file signed keyless by Sigstore, so nobody has to build it first.
 
@@ -5102,6 +5268,10 @@ The first record has no predecessor to hash, so editing it is undetectable. The 
 A tool that could mend the chain would be a tool that could forge it. It exits non-zero on a break, so a deployment check can use it directly.
 
 ## Reading the dispatch record.
+
+```
+heraldyx --journal
+```
 
 The image is distroless: there is no shell in it to read the file with.
 
@@ -5299,6 +5469,10 @@ Provenance is one of the questions a governed fleet has to answer; the others ar
 
 ## Engram ships as a package.
 
+```
+pip install engdbram
+```
+
 Install it from [the repository](https://github.com/TAIPANBOX/engram#readme), where the command lives beside the version it belongs to.
 
 The PyPI name is engdbram (the plain name was taken); the import stays `from engram import Engram`. Your first memory needs zero API keys: an LLM enters the picture only when you ask for reflect().
@@ -5422,9 +5596,18 @@ Two ways in, and they are for different machines. On your own laptop the sandbox
 
 ### On a box you own, fastest
 
+```
+curl -fsSL https://raw.githubusercontent.com/TAIPANBOX/stack-single/main/install.sh | bash
+```
+
 Nothing is compiled: every plane is pulled from the public registry at a pinned version. Measured on 2026-09-13 on a fresh 2-vCPU cloud machine, from that line to a console answering on loopback: **109 seconds**, with every one of the installer's own checks green; on 2026-09-17, on a mini PC that already had Docker, **61 seconds** for the first run (exit 1: 22 checks ok, and one that fails by construction, since it probed loopback whatever the bind address was; fixed by stack-single #59) and 36 seconds for the second, with the same 22 checks ok. It needs root on Debian or Ubuntu, and docker and git; it comes back after a reboot (measured once, on 2026-09-17, on a box whose gateway sat on a tailnet address: the first reboot lost the gateway until the installer learned to order Docker after the tunnel, the second brought it back on its own); and it is reachable by agents running anywhere else, which the same day proved from two clouds at once.
 
 ### On your laptop, no Docker
+
+```
+git clone https://github.com/TAIPANBOX/stack-up
+cd stack-up && ./up.sh
+```
 
 The sandbox, and it builds from source on purpose: nothing but your own compilers touches it. That is the cost as well as the point, so it wants Rust, Go, Node and Python already installed. Measured on 2026-09-01 from an empty build cache: **221 seconds** to a working dashboard. A cold run with both optional planes took **325 seconds** on 2026-09-13. Binds `127.0.0.1` only, stops on Ctrl-C, keeps nothing.
 
@@ -5464,6 +5647,13 @@ The shape the stack is actually built for: the planes share a filesystem, which 
 
 **The commands, and the checks that have to fail to pass.**
 
+```
+git clone https://github.com/TAIPANBOX/stack-single
+cd stack-single && ./install.sh
+GATEWAY_BIND=0.0.0.0 ./install.sh
+ANTHROPIC_BASE_URL=http://<your box>:4100
+```
+
 It comes up closed: the gateway lands on the host's loopback and everything else has no host port at all, so a box that just ran an install script is not serving an enforcement plane to the internet because nobody typed anything. One variable publishes the gateway when you mean to. Same images and same service names as the cluster deployment, because Docker resolves `http://wardryx:8090` exactly the way a Kubernetes Service did.
 
 [The sandbox above](https://it-rat.com/platform-guide.html#run) is this shape already, with one deliberate difference: it binds loopback only, so nothing on it is reachable by an agent on another machine. That is correct for trying it and wrong for serving a fleet.
@@ -5485,11 +5675,21 @@ For teams whose answer to everything is a cluster. One script brings up k3s acro
 
 **The commands, and the one thing a cluster costs you.**
 
+```
+git clone https://github.com/TAIPANBOX/stack-k8s
+cd stack-k8s && ./deploy.sh --servers ... --hcloud-token ... --trust-domain <your domain>
+```
+
 Both paths are one command, and both ask what they need before the long part rather than failing on it afterwards. So the trade is not convenience. Kubernetes buys high availability and costs you the one thing a single box gets for free: the planes couple through a shared event log, so a cluster needs a ReadWriteMany volume for it.
 
 That trade, and every other thing that bites, are documented in the repositories rather than discovered by you. The same manifests came up on six clusters across Hetzner, AWS and GCP, and exactly one line of Kubernetes configuration differs between the three: Calico has to encapsulate unconditionally on GCP, because a GCE VPC routes every packet by destination and a pod address matches no route. Every trap we hit is written down and already fixed in the files.
 
 ## The contract for an agent of your own.
+
+```
+# install: https://github.com/TAIPANBOX/agent-stack-go#install
+agent-conform passport.json events.ndjson
+```
 
 This installs nothing of the stack: it is the contract itself, for an agent of your own. Exit 0 means every file and every NDJSON line conforms; exit 1 means at least one did not. That is the whole interface.
 

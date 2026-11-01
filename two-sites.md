@@ -22,13 +22,29 @@ One of the eight lets a site's gateway read back what its own runs have spent, s
 
 One script applies the entry, waits for the cloud to hand it an address, derives a name for that address, waits until both certificates are issued, and prints the two addresses a site needs. It is not part of the default install: a cluster that never runs it publishes nothing new.
 
+```
+# on the hub, from the cluster launcher
+./hub/up.sh
+```
+
 ### Give each site its own keys
 
 One command per site mints two keys: one the control plane accepts only for pushing and reading, bound to that site's name, and one the policy plane accepts for reading decisions. It writes them to a file only the operator can read and prints no secret. Asked again for a site that already has keys, it refuses rather than minting a second pair.
 
+```
+# on the hub, once per site
+./hub/add-site.sh warehouse-east
+```
+
 ### Point the site's gateway at the hub
 
 At the site, four variables on the gateway: where the control plane is and its key, where the policy plane is and its key. That is the whole change. Calls keep flowing through the same gateway, and from then on its spend appears at the hub under the site's name and its calls are decided by the hub's policy.
+
+```
+# on the site's gateway
+TOKENFUSE_CLOUD_URL, TOKENFUSE_CLOUD_KEY
+TOKENFUSE_WARDRYX_URL, TOKENFUSE_WARDRYX_KEY
+```
 
 ## One view, one policy, and a quiet site that is not mistaken for a dead one.
 

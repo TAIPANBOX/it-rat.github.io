@@ -94,6 +94,11 @@ Why rehearsal belongs in CI, and what else it sits beside: [AI agent security](h
 
 ## Two commands, one gateway URL.
 
+```
+./bin/mockryx run --gateway http://127.0.0.1:8080 ./scenarios
+./bin/mockryx report out/report.json
+```
+
 Add `--save out/report.json` to keep the evidence. Point it at pre-prod, never at prod: the URL you pass is the only place it will ever send traffic.
 
 ### Download, any platform

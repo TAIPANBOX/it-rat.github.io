@@ -119,6 +119,14 @@ The delegation chain here is a record: each identity lists the on_behalf_of chai
 
 ## Running it.
 
+```
+idryx detect events.ndjson
+```
+
+```
+idryx serve events.ndjson
+```
+
 Download [the latest release binary](https://github.com/TAIPANBOX/idryx/releases) (SHA256SUMS ships next to it), run detect against a log, then serve for the read-only dashboard on `:8080`.
 
 ### idryx, every platform

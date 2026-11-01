@@ -74,6 +74,10 @@ What the installed profile seals today, stated beside the verdict rather than un
 
 ## The offline verifier.
 
+```
+trailryx-verify incident-4471.trxevid
+```
+
 Zero third-party dependencies, because an auditor reads it rather than trusting it. A download on [GitHub releases](https://github.com/TAIPANBOX/trailryx/releases) with a SHA256SUMS file signed keyless by Sigstore, so nobody has to build it first.
 
 ### Download the verifier
