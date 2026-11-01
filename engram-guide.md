@@ -129,6 +129,10 @@ Provenance is one of the questions a governed fleet has to answer; the others ar
 
 ## Engram ships as a package.
 
+```
+pip install engdbram
+```
+
 Install it from [the repository](https://github.com/TAIPANBOX/engram#readme), where the command lives beside the version it belongs to.
 
 The PyPI name is engdbram (the plain name was taken); the import stays `from engram import Engram`. Your first memory needs zero API keys: an LLM enters the picture only when you ask for reflect().

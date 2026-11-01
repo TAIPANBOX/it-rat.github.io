@@ -108,7 +108,23 @@ The witness pins the delegation root the first time it reads it, unless an opera
 
 Build with `go build -o keyryx ./cmd/keyryx`, then start custody and the witness with their own variables, each as its own process and under its own account:
 
+```
+KEYRYX_DATA=/var/lib/keyryx KEYRYX_ROOT_KEY_FILE=/run/secrets/keyryx-root \
+  KEYRYX_POLICY=/etc/keyryx/policy.json ./keyryx custody
+KEYRYX_WITNESS_DATA=/var/lib/keyryx-witness KEYRYX_WITNESS_ROOT_KEY_FILE=/run/secrets/keyryx-witness-root \
+  KEYRYX_WITNESS_EVENTS=/var/lib/agent-stack/events ./keyryx witness
+```
+
 The health checks are `/healthz` on the two listeners. Outputs can be checked with no service running:
+
+```
+# the witness log, against the key set it published
+keyryx verify log --dir /var/lib/keyryx-witness --keys witness-keys.json
+# streams and their checkpoints, against saved statements and the delegation root
+keyryx verify streams --events events/ --checkpoints checkpoints/ \
+  --statements statements/ --stream-keys 'wardryx.ndjson|wardryx-stream' \
+  --roots delegation-root.json
+```
 
 Each check prints ok, weak or broken for each item and ends with VERIFIED (exit 0) or NOT VERIFIED (exit 1). A directory with nothing in it is reported as measured nothing, never as verified.
 

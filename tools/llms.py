@@ -11,8 +11,9 @@ drift:
 
 The HTML here is ours and predictable, so this is a narrow converter for
 our own markup rather than a general one: it keeps headings, paragraphs,
-lists, tables, code spans and the FAQ, and drops the chrome (nav, footer,
-scripts, SVG, decorative markup) that means nothing without a browser.
+lists, tables, code spans, command blocks and the FAQ, and drops the chrome
+(nav, footer, scripts, SVG, decorative markup) that means nothing without a
+browser.
 
 Run from the repo root:  python3 tools/llms.py
 """
@@ -123,6 +124,47 @@ def link(href, label, page):
     return f"[{label}]({urljoin(SITE + '/' + page, href)})"
 
 
+def code_block(s):
+    """A command block as the lines a reader would type.
+
+    `<div class="cmd">` breaks its lines with <br> and wraps comments in a span;
+    `<pre><code>` carries real newlines and backslash continuations. Both keep
+    their line structure, which text() would collapse into one line.
+    """
+    s = re.sub(r"<br\s*/?>", "\n", s)
+    s = htmlmod.unescape(re.sub(r"<[^>]+>", "", s))
+    lines = [ln.rstrip() for ln in s.split("\n")]
+    while lines and not lines[0].strip():
+        lines.pop(0)
+    while lines and not lines[-1].strip():
+        lines.pop()
+    return "\n".join(lines)
+
+
+COMMAND = re.compile(r"<div class=\"cmd\">(.*?)</div>|<pre\b[^>]*>(.*?)</pre>", re.S)
+
+
+def dropped_commands(body, md):
+    """The commands on a page that its twin does not carry.
+
+    Until 2026-11-01 the element pass below had no case for command blocks, so
+    40 of the 42 on the site were missing from their twins: install.md said how
+    to add delegation and never gave the one line that installs the stack. This
+    reads the blocks by its own means rather than through code_block(), so a
+    converter that stops carrying them cannot also stop this from noticing.
+    Whitespace is compared loosely, because a command inside a list item reaches
+    the twin on one line.
+    """
+    flat = " ".join(md.split())
+    missing = []
+    for m in COMMAND.finditer(body):
+        raw = m.group(1) if m.group(1) is not None else m.group(2)
+        cmd = " ".join(htmlmod.unescape(re.sub(r"<[^>]+>", " ", raw)).split())
+        if cmd and cmd not in flat:
+            missing.append(cmd)
+    return missing
+
+
 def table(block, page):
     rows = []
     for tr in re.findall(r"<tr\b[^>]*>(.*?)</tr>", block, re.S):
@@ -178,6 +220,8 @@ def to_markdown(path, title):
             r"|<h2\b[^>]*>(?P<h2>.*?)</h2>"
             r"|<h3\b[^>]*>(?P<h3>.*?)</h3>"
             r"|<table\b[^>]*>(?P<table>.*?)</table>"
+            r"|<div class=\"cmd\">(?P<cmd>.*?)</div>"
+            r"|<pre\b[^>]*>(?P<pre>.*?)</pre>"
             r"|<summary\b[^>]*>(?P<q>.*?)</summary>"
             r"|<li\b[^>]*>(?P<li>.*?)</li>"
             r"|<p\b[^>]*>(?P<p>.*?)</p>"
@@ -193,6 +237,11 @@ def to_markdown(path, title):
             t = table(val, path)
             if t:
                 out.append(t)
+            continue
+        if kind in ("cmd", "pre"):
+            c = code_block(val)
+            if c:
+                out.append("```\n" + c + "\n```")
             continue
         t = text(val, path)
         if not t or len(t) < 2:
@@ -224,7 +273,13 @@ def to_markdown(path, title):
     if desc:
         head.append(f"> {htmlmod.unescape(desc.group(1))}")
     md = "\n\n".join(head + [o for o in out if not o.startswith("# ")]) + "\n"
-    return re.sub(r"\n{3,}", "\n\n", md)
+    md = re.sub(r"\n{3,}", "\n\n", md)
+    missing = dropped_commands(body, md)
+    if missing:
+        sys.exit(f"{path.replace('.html', '.md')} drops a command its page shows: "
+                 f"{missing[0][:80]!r}. Teach to_markdown() the block's markup, "
+                 f"then run this again.")
+    return md, len(COMMAND.findall(body))
 
 
 def alternate_links():
@@ -248,12 +303,19 @@ def alternate_links():
 
 def main():
     written = {}
+    commands = 0
     for path, title in ALL:
-        md = to_markdown(path, title)
+        md, n = to_markdown(path, title)
+        commands += n
         out = ROOT / path.replace(".html", ".md")
         out.write_text(md, encoding="utf-8")
         written[path] = md
         print(f"{path.replace('.html', '.md'):40} {len(md.split()):5} words")
+    # The command check above measures nothing on a site with no commands, and
+    # a check that measures nothing must say so rather than pass.
+    if not commands:
+        sys.exit("no command block on any page, so the check that twins carry "
+                 "them measured nothing. If the markup changed, teach COMMAND.")
 
     # The hub's twin is how a machine reader finds the guides, so it has to
     # reach every one of them. A guide the hub does not link is a guide only a

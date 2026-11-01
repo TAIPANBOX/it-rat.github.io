@@ -385,6 +385,22 @@ run_case "generated-blocks: a twin link drops the folder its page lives in" fail
 	"$(py 'edit("tools/llms.py", "def link(href, label, page):", "def link(href, label, page):\n    page = \"\"")')" \
 	"a generator would rewrite it"
 
+# invariant 11, twins: a command on a page reaches its twin. Until 2026-11-01
+# the converter had no case for command blocks and 40 of 42 were missing,
+# install.md among them. The check reads the blocks by its own means, so a
+# converter that emits nothing for them is caught rather than agreed with.
+run_case "generated-blocks: the twin converter drops every command block" fail \
+	'./scripts/generated-blocks.sh' \
+	"$(py 'edit("tools/llms.py", "def code_block(s):", "def code_block(s):\n    return \"\"")')" \
+	"drops a command its page shows"
+
+# The same check with its subject taken away: a pattern that finds no command
+# anywhere would pass every page, so it has to say it measured nothing.
+run_case "generated-blocks: the command check finds no command on any page" fail \
+	'./scripts/generated-blocks.sh' \
+	"$(py 'edit("tools/llms.py", "COMMAND = re.compile(", "COMMAND = re.compile(r\x22(?!)\x22) or re.compile(")')" \
+	"measured nothing"
+
 # invariant 12: a room explains, and its guide holds the rest. Every case here
 # mutates the CostCrew room, the first one shortened, and the planted text sits
 # just above its FAQ, which is where an appended section would land.

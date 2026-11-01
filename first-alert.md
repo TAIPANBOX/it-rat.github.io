@@ -22,11 +22,21 @@ One installer brings up the whole governed set as containers on one Docker netwo
 
 It comes up **closed**. The gateway publishes to the host's loopback, so a machine that just ran an install script has not acquired an internet-facing enforcement plane because nobody typed anything. Opening it to the agents you actually have is one variable, and it is a decision you make rather than a default you inherit.
 
+```
+# the launcher, its flags and its second-run behaviour:
+github.com/TAIPANBOX/stack-single
+```
+
 ### Point one agent at it
 
 The integration is a base URL. Whatever your agent already uses to reach its provider now points at the gateway instead, and from that moment every call it makes is priced, budgeted and policy-checked in the request path. No SDK to adopt, no framework to migrate to, no code change beyond an environment variable.
 
 Send the agent's run a budget along with the request, and you have the thing worth having: a ceiling that is enforced before the provider is called rather than noticed afterwards on a bill.
+
+```
+# one variable, wherever your agent reads its provider URL
+ANTHROPIC_BASE_URL=http://<your box>:4100
+```
 
 ### Give it an address to write to
 
@@ -34,11 +44,21 @@ The notifier reads the shared event log and mails you when one of your own agent
 
 What it will not do is more interesting than what it will. It holds no credential for any plane, opens no connection to one, has no API of its own, and can take no action on any agent. It reads a file and sends mail. That narrowness is the point: it is the one component allowed to reach the outside world, so its blast radius stays small enough to say in a sentence.
 
+```
+# recipient, SMTP host, and the severity floor:
+github.com/TAIPANBOX/heraldyx
+```
+
 ### Make it fire on purpose
 
 Do not wait for a real incident to find out whether any of this works. Give a run a budget of a fraction of a cent and let an agent loop against it: the gateway answers 402 in the request path, the event lands in the log, and the mail arrives. That is the whole chain, exercised in a minute, at no cost. Know which mail you are waiting for: at the notifier's default floor a single refusal is below it, and the message comes from the control plane once a run has been refused three times, as `budget_exhausted`. A run on 2026-09-17 found that on the installer's released versions that message never reached the log at all, because the control plane could not create its own events file and said nothing; the installer on `main` creates the file for it, which is what the one-line command installs.
 
 Then read the mail carefully, because it is deliberately almost nothing: identifiers and numbers, never content, and one link into your own console rather than a button. Following it opens the panel showing that event. The action happens there, behind your sign-in.
+
+```
+# or fire the rehearsal harness at a pre-prod gateway:
+github.com/TAIPANBOX/mockryx
+```
 
 Every exact flag lives in the repository that owns it, and this guide points at those rather than repeating them. A copy here would be a second place to keep true, and it would drift the first time an installer grew a flag: you would follow the pretty page and hit the error the README already documents. What a guide can add is the part a README cannot, which is what the step is for and how it fails.
 

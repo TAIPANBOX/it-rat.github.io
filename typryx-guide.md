@@ -205,6 +205,13 @@ Without it, the rest of the stack behaves exactly as it does today: nothing here
 
 ## How to choose it at install.
 
+```
+# stack-single
+TYPED_MODE=jev|own-model|off
+# stack-k8s and stack-up
+--typed-mode jev|own-model|off
+```
+
 `TYPED_MODE=jev|own-model|off` for stack-single, and `--typed-mode jev|own-model|off` for stack-k8s and stack-up. Off is the default. A key is only ever a file you point at, never an environment value. released in stack-single v1.1.16 and stack-k8s v1.1.22; stack-up runs from main
 
 ## What changed, release by release.

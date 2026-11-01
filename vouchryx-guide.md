@@ -81,6 +81,16 @@ In the stack-single launcher from 1.3.0 (released 2026-10-19), vouchryx starts o
 
 An RFC 8693 exchange takes two signed input tokens and a DPoP proof whose public key travels in the JWS header, which is a JOSE client before it is a curl command. So the client ships with the service: `vouchryx-demo` makes the keys, performs the exchange and prints a proof.
 
+```
+# the whole local stack with the delegation door open, from TAIPANBOX/stack-up
+./up.sh --with-delegation
+```
+
+```
+# prints the token, its nested act and the key thumbprint bound to it
+vouchryx-demo exchange -url http://127.0.0.1:4310 -idp-key idp.pem -kid idp-1 -iss https://idp.local -aud http://127.0.0.1:4310 -subject user://acme/ada -actor agent://acme/triage -holder-key holder.pem
+```
+
 ### A measured run
 
 Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 218 tests, and the repository gates that number against its own suite.

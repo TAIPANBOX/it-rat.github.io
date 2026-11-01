@@ -196,10 +196,12 @@ true.
    now runs the gate on the UNMUTATED tree first and reports `UNJUDGEABLE`
    rather than a pass. Verified by writing exactly that case and watching it
    refuse.
-   *(gate: `scripts/gates-have-teeth.sh`, 46 cases: thirty real faults, eight
-   non-faults, and eight subjects taken away entirely, counted from the
-   harness's own "OK: 46 cases" on 2026-10-26, after invariant 14's eight
-   cases were added. Before that it was 38, counted from "OK: 38 cases" on
+   *(gate: `scripts/gates-have-teeth.sh`, 48 cases: thirty-one real faults,
+   eight non-faults, and nine subjects taken away entirely, counted from the
+   harness's own "OK: 48 cases" on 2026-11-01, after invariant 11's two
+   command-twin cases were added. Before that it was 46, counted from
+   "OK: 46 cases" on 2026-10-26, after invariant 14's eight cases were added.
+   Before that it was 38, counted from "OK: 38 cases" on
    2026-10-19, after the demo was rebuilt (31 cases
    that must fail, 7 that must pass; before that rebuild demo-bundle-current was
    UNJUDGEABLE, which is invariant 7 doing its job). The non-faults are the
@@ -394,6 +396,25 @@ true.
    hand-kept list the tool has, which guides explain the field rather than this
    stack, is checked against those links. It runs before `seo.py` and
    `llms.py`, which read what it writes.
+
+   **A command on a page reaches its twin.** `tools/llms.py` converts a page
+   by walking a fixed list of elements, and until 2026-11-01 that list had no
+   case for `<div class="cmd">` or `<pre>`. Every command block fell through it
+   silently: 40 of the 42 on the site were missing from their twins, and
+   `install.md` explained how to add delegation while never giving the one
+   line that installs the stack. Every gate was green, because freshness only
+   asks whether the generator would write the same thing again, and it would.
+   Found by a model reading the twins to answer questions about the site.
+   The converter now writes each block as a fenced code block with its lines
+   kept, and it refuses to write a twin that lacks a command its page shows.
+   The check reads the blocks by its own pattern rather than through the
+   converter, so a converter that stops carrying them cannot also stop the
+   check from noticing, and it refuses when it finds no command on any page,
+   since then it measured nothing.
+   *(gate: `scripts/generated-blocks.sh`, which runs `tools/llms.py` and
+   reports its refusal. Whitespace is compared loosely, so a command inside a
+   list item, which reaches the twin on one line, passes; that the twin keeps a
+   block's line breaks is held by the converter alone.)*
 
 12. **A room explains; its guide holds the rest.** A room is a page in the
    STACK registry: the hero, the picture of how the thing works, how to start

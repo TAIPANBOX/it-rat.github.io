@@ -126,6 +126,16 @@ A fabricated subject makes every downstream count wrong and puts a name on an al
 
 ## Two images: default and -chromium.
 
+```
+# full command, environment and volume: https://github.com/TAIPANBOX/scopyx#run-it
+# it refuses to start bound wide with no credentials, deliberately
+```
+
+```
+# the -chromium image, the same service with a browser: https://github.com/TAIPANBOX/scopyx#backends
+# 267 MB to pull against 3.5 MB (measured on v0.1.2, 2026-08-10)
+```
+
 ### Configuration the room names
 
 - **SCOPYX_EXTERNAL_ENDPOINT:** point it at the fetching service you already run, through an HTTP endpoint that speaks scopyx's external contract. A vendor API needs an adapter in front of it, and this repository ships none.
