@@ -1755,12 +1755,12 @@
       "claim": "v0.6.0",
       "occurrences": 2,
       "repo": "TAIPANBOX/costcrew",
-      "command": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name",
+      "command": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.6.0 --jq .tag_name; cited as history, the release that introduced what the sentence describes, not as the current one",
       "status": "measured",
-      "measured_on": "2026-10-13",
+      "measured_on": "2026-11-04",
       "note": "Added 2026-10-13: v0.6.0 is the latest costcrew release and the current image. Moved 2026-10-16 with the run-it paragraphs and the October changes table: the CostCrew room no longer carries them, costcrew-guide.html does.",
       "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name",
+      "check": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.6.0 --jq .tag_name",
       "slow": false
     },
     {
@@ -1847,11 +1847,11 @@
       "occurrences": 5,
       "status": "measured",
       "repo": "TAIPANBOX/tokenfuse",
-      "command": "gh api repos/TAIPANBOX/tokenfuse/releases/latest --jq .tag_name",
-      "measured_on": "2026-10-15",
+      "command": "gh api repos/TAIPANBOX/tokenfuse/releases/tags/v1.14.0 --jq .tag_name; cited as history, the release that introduced what the sentence describes, not as the current one",
+      "measured_on": "2026-11-04",
       "note": "Updated 2026-10-15 from v1.13.0: v1.14.0 is the latest release. Its release notes are at docs/releases/v1.14.0.md on origin/main. Moved 2026-10-16 with the feature sheets, the how-it-ships note and the October changes table: the TokenFuse room no longer carries them, tokenfuse-guide.html does.",
       "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/tokenfuse/releases/latest --jq .tag_name",
+      "check": "gh api repos/TAIPANBOX/tokenfuse/releases/tags/v1.14.0 --jq .tag_name",
       "slow": false
     },
     {
@@ -1860,11 +1860,11 @@
       "occurrences": 5,
       "status": "measured",
       "repo": "TAIPANBOX/tokenfuse",
-      "command": "gh api repos/TAIPANBOX/tokenfuse/releases/latest --jq .tag_name",
-      "measured_on": "2026-10-15",
+      "command": "gh api repos/TAIPANBOX/tokenfuse/releases/tags/v1.14.0 --jq .tag_name; cited as history, the release that introduced what the sentence describes, not as the current one",
+      "measured_on": "2026-11-04",
       "note": "Added 2026-10-15 with the twin of the changes table; v1.14.0 is the latest release.",
       "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/tokenfuse/releases/latest --jq .tag_name",
+      "check": "gh api repos/TAIPANBOX/tokenfuse/releases/tags/v1.14.0 --jq .tag_name",
       "slow": false
     },
     {
@@ -2146,11 +2146,11 @@
       "occurrences": 1,
       "status": "measured",
       "repo": "TAIPANBOX/heraldyx",
-      "command": "gh api repos/TAIPANBOX/heraldyx/tags --jq '.[0].name'",
-      "measured_on": "2026-10-19",
+      "command": "gh api repos/TAIPANBOX/heraldyx/releases/tags/v0.8.0 --jq .tag_name; cited as history, the release that introduced what the sentence describes, not as the current one",
+      "measured_on": "2026-11-04",
       "note": "Updated 2026-10-19: the newest tag is v0.8.0 (released 2026-10-19, pinned by stack-single and stack-k8s). The room names it twice: the shipped line and the checkpoint gate. Previously v0.7.0, measured 2026-10-15.",
       "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/heraldyx/tags --jq '.[0].name'",
+      "check": "gh api repos/TAIPANBOX/heraldyx/releases/tags/v0.8.0 --jq .tag_name",
       "slow": false
     },
     {
@@ -2159,11 +2159,11 @@
       "occurrences": 11,
       "status": "measured",
       "repo": "TAIPANBOX/heraldyx",
-      "command": "gh api repos/TAIPANBOX/heraldyx/tags --jq '.[0].name'; the tag is the shipped thing (no GitHub release is cut). stack-single main compose.yaml and stack-k8s main manifests/45-heraldyx.yaml both pin v0.7.0, checked 2026-10-15",
-      "measured_on": "2026-10-15",
+      "command": "gh api repos/TAIPANBOX/heraldyx/releases/tags/v0.7.0 --jq .tag_name; cited as history, the release that introduced what the sentence describes, not as the current one",
+      "measured_on": "2026-11-04",
       "note": "Updated 2026-10-15 from v0.4.0: v0.7.0 is the latest tag. The hero row and the sentence on the launchers say what main pins; the changes table cites the same release. stack-k8s release v1.1.46 still pins v0.6.0. On 2026-10-16 the decision paragraph and the changes table moved to heraldyx-guide.html; the room keeps the fact table's shipped row. Copied 2026-10-16: the same figure also stands in heraldyx-guide.html, which holds the text the room no longer carries; same check. Twelve there: the decision paragraph, the changes heading and its five rows, the guide's own lede, and its four descriptions (meta, og, twitter, JSON-LD).",
       "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/heraldyx/tags --jq '.[0].name'",
+      "check": "gh api repos/TAIPANBOX/heraldyx/releases/tags/v0.7.0 --jq .tag_name",
       "slow": false
     },
     {
@@ -2172,11 +2172,11 @@
       "occurrences": 8,
       "status": "measured",
       "repo": "TAIPANBOX/heraldyx",
-      "command": "gh api repos/TAIPANBOX/heraldyx/tags --jq '.[0].name'; the tag is the shipped thing (no GitHub release is cut)",
-      "measured_on": "2026-10-15",
+      "command": "gh api repos/TAIPANBOX/heraldyx/releases/tags/v0.7.0 --jq .tag_name; cited as history, the release that introduced what the sentence describes, not as the current one",
+      "measured_on": "2026-11-04",
       "note": "Updated 2026-10-15 from v0.4.0: v0.7.0 is the latest tag and the changes table cites it.",
       "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/heraldyx/tags --jq '.[0].name'",
+      "check": "gh api repos/TAIPANBOX/heraldyx/releases/tags/v0.7.0 --jq .tag_name",
       "slow": false
     },
     {
@@ -2185,11 +2185,11 @@
       "occurrences": 6,
       "status": "measured",
       "repo": "TAIPANBOX/mockryx",
-      "command": "gh api repos/TAIPANBOX/mockryx/releases/latest --jq .tag_name; the four drills named on the page are on main and in no release",
-      "measured_on": "2026-10-15",
+      "command": "gh api repos/TAIPANBOX/mockryx/releases/tags/v0.2.1 --jq .tag_name; cited as history, the release that introduced what the sentence describes, not as the current one",
+      "measured_on": "2026-11-04",
       "note": "Added 2026-10-15: v0.2.1 is the last release; the four drills on main are named beside it. Checked by the latest release, not by main. Copied 2026-10-16: the same release also stands in mockryx-guide.html, twice, beside the drills on main that the room no longer lists in full; same check.",
       "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/mockryx/releases/latest --jq .tag_name",
+      "check": "gh api repos/TAIPANBOX/mockryx/releases/tags/v0.2.1 --jq .tag_name",
       "slow": false
     },
     {
@@ -2198,11 +2198,11 @@
       "occurrences": 7,
       "status": "measured",
       "repo": "TAIPANBOX/engram",
-      "command": "gh api repos/TAIPANBOX/engram/releases/latest --jq .tag_name",
-      "measured_on": "2026-10-19",
+      "command": "gh api repos/TAIPANBOX/engram/releases/tags/v3.0.0 --jq .tag_name; cited as history, the release that introduced what the sentence describes, not as the current one",
+      "measured_on": "2026-11-04",
       "note": "Updated 2026-10-19: the latest release is v3.0.0, published 2026-10-18. Previously v2.4.1, measured 2026-10-15.",
       "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/engram/releases/latest --jq .tag_name",
+      "check": "gh api repos/TAIPANBOX/engram/releases/tags/v3.0.0 --jq .tag_name",
       "slow": false
     },
     {
@@ -2223,12 +2223,12 @@
       "claim": "v0.8.0",
       "occurrences": 1,
       "repo": "TAIPANBOX/heraldyx",
-      "command": "gh api repos/TAIPANBOX/heraldyx/tags --jq '.[0].name'",
+      "command": "gh api repos/TAIPANBOX/heraldyx/releases/tags/v0.8.0 --jq .tag_name; cited as history, the release that introduced what the sentence describes, not as the current one",
       "status": "measured",
-      "measured_on": "2026-10-19",
+      "measured_on": "2026-11-04",
       "note": "The markdown twin of services/heraldyx.html, generated from it by tools/llms.py.",
       "repo_dir": "heraldyx",
-      "check": "gh api repos/TAIPANBOX/heraldyx/tags --jq '.[0].name'",
+      "check": "gh api repos/TAIPANBOX/heraldyx/releases/tags/v0.8.0 --jq .tag_name",
       "slow": false
     },
     {
