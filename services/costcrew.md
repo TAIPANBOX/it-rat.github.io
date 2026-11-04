@@ -22,7 +22,7 @@ An analyst gets the task with a mandate and a spend guard on the row.
 
 ### Only a person publishes
 
-Work comes back as a draft. A person posts it or returns it, and the return shows on the analyst's card.
+Work comes back as a draft. A person posts it or returns it, and the return shows on the analyst's card. After that the supervisor applies a posted option itself only up to USD 2,500 per anomaly; everything above, and every closed period, budget or allocation rule, waits for the owner.
 
 ### Found, never saved
 
@@ -42,7 +42,7 @@ First account created at /signup becomes the admin of that installation, so make
 
 ## What is not proven yet.
 
-- Every run in v0.6.0 used the generated estate, so detection quality and forecast accuracy on real spend are still open.
+- Release gates through v0.10.0 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
 
 - The AWS reader was proven on a real export, the GCP one only against a hand-written file.
 
@@ -53,7 +53,7 @@ First account created at /signup becomes the admin of that installation, so make
 ## What a crew of agents can and cannot do to your bill
 
 **Q: Do the agents change anything in my cloud account?**
-No. This console reads exports that land in a folder and, where a connector is built, a vendor's usage API, and it writes only its own database. Twelve of its eighteen connectors read today, the AWS and GCP billing exports among them; the Azure billing export is specified and not yet written, and the catalogue says so per entry. It has no credentials that can act, it makes no outbound call while serving a page, and it enforces nothing: every deliverable is a draft until a person stamps it.
+No. This console reads exports that land in a folder and, where a connector is built, a vendor's usage API. It writes its own database and, when wired into the stack, its own events file and passports. Twelve of its eighteen connectors read today, the AWS and GCP billing exports among them; the Azure billing export is specified and not yet written, and the catalogue says so per entry. By default it makes no outbound call while serving a page; the only exceptions are opt-in: the supervisor's planning call through a gateway you name, sign-in through your identity provider, and a typed hint from Typryx at start. It enforces nothing: every deliverable is a draft until a person stamps it.
 
 **Q: How is this different from the console that kills runs?**
 Different question, different clock. [Genaryx](https://it-rat.com/genaryx.html) and [TokenFuse](https://it-rat.com/services/tokenfuse.html) work in micro-dollars while a run is happening and can stop it. CostCrew works in cents on last month's invoice and allocates it. The crew here are agents like any other, so Genaryx governs them too.

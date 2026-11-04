@@ -2,9 +2,9 @@
 
 # Mockryx guide
 
-> How Mockryx fire drills work, how to run and download it, the drills on main not yet released, and what it does not prove yet.
+> How Mockryx fire drills work, how to run and download it, the drills added since v0.2.1, and what it does not prove yet.
 
-The [Mockryx room](https://it-rat.com/services/mockryx.html) keeps the fire drill, the drawing of one target URL and three exit codes, and the common questions. This guide keeps the rest of what the room used to say: what a scenario names, how a reaction is proven, how a skipped guardrail is told from a gap, where it sits in the stack, how to run and download it, the drills on main, and the limits.
+The [Mockryx room](https://it-rat.com/services/mockryx.html) keeps the fire drill, the drawing of one target URL and three exit codes, and the common questions. This guide keeps the rest of what the room used to say: what a scenario names, how a reaction is proven, how a skipped guardrail is told from a gap, where it sits in the stack, how to run and download it, the drills added since v0.2.1, and the limits.
 
 - [At a glance](https://it-rat.com/mockryx-guide.html#overview)
 
@@ -17,6 +17,8 @@ The [Mockryx room](https://it-rat.com/services/mockryx.html) keeps the fire dril
 - [Running it](https://it-rat.com/mockryx-guide.html#run)
 
 - [What changed](https://it-rat.com/mockryx-guide.html#changes)
+
+- [What changed in November](https://it-rat.com/mockryx-guide.html#changes-november)
 
 - [Limits](https://it-rat.com/mockryx-guide.html#limits)
 
@@ -36,11 +38,11 @@ The [Mockryx room](https://it-rat.com/services/mockryx.html) keeps the fire dril
 
 ### What it is
 
-A guardrail nobody has ever fired is a guess. Mockryx replays hostile scenarios (a fake secret in a prompt, a budget burn, a denied tool, a forged delegation chain, an unapproved action, an injected page, a quality drift, a reaction chain that has to reach the mail, and a provider outage) against the one URL you hand it: your own pre-production gateway, with a fake provider behind it. The enforcement path is the real one; the spend is not. CI reads the verdict as an exit code.
+A guardrail nobody has ever fired is a guess. Mockryx replays hostile scenarios (a fake secret in a prompt, a budget burn, a denied tool, a forged delegation chain, an unapproved action, an injected page, a quality drift, a reaction chain that has to reach the mail, a token flood, personal data in a prompt, a poisoned tool description, a respelled allow-listed tool, and a provider outage) against the URL you hand it: your own pre-production gateway, with a fake provider behind it. The enforcement path is the real one; the spend is not. CI reads the verdict as an exit code.
 
-## One target URL. One report. Three exit codes.
+## One gateway URL. One report. Three exit codes.
 
-A scenario file names a request in the Anthropic Messages shape, the status it must be answered with, the headers that must ride the response and, optionally, the off-path event that must follow. The runner sends it at your gateway's /v1/messages, reads the gateway's own answer, polls the NDJSON event logs the off-path services write, and folds everything into a report and an exit code a CI gate can act on. It never talks to anything but the gateway you name.
+A scenario file names a request in the Anthropic Messages shape, the status it must be answered with, the headers that must ride the response and, optionally, the off-path event that must follow. A step is one of three kinds: a request to /v1/messages (which can carry tool history), a tool_check that asks the gateway whether a tool may run and expects allow or deny, or an mcp step that sends one JSON-RPC request to your MCP broker, named with --mcp-broker. The runner sends it at your gateway's /v1/messages, reads the gateway's own answer, polls the NDJSON event logs the off-path services write, and folds everything into a report and an exit code a CI gate can act on. It talks only to the URLs you name on the command line: your gateway and, for the optional broker drills, your MCP broker.
 
 ### Watch every guardrail answer for itself.
 
@@ -66,6 +68,14 @@ So a scenario can assert on that too. Name the source and the event type it expe
 
 Order matters here. A synchronous mismatch is never followed by an event check: chasing a downstream reaction to a request that did not even trigger the guardrail would turn one clear failure into two confusing ones. The drill reports the thing that actually broke.
 
+### A provider that is up but failing
+
+Three game-day drills rehearse it against a stub provider: `provider-5xx`, `provider-rate-limited` and `provider-timeout`. A fourth, `provider-outage`, needs no stub: point the gateway's upstream at an address that refuses the connection. They live in `scenarios/game-day/`, and a plain `mockryx run ./scenarios` never loads them: a failing provider sends no `x-fuse-*` header, so a routine CI run would show a false gap on any ordinary day. Each of the three sends the operator's own gateway a call and checks the chain in order. The call comes back with the provider's own status, 503, 429 or 504. The gateway puts a `dependency_failed` for the run on the bus, from source tokenfuse. And the run reaches a person: an `alert_sent` from heraldyx. The drills use the existing event check only, add no scenario capability and declare no `requires`, so a miss is a finding and never a skip.
+
+The provider is a local stub, `internal/providerstub`, started by `scripts/provider-stub.go` with `go run`. The script is excluded from the build, so the repository still builds one binary. The stub listens on loopback only and refuses any other address before binding, exiting 2. It makes no outbound call, and it holds a timeout for at most ten seconds, under Mockryx's own fifteen-second client timeout.
+
+Each drill is run through a model of the chain: the stub, a gateway that passes the status through and writes `dependency_failed` to a hash-chained file, and a notifier that writes `alert_sent`, read back by the real event watcher. All three pass with the chain whole. Each fails on the status when the gateway hides the failure, on `tokenfuse/dependency_failed` when the bus is silent, and on `heraldyx/alert_sent` when nobody is told. The self-test runs every drill against a gateway that answers 200 to everything, and every run comes back failed.
+
 ### A skip cannot hide a gap
 
 A guardrail that is off looks exactly like one that is broken. The runner insists on evidence before it calls a miss either one.
@@ -74,7 +84,7 @@ A guardrail that is off looks exactly like one that is broken. The runner insist
 
 The evidence is the gateway's own response headers. If the header for that feature appears even once anywhere in the run, whatever its value, the feature is clearly live and a mismatch is a genuine finding. If it never appears across every attempt, the gateway plainly does not have it configured, and the scenario reports itself as not configured, with its raw mismatches dropped: they describe an absent feature, not a broken defence.
 
-Two things can never be excused this way. A scenario with no optional guardrail declared, the budget breaker, is core and always on, so a miss there is always a finding. And a transport error, where the gateway could not be reached at all, is always a finding too: being unreachable is never evidence that a feature is merely switched off.
+Three things can never be excused this way. A scenario with no optional guardrail declared, the budget breaker, is core and always on, so a miss there is always a finding. A transport error, where the gateway could not be reached at all, is always a finding too: being unreachable is never evidence that a feature is merely switched off. So is a gateway that refuses the drill's own credential (a 401, or a 403 identity_mismatch): that is a finding, never a skip.
 
 When you know a guardrail must be there, one flag turns even a skip into a failure. That is the honest way round: the tool refuses to claim a pass it cannot prove, and it refuses to cry gap it cannot prove either.
 
@@ -84,11 +94,11 @@ Exit 0: every drill held. Exit 1: a real defensive gap, fail the build. Exit 2: 
 
 ### Zero real spend by design
 
-The provider behind the gateway is fake, so the runaway scenario can burn all it wants: the meter it trips is real, the invoice is not. And every hostile input stays inside your perimeter; Mockryx only ever talks to the one gateway URL you hand it.
+The provider behind the gateway is fake, so the runaway scenario can burn all it wants: the meter it trips is real, the invoice is not. And every hostile input stays inside your perimeter; Mockryx only talks to the URLs you hand it: the gateway and, for the broker drills, your MCP broker.
 
 ## It picks fights with the rest of the stack. On purpose, in pre-prod.
 
-In the request path, Mockryx rehearses [TokenFuse](https://it-rat.com/services/tokenfuse.html): the breaker's 402 and the DLP's 403, provoked deliberately and expected to answer. It does the same to [Wardryx](https://it-rat.com/services/wardryx.html), asserting that deny and hold verdicts land in the x-fuse-wardryx header. Off path, expect.event demands that [Verdryx](https://it-rat.com/services/verdryx.html), [Idryx](https://it-rat.com/services/idryx.html) and [Qryx](https://it-rat.com/services/qryx.html) visibly react to what just happened. And every finding it makes travels as sim_run and sim_finding events on the same bus as everything else: [the shared contract](https://it-rat.com/services/platform.html).
+In the request path, Mockryx rehearses [TokenFuse](https://it-rat.com/services/tokenfuse.html): the breaker's 402 and the DLP's 403, provoked deliberately and expected to answer. It does the same to [Wardryx](https://it-rat.com/services/wardryx.html), asserting that deny and hold verdicts land in the x-fuse-wardryx header. Off path, expect.event demands that [Verdryx](https://it-rat.com/services/verdryx.html), [Idryx](https://it-rat.com/services/idryx.html) and [Qryx](https://it-rat.com/services/qryx.html) visibly react to what just happened. And when MOCKRYX_EVENTS_PATH (or --events) is set, it also writes sim_run, sim_finding and blast_radius_measured events in the same agent-event format as everything else on the bus: [the shared contract](https://it-rat.com/services/platform.html).
 
 Why rehearsal belongs in CI, and what else it sits beside: [AI agent security](https://it-rat.com/ai-agent-security.html) and [AI agent governance](https://it-rat.com/ai-agent-governance.html).
 
@@ -99,15 +109,15 @@ Why rehearsal belongs in CI, and what else it sits beside: [AI agent security](h
 ./bin/mockryx report out/report.json
 ```
 
-Add `--save out/report.json` to keep the evidence. Point it at pre-prod, never at prod: the URL you pass is the only place it will ever send traffic.
+Add `--save out/report.json` to keep the evidence. Point it at pre-prod, never at prod: the URLs you pass are the only places it will ever send traffic.
 
 ### Download, any platform
 
 Every one of those addresses always serves the newest release, so a link saved today still works after the next one. The asset names carry no version, which is what makes that true; the version lives inside the binary, where `mockryx version` reads it back.
 
-## Four drills on main, not yet in a release
+## Four drills added in v0.2.2
 
-The last release is v0.2.1. These four drills are on main and are not in any release yet.
+These four drills shipped in v0.2.2. The current release is v0.4.0.
 
 | drill | what it rehearses |
 |---|---|
@@ -118,9 +128,15 @@ The last release is v0.2.1. These four drills are on main and are not in any rel
 
 What changed from 1 to 15 October 2026, release by release, is in [the stack's changes for October](https://it-rat.com/changes-2026-10.html#mockryx).
 
-## What it does not do, and what is not released yet.
+## What changed in November
 
-- The last release is v0.2.1. The four drills above are on main and are not in any release yet.
+| shipped in | what it does |
+|---|---|
+| v0.4.0 | Three game-day drills for a provider that is up but failing (a 5xx, a rate limit and a timeout), and a loopback-only local stub they run against. |
+
+## What it does not do.
+
+- The game-day drills (scenarios/game-day/) and the MCP broker drills (scenarios/mcp/) are not loaded by a plain mockryx run ./scenarios, on purpose: a failing provider sends no x-fuse-* header, so a routine CI run would show a false gap, and a broker drill needs --mcp-broker.
 
 - Of the five drills the room replays, three ran live against a real gateway on disposable boxes, twice; the other two are the Wardryx scenarios that ship in the same set.
 
@@ -130,7 +146,7 @@ What changed from 1 to 15 October 2026, release by release, is in [the stack's c
 
 - A scenario that declares an optional guardrail reports itself as not configured when the gateway never shows that feature's header; one flag turns even a skip into a failure.
 
-- It only ever talks to the one gateway URL you hand it. Point it at pre-prod, never at prod.
+- It only talks to the URLs you hand it: your gateway and, for the broker drills, your MCP broker. Point it at pre-prod, never at prod.
 
 ## Back to the room.
 

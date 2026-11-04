@@ -61,7 +61,7 @@
   .deeper .cta-row{margin-top:16px}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Platform","url":"https://it-rat.com/services/platform.html","description":"One agent:// passport, one event envelope, one Go binding and a Terraform provider: the contract every service in the stack shares. Apache-2.0.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/agent-passport","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Platform","item":"https://it-rat.com/services/platform.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an Agent Passport?","acceptedAnswer":{"@type":"Answer","text":"One identifier and one document per agent: an agent:// URI of at most 255 bytes, aligned with SPIFFE without requiring it, and a document naming an owner, a runtime and one of six attestation methods. The delegation chain behind it is ordered root first, acyclic, and capped at 32 entries."}},{"@type":"Question","name":"Do I have to adopt the whole stack to use the contract?","acceptedAnswer":{"@type":"Answer","text":"No. There is no shared runtime and no shared database. Adopting it is a naming agreement plus a few optional fields on events you already emit, which is why a service can add an event type without asking any other service for permission."}},{"@type":"Question","name":"Can budgets and policies live in version control?","acceptedAnswer":{"@type":"Answer","text":"Yes. Four Terraform resources cover run budgets, business-unit budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending."}},{"@type":"Question","name":"How do I check that my events actually conform?","acceptedAnswer":{"@type":"Answer","text":"Run agent-conform . It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect. On a box, agent-conform watch-dir re-checks every stream's hash chain and writes a chain_broken event to its own stream when one breaks; it exits 2 on a usage or I/O error. stack-single runs it every five minutes and stack-k8s runs it as a CronJob every fifteen minutes. stack-up runs it once a day, at 06:52, as a routine."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Platform","url":"https://it-rat.com/services/platform.html","description":"One agent:// passport, one event envelope, one Go binding and a Terraform provider: the contract every service in the stack shares. Apache-2.0.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/agent-passport","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Platform","item":"https://it-rat.com/services/platform.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an Agent Passport?","acceptedAnswer":{"@type":"Answer","text":"One identifier and one document per agent: an agent:// URI of at most 255 bytes, aligned with SPIFFE without requiring it, and a document naming an owner, a runtime and one of six attestation methods. The delegation chain behind it is ordered root first, acyclic, and capped at 32 entries."}},{"@type":"Question","name":"Do I have to adopt the whole stack to use the contract?","acceptedAnswer":{"@type":"Answer","text":"No. There is no shared runtime and no shared database. Adopting it is a naming agreement plus a few optional fields on events you already emit, which is why a service can add an event type without asking any other service for permission."}},{"@type":"Question","name":"Can budgets and policies live in version control?","acceptedAnswer":{"@type":"Answer","text":"Yes. Four Terraform resources cover run budgets, business-unit budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending."}},{"@type":"Question","name":"How do I check that my events actually conform?","acceptedAnswer":{"@type":"Answer","text":"Run agent-conform . It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect. On a box, agent-conform watch-dir re-checks every stream's hash chain and writes a chain_broken , chain_unchained or chain_restarted event to its own stream when one breaks; it exits 2 on a usage or I/O error. stack-single runs it every five minutes and stack-k8s runs it as a CronJob every fifteen minutes. stack-up runs it once a day, at 06:52, as a routine."}}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-service="platform" data-root="../">
@@ -131,10 +131,10 @@
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
       <h2>Everything meets at the envelope.</h2>
-      <p class="lede">Fifteen registered sources write one shape onto one NDJSON bus: five required fields, six optional ones. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.</p>
+      <p class="lede">Fifteen registered sources write one shape: twelve onto one NDJSON bus, and heraldyx, scopyx and the keyryx witness into files of their own (dashed). Five required fields, six optional ones. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.</p>
     </div>
     <div class="diagram rv">
-      <svg viewBox="0 0 960 400" role="img" aria-label="Platform contract: fifteen registered sources feed the agent-event bus, agent-conform among them writing its chain findings back, the envelope card lists its eleven fields, five consumers read the stream, and the Terraform loop manages budgets, passports and policies as code">
+      <svg viewBox="0 0 960 400" role="img" aria-label="Platform contract: fifteen registered sources, twelve of them writing the agent-event bus (agent-conform among them, writing its chain findings back) and three keeping a file of their own, the envelope card lists its eleven fields, five consumers read the stream, and the Terraform loop manages budgets, passports and policies as code">
         <defs><marker id="ap" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker></defs>
         <g font-family="ui-monospace,Menlo" text-anchor="middle">
           <!-- fourteen registered sources, two rows; the fifteenth is
@@ -153,16 +153,17 @@
             <rect x="500" y="14" width="88" height="28" rx="9" fill="#141C27" stroke="#FF7AA2"/><text x="544" y="32" fill="#FF7AA2">verdryx</text>
             <rect x="596" y="14" width="88" height="28" rx="9" fill="#141C27" stroke="#FF8A5B"/><text x="640" y="32" fill="#FF8A5B">mockryx</text>
             <rect x="68"  y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#B48CFF"/><text x="112" y="66" fill="#B48CFF">console</text>
-            <rect x="164" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#5BC8F5"/><text x="208" y="66" fill="#5BC8F5">heraldyx</text>
+            <rect x="164" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#5BC8F5" stroke-dasharray="3 3"/><text x="208" y="66" fill="#5BC8F5">heraldyx</text>
             <rect x="260" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#8B9DFF"/><text x="304" y="66" fill="#8B9DFF">vouchryx</text>
-            <rect x="356" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#F0ABFC"/><text x="400" y="66" fill="#F0ABFC">scopyx</text>
+            <rect x="356" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#F0ABFC" stroke-dasharray="3 3"/><text x="400" y="66" fill="#F0ABFC">scopyx</text>
             <rect x="452" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#7DD3A0"/><text x="496" y="66" fill="#7DD3A0">costcrew</text>
             <rect x="548" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#60A5FA"/><text x="592" y="66" fill="#60A5FA">typryx</text>
-            <rect x="644" y="48" width="64" height="28" rx="9" fill="#141C27" stroke="#2a3547"/><text x="676" y="66" fill="#8A97A6">keyryx</text>
+            <rect x="644" y="48" width="64" height="28" rx="9" fill="#141C27" stroke="#2a3547" stroke-dasharray="3 3"/><text x="676" y="66" fill="#8A97A6">keyryx</text>
           </g>
           <!-- the bus -->
           <rect x="20" y="84" width="688" height="30" rx="9" fill="#0F151E" stroke="#2a3547"/>
           <text x="352" y="103" fill="#8A97A6" font-size="10.5" letter-spacing="2">agent-event bus &#183; NDJSON &#183; one JSON object per line</text>
+          <text x="700" y="103" fill="#5A6675" font-size="10" text-anchor="end">dashed: own file</text>
           <!-- the envelope card -->
           <rect x="170" y="138" width="364" height="158" rx="14" fill="#10161F" stroke="#93A8C4" stroke-width="1.4"/>
           <text x="352" y="162" fill="#93A8C4" font-size="13" font-weight="700">the agent-event envelope</text>
@@ -243,9 +244,7 @@
           <line x1="544" y1="42" x2="544" y2="80" marker-end="url(#ap)"/>
           <line x1="640" y1="42" x2="640" y2="80" marker-end="url(#ap)"/>
           <line x1="112" y1="76" x2="112" y2="80" marker-end="url(#ap)"/>
-          <line x1="208" y1="76" x2="208" y2="80" marker-end="url(#ap)"/>
           <line x1="304" y1="76" x2="304" y2="80" marker-end="url(#ap)"/>
-          <line x1="400" y1="76" x2="400" y2="80" marker-end="url(#ap)"/>
           <line x1="496" y1="76" x2="496" y2="80" marker-end="url(#ap)"/>
           <line x1="592" y1="76" x2="592" y2="80" marker-end="url(#ap)"/>
           <line x1="34" y1="330" x2="34" y2="118" stroke="#93A8C4" marker-end="url(#ap)"/>
@@ -331,7 +330,7 @@
           <div class="row"><span class="k">proven on</span><span class="v">Hetzner, AWS and GCP</span></div>
           <div class="row"><span class="k">what it buys</span><span class="v">high availability</span></div>
           <div class="row"><span class="k">what it costs</span><span class="v">a ReadWriteMany volume</span></div>
-          <div class="row"><span class="k">traps</span><span class="v">154 documented, with whose fault each was</span></div>
+          <div class="row"><span class="k">traps</span><span class="v">159 documented, with whose fault each was</span></div>
         </div>
       </div>
     </div>
@@ -438,7 +437,7 @@
       </details>
       <details>
         <summary>How do I check that my events actually conform?</summary>
-        <div class="a"><p>Run <span class="mono">agent-conform</span>. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect.</p><p>On a box, <span class="mono">agent-conform watch-dir</span> re-checks every stream's hash chain and writes a <span class="mono">chain_broken</span> event to its own stream when one breaks; it exits 2 on a usage or I/O error. stack-single runs it every five minutes and stack-k8s runs it as a CronJob every fifteen minutes. stack-up runs it once a day, at 06:52, as a routine.</p></div>
+        <div class="a"><p>Run <span class="mono">agent-conform</span>. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect.</p><p>On a box, <span class="mono">agent-conform watch-dir</span> re-checks every stream's hash chain and writes a <span class="mono">chain_broken</span>, <span class="mono">chain_unchained</span> or <span class="mono">chain_restarted</span> event to its own stream when one breaks; it exits 2 on a usage or I/O error. stack-single runs it every five minutes and stack-k8s runs it as a CronJob every fifteen minutes. stack-up runs it once a day, at 06:52, as a routine.</p></div>
       </details>
     </div>
   </div>

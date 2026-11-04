@@ -79,7 +79,7 @@
   </div>
 </section>
 
-<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#what-it-answers">What it answers</a></li><li><a href="#where-it-sits">Where it sits</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
+<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#what-it-answers">What it answers</a></li><li><a href="#where-it-sits">Where it sits</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#changes-november">What changed in November</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
 
 <section class="sec" id="overview" style="padding-top:14px">
   <div class="wrap">
@@ -112,7 +112,7 @@
       <h3>Sixty seconds, one graph</h3>
       <p>This is a simulation, but it replays the shape of the live validation run: TokenFuse agent-event NDJSON and Agent Passports land in a Postgres-backed graph, the detectors read the state back, and findings fire. The same three detectors fired against a real Postgres 16 during validation: runaway_agent, attestation_missing, orphaned_nhi. <a href="services/idryx.html#sim">Watch it in the room</a>.</p>
       <h3>Sources in. Findings out. Nothing written back.</h3>
-      <p>Five read-only connectors describe the humans, keys and service accounts; the agent-event bus streams what TokenFuse, Wardryx, Mockryx and Verdryx watched the agents do. One core resolves the graph, walks delegation chains root-first, and runs the 27 detectors. Everything that leaves is an alert, a BOM, or a proposed diff a human applies.</p>
+      <p>Read-only connectors for Okta, Entra, AWS, GCP and Azure describe the humans, keys and service accounts; the agent-event bus streams what TokenFuse, Wardryx, Mockryx, Verdryx and Scopyx watched the agents do. One core resolves the graph, walks delegation chains root-first, and runs the 27 detectors. Everything that leaves is an alert, a BOM, a proposed diff a human applies, or an identity_finding event on the bus.</p>
     </div>
     <div class="diagram rv">
       <svg viewBox="0 0 960 340" role="img" aria-label="Idryx architecture: identity sources feed the graph core, which emits alerts, an Agent-BOM, proposed Terraform diffs and a read-only dashboard">
@@ -124,10 +124,11 @@
             <rect x="16" y="112" width="132" height="34" rx="10" fill="#141C27" stroke="#2a3547"/><text x="82" y="133" fill="#E9EFF6">AWS</text>
             <rect x="16" y="156" width="132" height="34" rx="10" fill="#141C27" stroke="#2a3547"/><text x="82" y="177" fill="#E9EFF6">GCP</text>
             <rect x="16" y="200" width="132" height="34" rx="10" fill="#141C27" stroke="#2a3547"/><text x="82" y="221" fill="#E9EFF6">Azure</text>
-            <rect x="16" y="244" width="132" height="52" rx="10" fill="#141C27" stroke="#93A8C4"/><text x="82" y="262" fill="#93A8C4" font-size="11.5">agent-event bus</text>
+            <rect x="16" y="244" width="132" height="80" rx="10" fill="#141C27" stroke="#93A8C4"/><text x="82" y="262" fill="#93A8C4" font-size="11.5">agent-event bus</text>
           </g>
-          <text x="82" y="276" fill="#8A97A6" font-size="10.5">tokenfuse &#183; wardryx</text>
-          <text x="82" y="288" fill="#8A97A6" font-size="10.5">mockryx &#183; verdryx</text>
+          <text x="82" y="277" fill="#8A97A6" font-size="10.5">tokenfuse &#183; wardryx</text>
+          <text x="82" y="291" fill="#8A97A6" font-size="10.5">mockryx &#183; verdryx</text>
+          <text x="82" y="305" fill="#8A97A6" font-size="10.5">scopyx</text>
 
           <rect x="196" y="36" width="300" height="252" rx="16" fill="#10161F" stroke="#34D399" stroke-width="1.4"/>
           <text x="346" y="66" fill="#34D399" font-size="14" font-weight="700">idryx core</text>
@@ -145,7 +146,7 @@
           <g>
             <rect x="640" y="36" width="300" height="52" rx="12" fill="#141C27" stroke="#2a3547"/>
             <text x="790" y="57" fill="#E9EFF6" font-size="12" font-weight="700">alerts</text>
-            <text x="790" y="74" fill="#8A97A6" font-size="10.5">Slack &#183; SIEM webhook, filtered by severity</text>
+            <text x="790" y="74" fill="#8A97A6" font-size="10.5">Slack &#183; SIEM &#183; OTLP, filtered by severity</text>
             <rect x="640" y="102" width="300" height="52" rx="12" fill="#141C27" stroke="#2a3547"/>
             <text x="790" y="123" fill="#E9EFF6" font-size="12" font-weight="700">Agent-BOM</text>
             <text x="790" y="140" fill="#8A97A6" font-size="10.5">CycloneDX 1.6 &#183; idryx bom</text>
@@ -186,14 +187,20 @@
       <p>Detection is deterministic: statistics and rules over the graph. The model is an interface for asking questions in English and getting explanations back, and it is never in the detection path, so a finding can be reproduced, argued with and defended in an audit. A baseline engine learns what is normal per identity and stays quiet during its learning period rather than opening a week of false positives on day one.</p>
       <p><b>Identity threats.</b> Impossible travel, MFA fatigue, a privileged identity on an unseen device, and logins that deviate from that identity's learned country, device and active hours.</p>
       <p><b>Non-human identity hygiene.</b> Service accounts unused past ninety days, non-human identities holding admin-equivalent permissions or no owner at all, and the quiet escalation permissions that grant a path to admin without holding admin: <span class="mono">iam:PassRole</span> on AWS, <span class="mono">actAs</span> on GCP, role-assignment writes on Azure. A credential seen from many countries, IPs or devices is flagged for what it usually is: shared or leaked.</p>
-      <p><b>Agents and AI.</b> An agent that reaches admin through its delegation chain; egress to an LLM API nobody registered; an MCP server in use but missing from the sanctioned registry, and an agent whose declared tools are exposed by that unsanctioned server; a spend runaway correlated with the agent's privilege, delegation depth and blast radius; a privileged agent with no attestation on record; DLP-blocked actions accumulating within a day; a taint-tracked action stopped; an MCP server whose tooling changed under an agent; and an agent whose passport declares one set of model providers while its egress reaches another.</p>
+      <p><b>Agents and AI.</b> An agent that reaches admin through its delegation chain; egress to a known external LLM API; an MCP server in use but missing from the sanctioned registry, and an agent whose declared tools are exposed by that unsanctioned server; a spend runaway correlated with the agent's privilege, delegation depth and blast radius; a privileged agent with no attestation on record; DLP-blocked actions accumulating within a day; a taint-tracked action stopped; an MCP server whose tooling changed under an agent; an agent whose passport declares one set of model providers while its egress reaches another; connections to one destination on a regular cadence (beaconing); a process that names itself an agent identity which no Passport, IAM record or event knows (claimed_agent_unknown), or that reaches an LLM provider its Passport does not declare (claimed_agent_drift); an agent whose Passport binds it to a workload while its only runtime carrier is a process that named itself (claimed_agent_unattested); and an agent whose web egress an enforcement point governs but which opened its own connections to public addresses (unrouted_egress).</p>
       <p><b>Least privilege.</b> Permissions granted and never exercised, with a revocation to propose. It fires only where usage data exists, so a source with no observed-usage signal produces no recommendations rather than confident nonsense.</p>
       <h3>The Agent-BOM</h3>
       <p>When the auditor asks what agents you run, the answer is a CycloneDX 1.6 document: owner, runtime, attestation, tools and delegation chain for every agent identity. Its companion detector, bom_incomplete, flags the agents the BOM cannot yet prove.</p>
       <h3>Blast radius</h3>
       <p>What does this key reach, transitively? Idryx computes the union of every permission reachable through an identity's delegation chain. excessive_agency fires when an agent reaches admin-equivalent power through that chain (OWASP LLM06).</p>
       <h3>eBPF network sensor</h3>
-      <p>A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent fetching packages straight from PyPI on every start. That was one agent turn on one lab node, on 2026-09-27; it has not yet run on a fleet or a cloud host.</p>
+      <p>A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent connecting straight to the PyPI package hosts when it started. That was one agent turn on one lab node, on 2026-09-27; it has not yet run on a fleet or a cloud host.</p>
+      <h3>AI usage: declared, seen, in the code</h3>
+      <p><span class="mono">idryx ai-inventory</span> compared its sources provider by provider. It now also says, for each agent or service, what was declared, what was seen and what the code can reach, and it names every disagreement. Nothing in it is scored or ranked, and nothing in it is a detector.</p>
+      <p><b>One row per source.</b> The report is built from up to five sources: <span class="mono">declared</span>, <span class="mono">bus</span>, <span class="mono">egress</span>, <span class="mono">ebpf</span> and <span class="mono">code</span>. A source nobody supplied is a row that says what its absence means. Code not scanned is not nothing in the code, and an absent capture is not a capture that saw nothing.</p>
+      <p><b>One row per subject and provider, with the disagreement named:</b> <span class="mono">declared_not_seen</span>, <span class="mono">declared_bus_only</span>, <span class="mono">seen_not_declared</span>, <span class="mono">seen_no_declaration</span>, <span class="mono">declares_no_models</span> and <span class="mono">no_declaration</span>, and on provider rows <span class="mono">in_code_not_seen</span>. The bus names no provider, so an agent active there through an enforcement point is shown as <span class="mono">bus_only</span>, which is a different statement from not seen: a governed agent's provider connection is made by the gateway's process, where only a capture of that host sees it. A source scan finds a file and a line, and no field binds a repository to an identity, so the code column stays per provider for the whole estate.</p>
+      <p>It joins on the provider vocabulary <span class="mono">ai-inventory</span> already used, with no second vocabulary and no change to any shared contract. The JSON document gains <span class="mono">sources</span> and <span class="mono">subjects</span>, each provider row gains <span class="mono">gaps</span>, and the schema string <span class="mono">idryx.ai-inventory/v1</span> stays. There is no new subcommand and no new flag.</p>
+      <p>The report agrees with the detectors, and a test holds it. The agents it names <span class="mono">seen_not_declared</span> are exactly the agents <span class="mono">undeclared_llm</span> fires for, and the processes it names <span class="mono">seen_no_declaration</span> are exactly the ones <span class="mono">unmanaged_egress</span> grades as having reached a model API. The qryx document it reads is untrusted input: its size and the number of providers and labels are bounded, every kept string is escaped and cut, and names from a passport, a bus envelope or a capture are escaped before they reach a terminal. Three monitoring limits travel with every report: attribution is self-declared, the eBPF sensor is Linux-only, and a process with code execution can open a socket of its own.</p>
     </div>
   </div>
 </section>
@@ -230,7 +237,7 @@
       <h2>The one that reads everything and touches nothing.</h2>
     </div>
     <div class="prose rv">
-      <p>Idryx consumes the same envelope <a href="services/tokenfuse.html">TokenFuse</a>, <a href="services/wardryx.html">Wardryx</a>, <a href="services/mockryx.html">Mockryx</a> and <a href="services/verdryx.html">Verdryx</a> write: the agent-event. It validates Agent Passports against the <a href="services/platform.html">platform contract</a>, and the loop closes at the policy plane: Wardryx's deny_if_unattested policy refuses an agent with no live attestation, and the gateway answers that refusal with a 403 instead of your production data. Idryx's attestation_missing detector reports those agents in the graph.</p>
+      <p>Idryx consumes the same envelope <a href="services/tokenfuse.html">TokenFuse</a>, <a href="services/wardryx.html">Wardryx</a>, <a href="services/mockryx.html">Mockryx</a>, <a href="services/verdryx.html">Verdryx</a> and <a href="services/scopyx.html">Scopyx</a> write: the agent-event. It validates Agent Passports against the <a href="services/platform.html">platform contract</a>, and the loop closes at the policy plane: Wardryx's deny_if_unattested policy refuses an agent with no live attestation, and the gateway answers that refusal with a 403 instead of your production data. Idryx's attestation_missing detector reports those agents in the graph.</p>
       <p>Blast radius, shadow tooling and unattested agents are covered as failure modes in <a href="ai-agent-security.html">AI agent security</a>, the graph's place among the planes in <a href="ai-agent-governance.html">AI agent governance</a>, and what an agent identity has to be in <a href="agent-identity.html">agent identity and authentication</a>.</p>
       <h3>It records who acts for whom. It does not prove it.</h3>
       <p>The delegation chain here is a record: each identity lists the on_behalf_of chain it acts under, root first, and the graph walks that chain to show what the identity can reach. <a href="services/vouchryx.html">Vouchryx</a> is the other half, proof of possession per request and a revocation an incident can actually use, and every finding it produces lands on the same bus this graph is folded from.</p>
@@ -265,6 +272,23 @@
   </div>
 </section>
 
+<section class="sec" id="changes-november" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">November 2026</div>
+      <h2>What changed in November</h2>
+    </div>
+    <div class="tbl-scroll rv">
+      <table class="tbl">
+        <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
+        <tbody>
+          <tr><td>v1.4.0</td><td>idryx ai-inventory reports, for each agent or service, what was declared, what was seen and what the code can reach, and names every disagreement. Additive to the idryx.ai-inventory/v1 schema.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <section class="sec" id="limits" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
@@ -279,6 +303,7 @@
         <li><span>Least privilege fires only where usage data exists, so a source with no observed-usage signal produces no recommendations rather than confident nonsense.</span></li>
         <li><span>The companion detector bom_incomplete flags the agents the BOM cannot yet prove.</span></li>
         <li><span>The eBPF network sensor is Linux-only. It has attached and captured live flows on two kernels: a Docker Desktop Linux VM on a Mac (2026-09-08, arm64 kernel 7.0.12; a 12-second capture in a container, not against an agent: 3 flows on the fixed build, after 16 of the first run's 21 flows turned out to be the sensor's own traffic) and one x86_64 lab node (2026-09-27, one agent turn, 349 flows in 70 seconds). It has not yet run on a fleet or a cloud host.</span></li>
+        <li><span>The bus carries a model only in <span class="mono">call_retained</span>, which the AI usage report does not read, so it compares no model names with anything: the egress side names a host, never a model. Whether an identity has a declaration is read from its source or from a declared model or attestation, which is a reading of the graph and not an attested fact.</span></li>
         <li><span>The room's runaway is a simulation, but it replays the shape of the live validation run.</span></li>
       </ul>
     </div>

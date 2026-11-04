@@ -12,6 +12,8 @@ The [Genaryx room](https://it-rat.com/genaryx.html) keeps the fifteen frames, th
 
 - [Felyx, the copilot](https://it-rat.com/genaryx-guide.html#felyx)
 
+- [The case file](https://it-rat.com/genaryx-guide.html#case)
+
 - [Every frame](https://it-rat.com/genaryx-guide.html#frames)
 
 - [Beside the stack by hand](https://it-rat.com/genaryx-guide.html#why)
@@ -19,6 +21,8 @@ The [Genaryx room](https://it-rat.com/genaryx.html) keeps the fifteen frames, th
 - [Taking it](https://it-rat.com/genaryx-guide.html#run)
 
 - [What changed](https://it-rat.com/genaryx-guide.html#changes)
+
+- [What changed in November](https://it-rat.com/genaryx-guide.html#changes-november)
 
 - [Limits](https://it-rat.com/genaryx-guide.html#limits)
 
@@ -56,13 +60,13 @@ The browser console is the product, and it is deliberately thin: every screen is
 
 ### Hardware signatures, shipped
 
-Kills, budget changes and approval grants are confirmed per action with a passkey on your own device: Touch ID, Windows Hello or a security key. With no passkey enrolled the action is refused until one is enrolled, unless an operator sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY; then it still works and is journaled software-signed, labeled honestly.
+Kills, budget changes, approval grants, closing a retained reservation, revoking a delegation and stopping an agent are confirmed per action with a passkey on your own device: Touch ID, Windows Hello or a security key. Stop agent asks [Vouchryx](https://it-rat.com/services/vouchryx.html) to ban the agent, so the tokens it holds die at every door that polls the revocation list, then kills each of its open runs on the Cloud. With no passkey enrolled the action is refused until one is enrolled, unless an operator sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY; then it still works and is journaled software-signed, labeled honestly.
 
 **What the console signs, and what it writes down.** The console mints a challenge bound to that exact command and its exact arguments, verifies the ES256 assertion server-side, and journals which enrolled credential confirmed it, next to the typed break-glass reason. A signature over a different command, or over the same command with different arguments, does not verify.
 
 No passkey enrolled yet? The action is refused until you enroll one. Only an operator who sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY gets the software-signed fallback, labeled honestly, never dressed up as hardware.
 
-From genaryx 03c6c88. On 2026-10-19 stack-single and stack-k8s pin the console image v1.1.48, which gets the same refusal from GENARYX_WEB_REQUIRE_PASSKEY=1, and both launchers set that variable. stack-up starts no console.
+Since 2026-10-19 the passkey is required by default: GENARYX_WEB_REQUIRE_PASSKEY is no longer read for its setting, and a stack that still sets it gets the same required mode. stack-up starts no console.
 
 ### WireGuard, but yours
 
@@ -100,7 +104,23 @@ An operator can explicitly opt into a bring-your-own-key cloud model - Anthropic
 
 ### Numbers from tools, never vibes
 
-Every figure in an answer comes from a typed read tool over the same connectors the tabs use. The model does not do arithmetic in prose, and when a plane is not configured Felyx says what it cannot see instead of inventing it. Budgets come from a tool that reads the Cloud's own run and unit budgets with their spend, and a draft that states a budget no tool returned is sent back once for revision. Measured on 2026-10-05 on the forge lab against the Cloud's own figures read the same minute; the check covers budget statements, not every run id an answer names.
+Every figure in an answer comes from a typed read tool over the same connectors the tabs use. The model does not do arithmetic in prose, and when a plane is not configured Felyx says what it cannot see instead of inventing it. Budgets come from a tool that reads the Cloud's own run and unit budgets with their spend, and a draft that states a budget no tool returned is sent back once for revision. Measured on 2026-10-05 on the forge lab against the Cloud's own figures read the same minute; that measurement covered budget statements.
+
+### It points only at what a tool returned
+
+Every run, incident, policy, agent and approval id an answer names, and every dollar amount, must be in the tool results of that same answer. A draft with a finding goes back once, and what stays is taken out statement by statement and named in a note and in the answer's unsupported claims. An explanation of an incident gives no chain through an id that was invented, and none for an incident no tool returned. An id planted in an event's text grounds nothing: only a structured field a tool returned counts.
+
+### Plane text is data, not instructions
+
+Every string a read tool returns is fenced as untrusted data, unless it is a listed structured field shaped like one token. Inside the fence the markup is escaped, so the text cannot close it, and the code that hands a tool result to the model accepts only fenced results, so a result that skips the fence does not compile. The answer lists the text it leans on, and anything in that text that reads like an instruction.
+
+### A card needs a real target
+
+Between a propose tool and a card stands a check: the target must be one a tool returned as that kind of thing, and no plane text may be asking for that action, unless the operator asked in their own words. A refused proposal is listed with the answer instead of becoming a card. The signing key stays absent. This is held by a gate in the console's CI and by a scripted model that obeys the injected line, so the proof rests on the loop around the model and needs no provider.
+
+### Reading a case
+
+Given the [case file](https://it-rat.com/genaryx-guide.html#case) of an incident, Felyx explains the incident from it instead of running a tool loop to gather the facts. It is given the case and no tool, it may cite only ids the case holds, and it proposes nothing; a model that asks for a tool while reading a case gets none. A draft that names a run the case does not hold is corrected once, and then the chain is withheld. A refusal filed under a key can be cited by the key without its prefix. Plane text in a case row reaches the model fenced and grounds nothing. With no model provider the answer is a sentence saying so.
 
 ### No signing key. Not restrained - absent.
 
@@ -127,6 +147,28 @@ Felyx's own LLM calls carry their own run id and agent id, so pointed at the sta
 - **Anthropic**, BYO key, opt-in
 
 - **OpenRouter**, BYO key, opt-in
+
+## An incident, with what the planes said about it, in one file.
+
+Incident 360 has a Case section: a deterministic case file for an incident, assembled from reads the console already makes. There is no model in it, no new service, no new event type and no write to any plane. Each fact names its plane, its row id and a digest, the SHA-256 of the row, so a changed row gives a different digest, and the same inputs give the same case.
+
+### What goes in
+
+For an incident that is a bus event: the event itself, the run's timeline in time order, and the earlier events of the same type, newest first. From the identity plane, the subject agent's record and its alerts, and its blast radius; an agent the identity plane does not know is an empty answer, not a failure. From the policy plane, the policy status and the run's approvals. From the Cloud, the run's spend and the gateway's decisions on it. From Engram, what memory recalls for that kind of incident.
+
+### A missing plane is a line in the case
+
+A plane that did not answer is a line in the case, and a plane that answered with nothing is told apart from it. A question that was never asked is a line too. Incident 360 lists what was gathered and what is missing in the console's own words, so a case with no reachable plane still has a line for every section.
+
+### A refusal is filed under its key
+
+An identity refusal, such as a key that claimed another agent's name, is filed under the key and not under the agent it claimed. Nothing is asked about the claimed agent, and the identity plane is asked nothing at all.
+
+### Event text is data
+
+Text inside an event stays inside a fact's row, marked as data. It never becomes a label, and the console's own reasons stay plain beside it.
+
+A money, identity or posture incident, or an unknown row, is refused by name and never given an empty case. Reading a case is a viewer read with no ceremony. The demo assembles a case on invented rows, with one plane that did not answer. Felyx can read the case and explain it; see [Felyx](https://it-rat.com/genaryx-guide.html#felyx).
 
 ## What each of the fifteen frames shows.
 
@@ -190,6 +232,16 @@ The practice this console is built for is written up separately: [AI agent gover
 
 The console's own list for 1 to 15 October 2026 is in [the stack's changes](https://it-rat.com/changes-2026-10.html#genaryx).
 
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| on main | Incident 360 has a Case section: a deterministic case file for an incident, assembled from reads the console already makes, each fact naming its plane, its row and a digest. |
+| on main | Felyx names only ids and amounts a tool returned, reads plane text as fenced data, and files a card only for a target a tool returned. |
+| on main | Felyx can read a case file instead of running a tool loop: it is given the case and no tool, cites only ids the case holds and proposes nothing. |
+| on main | A candidate policy is proved against the decisions already recorded (a Wardryx replay) and a candidate budget against the calls already made (a TokenFuse backtest): each says whether it would have stopped the incident and how many other decisions or calls it would have changed, and applies nothing. |
+| on main | A case can be sealed as one canonical document, written in the form RFC 8785 fixes, with the operator's decision and the proofs they asked for; its digest is the target of one line in the console's own chain, and sealing changes nothing in any plane. |
+
 ## What is reported and not yet in the record, and what it does not do.
 
 ### Built, and proven on a live fleet: reported, not yet in the record
@@ -218,7 +270,7 @@ The practice this console is built for is written up separately: [AI agent gover
 
 - The Felyx annotation quoted above is a paraphrase of the annotation felyx writes on a HARD page, not a recorded capture; the deterministic alert goes out first.
 
-- Felyx's budget check was measured on 2026-10-05 on the forge lab against the Cloud's own figures; it covers budget statements, not every run id an answer names.
+- Felyx's budget check was measured on 2026-10-05 on the forge lab against the Cloud's own figures. The check on ids and amounts that came after it is held by tests and a gate in the console's CI.
 
 - With no passkey enrolled an action is refused, unless an operator sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY; then it is journaled software-signed, labeled honestly, never dressed up as hardware.
 

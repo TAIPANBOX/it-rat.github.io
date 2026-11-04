@@ -57,7 +57,7 @@
   .deeper .cta-row{margin-top:16px}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Mockryx","url":"https://it-rat.com/services/mockryx.html","description":"Fire drills for your guardrails: YAML scenarios fired at a real gateway, asserting the 402, the 403 and the downstream reaction. Zero real spend, CI-native.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/mockryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Mockryx","item":"https://it-rat.com/services/mockryx.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I test that my guardrails actually work?","acceptedAnswer":{"@type":"Answer","text":"Fire drills. Each scenario is a YAML file describing the request to send and the answer the guardrail must give, aimed at a real gateway with the guardrails live: the breaker's 402, DLP's 403, the deny or hold from the policy plane. No mocked gateway in the middle, so the code you rehearse is the code production traffic meets."}},{"@type":"Question","name":"Does running the drills spend real money?","acceptedAnswer":{"@type":"Answer","text":"No. The provider behind the gateway is fake, so a runaway scenario can burn as much as it likes: the meter it trips is real, the invoice is not. Every hostile input also stays inside your perimeter, because the harness only ever talks to the one gateway URL you hand it."}},{"@type":"Question","name":"What if a guardrail simply is not configured?","acceptedAnswer":{"@type":"Answer","text":"Then a miss is reported as not configured rather than as a gap, and only when there is no evidence anywhere in the run that the feature is live. A core guardrail with no optional declaration is always a finding, and so is a gateway that could not be reached at all. One flag turns even a skip into a failure when you know the guardrail must be there."}},{"@type":"Question","name":"Can it gate CI?","acceptedAnswer":{"@type":"Answer","text":"That is the intended home. Exit 0 means every drill held, exit 1 is a real defensive gap and should fail the build, exit 2 means the harness itself is broken so nothing was proven. Gate on 1, fix the pipeline on 2, and never let the two blur."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Mockryx","url":"https://it-rat.com/services/mockryx.html","description":"Fire drills for your guardrails: YAML scenarios fired at a real gateway, asserting the 402, the 403 and the downstream reaction. Zero real spend, CI-native.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/mockryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Mockryx","item":"https://it-rat.com/services/mockryx.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I test that my guardrails actually work?","acceptedAnswer":{"@type":"Answer","text":"Fire drills. Each scenario is a YAML file describing the request to send and the answer the guardrail must give, aimed at a real gateway with the guardrails live: the breaker's 402, DLP's 403, the deny or hold from the policy plane. No mocked gateway in the middle, so the code you rehearse is the code production traffic meets."}},{"@type":"Question","name":"Does running the drills spend real money?","acceptedAnswer":{"@type":"Answer","text":"No. The provider behind the gateway is fake, so a runaway scenario can burn as much as it likes: the meter it trips is real, the invoice is not. Every hostile input also stays inside your perimeter, because the harness only talks to the URLs you hand it: the gateway and, for the broker drills, the MCP broker."}},{"@type":"Question","name":"What if a guardrail simply is not configured?","acceptedAnswer":{"@type":"Answer","text":"Then a miss is reported as not configured rather than as a gap, and only when there is no evidence anywhere in the run that the feature is live. A core guardrail with no optional declaration is always a finding, and so is a gateway that could not be reached at all. One flag turns even a skip into a failure when you know the guardrail must be there."}},{"@type":"Question","name":"Can it gate CI?","acceptedAnswer":{"@type":"Answer","text":"That is the intended home. Exit 0 means every drill held, exit 1 is a real defensive gap and should fail the build, exit 2 means the harness itself is broken so nothing was proven. Gate on 1, fix the pipeline on 2, and never let the two blur."}}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-service="mockryx" data-root="../">
@@ -82,7 +82,7 @@
       <div>
         <div class="kicker rv">pre-prod plane &#183; wave 2</div>
         <h1 class="rv d1"><span class="nm">Mockryx</span>. Prove every guardrail holds, against your own gateway, before real traffic.</h1>
-        <p class="lede rv d2">A guardrail nobody has ever fired is a guess. Mockryx replays hostile scenarios against the one URL you hand it: your own pre-production gateway, with a fake provider behind it. The enforcement path is the real one; the spend is not. CI reads the verdict as an exit code.</p>
+        <p class="lede rv d2">A guardrail nobody has ever fired is a guess. Mockryx replays hostile scenarios against the URL you hand it: your own pre-production gateway, with a fake provider behind it. The enforcement path is the real one; the spend is not. CI reads the verdict as an exit code.</p>
         <div class="cta-row rv d3">
           <a class="btn primary" href="#sim">Watch the fire drill <span class="mono">&#9654;</span></a>
           <a class="btn" href="../mockryx-guide.html">The full guide</a>
@@ -119,7 +119,7 @@
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
       <h2>One target URL. One report. Three exit codes.</h2>
-      <p class="lede">The runner sends a scenario at your gateway's /v1/messages, reads the gateway's own answer, polls the NDJSON event logs the off-path services write, and folds everything into a report and an exit code a CI gate can act on. It never talks to anything but the gateway you name.</p>
+      <p class="lede">The runner sends a scenario at your gateway's /v1/messages, reads the gateway's own answer, polls the NDJSON event logs the off-path services write, and folds everything into a report and an exit code a CI gate can act on. It talks only to the URLs you name on the command line: your gateway and, for the optional broker drills, your MCP broker.</p>
     </div>
     <div class="diagram rv">
       <svg viewBox="0 0 960 336" role="img" aria-label="Mockryx architecture">
@@ -193,6 +193,7 @@
       <div class="card hover feature b-6 rv d1"><h3>In-path checks, on the real path</h3><p>Assertions read the gateway's own answers: the breaker's 402, DLP's 403, the deny or hold riding the x-fuse-wardryx header.</p></div>
       <div class="card hover feature b-6 rv"><h3>Async reaction checks</h3><p>A drill can demand that the off-path services actually react, not only that the gateway answered.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>A skip cannot hide a gap</h3><p>A guardrail that is off looks exactly like one that is broken. The runner insists on evidence before it calls a miss either one.</p></div>
+      <div class="card hover feature b-12 rv"><h3>Drills for a failing provider</h3><p>Three drills rehearse a provider that is up but failing: a 5xx, a rate limit and a timeout. Each checks the chain in order. The call comes back with the provider's own status, the gateway puts a dependency_failed for the run on the bus, and the run reaches a person. A local stub plays the provider.</p></div>
     </div>
   </div>
 </section>
@@ -214,7 +215,7 @@
     <div class="sec-head rv">
       <div class="kicker">try it now</div>
       <h2>Point it at pre-prod, never at prod.</h2>
-      <p class="lede">The URL you pass is the only place it will ever send traffic.</p>
+      <p class="lede">The URLs you pass are the only places it will ever send traffic.</p>
     </div>
     <div class="install rv">
       <code class="cmd">./bin/<b>mockryx run</b> --gateway http://127.0.0.1:8080 ./scenarios</code>
@@ -233,11 +234,11 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">limits</div>
-      <h2>Not yet in a release.</h2>
+      <h2>What it does not do.</h2>
     </div>
     <div class="card limits rv">
       <ul>
-        <li>The last release is v0.2.1. Four drills are on main and are not in any release yet: a token flood, PII in a prompt, a poisoned tool description and a respelled allow-listed tool.</li>
+        <li>The game-day drills (scenarios/game-day/) and the MCP broker drills (scenarios/mcp/) are not loaded by a plain mockryx run ./scenarios, on purpose: a failing provider sends no x-fuse-* header, so a routine CI run would show a false gap, and a broker drill needs --mcp-broker.</li>
       </ul>
     </div>
     <div data-edge-nav></div>
@@ -274,7 +275,7 @@
       </details>
       <details>
         <summary>Does running the drills spend real money?</summary>
-        <div class="a"><p>No. The provider behind the gateway is fake, so a runaway scenario can burn as much as it likes: the meter it trips is real, the invoice is not. Every hostile input also stays inside your perimeter, because the harness only ever talks to the one gateway URL you hand it.</p></div>
+        <div class="a"><p>No. The provider behind the gateway is fake, so a runaway scenario can burn as much as it likes: the meter it trips is real, the invoice is not. Every hostile input also stays inside your perimeter, because the harness only talks to the URLs you hand it: the gateway and, for the broker drills, the MCP broker.</p></div>
       </details>
       <details>
         <summary>What if a guardrail simply is not configured?</summary>

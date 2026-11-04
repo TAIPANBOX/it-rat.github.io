@@ -128,7 +128,7 @@ keyryx verify streams --events events/ --checkpoints checkpoints/ \
 
 Each check prints ok, weak or broken for each item and ends with VERIFIED (exit 0) or NOT VERIFIED (exit 1). A directory with nothing in it is reported as measured nothing, never as verified.
 
-The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/arm64, with no moving tag. The stack-single Compose file pins v0.1.1 by digest.
+The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/arm64, with no moving tag. The stack-single Compose file pins v0.1.3 by digest.
 
 ## What each release is.
 
@@ -138,15 +138,17 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - **v0.1.2**, tagged 2026-10-19: a patch on v0.1.1. The witness writes each attestation with mode 0640, in directories of mode 0750, so a record plane in the witness's group can read it; v0.1.1 wrote them 0600. It also moves agent-stack-go to v2.0.1, which changes no code. Attestations written by v0.1.1 keep their mode until an operator changes it once, as the release notes say.
 
+- **v0.1.3**, tagged 2026-10-26: a patch on v0.1.2. The binary and the image are built with Go 1.27.3, which fixes GO-2026-6809 in crypto/x509 (reached through the time-stamping client, only when KEYRYX_WITNESS_TSA_URL is set). No key, statement, log, route or variable changes.
+
 **An operator-visible change in v0.1.1.** Since agent-stack-go v2, a stream file this service creates is mode 0640, not 0644, so only its owner and its group can read it. A new stream is created only in a directory this service's account owns. A bus directory shared with other services, and not owned by this account, gets no new stream unless each file is created beforehand by the uid of the service that writes it. Check the owner of the bus directory and the mode of each stream before upgrading.
 
 ## What is not proven yet, stated here.
 
-- The cosign signatures of v0.1.1 and v0.1.2 have not been verified. The build-provenance attestation of each release has (gh attestation verify, 2026-10-19).
+- The cosign signatures of v0.1.1, v0.1.2 and v0.1.3 have not been verified. The build-provenance attestation of each release has (gh attestation verify, 2026-10-19 for v0.1.0 to v0.1.2, 2026-10-26 for v0.1.3).
 
 - No admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one.
 
-- Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19 and stack-k8s since v1.6.1, tagged on 2026-10-20; stack-single does not set it. At keyryx v0.1.1, which stack-single pins, the witness writes each attestation readable only by its own user, so a record plane running as another user cannot open it; stack-up runs the witness and the record plane as one user, so it can. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group; stack-up and stack-k8s v1.6.1 pin it, and stack-k8s runs the witness in the record plane's group. stack-single does not pin it yet. None of this has run live.
+- Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19 and stack-k8s since v1.6.1, tagged on 2026-10-20; stack-single does not set it. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single, stack-up and stack-k8s now pin v0.1.3; stack-k8s runs the witness in the record plane's group. stack-single still does not set the attestations folder, so its packs carry no witness. None of this has run live.
 
 - The store root is rebuilt by hand in the tests from trailryx's construction. It is checked against trailryx's source, not against a store that trailryx itself sealed in this repository.
 
@@ -168,7 +170,7 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - In stack-single the witness is a separate user and volume; in stack-up both roles run as the user that started them. Either way, on one machine, it is not a separate trust domain. An off-host anchor closes that, and it is the operator's to switch on.
 
-- Post-quantum signatures come from Go's standard library, and no verifier outside this repository checks ML-DSA yet. The key set's AKP form follows a JOSE draft, not an RFC.
+- Post-quantum signatures come from Go's standard library. Vouchryx from 0.6.0 checks the ML-DSA-65 half of a key statement; the shared verifier in agent-stack-go checks the classical half only. The key set's AKP form follows a JOSE draft, not an RFC.
 
 ## Back to the room.
 

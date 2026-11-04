@@ -32,6 +32,22 @@ An llm_judge case's cost is a real dollar figure, priced against the same book T
 
 The graders and drift maths use only the standard library. The one runtime dependency is rfc8785, which canonicalises the JSON the event chain is hashed over.
 
+### A failure becomes a record
+
+A drift regression or an SLO breach is stored as a finding, with its evidence and a suspect model or version. Register a fix and the runs that follow decide it: verified, failed, or pending with its reason. Unmeasured is never a pass.
+
+### A person's grade outranks the model's
+
+A reviewer's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's own value stays beside it. eval has no path to a grade, and every grade carries its author.
+
+### Error budgets, measured and never enforced
+
+verdryx slo reads the same traces as four ratios of good runs over eligible runs, each with the budget left and the rate it is going. It sends an slo_burn event only when the confidence interval sits below the objective, and it enforces nothing.
+
+### An exhausted budget has two readers
+
+[Wardryx](https://it-rat.com/services/wardryx.html) can turn a spent budget into a hold for a person, off unless its event file is set. [Heraldyx](https://it-rat.com/services/heraldyx.html) mails an slo_burn at once, in words that say nothing was enforced.
+
 ## The line that turns spend into a verdict.
 
 Verdryx prices the traces [TokenFuse](https://it-rat.com/services/tokenfuse.html) writes: outcome tags and spend data share the same request path, so cost and quality can never quietly drift apart. Cost per resolved case sits inside a wider practice: [FinOps for AI](https://it-rat.com/finops-for-ai.html), and the controls around it in [AI agent governance](https://it-rat.com/ai-agent-governance.html).
@@ -51,7 +67,7 @@ There is no PyPI package, so the version you run is the commit you can read.
 ## Measuring quality in money, not vibes
 
 **Q: How do I measure cost per correct answer?**
-Tag outcomes in production, then read them back off the gateway's own trace: resolved, escalated, abandoned. Verdryx turns that into a dollar figure per case, including the untagged intermediate calls a run made and the calls the breaker blocked, because both are part of what the outcome cost.
+Tag outcomes in production, then read them back off the gateway's own trace: resolved, escalated, abandoned. Verdryx turns that into a dollar figure per case, including the untagged intermediate calls a run made. A call the breaker blocked is counted but adds nothing to the figure, because the cost recorded for it is an estimate of what was avoided, not a charge that settled.
 
 **Q: How do I know when quality has actually dropped?**
 A flat threshold catches the obvious fall. Beside it, a two-sample significance check, Welch's t with a bootstrap interval, catches the small consistent regression a threshold tuned for noise would miss. Point it at a baseline whose source run is gone and it fails loudly rather than silently.

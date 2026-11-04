@@ -41,7 +41,7 @@ FAQ = {
  ("What has not been established yet?",
   "<p>Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Not every shipped pre-production drill has been fired at a real gateway; the ledger records the ones that have. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.</p>"),
  ("Why publish the things that went wrong?",
-  "<p>Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 154 entries and 78 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.</p>"),
+  "<p>Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 159 entries and 82 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.</p>"),
 ]),
 
 "first-alert.html": ("common questions", "What people ask before starting", [
@@ -127,7 +127,7 @@ FAQ = {
 
 "services/costcrew.html": ("common questions", "What a crew of agents can and cannot do to your bill", [
  ("Do the agents change anything in my cloud account?",
-  "<p>No. This console reads exports that land in a folder and, where a connector is built, a vendor's usage API, and it writes only its own database. Twelve of its eighteen connectors read today, the AWS and GCP billing exports among them; the Azure billing export is specified and not yet written, and the catalogue says so per entry. It has no credentials that can act, it makes no outbound call while serving a page, and it enforces nothing: every deliverable is a draft until a person stamps it.</p>"),
+  "<p>No. This console reads exports that land in a folder and, where a connector is built, a vendor's usage API. It writes its own database and, when wired into the stack, its own events file and passports. Twelve of its eighteen connectors read today, the AWS and GCP billing exports among them; the Azure billing export is specified and not yet written, and the catalogue says so per entry. By default it makes no outbound call while serving a page; the only exceptions are opt-in: the supervisor's planning call through a gateway you name, sign-in through your identity provider, and a typed hint from Typryx at start. It enforces nothing: every deliverable is a draft until a person stamps it.</p>"),
  ("How is this different from the console that kills runs?",
   "<p>Different question, different clock. <a href=\"../genaryx.html\">Genaryx</a> and <a href=\"tokenfuse.html\">TokenFuse</a> work in micro-dollars while a run is happening and can stop it. CostCrew works in cents on last month's invoice and allocates it. The crew here are agents like any other, so Genaryx governs them too.</p>"),
  ("What does it do about anomalies nobody has time for?",
@@ -140,9 +140,9 @@ FAQ = {
 
 "services/vouchryx.html": ("common questions", "Proving and ending a delegation", [
  ("How is this different from just giving the agent an API key?",
-  "<p>A key names nobody and ends nowhere. This mints a short-lived token that says which human the agent is acting for, in a nested <span class=\"mono\">act</span> claim, bound to the caller's own key so a copy of the token is useless. When the delegation should end, one revocation ends it at every enforcement point on its next poll of the list, rather than waiting for an expiry. Today only the TokenFuse gateway polls that list; no other enforcement point does yet.</p>"),
+  "<p>A key names nobody and ends nowhere. This mints a short-lived token that says which human the agent is acting for, in a nested <span class=\"mono\">act</span> claim, bound to the caller's own key so a copy of the token is useless. When the delegation should end, one revocation ends it at every enforcement point on its next poll of the list, rather than waiting for an expiry. Today the TokenFuse gateway polls that list, and so does Wardryx (from 2.3.0, when it is given the list's address); no other enforcement point does yet.</p>"),
  ("What happens to a token that is already in flight when we revoke it?",
-  "<p>Its next use is refused. Enforcement points poll the revocation list, every 12 seconds by default, and refuse anything on it, so the token's own expiry has no say; a call admitted before that poll is not pulled back, and a door that cannot reach the list keeps the last one it fetched and, past a minute, refuses by default. Measured on a live box: a proven chain answered 200, and after the revoke the same token answered 401.</p>"),
+  "<p>Its next use is refused. The TokenFuse gateway polls the revocation list every 12 seconds by default (Wardryx every 30) and refuses anything on it, so the token's own expiry has no say; a call admitted before that poll is not pulled back, and a door that cannot reach the list keeps the last one it fetched and, past a minute, refuses by default. Measured on a live box: a proven chain answered 200, and after the revoke the same token answered 401.</p>"),
  ("Does this replace the delegation chain in the Passport?",
   "<p>No, it is the half the Passport spec deliberately leaves out. The spec says plainly that it names an agent without proving possession, and records who acted for whom without saying when. This provides both, and the record still lives where it lived.</p>"),
  ("Why is there no introspection endpoint?",
@@ -157,11 +157,11 @@ FAQ = {
  ("What happens to my agent when it hits the budget?",
   "<p>It gets a 402 with the reason, which is a status every framework already understands, and an incident is recorded against that run. Nothing else in the fleet is affected, and the spend that would have followed simply never happens.</p>"),
  ("Do I have to rewrite my agent to use it?",
-  "<p>No. It is a one-line base-URL change to a gateway that speaks the Anthropic Messages API and the OpenAI chat completions API. Run it in shadow mode first and it prices and records everything while refusing nothing, so you can see what would have been blocked before anything is. Its own bookkeeping fails open, so a lost event or an unreachable control plane never refuses a call; what happens when the policy plane is unreachable is the deployment's choice, and both launchers ship it closed.</p>"),
+  "<p>No. It is a one-line base-URL change to a gateway that speaks the Anthropic Messages API and the OpenAI chat completions API. Set TOKENFUSE_MODE=shadow first and it prices and records everything while refusing nothing, so you can see what would have been blocked before anything is. Its own bookkeeping fails open, so a lost event or a failed telemetry push never refuses a call; the one exception is the start, when a gateway with a Cloud configured answers 503 seed_pending until it has read its money state. What happens when the policy plane is unreachable is the deployment's choice, and all three launchers ship it closed.</p>"),
  ("Can it catch a retry loop before the bill does?",
-  "<p>That is the case it was built for. A sustained loop or a fan-out explosion looks the same as a compromised agent from the budget's side, and both trip the breaker. In the live campaign, the runaway that mattered was caught and killed on the day, not on the invoice.</p>"),
+  "<p>That is the case it was built for. A sustained loop trips the breaker, and a fan-out explosion opens an incident in the Cloud; either looks the same as a compromised agent from the budget's side. In the live campaign, the runaway that mattered was caught and killed on the day, not on the invoice.</p>"),
  ("Does it still work with several gateways behind a load balancer?",
-  "<p>In the cluster build, yes: the spend ledger is raft-replicated and the affordability check is linearized across the fleet, so four nodes on four machines admit exactly what one budget allows. The cluster record tests that with 30 concurrent reserves against a 5-unit budget, a kill of the leader and a real network partition. That build is optional and not what the shipped images run; the default profile is one gateway whose ledger lives in memory and is read back from the Cloud when it starts, each run's spend over the last 31 days, so a restart does not hand a run its budget again. That read-back does not let two gateways share one budget; only the cluster build does.</p>"),
+  "<p>In the cluster build, yes: the spend ledger is raft-replicated and the affordability check is linearized across the fleet, so four nodes on four machines admit exactly what one budget allows. The cluster record tests that with 30 concurrent reserves against a 5-unit budget, a kill of the leader and a real network partition. That build is optional and ships as its own image tag, not what the default image runs; the default profile is one gateway whose ledger lives in memory and is read back from the Cloud when it starts, each run's spend over the last 31 days, so a restart does not hand a run its budget again. That read-back does not let two gateways share one budget; only the cluster build does.</p>"),
 ]),
 
 "services/wardryx.html": ("common questions", "Putting a human in front of the expensive actions", [
@@ -192,7 +192,7 @@ FAQ = {
 
 "services/engram.html": ("common questions", "What a memory has to do that similarity search cannot", [
  ("Does it need a server, a container or an API key?",
-  "<p>None of the three to write a memory. It is one <span class=\"mono\">.engram</span> file on SQLite plus sqlite-vec, in-process, installed with pip. A model only enters the picture when you ask for <span class=\"mono\">reflect()</span>, and even that call can be pointed at a local model or routed through <a href=\"tokenfuse.html\">TokenFuse</a> so thinking has a budget too.</p>"),
+  "<p>None of the three to write a memory. It is one <span class=\"mono\">.engram</span> file on SQLite plus sqlite-vec, in-process, installed with pip. A model only enters the picture when you ask for <span class=\"mono\">reflect()</span> or <span class=\"mono\">compress()</span>, and even those calls can be pointed at a local model or routed through <a href=\"tokenfuse.html\">TokenFuse</a> so thinking has a budget too.</p>"),
  ("Can I delete everything about one person?",
   "<p>Yes, and the cascade is the point. Erasing an entity removes the episodes about them, the facts derived from those episodes, and the graph edges that made them findable, and reports how many of each it deleted. That erasure reaches every agent in a shared store on purpose, because the request is about the person. What one agent cannot do is erase another agent's episodes by id: <span class=\"mono\">forget()</span> is agent-scoped.</p>"),
  ("Does it work with Claude Desktop, Claude Code or Cursor?",
@@ -216,14 +216,14 @@ FAQ = {
  ("What is a CBOM?",
   "<p>A cryptographic bill of materials in CycloneDX 1.6: one component per unique asset and risk class, with every occurrence attached. It lives in the same supply-chain tooling as your SBOMs, so cryptography stops having its own isolated report nobody reads.</p>"),
  ("Can it fail a build when someone ships a weak key?",
-  "<p>Yes. Snapshot the graph as a baseline, and a new weak or quantum-vulnerable asset fails the build with a distinct exit code, with separate codes for a standards violation and a regressed compliance trend. That is the day it matters, not the next audit cycle.</p>"),
+  "<p>Yes. Snapshot the graph as a baseline, and a new weak or quantum-vulnerable asset fails the build with exit code 2. The policy engine (a standards violation) and a regressed compliance trend both exit 3, so CI can tell a new weak asset from the other two. That is the day it matters, not the next audit cycle.</p>"),
  ("Does it find hardcoded keys?",
   "<p>It does, and it counts them honestly: cryptography that exists only in test fixtures is scanned, reported and kept out of the production inventory, with one line saying how much was set aside. Counting fixtures inflates the number you are trying to drive to zero.</p>"),
 ]),
 
 "services/verdryx.html": ("common questions", "Measuring quality in money, not vibes", [
  ("How do I measure cost per correct answer?",
-  "<p>Tag outcomes in production, then read them back off the gateway's own trace: resolved, escalated, abandoned. Verdryx turns that into a dollar figure per case, including the untagged intermediate calls a run made and the calls the breaker blocked, because both are part of what the outcome cost.</p>"),
+  "<p>Tag outcomes in production, then read them back off the gateway's own trace: resolved, escalated, abandoned. Verdryx turns that into a dollar figure per case, including the untagged intermediate calls a run made. A call the breaker blocked is counted but adds nothing to the figure, because the cost recorded for it is an estimate of what was avoided, not a charge that settled.</p>"),
  ("How do I know when quality has actually dropped?",
   "<p>A flat threshold catches the obvious fall. Beside it, a two-sample significance check, Welch's t with a bootstrap interval, catches the small consistent regression a threshold tuned for noise would miss. Point it at a baseline whose source run is gone and it fails loudly rather than silently.</p>"),
  ("Do I need an LLM judge to use it?",
@@ -236,7 +236,7 @@ FAQ = {
  ("How do I test that my guardrails actually work?",
   "<p>Fire drills. Each scenario is a YAML file describing the request to send and the answer the guardrail must give, aimed at a real gateway with the guardrails live: the breaker's 402, DLP's 403, the deny or hold from the policy plane. No mocked gateway in the middle, so the code you rehearse is the code production traffic meets.</p>"),
  ("Does running the drills spend real money?",
-  "<p>No. The provider behind the gateway is fake, so a runaway scenario can burn as much as it likes: the meter it trips is real, the invoice is not. Every hostile input also stays inside your perimeter, because the harness only ever talks to the one gateway URL you hand it.</p>"),
+  "<p>No. The provider behind the gateway is fake, so a runaway scenario can burn as much as it likes: the meter it trips is real, the invoice is not. Every hostile input also stays inside your perimeter, because the harness only talks to the URLs you hand it: the gateway and, for the broker drills, the MCP broker.</p>"),
  ("What if a guardrail simply is not configured?",
   "<p>Then a miss is reported as not configured rather than as a gap, and only when there is no evidence anywhere in the run that the feature is live. A core guardrail with no optional declaration is always a finding, and so is a gateway that could not be reached at all. One flag turns even a skip into a failure when you know the guardrail must be there.</p>"),
  ("Can it gate CI?",
@@ -252,7 +252,7 @@ FAQ = {
   "<p>Yes. Four Terraform resources cover run budgets, business-unit budgets, agent passports and policies, published on the public Terraform Registry, so governance gets pull requests, plans and diffs like the rest of your infrastructure. Where the API has no delete, the provider says so instead of pretending.</p>"),
  ("How do I check that my events actually conform?",
   "<p>Run <span class=\"mono\">agent-conform</span>. It carries the canonical JSON Schemas, classifies each file by its own schema field, treats unrecognised content as a failure rather than skipping it quietly, and exits 0 or 1. It has already caught a real 63-versus-64 character hash defect.</p>"
-  "<p>On a box, <span class=\"mono\">agent-conform watch-dir</span> re-checks every stream's hash chain and writes a <span class=\"mono\">chain_broken</span> event to its own stream when one breaks; it exits 2 on a usage or I/O error. stack-single runs it every five minutes and stack-k8s runs it as a CronJob every fifteen minutes. stack-up runs it once a day, at 06:52, as a routine.</p>"),
+  "<p>On a box, <span class=\"mono\">agent-conform watch-dir</span> re-checks every stream's hash chain and writes a <span class=\"mono\">chain_broken</span>, <span class=\"mono\">chain_unchained</span> or <span class=\"mono\">chain_restarted</span> event to its own stream when one breaks; it exits 2 on a usage or I/O error. stack-single runs it every five minutes and stack-k8s runs it as a CronJob every fifteen minutes. stack-up runs it once a day, at 06:52, as a routine.</p>"),
 ]),
 
 "ai-agent-governance.html": ("common questions", "What people ask about agent governance", [
@@ -263,7 +263,7 @@ FAQ = {
  ("Do I have to adopt all of it at once?",
   "<p>No, and nobody does. The order that works is metering first, then a ceiling, then a decision in front of the web, then naming the actions that need a human, then drawing the identities and making borrowed authority provable, then rehearsing the guardrails in CI, then sealing the record, and only then measuring quality in money. Each step is a separate Apache-2.0 tool and each is useful alone.</p>"),
  ("Does putting controls in the request path slow agents down?",
-  "<p>The enforcement decision itself is in-process and measured in microseconds, and the gateway's own bookkeeping fails open, so a lost event never stops a call. What happens when the policy plane is unreachable is a decision the deployment makes on purpose: both launchers ship it fail-closed, and a run on 2026-09-17 measured exactly that, every call refused in 0.3 s until the plane was back. The latency people notice in agent systems comes from models and tools, not from a budget check.</p>"),
+  "<p>The enforcement decision itself is in-process and measured in microseconds, and the gateway's own bookkeeping fails open, so a lost event never stops a call. What happens when the policy plane is unreachable is a decision the deployment makes on purpose: all three launchers ship it fail-closed, and a run on 2026-09-17 measured exactly that, every call refused in 0.3 s until the plane was back. The latency people notice in agent systems comes from models and tools, not from a budget check.</p>"),
  ("Can this run on our own infrastructure?",
   "<p>It is the only way it runs. Every plane is self-hosted on infrastructure you own, any cloud or on-prem, and nothing is sent to us: we never hold your keys, your traffic or your data.</p>"),
 ]),

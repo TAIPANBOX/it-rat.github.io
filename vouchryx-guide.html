@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vouchryx guide: how it works, running it, what changed · IT-RAT</title>
-<meta name="description" content="How Vouchryx proves and ends an agent's delegation, its six endpoints, how to run and configure it, what changed in October 2026, and its limits.">
+<meta name="description" content="How Vouchryx proves and ends an agent's delegation, its seven endpoints, how to run and configure it, what changed in October and November 2026, and its limits.">
 <link rel="canonical" href="https://it-rat.com/vouchryx-guide.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/vouchryx-guide.html">
 <meta property="og:title" content="Vouchryx guide: how it works, running it, what changed · IT-RAT">
-<meta property="og:description" content="Everything the Vouchryx room leaves out: the gap it closes, proof of possession, revocation and offline verification in full, the six endpoints, the configuration it refuses to start without, a measured revocation run, what changed from 1 to 15 October 2026, and what is not proven yet.">
+<meta property="og:description" content="Everything the Vouchryx room leaves out: the gap it closes, proof of possession, revocation and offline verification in full, the seven endpoints, the configuration it refuses to start without, a measured revocation run, what changed from 1 to 15 October 2026, and what is not proven yet.">
 <meta property="og:image" content="https://it-rat.com/assets/og/vouchryx.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Vouchryx guide: how it works, running it, what changed · IT-RAT">
-<meta name="twitter:description" content="Everything the Vouchryx room leaves out: the gap it closes, proof of possession, revocation and offline verification in full, the six endpoints, the configuration it refuses to start without, a measured revocation run, what changed from 1 to 15 October 2026, and what is not proven yet.">
+<meta name="twitter:description" content="Everything the Vouchryx room leaves out: the gap it closes, proof of possession, revocation and offline verification in full, the seven endpoints, the configuration it refuses to start without, a measured revocation run, what changed from 1 to 15 October 2026, and what is not proven yet.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/vouchryx.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -58,7 +58,7 @@
   @media(max-width:700px){.api td:first-child{white-space:normal}}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Vouchryx guide: how it works, running it, what changed","name":"Vouchryx guide","url":"https://it-rat.com/vouchryx-guide.html","description":"How Vouchryx proves and ends an agent's delegation, its six endpoints, how to run and configure it, what changed in October 2026, and its limits.","inLanguage":"en","datePublished":"2026-10-16","dateModified":"2026-10-16","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/vouchryx-guide.html","about":{"@type":"SoftwareApplication","name":"Vouchryx","url":"https://it-rat.com/services/vouchryx.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"Vouchryx guide","item":"https://it-rat.com/vouchryx-guide.html"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Vouchryx guide: how it works, running it, what changed","name":"Vouchryx guide","url":"https://it-rat.com/vouchryx-guide.html","description":"How Vouchryx proves and ends an agent's delegation, its seven endpoints, how to run and configure it, what changed in October and November 2026, and its limits.","inLanguage":"en","datePublished":"2026-10-16","dateModified":"2026-10-16","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/vouchryx-guide.html","about":{"@type":"SoftwareApplication","name":"Vouchryx","url":"https://it-rat.com/services/vouchryx.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"Vouchryx guide","item":"https://it-rat.com/vouchryx-guide.html"}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-root="">
@@ -80,12 +80,12 @@
   <div class="wrap">
     <div class="kicker rv">a guide &#183; vouchryx</div>
     <h1 class="rv d1">How Vouchryx works, how to run it, what changed.</h1>
-    <p class="lede rv d2">The <a href="services/vouchryx.html">Vouchryx room</a> keeps the loop drawn end to end, the two kill switches, how to start it, and the common questions. This guide keeps the rest of what the room used to say: the gap it closes in full, the six endpoints, the configuration it will not start without, a measured revocation run, what changed from 1 to 15 October 2026, and what is not proven yet.</p>
+    <p class="lede rv d2">The <a href="services/vouchryx.html">Vouchryx room</a> keeps the loop drawn end to end, the two kill switches, how to start it, and the common questions. This guide keeps the rest of what the room used to say: the gap it closes in full, the seven endpoints, the configuration it will not start without, a measured revocation run, what changed from 1 to 15 October 2026, and what is not proven yet.</p>
     <div class="back rv d3"><a class="btn" href="services/vouchryx.html"><span class="mono">&#8592;</span> Back to the Vouchryx room</a></div>
   </div>
 </section>
 
-<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#surface">The endpoints</a></li><li><a href="#two-switches">Two kill switches</a></li><li><a href="#configuration">Configuration</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
+<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#surface">The endpoints</a></li><li><a href="#two-switches">Two kill switches</a></li><li><a href="#configuration">Configuration</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#changes-november">What changed in November</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
 
 <section class="sec" id="overview" style="padding-top:14px">
   <div class="wrap">
@@ -130,15 +130,16 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">the surface, all of it</div>
-      <h2>Six endpoints, and one that deliberately does not exist.</h2>
+      <h2>Seven endpoints, and one that deliberately does not exist.</h2>
     </div>
     <table class="api rv">
-      <tr><td>POST /v1/token</td><td>The exchange. A <span class="mono">subject_token</span> and an <span class="mono">actor_token</span> in, plus a DPoP header. Out comes a short-lived JWT with nested <span class="mono">act</span> and <span class="mono">cnf.jkt</span>. Since 2026-09-24 the same route also runs Cross App Access's jwt-bearer grant (RFC 7523, an ID-JAG in), closed unless VOUCHRYX_CLIENTS is set.</td></tr>
-      <tr><td>POST /v1/revoke</td><td>By <span class="mono">jti</span> for one token, or by <span class="mono">subject</span> for every token an agent holds. Both <span class="mono">actor</span> and <span class="mono">reason</span> are required, because a revocation nobody can attribute is an outage rather than a decision.</td></tr>
+      <tr><td>POST /v1/token</td><td>The exchange. A <span class="mono">subject_token</span> and an <span class="mono">actor_token</span> in, plus a DPoP header. Out comes a short-lived JWT with nested <span class="mono">act</span> and <span class="mono">cnf.jkt</span>. Since 2026-09-24 the same route also runs Cross App Access's jwt-bearer grant (RFC 7523, an ID-JAG in), closed unless VOUCHRYX_CLIENTS is set. It also runs the <span class="mono">client_credentials</span> grant: an agent enrolled in VOUCHRYX_AGENTS gets its own five-minute credential, bound to a key it proves with DPoP, closed while VOUCHRYX_AGENTS is unset.</td></tr>
+      <tr><td>POST /v1/revoke</td><td>By <span class="mono">jti</span> for one token, or by <span class="mono">subject</span> for every token an agent holds. Both <span class="mono">actor</span> and <span class="mono">reason</span> are required, because a revocation nobody can attribute is an outage rather than a decision. With <span class="mono">"ban": true</span> on a subject it is also a ban: nothing names that party again until the ban is lifted.</td></tr>
+      <tr><td>POST /v1/revoke/lift</td><td>Ends a ban. <span class="mono">subject</span>, <span class="mono">actor</span> and <span class="mono">reason</span> are required, and the subject must be banned. It never un-revokes: what the party held when it was banned stays revoked.</td></tr>
       <tr><td>GET /v1/revocations</td><td>What enforcement points poll, carrying <span class="mono">as_of</span>. Each entry holds only what a verifier needs, <span class="mono">jti</span>, <span class="mono">subject</span>, <span class="mono">issued_before</span> and <span class="mono">expires</span>; who revoked a token and why stay in the operator's record.</td></tr>
       <tr><td>GET /.well-known/jwks.json</td><td>Public keys. Verification is offline and stays offline.</td></tr>
       <tr><td>GET /.well-known/oauth-authorization-server</td><td>RFC 8414 metadata for this service's own endpoints and grants.</td></tr>
-      <tr><td>GET /healthz</td><td>Liveness, no credential. Answers 200 once the process is listening.</td></tr>
+      <tr><td>GET /healthz</td><td>No credential. Answers 200 once the process is listening; with <span class="mono">VOUCHRYX_SIGNER=keyryx</span> it answers 503 until a working key is certified, so there it reads as readiness.</td></tr>
       <tr><td>no introspection</td><td>Refused by design. Wardryx answers at a 3.2 ms p50 and nothing here is going to sit in front of that.</td></tr>
     </table>
   </div>
@@ -165,6 +166,7 @@
     <div class="prose rv">
       <p>Three values are required and have no default: VOUCHRYX_ISSUER, VOUCHRYX_SIGNING_KEY (for the file signer; the Keyryx signer needs its own four values instead) and VOUCHRYX_TRUSTED_ISSUERS (unless VOUCHRYX_AGENTS enrols an agent). The listen address and the token lifetime have defaults, and the others switch optional features on. A missing or malformed value aborts the process and names the variable. The reason is the shape of the two failures: a token service that came up trusting nothing would issue nothing and look healthy, and one that came up trusting a default would issue everything.</p>
       <p>In the stack-single launcher from 1.3.0 (released 2026-10-19), vouchryx starts on every default box and signs with its own key file, VOUCHRYX_SIGNING_KEY. Its optional Keyryx signer (VOUCHRYX_SIGNER=keyryx) is not set by the launcher, so tokens there are signed with the file key, not with a working key that Keyryx certifies.</p>
+      <p>The key sets of the trusted and workload issuers are read from files, and they are read again while the service runs, every <span class="mono">VOUCHRYX_JWKS_RELOAD_SECONDS</span> (thirty unless set, 0 never, a day at most). A file that cannot be used, because it is unreadable, gone, not JSON, an error page, empty of keys or holding a key with no <span class="mono">kty</span> or <span class="mono">kid</span>, never replaces the keys held: a failure is logged once while it lasts and the recovery once. A key removed from a readable file stops verifying. The service still fetches nothing: a refresh job writes the file, and the service reads it.</p>
     </div>
   </div>
 </section>
@@ -180,7 +182,10 @@
       <div class="cmd"><span class="c"># the whole local stack with the delegation door open, from TAIPANBOX/stack-up</span><br>./up.sh --with-delegation</div>
       <div class="cmd"><span class="c"># prints the token, its nested act and the key thumbprint bound to it</span><br>vouchryx-demo exchange -url http://127.0.0.1:4310 -idp-key idp.pem -kid idp-1 -iss https://idp.local -aud http://127.0.0.1:4310 -subject user://acme/ada -actor agent://acme/triage -holder-key holder.pem</div>
       <h3>A measured run</h3>
-      <p>Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 218 tests, and the repository gates that number against its own suite.</p>
+      <p>Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 359 tests, and the repository gates that number against its own suite.</p>
+      <h3>A run against a real provider</h3>
+      <p>The loop was run against a real OpenID provider, in throwaway realms with generated credentials: the exchange, the DPoP binding, hostile tokens, revoke, ban and lift, agent credentials, the hand-off, and a workload token the provider issued. A provider's token was exchanged once the provider wrote a <span class="mono">user://</span> or <span class="mono">agent://</span> URI into <span class="mono">sub</span>, and a service account's token from the provider was presented as an RFC 7523 assertion.</p>
+      <p>One phase of the run failed, rotation. The provider's new key was in its published set the second it was created, and a token signed by it was refused with <span class="mono">invalid_grant</span> (no key in the set has that kid) for the life of the process, because a key set file was read once, at start. Against the image published at the time the rotation phase failed; with the key set files followed while running, the whole run passes. The record and its commands are in <span class="mono">docs/live-oidc-run.md</span> in the repository.</p>
     </div>
   </div>
 </section>
@@ -203,6 +208,23 @@
   </div>
 </section>
 
+<section class="sec" id="changes-november" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">November 2026</div>
+      <h2>What changed in November</h2>
+    </div>
+    <div class="tbl-scroll rv">
+      <table class="tbl">
+        <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
+        <tbody>
+          <tr><td>v0.7.0</td><td>Key set files are read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), so a provider that rotates its signing key is followed without a restart. Found by a run against a real OpenID provider.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <section class="sec" id="limits" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
@@ -215,6 +237,7 @@
         <li><span>Revoking a delegation ends the right to act on somebody's behalf at every enforcement point on its next poll of the list, 12 seconds by default at the gateway; a call admitted before that poll is not pulled back.</span></li>
         <li><span>The revocation timing on this page was measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release.</span></li>
         <li><span>The cluster run that refused a revoked agent 2.2 seconds later had the gateway polling every second rather than its default of every 12.</span></li>
+        <li><span>The exchange takes only <span class="mono">user://</span> or <span class="mono">agent://</span> subjects, so a provider's opaque <span class="mono">sub</span> is refused; the provider has to write the URI into <span class="mono">sub</span>, which the live run did. A mapping for other providers is a naming decision, described in <span class="mono">docs/live-oidc-run.md</span>.</span></li>
         <li><span>There is no introspection endpoint, on purpose: it would put this service on the request path of every enforcement point at once.</span></li>
         <li><span><b>Status:</b> pre-1.0, and main is supported.</span></li>
       </ul>

@@ -79,7 +79,7 @@
   </div>
 </section>
 
-<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#where-it-sits">Where it sits</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
+<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#where-it-sits">Where it sits</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#changes-november">What changed in November</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
 
 <section class="sec" id="overview" style="padding-top:14px">
   <div class="wrap">
@@ -90,7 +90,7 @@
     <div class="prose rv">
       <ul>
         <li><span><b>The breaker between your agents and your invoice.</b></span></li>
-        <li><span><b>Release:</b> latest &#183; ghcr images. <b>Core:</b> Rust.</span></li>
+        <li><span><b>Release:</b> pinned tags &#183; ghcr images (no :latest). <b>Core:</b> Rust.</span></li>
         <li><span><b>Ledger:</b> in-process by default &#183; raft cluster build optional.</span></li>
         <li><span><b>Enforcement:</b> HTTP 402, in-line.</span></li>
         <li><span><b>Proven on:</b> Hetzner &#183; AWS &#183; GCP.</span></li>
@@ -145,7 +145,7 @@
             <circle cx="842" cy="112" r="17" fill="#141C27" stroke="#2a3547"/><text x="842" y="116">n2</text>
             <circle cx="892" cy="92" r="17" fill="#141C27" stroke="#2a3547"/><text x="892" y="96">n3</text>
           </g>
-          <text x="842" y="140" fill="#5A6675" font-size="10.5">no double-spend, ever</text>
+          <text x="842" y="140" fill="#5A6675" font-size="10.5">no cross-node double-spend</text>
 
           <rect x="742" y="196" width="200" height="86" rx="14" fill="#10161F" stroke="#2a3547"/>
           <text x="842" y="224" fill="#E9EFF6" font-size="12.5" font-weight="700">Cloud + dashboard</text>
@@ -167,21 +167,29 @@
       <p>Budgets are hierarchical and checked all-or-nothing. A sub-agent's spend rolls up and is tested against every ancestor it belongs to, so a run cannot slip under its own cap while quietly breaking its parent's. The run is the unit that pays, because a per-key limit cannot tell one agent's afternoon of honest work from the same key looping on itself.</p>
       <p>A business unit can also carry a monthly cap, the first budget above the run. It is set in the gateway's identity map, or overridden from the Cloud, and counts the calendar month in UTC; in enforce mode a call that would cross it is refused with a 402. Each gateway counts its own calls on top of a tally it reads from the Cloud when it starts, so that cap is not yet shared across a fleet of gateways.</p>
       <p>Accounting is reserve then settle. Each call is priced before it happens, the reserve is taken, and the real cost settles afterwards; a call that would cross the cap is refused before the provider ever sees it. Models the price book does not recognise get a fallback price rather than passing through untracked, because untracked spend is exactly the failure mode this exists to remove.</p>
-      <p>Adoption is a one-line base-URL swap, and the gateway runs in shadow mode first: it prices and records everything while refusing nothing, so you can see what would have been blocked before anything is. Its own bookkeeping fails open: a telemetry push, an event write or a control-plane call that fails never refuses a call. The one failure mode that is a choice is the policy hook, and the launchers make it for you: both ship it fail-closed, so a policy plane that cannot be reached refuses every governed call rather than waving it through. That is measured, not read off a config file: on 2026-09-17 the policy plane was stopped under a box governing two clouds and every call came back 403 in 0.3 s until it was started again. The enforcement decision itself is in-process Rust, about 0.4 microseconds at p99. The thing standing between an agent and a four-digit night should not be the slow part.</p>
+      <p>Adoption is a one-line base-URL swap. Since v1.19.0 the default governed profile enforces budgets; set TOKENFUSE_MODE=shadow and the gateway prices and records everything while refusing nothing, so you can see what would have been blocked before anything is. Its own bookkeeping fails open: a telemetry push or an event write that fails never refuses a call. The one exception is the start: with a Cloud configured, a gateway answers 503 seed_pending (retryable) until it has read its money state, so a restart cannot hand a run its budget again. The one failure mode that is a choice is the policy hook, and the launchers make it for you: all three ship it fail-closed, so a policy plane that cannot be reached refuses every governed call rather than waving it through. That is measured, not read off a config file: on 2026-09-17 the policy plane was stopped under a box governing two clouds and every call came back 403 in 0.3 s until it was started again. The enforcement decision itself is in-process Rust, about 0.4 microseconds at p99. The thing standing between an agent and a four-digit night should not be the slow part.</p>
       <h3>Loop detection</h3>
-      <p>A retrying agent looks exactly like a compromised one from the budget's side. Sustained loops and fan-out explosions trip the breaker before they become a four-digit night.</p>
+      <p>A retrying agent looks exactly like a compromised one from the budget's side. A sustained loop trips the breaker, and a fan-out explosion opens an incident in the Cloud, before either becomes a four-digit night.</p>
       <h3>Burn forecast</h3>
       <p>Reserve-then-settle accounting prices each call before it happens, with a built-in price book of the vendors' rates as they read on 2026-10-13, long-prompt tiers included, and a deliberately high fallback rate for a model id it does not know, flagged on the response, so an unknown model is refused sooner rather than tracked never. The estimate is fast and honest about being an estimate.</p>
       <h3>Model router</h3>
-      <p>Routine calls ride a cheaper model that still clears your quality bar; hard ones stay on the frontier model. In live runs the router and cache together stripped about 22% of routine spend. Both ship switched off: the router is off by default, and the cache is off in the gateway and in the launchers, so that figure arrives when you turn them on, not by default.</p>
+      <p>Routine calls ride a cheaper model that still clears your quality bar; hard ones stay on the frontier model. Both ship switched off: the router is off by default, and the cache is off in the gateway and in the launchers.</p>
       <h3>Cluster build: a raft-replicated ledger</h3>
-      <p>An optional build, not what the shipped images run. Four nodes on four machines held one shared budget through a leader kill and a real network partition: the majority kept serving, the isolated node could not overspend, nothing split-brained.</p>
+      <p>An optional build that ships as its own image tag (tokenfuse:&lt;tag&gt;-cluster). The default image does not run it. Four nodes on four machines held one shared budget through a leader kill and a real network partition: the majority kept serving, the isolated node could not overspend, nothing split-brained.</p>
       <h3>What a budget survives: a crash, a restart, a partition</h3>
       <p>The images every launcher installs run one gateway with its ledger in memory, and a restart no longer starts every run at zero. Since v1.4.1 the gateway reads each run's spend back from the Cloud before it serves, for runs active in the last 31 days, and since v1.6.0 a gateway at a remote site does the same through a read scoped to its own site. With no Cloud configured there is nothing to read back, and a run starts from zero. The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry, not yet on a live hub. A budget only means something if two gateways racing each other cannot both spend it, and that is what the cluster build is for, a separate build of the same binary: there the ledger is a raft state machine, and the affordability check is linearized across the whole fleet: four nodes on four machines admit exactly what one budget allows, not four copies of it.</p>
       <p>In that build, with durable storage on redb, a budget outlives more than a node crash: it survives a full process restart, because a cap that resets when a process dies is a cap an unlucky deploy can hand back to a runaway.</p>
       <p>That was tested rather than assumed. A four-node cluster across two datacenters took a leader kill and a real network partition: the majority side kept serving, the isolated node could not overspend, and nothing split-brained. Enforcement then held under a burst of 34 concurrent agents, and the cost accounting was run on the same protocol against Hetzner, AWS and GCP so the numbers could be compared honestly.</p>
       <h3>FOCUS export</h3>
       <p>Agent spend lands in the same FinOps Foundation format as the rest of your cloud bill, so showback and chargeback reuse the pipes and dashboards finance already trusts.</p>
+      <h3>A label comes from the act, not from a name</h3>
+      <p>A run carries labels for what it has read, the web label for one, and its next tool call is judged with them: after a page was read, a request to run a shell is refused. That label used to follow a tool name the agent reported. The gateway read the name from the conversation the caller sends, so a fetch reported under a name the policy trusts carried that name's labels, and a fetch left out of the conversation carried none. The label now comes from two witnesses that do not depend on that string.</p>
+      <p><b>The MCP broker.</b> It made the connection, so it knows which server answered. <span class="mono">TOKENFUSE_MCP_UPSTREAM_LABELS="scopyx=web"</span> classifies an upstream by the server, not by the name a request chose. It needs <span class="mono">TOKENFUSE_MCP_TAINT_GATEWAY</span>, and the broker refuses to start on a name that matches no upstream or on a classification with no taint gateway. After a classified upstream answers a <span class="mono">tools/call</span>, and before the answer leaves, the broker reports to <span class="mono">POST /v1/fuse/observed-act</span> and the gateway puts the labels on the run. The report has no member for a tool name. A call that names no run is refused before anything is forwarded, and an answer whose label the gateway did not take is withheld.</p>
+      <p><b>The provider's answer.</b> <span class="mono">server_tool_use</span> and <span class="mono">mcp_tool_use</span> blocks record a tool the provider ran, such as a built-in search. The gateway reads them, buffered and streamed, and labels the run before that answer's own tool calls are judged. The name map stays as the fallback, and a run carries the union of what the three say.</p>
+      <p>The event contract does not change: the same <span class="mono">taint_raised</span> event and the same <span class="mono">mcp_tool_call</span> and <span class="mono">model_tool_call</span> stages. A deployment that sets no classification sees no difference, apart from the provider's blocks, which now label.</p>
+      <h3>One incident per failing provider</h3>
+      <p>A provider that is up but failing fails every call that reaches it, and each call is its own run. The gateway counts the <span class="mono">dependency_failed</span> events whose dependency is the provider and sends the Cloud one report every two seconds, with the Cloud key it already holds; a report it cannot deliver is dropped, not queued. A provider that has failed <span class="mono">TOKENFUSE_CLOUD_INCIDENT_PROVIDER_FAILURES</span> calls (three unless set) within ten minutes opens one incident per provider and reporting site, <span class="mono">dependency_failed:provider:NAME</span> (with <span class="mono">@SITE</span> appended for a key bound to a site), with severity high, the failures folded into its occurrences and a summary naming the provider and the last detail. It shows on <span class="mono">GET /v1/incidents</span>, on the stream and in push like any incident.</p>
+      <p>The route is <span class="mono">POST /v1/provider-failures</span>, for an admin or ingest key only, and it is held to a caller who may be hostile: the body is bounded, the label is cleaned, and providers past a bound fold into one visible <span class="mono">other</span> bucket instead of evicting a real one. The provider label is the host and port of <span class="mono">TOKENFUSE_UPSTREAM</span> with any <span class="mono">user:password@</span> removed. The per-call event on the bus is unchanged, and the incident names a provider and no agent or run, so it is not exported to the bus. <a href="services/heraldyx.html">Heraldyx</a> folds the same outage into one mail on its own side.</p>
     </div>
   </div>
 </section>
@@ -209,12 +217,12 @@
     </div>
     <div class="prose rv">
       <p>Run it from <a href="https://github.com/TAIPANBOX/tokenfuse#-get-started" target="_blank" rel="noopener">the repository</a>, where the one-line command lives beside the image tag it pulls.</p>
-      <p>Then point <span class="mono">ANTHROPIC_BASE_URL</span> at <span class="mono">localhost:4100</span> and give your next run a budget header. That's the whole migration. Behind a launcher, a header above USD 5.00 is lowered to the operator's ceiling unless the operator raises it.</p>
+      <p>Then point <span class="mono">ANTHROPIC_BASE_URL</span> at <span class="mono">localhost:4100</span> and give your next run a run id and a budget (the x-fuse-run-id and x-fuse-budget-usd headers). A call with no run id is refused with 400 metering_required. That's the whole migration. Behind a launcher, a header above USD 5.00 is lowered to the operator's ceiling unless the operator raises it.</p>
       <p>Want more than the gateway? <a href="services/platform.html#run">Run the live services locally</a> in one command.</p>
       <h3>TokenFuse ships as an image, and since v0.4.3 as binaries</h3>
       <div class="dl-row"><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/pkgs/container/tokenfuse">container image</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases">releases</a></div>
       <div class="dl-row" style="margin-top:10px"><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/tokenfuse-x86_64-unknown-linux-musl">Linux x86-64</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/tokenfuse-aarch64-unknown-linux-musl">Linux arm64</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/tokenfuse-x86_64-apple-darwin">macOS x86-64</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/tokenfuse-aarch64-apple-darwin">macOS arm64</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/SHA256SUMS">SHA256SUMS</a></div>
-      <p>The current release is v1.14.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, <span class="mono">TOKENFUSE_UPSTREAM</span> set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.</p>
+      <p>The current release is v1.21.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, <span class="mono">TOKENFUSE_UPSTREAM</span> set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.</p>
     </div>
   </div>
 </section>
@@ -251,6 +259,24 @@
   </div>
 </section>
 
+<section class="sec" id="changes-november" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">November 2026</div>
+      <h2>What changed in November</h2>
+    </div>
+    <div class="tbl-scroll rv">
+      <table class="tbl">
+        <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
+        <tbody>
+          <tr><td>v1.21.0</td><td>A run's taint label comes from what an enforcement point saw: the MCP broker labels a call by the server that answered, and the provider's own tool blocks label the run before that answer's tool calls are judged.</td></tr>
+          <tr><td>v1.21.0</td><td>A provider that keeps failing is one incident in the Cloud console and API, not one per call.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <section class="sec" id="limits" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
@@ -259,13 +285,16 @@
     </div>
     <div class="prose rv">
       <ul>
-        <li><span><b>The cluster build is an optional build, not what the shipped images run.</b> The images every launcher installs run one gateway with its ledger in memory.</span></li>
+        <li><span><b>The cluster build is optional and ships as its own image tag.</b> The default image every launcher installs runs one gateway with its ledger in memory.</span></li>
         <li><span>A business unit's monthly cap: each gateway counts its own calls on top of a tally it reads from the Cloud when it starts, so that cap is not yet shared across a fleet of gateways.</span></li>
         <li><span>The model router and the cache both ship switched off: the router is off by default, and the cache is off in the gateway and in the launchers, so the saving seen in live runs arrives when you turn them on, not by default.</span></li>
         <li><span>With no Cloud configured there is nothing to read back, and a run starts from zero.</span></li>
         <li><span>The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry, not yet on a live hub.</span></li>
         <li><span>The operator's run-budget ceiling bounds each run, not an agent's total: a new run id gets a new ceiling.</span></li>
         <li><span>A poisoned tool description marks the run as a suspected injection. The request itself is not refused.</span></li>
+        <li><span>A label follows an act that passed through an enforcement point. A process with its own socket passes through none.</span></li>
+        <li><span>A provider's built-in search is labelled and not controlled: nothing can refuse it, and no domain policy reaches it. The OpenAI wire carries its built-in search as annotations and no tool block, so it is not read.</span></li>
+        <li><span>A deployment gets the broker half of the label by routing its fetch plane through the broker, which is separate wiring.</span></li>
         <li><span>No Windows build yet.</span></li>
         <li><span>The room's runaway is a simulation, but not a fantasy: it replays the exact shape of the live validation runs.</span></li>
       </ul>

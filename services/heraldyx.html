@@ -179,8 +179,8 @@
         </div>
       </div>
       <div class="hero-side rv d2">
-        <div class="row"><span class="k">shipped</span><span class="v">v0.8.0, pinned in the deploy</span></div>
-        <div class="row"><span class="k">core</span><span class="v">Go 1.27 &#183; one direct dependency</span></div>
+        <div class="row"><span class="k">shipped</span><span class="v">v0.9.0</span></div>
+        <div class="row"><span class="k">core</span><span class="v">Go 1.27 &#183; two direct dependencies</span></div>
         <div class="row"><span class="k">one way out</span><span class="v">reads the log, speaks SMTP, nothing else</span></div>
         <div class="row"><span class="k">limits</span><span class="v">floor &#183; dedup 10 min &#183; 20 an hour</span></div>
         <div class="row"><span class="k">leaves behind</span><span class="v">a hash-chained dispatch record</span></div>
@@ -208,7 +208,7 @@
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
       <h2>Four checks, in this order, and the order is the point.</h2>
-      <p class="lede">The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server.</p>
+      <p class="lede">The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. A provider outage is one mail per window and not one per failed call: a dependency_failed repeats on the dependency, not on the run.</p>
     </div>
 
     <div class="diagram rv">
@@ -402,8 +402,8 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">who else writes to the log it reads</div>
-      <h2>Two more sources arrived on the bus.</h2>
-      <p class="lede">This plane mails about what other planes wrote, so its reach grows when theirs does. <a href="vouchryx.html">Vouchryx</a> reports a delegation issued, denied or revoked, and <a href="costcrew.html">CostCrew</a> reports spend spikes, budget thresholds and every move its crew makes on a finding.</p>
+      <h2>Twelve planes write the log it reads.</h2>
+      <p class="lede">This plane mails about what other planes wrote, so its reach grows when theirs does. Twelve planes write the shared log, and the Keyryx witness's findings file is read beside it. <a href="vouchryx.html">Vouchryx</a> reports a delegation issued, denied or revoked, and <a href="costcrew.html">CostCrew</a> reports spend spikes, budget thresholds and every move its crew makes on a finding.</p>
     </div>
     <div data-edge-nav></div>
   </div>

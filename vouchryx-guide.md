@@ -2,9 +2,9 @@
 
 # Vouchryx guide
 
-> How Vouchryx proves and ends an agent's delegation, its six endpoints, how to run and configure it, what changed in October 2026, and its limits.
+> How Vouchryx proves and ends an agent's delegation, its seven endpoints, how to run and configure it, what changed in October and November 2026, and its limits.
 
-The [Vouchryx room](https://it-rat.com/services/vouchryx.html) keeps the loop drawn end to end, the two kill switches, how to start it, and the common questions. This guide keeps the rest of what the room used to say: the gap it closes in full, the six endpoints, the configuration it will not start without, a measured revocation run, what changed from 1 to 15 October 2026, and what is not proven yet.
+The [Vouchryx room](https://it-rat.com/services/vouchryx.html) keeps the loop drawn end to end, the two kill switches, how to start it, and the common questions. This guide keeps the rest of what the room used to say: the gap it closes in full, the seven endpoints, the configuration it will not start without, a measured revocation run, what changed from 1 to 15 October 2026, and what is not proven yet.
 
 - [At a glance](https://it-rat.com/vouchryx-guide.html#overview)
 
@@ -19,6 +19,8 @@ The [Vouchryx room](https://it-rat.com/services/vouchryx.html) keeps the loop dr
 - [Running it](https://it-rat.com/vouchryx-guide.html#run)
 
 - [What changed](https://it-rat.com/vouchryx-guide.html#changes)
+
+- [What changed in November](https://it-rat.com/vouchryx-guide.html#changes-november)
 
 - [Limits](https://it-rat.com/vouchryx-guide.html#limits)
 
@@ -56,15 +58,16 @@ By one token id, or by subject for every token an agent already holds. The list 
 
 Public keys at a JWKS endpoint, so an enforcement point verifies offline. That is also why there is no introspection endpoint, on purpose: it would put this service on the request path of every enforcement point at once.
 
-## Six endpoints, and one that deliberately does not exist.
+## Seven endpoints, and one that deliberately does not exist.
 
-| POST /v1/token | The exchange. A `subject_token` and an `actor_token` in, plus a DPoP header. Out comes a short-lived JWT with nested `act` and `cnf.jkt`. Since 2026-09-24 the same route also runs Cross App Access's jwt-bearer grant (RFC 7523, an ID-JAG in), closed unless VOUCHRYX_CLIENTS is set. |
+| POST /v1/token | The exchange. A `subject_token` and an `actor_token` in, plus a DPoP header. Out comes a short-lived JWT with nested `act` and `cnf.jkt`. Since 2026-09-24 the same route also runs Cross App Access's jwt-bearer grant (RFC 7523, an ID-JAG in), closed unless VOUCHRYX_CLIENTS is set. It also runs the `client_credentials` grant: an agent enrolled in VOUCHRYX_AGENTS gets its own five-minute credential, bound to a key it proves with DPoP, closed while VOUCHRYX_AGENTS is unset. |
 |---|---|
-| POST /v1/revoke | By `jti` for one token, or by `subject` for every token an agent holds. Both `actor` and `reason` are required, because a revocation nobody can attribute is an outage rather than a decision. |
+| POST /v1/revoke | By `jti` for one token, or by `subject` for every token an agent holds. Both `actor` and `reason` are required, because a revocation nobody can attribute is an outage rather than a decision. With `"ban": true` on a subject it is also a ban: nothing names that party again until the ban is lifted. |
+| POST /v1/revoke/lift | Ends a ban. `subject`, `actor` and `reason` are required, and the subject must be banned. It never un-revokes: what the party held when it was banned stays revoked. |
 | GET /v1/revocations | What enforcement points poll, carrying `as_of`. Each entry holds only what a verifier needs, `jti`, `subject`, `issued_before` and `expires`; who revoked a token and why stay in the operator's record. |
 | GET /.well-known/jwks.json | Public keys. Verification is offline and stays offline. |
 | GET /.well-known/oauth-authorization-server | RFC 8414 metadata for this service's own endpoints and grants. |
-| GET /healthz | Liveness, no credential. Answers 200 once the process is listening. |
+| GET /healthz | No credential. Answers 200 once the process is listening; with `VOUCHRYX_SIGNER=keyryx` it answers 503 until a working key is certified, so there it reads as readiness. |
 | no introspection | Refused by design. Wardryx answers at a 3.2 ms p50 and nothing here is going to sit in front of that. |
 
 ## One stops the money. This one stops the authority.
@@ -76,6 +79,8 @@ Public keys at a JWKS endpoint, so an enforcement point verifies offline. That i
 Three values are required and have no default: VOUCHRYX_ISSUER, VOUCHRYX_SIGNING_KEY (for the file signer; the Keyryx signer needs its own four values instead) and VOUCHRYX_TRUSTED_ISSUERS (unless VOUCHRYX_AGENTS enrols an agent). The listen address and the token lifetime have defaults, and the others switch optional features on. A missing or malformed value aborts the process and names the variable. The reason is the shape of the two failures: a token service that came up trusting nothing would issue nothing and look healthy, and one that came up trusting a default would issue everything.
 
 In the stack-single launcher from 1.3.0 (released 2026-10-19), vouchryx starts on every default box and signs with its own key file, VOUCHRYX_SIGNING_KEY. Its optional Keyryx signer (VOUCHRYX_SIGNER=keyryx) is not set by the launcher, so tokens there are signed with the file key, not with a working key that Keyryx certifies.
+
+The key sets of the trusted and workload issuers are read from files, and they are read again while the service runs, every `VOUCHRYX_JWKS_RELOAD_SECONDS` (thirty unless set, 0 never, a day at most). A file that cannot be used, because it is unreadable, gone, not JSON, an error page, empty of keys or holding a key with no `kty` or `kid`, never replaces the keys held: a failure is logged once while it lasts and the recovery once. A key removed from a readable file stops verifying. The service still fetches nothing: a refresh job writes the file, and the service reads it.
 
 ## Mint it, prove it, then end it.
 
@@ -93,7 +98,13 @@ vouchryx-demo exchange -url http://127.0.0.1:4310 -idp-key idp.pem -kid idp-1 -i
 
 ### A measured run
 
-Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 218 tests, and the repository gates that number against its own suite.
+Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 359 tests, and the repository gates that number against its own suite.
+
+### A run against a real provider
+
+The loop was run against a real OpenID provider, in throwaway realms with generated credentials: the exchange, the DPoP binding, hostile tokens, revoke, ban and lift, agent credentials, the hand-off, and a workload token the provider issued. A provider's token was exchanged once the provider wrote a `user://` or `agent://` URI into `sub`, and a service account's token from the provider was presented as an RFC 7523 assertion.
+
+One phase of the run failed, rotation. The provider's new key was in its published set the second it was created, and a token signed by it was refused with `invalid_grant` (no key in the set has that kid) for the life of the process, because a key set file was read once, at start. Against the image published at the time the rotation phase failed; with the key set files followed while running, the whole run passes. The record and its commands are in `docs/live-oidc-run.md` in the repository.
 
 ## What changed from 1 to 15 October
 
@@ -102,6 +113,12 @@ Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather tha
 | shipped in | what it does |
 |---|---|
 | v0.2.0 | The public revocation list no longer says who revoked a token or why. |
+
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| v0.7.0 | Key set files are read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), so a provider that rotates its signing key is followed without a restart. Found by a run against a real OpenID provider. |
 
 ## What it does not do, and what is not proven yet.
 
@@ -112,6 +129,8 @@ Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather tha
 - The revocation timing on this page was measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release.
 
 - The cluster run that refused a revoked agent 2.2 seconds later had the gateway polling every second rather than its default of every 12.
+
+- The exchange takes only `user://` or `agent://` subjects, so a provider's opaque `sub` is refused; the provider has to write the URI into `sub`, which the live run did. A mapping for other providers is a naming decision, described in `docs/live-oidc-run.md`.
 
 - There is no introspection endpoint, on purpose: it would put this service on the request path of every enforcement point at once.
 

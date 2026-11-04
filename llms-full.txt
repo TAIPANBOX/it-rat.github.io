@@ -277,7 +277,7 @@ Observability is a witness; governance is a brake. A trace tells you afterwards 
 No, and nobody does. The order that works is metering first, then a ceiling, then a decision in front of the web, then naming the actions that need a human, then drawing the identities and making borrowed authority provable, then rehearsing the guardrails in CI, then sealing the record, and only then measuring quality in money. Each step is a separate Apache-2.0 tool and each is useful alone.
 
 **Q: Does putting controls in the request path slow agents down?**
-The enforcement decision itself is in-process and measured in microseconds, and the gateway's own bookkeeping fails open, so a lost event never stops a call. What happens when the policy plane is unreachable is a decision the deployment makes on purpose: both launchers ship it fail-closed, and a run on 2026-09-17 measured exactly that, every call refused in 0.3 s until the plane was back. The latency people notice in agent systems comes from models and tools, not from a budget check.
+The enforcement decision itself is in-process and measured in microseconds, and the gateway's own bookkeeping fails open, so a lost event never stops a call. What happens when the policy plane is unreachable is a decision the deployment makes on purpose: all three launchers ship it fail-closed, and a run on 2026-09-17 measured exactly that, every call refused in 0.3 s until the plane was back. The latency people notice in agent systems comes from models and tools, not from a budget check.
 
 **Q: Can this run on our own infrastructure?**
 It is the only way it runs. Every plane is self-hosted on infrastructure you own, any cloud or on-prem, and nothing is sent to us: we never hold your keys, your traffic or your data.
@@ -1676,7 +1676,7 @@ Three published conclusions. That throughput collapses past 64 concurrent caller
 Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Not every shipped pre-production drill has been fired at a real gateway; the ledger records the ones that have. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.
 
 **Q: Why publish the things that went wrong?**
-Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 154 entries and 78 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.
+Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 159 entries and 82 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.
 
 
 ---
@@ -2839,6 +2839,8 @@ The [Genaryx room](https://it-rat.com/genaryx.html) keeps the fifteen frames, th
 
 - [Felyx, the copilot](https://it-rat.com/genaryx-guide.html#felyx)
 
+- [The case file](https://it-rat.com/genaryx-guide.html#case)
+
 - [Every frame](https://it-rat.com/genaryx-guide.html#frames)
 
 - [Beside the stack by hand](https://it-rat.com/genaryx-guide.html#why)
@@ -2846,6 +2848,8 @@ The [Genaryx room](https://it-rat.com/genaryx.html) keeps the fifteen frames, th
 - [Taking it](https://it-rat.com/genaryx-guide.html#run)
 
 - [What changed](https://it-rat.com/genaryx-guide.html#changes)
+
+- [What changed in November](https://it-rat.com/genaryx-guide.html#changes-november)
 
 - [Limits](https://it-rat.com/genaryx-guide.html#limits)
 
@@ -2883,13 +2887,13 @@ The browser console is the product, and it is deliberately thin: every screen is
 
 ### Hardware signatures, shipped
 
-Kills, budget changes and approval grants are confirmed per action with a passkey on your own device: Touch ID, Windows Hello or a security key. With no passkey enrolled the action is refused until one is enrolled, unless an operator sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY; then it still works and is journaled software-signed, labeled honestly.
+Kills, budget changes, approval grants, closing a retained reservation, revoking a delegation and stopping an agent are confirmed per action with a passkey on your own device: Touch ID, Windows Hello or a security key. Stop agent asks [Vouchryx](https://it-rat.com/services/vouchryx.html) to ban the agent, so the tokens it holds die at every door that polls the revocation list, then kills each of its open runs on the Cloud. With no passkey enrolled the action is refused until one is enrolled, unless an operator sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY; then it still works and is journaled software-signed, labeled honestly.
 
 **What the console signs, and what it writes down.** The console mints a challenge bound to that exact command and its exact arguments, verifies the ES256 assertion server-side, and journals which enrolled credential confirmed it, next to the typed break-glass reason. A signature over a different command, or over the same command with different arguments, does not verify.
 
 No passkey enrolled yet? The action is refused until you enroll one. Only an operator who sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY gets the software-signed fallback, labeled honestly, never dressed up as hardware.
 
-From genaryx 03c6c88. On 2026-10-19 stack-single and stack-k8s pin the console image v1.1.48, which gets the same refusal from GENARYX_WEB_REQUIRE_PASSKEY=1, and both launchers set that variable. stack-up starts no console.
+Since 2026-10-19 the passkey is required by default: GENARYX_WEB_REQUIRE_PASSKEY is no longer read for its setting, and a stack that still sets it gets the same required mode. stack-up starts no console.
 
 ### WireGuard, but yours
 
@@ -2927,7 +2931,23 @@ An operator can explicitly opt into a bring-your-own-key cloud model - Anthropic
 
 ### Numbers from tools, never vibes
 
-Every figure in an answer comes from a typed read tool over the same connectors the tabs use. The model does not do arithmetic in prose, and when a plane is not configured Felyx says what it cannot see instead of inventing it. Budgets come from a tool that reads the Cloud's own run and unit budgets with their spend, and a draft that states a budget no tool returned is sent back once for revision. Measured on 2026-10-05 on the forge lab against the Cloud's own figures read the same minute; the check covers budget statements, not every run id an answer names.
+Every figure in an answer comes from a typed read tool over the same connectors the tabs use. The model does not do arithmetic in prose, and when a plane is not configured Felyx says what it cannot see instead of inventing it. Budgets come from a tool that reads the Cloud's own run and unit budgets with their spend, and a draft that states a budget no tool returned is sent back once for revision. Measured on 2026-10-05 on the forge lab against the Cloud's own figures read the same minute; that measurement covered budget statements.
+
+### It points only at what a tool returned
+
+Every run, incident, policy, agent and approval id an answer names, and every dollar amount, must be in the tool results of that same answer. A draft with a finding goes back once, and what stays is taken out statement by statement and named in a note and in the answer's unsupported claims. An explanation of an incident gives no chain through an id that was invented, and none for an incident no tool returned. An id planted in an event's text grounds nothing: only a structured field a tool returned counts.
+
+### Plane text is data, not instructions
+
+Every string a read tool returns is fenced as untrusted data, unless it is a listed structured field shaped like one token. Inside the fence the markup is escaped, so the text cannot close it, and the code that hands a tool result to the model accepts only fenced results, so a result that skips the fence does not compile. The answer lists the text it leans on, and anything in that text that reads like an instruction.
+
+### A card needs a real target
+
+Between a propose tool and a card stands a check: the target must be one a tool returned as that kind of thing, and no plane text may be asking for that action, unless the operator asked in their own words. A refused proposal is listed with the answer instead of becoming a card. The signing key stays absent. This is held by a gate in the console's CI and by a scripted model that obeys the injected line, so the proof rests on the loop around the model and needs no provider.
+
+### Reading a case
+
+Given the [case file](https://it-rat.com/genaryx-guide.html#case) of an incident, Felyx explains the incident from it instead of running a tool loop to gather the facts. It is given the case and no tool, it may cite only ids the case holds, and it proposes nothing; a model that asks for a tool while reading a case gets none. A draft that names a run the case does not hold is corrected once, and then the chain is withheld. A refusal filed under a key can be cited by the key without its prefix. Plane text in a case row reaches the model fenced and grounds nothing. With no model provider the answer is a sentence saying so.
 
 ### No signing key. Not restrained - absent.
 
@@ -2954,6 +2974,28 @@ Felyx's own LLM calls carry their own run id and agent id, so pointed at the sta
 - **Anthropic**, BYO key, opt-in
 
 - **OpenRouter**, BYO key, opt-in
+
+## An incident, with what the planes said about it, in one file.
+
+Incident 360 has a Case section: a deterministic case file for an incident, assembled from reads the console already makes. There is no model in it, no new service, no new event type and no write to any plane. Each fact names its plane, its row id and a digest, the SHA-256 of the row, so a changed row gives a different digest, and the same inputs give the same case.
+
+### What goes in
+
+For an incident that is a bus event: the event itself, the run's timeline in time order, and the earlier events of the same type, newest first. From the identity plane, the subject agent's record and its alerts, and its blast radius; an agent the identity plane does not know is an empty answer, not a failure. From the policy plane, the policy status and the run's approvals. From the Cloud, the run's spend and the gateway's decisions on it. From Engram, what memory recalls for that kind of incident.
+
+### A missing plane is a line in the case
+
+A plane that did not answer is a line in the case, and a plane that answered with nothing is told apart from it. A question that was never asked is a line too. Incident 360 lists what was gathered and what is missing in the console's own words, so a case with no reachable plane still has a line for every section.
+
+### A refusal is filed under its key
+
+An identity refusal, such as a key that claimed another agent's name, is filed under the key and not under the agent it claimed. Nothing is asked about the claimed agent, and the identity plane is asked nothing at all.
+
+### Event text is data
+
+Text inside an event stays inside a fact's row, marked as data. It never becomes a label, and the console's own reasons stay plain beside it.
+
+A money, identity or posture incident, or an unknown row, is refused by name and never given an empty case. Reading a case is a viewer read with no ceremony. The demo assembles a case on invented rows, with one plane that did not answer. Felyx can read the case and explain it; see [Felyx](https://it-rat.com/genaryx-guide.html#felyx).
 
 ## What each of the fifteen frames shows.
 
@@ -3017,6 +3059,16 @@ The practice this console is built for is written up separately: [AI agent gover
 
 The console's own list for 1 to 15 October 2026 is in [the stack's changes](https://it-rat.com/changes-2026-10.html#genaryx).
 
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| on main | Incident 360 has a Case section: a deterministic case file for an incident, assembled from reads the console already makes, each fact naming its plane, its row and a digest. |
+| on main | Felyx names only ids and amounts a tool returned, reads plane text as fenced data, and files a card only for a target a tool returned. |
+| on main | Felyx can read a case file instead of running a tool loop: it is given the case and no tool, cites only ids the case holds and proposes nothing. |
+| on main | A candidate policy is proved against the decisions already recorded (a Wardryx replay) and a candidate budget against the calls already made (a TokenFuse backtest): each says whether it would have stopped the incident and how many other decisions or calls it would have changed, and applies nothing. |
+| on main | A case can be sealed as one canonical document, written in the form RFC 8785 fixes, with the operator's decision and the proofs they asked for; its digest is the target of one line in the console's own chain, and sealing changes nothing in any plane. |
+
 ## What is reported and not yet in the record, and what it does not do.
 
 ### Built, and proven on a live fleet: reported, not yet in the record
@@ -3045,7 +3097,7 @@ The practice this console is built for is written up separately: [AI agent gover
 
 - The Felyx annotation quoted above is a paraphrase of the annotation felyx writes on a HARD page, not a recorded capture; the deterministic alert goes out first.
 
-- Felyx's budget check was measured on 2026-10-05 on the forge lab against the Cloud's own figures; it covers budget statements, not every run id an answer names.
+- Felyx's budget check was measured on 2026-10-05 on the forge lab against the Cloud's own figures. The check on ids and amounts that came after it is held by tests and a gate in the console's CI.
 
 - With no passkey enrolled an action is refused, unless an operator sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY; then it is journaled software-signed, labeled honestly, never dressed up as hardware.
 
@@ -3080,13 +3132,15 @@ The [TokenFuse room](https://it-rat.com/services/tokenfuse.html) keeps the simul
 
 - [What changed](https://it-rat.com/tokenfuse-guide.html#changes)
 
+- [What changed in November](https://it-rat.com/tokenfuse-guide.html#changes-november)
+
 - [Limits](https://it-rat.com/tokenfuse-guide.html#limits)
 
 ## TokenFuse at a glance.
 
 - **The breaker between your agents and your invoice.**
 
-- **Release:** latest · ghcr images. **Core:** Rust.
+- **Release:** pinned tags · ghcr images (no :latest). **Core:** Rust.
 
 - **Ledger:** in-process by default · raft cluster build optional.
 
@@ -3122,11 +3176,11 @@ A business unit can also carry a monthly cap, the first budget above the run. It
 
 Accounting is reserve then settle. Each call is priced before it happens, the reserve is taken, and the real cost settles afterwards; a call that would cross the cap is refused before the provider ever sees it. Models the price book does not recognise get a fallback price rather than passing through untracked, because untracked spend is exactly the failure mode this exists to remove.
 
-Adoption is a one-line base-URL swap, and the gateway runs in shadow mode first: it prices and records everything while refusing nothing, so you can see what would have been blocked before anything is. Its own bookkeeping fails open: a telemetry push, an event write or a control-plane call that fails never refuses a call. The one failure mode that is a choice is the policy hook, and the launchers make it for you: both ship it fail-closed, so a policy plane that cannot be reached refuses every governed call rather than waving it through. That is measured, not read off a config file: on 2026-09-17 the policy plane was stopped under a box governing two clouds and every call came back 403 in 0.3 s until it was started again. The enforcement decision itself is in-process Rust, about 0.4 microseconds at p99. The thing standing between an agent and a four-digit night should not be the slow part.
+Adoption is a one-line base-URL swap. Since v1.19.0 the default governed profile enforces budgets; set TOKENFUSE_MODE=shadow and the gateway prices and records everything while refusing nothing, so you can see what would have been blocked before anything is. Its own bookkeeping fails open: a telemetry push or an event write that fails never refuses a call. The one exception is the start: with a Cloud configured, a gateway answers 503 seed_pending (retryable) until it has read its money state, so a restart cannot hand a run its budget again. The one failure mode that is a choice is the policy hook, and the launchers make it for you: all three ship it fail-closed, so a policy plane that cannot be reached refuses every governed call rather than waving it through. That is measured, not read off a config file: on 2026-09-17 the policy plane was stopped under a box governing two clouds and every call came back 403 in 0.3 s until it was started again. The enforcement decision itself is in-process Rust, about 0.4 microseconds at p99. The thing standing between an agent and a four-digit night should not be the slow part.
 
 ### Loop detection
 
-A retrying agent looks exactly like a compromised one from the budget's side. Sustained loops and fan-out explosions trip the breaker before they become a four-digit night.
+A retrying agent looks exactly like a compromised one from the budget's side. A sustained loop trips the breaker, and a fan-out explosion opens an incident in the Cloud, before either becomes a four-digit night.
 
 ### Burn forecast
 
@@ -3134,11 +3188,11 @@ Reserve-then-settle accounting prices each call before it happens, with a built-
 
 ### Model router
 
-Routine calls ride a cheaper model that still clears your quality bar; hard ones stay on the frontier model. In live runs the router and cache together stripped about 22% of routine spend. Both ship switched off: the router is off by default, and the cache is off in the gateway and in the launchers, so that figure arrives when you turn them on, not by default.
+Routine calls ride a cheaper model that still clears your quality bar; hard ones stay on the frontier model. Both ship switched off: the router is off by default, and the cache is off in the gateway and in the launchers.
 
 ### Cluster build: a raft-replicated ledger
 
-An optional build, not what the shipped images run. Four nodes on four machines held one shared budget through a leader kill and a real network partition: the majority kept serving, the isolated node could not overspend, nothing split-brained.
+An optional build that ships as its own image tag (tokenfuse:<tag>-cluster). The default image does not run it. Four nodes on four machines held one shared budget through a leader kill and a real network partition: the majority kept serving, the isolated node could not overspend, nothing split-brained.
 
 ### What a budget survives: a crash, a restart, a partition
 
@@ -3151,6 +3205,22 @@ That was tested rather than assumed. A four-node cluster across two datacenters 
 ### FOCUS export
 
 Agent spend lands in the same FinOps Foundation format as the rest of your cloud bill, so showback and chargeback reuse the pipes and dashboards finance already trusts.
+
+### A label comes from the act, not from a name
+
+A run carries labels for what it has read, the web label for one, and its next tool call is judged with them: after a page was read, a request to run a shell is refused. That label used to follow a tool name the agent reported. The gateway read the name from the conversation the caller sends, so a fetch reported under a name the policy trusts carried that name's labels, and a fetch left out of the conversation carried none. The label now comes from two witnesses that do not depend on that string.
+
+**The MCP broker.** It made the connection, so it knows which server answered. `TOKENFUSE_MCP_UPSTREAM_LABELS="scopyx=web"` classifies an upstream by the server, not by the name a request chose. It needs `TOKENFUSE_MCP_TAINT_GATEWAY`, and the broker refuses to start on a name that matches no upstream or on a classification with no taint gateway. After a classified upstream answers a `tools/call`, and before the answer leaves, the broker reports to `POST /v1/fuse/observed-act` and the gateway puts the labels on the run. The report has no member for a tool name. A call that names no run is refused before anything is forwarded, and an answer whose label the gateway did not take is withheld.
+
+**The provider's answer.** `server_tool_use` and `mcp_tool_use` blocks record a tool the provider ran, such as a built-in search. The gateway reads them, buffered and streamed, and labels the run before that answer's own tool calls are judged. The name map stays as the fallback, and a run carries the union of what the three say.
+
+The event contract does not change: the same `taint_raised` event and the same `mcp_tool_call` and `model_tool_call` stages. A deployment that sets no classification sees no difference, apart from the provider's blocks, which now label.
+
+### One incident per failing provider
+
+A provider that is up but failing fails every call that reaches it, and each call is its own run. The gateway counts the `dependency_failed` events whose dependency is the provider and sends the Cloud one report every two seconds, with the Cloud key it already holds; a report it cannot deliver is dropped, not queued. A provider that has failed `TOKENFUSE_CLOUD_INCIDENT_PROVIDER_FAILURES` calls (three unless set) within ten minutes opens one incident per provider and reporting site, `dependency_failed:provider:NAME` (with `@SITE` appended for a key bound to a site), with severity high, the failures folded into its occurrences and a summary naming the provider and the last detail. It shows on `GET /v1/incidents`, on the stream and in push like any incident.
+
+The route is `POST /v1/provider-failures`, for an admin or ingest key only, and it is held to a caller who may be hostile: the body is bounded, the label is cleaned, and providers past a bound fold into one visible `other` bucket instead of evicting a real one. The provider label is the host and port of `TOKENFUSE_UPSTREAM` with any `user:password@` removed. The per-call event on the bus is unchanged, and the incident names a provider and no agent or run, so it is not exported to the bus. [Heraldyx](https://it-rat.com/services/heraldyx.html) folds the same outage into one mail on its own side.
 
 ## The loud neighbor everyone listens to.
 
@@ -3166,13 +3236,13 @@ A breaker is the right answer to a runaway and the wrong one to a compromised de
 
 Run it from [the repository](https://github.com/TAIPANBOX/tokenfuse#-get-started), where the one-line command lives beside the image tag it pulls.
 
-Then point `ANTHROPIC_BASE_URL` at `localhost:4100` and give your next run a budget header. That's the whole migration. Behind a launcher, a header above USD 5.00 is lowered to the operator's ceiling unless the operator raises it.
+Then point `ANTHROPIC_BASE_URL` at `localhost:4100` and give your next run a run id and a budget (the x-fuse-run-id and x-fuse-budget-usd headers). A call with no run id is refused with 400 metering_required. That's the whole migration. Behind a launcher, a header above USD 5.00 is lowered to the operator's ceiling unless the operator raises it.
 
 Want more than the gateway? [Run the live services locally](https://it-rat.com/services/platform.html#run) in one command.
 
 ### TokenFuse ships as an image, and since v0.4.3 as binaries
 
-The current release is v1.14.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
+The current release is v1.21.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
 
 ## What the gateway gained from 1 to 15 October
 
@@ -3196,9 +3266,16 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 | v1.14.0 | IBANs are a kind of personal data the scanner finds, checked by country code, length and check digits. |
 | v1.14.0 | Every FOCUS export row says whether it was priced from the price book or from the fallback. |
 
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| v1.21.0 | A run's taint label comes from what an enforcement point saw: the MCP broker labels a call by the server that answered, and the provider's own tool blocks label the run before that answer's tool calls are judged. |
+| v1.21.0 | A provider that keeps failing is one incident in the Cloud console and API, not one per call. |
+
 ## What the default install does not do, and what is not proven yet.
 
-- **The cluster build is an optional build, not what the shipped images run.** The images every launcher installs run one gateway with its ledger in memory.
+- **The cluster build is optional and ships as its own image tag.** The default image every launcher installs runs one gateway with its ledger in memory.
 
 - A business unit's monthly cap: each gateway counts its own calls on top of a tally it reads from the Cloud when it starts, so that cap is not yet shared across a fleet of gateways.
 
@@ -3211,6 +3288,12 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 - The operator's run-budget ceiling bounds each run, not an agent's total: a new run id gets a new ceiling.
 
 - A poisoned tool description marks the run as a suspected injection. The request itself is not refused.
+
+- A label follows an act that passed through an enforcement point. A process with its own socket passes through none.
+
+- A provider's built-in search is labelled and not controlled: nothing can refuse it, and no domain policy reaches it. The OpenAI wire carries its built-in search as annotations and no tool block, so it is not read.
+
+- A deployment gets the broker half of the label by routing its fetch plane through the broker, which is separate wiring.
 
 - No Windows build yet.
 
@@ -3247,7 +3330,7 @@ The [CostCrew room](https://it-rat.com/services/costcrew.html) keeps the console
 
 ## CostCrew at a glance.
 
-- **A crew of agents works your bill**, and a person signs off every line.
+- **A crew of agents works your bill**, and a person stamps every deliverable and decides everything above a set amount.
 
 - **Status:** pre-1.0, and main is supported.
 
@@ -3293,7 +3376,7 @@ Every frame in the room's gallery is a fresh installation of the binary on its o
 
 - **One analyst.** Its desk and mission, three open tasks of the thirteen it has ever been given, and 173.97 of work against a 60.00 monthly guard.
 
-- **Hiring.** Everything the form asks is a governance fact, asked once. The name becomes part of an agent:// identity that other services parse.
+- **Hiring.** Everything the form asks is a governance fact, asked once. The name becomes part of an agent://<host>/costcrew/<name> identity that other services parse, so one gateway key bound to agent://<host>/costcrew/* covers the crew and nothing else.
 
 - **Anomalies.** Every irregularity ranked by money rather than by how far out it sits, 2,475.10 of it still unexplained. A four sigma move worth three dollars is real and is not worth your morning.
 
@@ -3339,7 +3422,7 @@ The KPI library reports a number or says by name why it cannot. A practice that 
 
 ## Genaryx governs agents. This is a crew of agents that works your bill.
 
-They are floors, not alternatives. [Genaryx](https://it-rat.com/genaryx.html) is the control room over a fleet: it watches what is running now, demands a signature for anything destructive, and stops things. CostCrew's analysts are agents like any other, so Genaryx governs them too. This console runs the other way round: it reads last month's invoices, hands you drafts, and stops nothing. It emits its own work onto the same agent-event bus, so [Trailryx](https://it-rat.com/services/trailryx.html) can seal it and [Heraldyx](https://it-rat.com/services/heraldyx.html) can mail you about it.
+They are floors, not alternatives. [Genaryx](https://it-rat.com/genaryx.html) is the control room over a fleet: it watches what is running now, demands a signature for anything destructive, and stops things. CostCrew's analysts are agents like any other, so Genaryx governs them too. This console runs the other way round: it reads last month's invoices, hands you drafts, and stops nothing. It emits its own work onto the same agent-event bus, so [Trailryx](https://it-rat.com/services/trailryx.html) can seal it and [Heraldyx](https://it-rat.com/services/heraldyx.html) can mail you about it. Optionally it asks [Typryx](https://it-rat.com/services/typryx.html) for a typed hint about each open anomaly, a suggestion an analyst may disagree with and never an action.
 
 ### Runtime is not the ledger
 
@@ -3355,7 +3438,7 @@ Per-agent attribution of AI spend is not possible from an invoice: the charge ca
 
 ## One binary, one directory.
 
-No interpreter, no virtual environment, no second database engine in the process. It listens on loopback by default and expects a proxy in front of it for TLS. First account created at /signup becomes the admin of that installation, so make one before you hand anybody the address.
+No interpreter, no virtual environment, no second database engine in the process. It listens on loopback by default. From v0.10.0 it refuses to start on any other address unless a TLS proxy is in front and -behind-tls is set, or -insecure-http says plain HTTP is intended there. First account created at /signup becomes the admin of that installation, so make one before you hand anybody the address.
 
 ```
 go install github.com/TAIPANBOX/costcrew/cmd/costcrew@latest
@@ -3369,15 +3452,15 @@ go install github.com/TAIPANBOX/costcrew/cmd/costcrew@latest
 
 ### A measured run
 
-Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.6.0, and it has one.
+Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.10.0, and it reads the AWS and GCP billing exports.
 
 ### The supervisor settles what it may
 
-v0.3.0 lets the crew's supervisor settle what its job description already said it could. It now applies an analyst's own option by itself when the amount is at or under the anomaly threshold, and still sends anything larger, anything that is the owner's call and any disagreement between two analysts to the owner. That threshold, T.anomaly, is now USD 2,500, and the urgent one, T.urgent, USD 12,500: half the earlier figures, and recorded as decisions rather than defaults, so more requests reach the owner for the same work. An admin who answers for an owner has to give a reason, and it is recorded on the option, in the journal and on the bus. A task stopped partway keeps the charge the gateway already settled instead of showing zero. The supervisor pass is tested; the console buttons were not run end to end.
+v0.3.0 lets the crew's supervisor settle what its job description already said it could. It now applies an analyst's own option by itself when its figure is at or under the anomaly threshold (for an option tied to an anomaly the figure is the excess the detector recorded, since v0.7.0, and an option whose figure differs goes to the owner with both numbers), and still sends anything larger, anything that is the owner's call and any disagreement between two analysts to the owner. That threshold, T.anomaly, is now USD 2,500, and the urgent one, T.urgent, USD 12,500: half the earlier figures, and recorded as decisions rather than defaults, so more requests reach the owner for the same work. An admin who answers for an owner has to give a reason, and it is recorded on the option, in the journal and on the bus. A task stopped partway keeps the charge the gateway already settled instead of showing zero. The supervisor pass is tested; the console buttons were not run end to end.
 
 ### Real money in, kept honest
 
-v0.4.0 and v0.5.0 bring real money in and keep it honest. The console reads the AWS and GCP billing exports from a synced folder, exact to the micro-dollar, and reconciles the vendors' own usage reports against the gateway's rows. It can sign people in through the organisation's identity provider, run the whole crew on a model the organisation hosts itself, and decide how much of the bill a model is ever shown: everything, the names masked, or totals only. A re-exported gateway trace is counted once, and a call refused for identity is filed under the credential that made it, never under the agent it claimed. The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
+v0.4.0 and v0.5.0 bring real money in and keep it honest. The console reads the AWS and GCP billing exports from a synced folder, exact to the micro-dollar, and reconciles the vendors' own usage reports against the gateway's rows. It can sign people in through the organisation's identity provider, run the whole crew on a model the organisation hosts itself, and decide how much of the bill a model is ever shown: everything, the names masked, or totals only; from v0.10.0 the default is masked. A re-exported gateway trace is counted once, and a call refused for identity is filed under the credential that made it, never under the agent it claimed. The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
 
 ### Announced decisions
 
@@ -3394,7 +3477,7 @@ The repository gates more than its suite: every scenario written in the language
 | v0.4.0 | Provider usage is read from the vendors' own usage reports and reconciled against the gateway's rows, so the gap between the two is shown. |
 | v0.4.0 | Sign-in through the organisation's identity provider, over OpenID Connect with signed tokens and PKCE. Session tokens are stored hashed. |
 | v0.6.0 | A cost decision the crew recommends can be announced before it lands. Only the owner can confirm it, and a day that matches the announcement is not raised as an anomaly. |
-| not yet released | On main: a FOCUS 1.1 file of agent spend, by agent, unit, model and credential, for a FinOps platform's custom ingress. No file has been accepted by a live tenant yet. |
+| v0.7.0 | A FOCUS 1.1 file of agent spend, by agent, unit, model and credential, for a FinOps platform's custom ingress (the costcrew-cloudability binary in the image). No file has been accepted by a live tenant yet. |
 
 ## What it does not do, and what is not proven yet.
 
@@ -3408,9 +3491,9 @@ The repository gates more than its suite: every scenario written in the language
 
 - The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
 
-- Every run in v0.6.0 used the generated estate, so detection quality and forecast accuracy on real spend are still open.
+- Release gates through v0.10.0 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
 
-- The FOCUS 1.1 file of agent spend is on main and not yet released. No file has been accepted by a live tenant yet.
+- The FOCUS 1.1 file of agent spend (costcrew-cloudability, in the image since v0.7.0) has not been accepted by a live tenant yet.
 
 - The figures in the console frames are the fixture's, and the console says on each page which of its numbers are real money and which the estate generated.
 
@@ -3590,17 +3673,19 @@ The [Wardryx room](https://it-rat.com/services/wardryx.html) keeps the simulatio
 
 - [What changed](https://it-rat.com/wardryx-guide.html#changes)
 
+- [What changed in November](https://it-rat.com/wardryx-guide.html#changes-november)
+
 - [Limits](https://it-rat.com/wardryx-guide.html#limits)
 
 ## Wardryx at a glance.
 
 - **Deterministic allow, deny or hold, with a human on the expensive actions.**
 
-- **Status:** v2.4.0, surface frozen at 1.0 · main is supported.
+- **Status:** v2.5.1, surface frozen at 1.0 · main is supported.
 
 - **Core:** Go 1.27 · deterministic PDP. **API:** POST /v1/decide on :8090.
 
-- **Rules:** deny_tool · allow_tool · deny_if_unattested · deny_if_chain_unproven · max_steps · allow_domains · deny_above_usd · require_human_above_usd · hold_if_signal.
+- **Rules:** deny_tool · allow_tool · allow_models · allow_domains · max_steps · deny_if_unattested · require_identity_source · max_chain_depth · require_root_principal · deny_if_chain_unproven · deny_above_usd · require_human_above_usd · hold_if_signal.
 
 - **Lineage:** PDP/PEP · XACML's good ideas.
 
@@ -3638,6 +3723,25 @@ Since v1.2.0 an approval is also bound to the tool call a person read, when the 
 
 The signing is fail-closed. The token is signed by Keyryx custody (ES256) when WARDRYX_APPROVAL_SIGNER=keyryx, which the stack-single and stack-up launchers set (and stack-k8s sets it by default from 1.6.0, tagged 2026-10-19, unless it is deployed with --without-keyryx), and with an HMAC secret otherwise. With neither a signer nor the secret, Wardryx refuses to mint or verify rather than accepting anything, because there is no such thing as an unsigned or always-valid approval. Since 1.0 a token works once by default: the first redemption is recorded atomically, so presenting the same token twice falls back to a fresh hold instead of silently allowing the action again. Setting `WARDRYX_APPROVAL_SINGLE_USE=false` makes it reusable within its window. With no shared database that single-use guarantee is per process, and the server says so at startup rather than letting you assume otherwise.
 
+### A spent error budget is a reason to hold
+
+The quality plane, [Verdryx](https://it-rat.com/services/verdryx.html), writes an `slo_burn` event to its event file when an agent's error budget is exhausted or burning fast. With `WARDRYX_SIGNAL_EVENTS` pointing at that file, Wardryx adds one standing signal named `slo_burn` to the agent's decisions, and a `hold_if_signal` rule on it holds the call. A granted approval lets that one call through, as for any hold. It is off unless the setting is set, and it changes nothing without a rule that reads the signal: same answer, same policy version.
+
+```
+name: hold-while-the-budget-is-spent
+target: "agent://acme.example/support/*"
+hold_if_signal:
+  name: slo_burn
+  values: [exhausted, fast_burn]
+  min_probability: 1
+```
+
+The signal takes four values, `exhausted`, `fast_burn`, `unmeasured` and `none`, always at probability 1. An unmeasured zero is not evidence of health: a fast burn whose `burn_events_seen` is missing, zero, negative, fractional or not a number reads as `unmeasured`, never as `none` and never as `fast_burn`. An exhausted event stands on the budget, so its `burn_events_seen` does not matter. While the file is sound the signal is present for every agent, because `when_absent: hold` holds every call with no signal of the rule's name, and a signal only for agents with an event would make that setting hold the healthy ones too. Absence therefore means one thing: the file cannot be believed, and the policy's `when_absent` decides.
+
+The reader sits outside the decision code, so the signal can add a hold and nothing else, and a recorded decision replays with the file gone. A caller's own `slo_burn` signal is dropped, so it cannot end an absence hold. An event signals for `WARDRYX_SIGNAL_EVENTS_MAX_AGE` after its time (48 hours unless set), the newest event of an indicator replaces its older ones, and the quality plane writes no event on recovery, so recovery is a weaker event or the age running out.
+
+The file is checked before it is believed. The hash chain is verified, and a broken chain, a malformed line, a restart, a start in the middle of a chain, a time in the future or a file past its size bound reads as `broken`; a missing file, or one that is not a plain file, reads as `unreadable`. `/readyz` says which in `signal_events` without changing its status code, and the log names the file and the reason once per change.
+
 ### A hard ceiling that outranks approvals
 
 deny_above_usd is the rule no token can talk past. It is checked before the hold logic ever runs, so even a granted approval cannot authorize a spend over the ceiling. Some numbers should end the conversation, and this one does.
@@ -3646,9 +3750,15 @@ deny_above_usd is the rule no token can talk past. It is checked before the hold
 
 deny_if_unattested demands a live attestation before an agent touches the sensitive rules. Methods are trimmed and lowercased on the way in, so a literal “None” string reads as no attestation instead of sneaking past as a value.
 
+### A proof is accepted once, on every instance
+
+When a decide carries an agent's DPoP proof, Wardryx accepts that proof once. With `WARDRYX_DB` set, the record of accepted proofs is the table `agent_proof_replays`, shared by every instance on that database. A proof presented at a second instance, or again after a restart, is refused with `403 agent_token_proof_invalid`. The claim is one atomic insert and the last step of the check, so only a proof that passed every other check reaches the database, and the key is a hash over the holder's key thumbprint and the proof's id, so no client byte reaches SQL and one holder cannot spend another's id. A row is kept until the longest proof window has closed, and a purge removes the rows after that.
+
+A record that cannot be asked refuses. A proof nobody could check for replay may be a replay, so a store that is gone answers `503 agent_token_proof_unrecorded`, a store that failed with an error of its own answers 500, and the process does not stand in with a memory of its own. TokenFuse treats any answer outside 2xx as its fail mode, closed under enforce unless an operator set it open. A request with no proof decides from memory as before. Without a database the record stays in the process, and serve says so at start.
+
 ### Fail-open or fail-closed, your call
 
-When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; both launchers set it closed on purpose. The egress point fails closed with no override. Every default is documented, and so is the tradeoff.
+When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; all three launchers set it closed on purpose. The egress point fails closed with no override. Every default is documented, and so is the tradeoff.
 
 ### Three modes at the call site, and one honest choice about outages
 
@@ -3668,7 +3778,7 @@ PUT, GET and DELETE /v1/policies/{id} manage a runtime policy layer with validat
 
 ## The desk every expensive idea stops at.
 
-[TokenFuse](https://it-rat.com/services/tokenfuse.html)'s PEP hook asks Wardryx on every request and stamps the verdict on the response. Each decision lands on the bus as a source: wardryx event, which [Idryx](https://it-rat.com/services/idryx.html) correlates into the identity graph. [Mockryx](https://it-rat.com/services/mockryx.html) rehearses the denials in pre-prod, so the first real no is never the first no ever. And the policies themselves are code: the [Platform](https://it-rat.com/services/platform.html) page's Terraform provider creates, changes and destroys them like any other resource. A typed risk signal from [Typryx](https://it-rat.com/services/typryx.html) can turn an allow into a hold for a person and never into a deny: since v1.2.0 a decision reads `signals` and the pending `tool_call`, a `hold_if_signal` rule can only hold, and Typryx's `wardryx-proxy` adds the signal on the way in. The launchers offer it as an opt-in, off by default, and it was measured on the stub backend only.
+[TokenFuse](https://it-rat.com/services/tokenfuse.html)'s PEP hook asks Wardryx on every request and stamps the verdict on the response. Each decision lands on the bus as a source: wardryx event, which [Idryx](https://it-rat.com/services/idryx.html) correlates into the identity graph. [Mockryx](https://it-rat.com/services/mockryx.html) rehearses the denials in pre-prod, so the first real no is never the first no ever. And the policies themselves are code: the [Platform](https://it-rat.com/services/platform.html) page's Terraform provider creates, changes and destroys them like any other resource. A typed risk signal from [Typryx](https://it-rat.com/services/typryx.html) can turn an allow into a hold for a person and never into a deny: since v1.2.0 a decision reads `signals` and the pending `tool_call`, a `hold_if_signal` rule can only hold, and Typryx's `wardryx-proxy` adds the signal on the way in. The launchers offer it as an opt-in, off by default.
 
 The policy point is one control among several: see [AI agent security](https://it-rat.com/ai-agent-security.html) for the failure modes it answers, and [AI agent governance](https://it-rat.com/ai-agent-governance.html) for how the planes fit together.
 
@@ -3700,9 +3810,17 @@ The whole stack's fortnight, Wardryx among it, is in [the October changelog](htt
 | v1.4.0 | A policy can hold a tool call whose risk signal never arrives (when_absent: hold), for a person to decide. |
 | v1.5.0 | A policy can name the only models its agents may use. A request for any other model is denied on that call. |
 
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| v2.5.0 | With a database set, the record of accepted DPoP proofs is shared by every instance and survives a restart: a proof is accepted once, and a record that cannot be asked refuses the decide with a 503. |
+| v2.5.0 | A spent error budget can put an agent's tool calls to a person: with WARDRYX_SIGNAL_EVENTS set, a hold_if_signal rule on slo_burn holds the call. |
+| v2.5.1 | The policy archive is created with directory mode 0750 and file mode 0640, so the account that runs wardryx replay can read it from the group of the account that writes it. An archive written before keeps its modes until an operator widens it. |
+
 ## What is open by default, and what is not proven yet.
 
-- When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; both launchers set it closed on purpose. The egress point fails closed with no override.
+- When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; all three launchers set it closed on purpose. The egress point fails closed with no override.
 
 - Started with no policy configured, it starts anyway and allows, and it says so in the log rather than pretending to enforce something it was never given.
 
@@ -3710,7 +3828,11 @@ The whole stack's fortnight, Wardryx among it, is in [the October changelog](htt
 
 - A call whose arguments were too large to send binds only its name and target.
 
-- The typed risk signal from Typryx: the launchers offer it as an opt-in, off by default, and it was measured on the stub backend only.
+- An outage of the store behind the proof record stops every decide that carries a proof. Every instance must run this build, because an older one keeps its own record, and two clocks more than five minutes apart can accept a proof twice.
+
+- The chain behind the budget signal shows that a line was not edited or removed from the middle. It does not say who wrote the file and cannot see lines cut from the end, so the file is as trustworthy as its permissions. An event is matched by exact agent id, in no org, and a crash mid-write leaves the file broken until it is moved aside. Under `when_absent: hold`, a file that cannot be read holds every tool call of the agents the rule matches.
+
+- The typed risk signal from Typryx: the launchers offer it as an opt-in, off by default.
 
 - The room's stampede is a simulation, and it says so: it replays the shape of the live validation record.
 
@@ -3741,6 +3863,8 @@ The [Idryx room](https://it-rat.com/services/idryx.html) keeps the simulation, t
 
 - [What changed](https://it-rat.com/idryx-guide.html#changes)
 
+- [What changed in November](https://it-rat.com/idryx-guide.html#changes-november)
+
 - [Limits](https://it-rat.com/idryx-guide.html#limits)
 
 ## Idryx at a glance.
@@ -3769,7 +3893,7 @@ This is a simulation, but it replays the shape of the live validation run: Token
 
 ### Sources in. Findings out. Nothing written back.
 
-Five read-only connectors describe the humans, keys and service accounts; the agent-event bus streams what TokenFuse, Wardryx, Mockryx and Verdryx watched the agents do. One core resolves the graph, walks delegation chains root-first, and runs the 27 detectors. Everything that leaves is an alert, a BOM, or a proposed diff a human applies.
+Read-only connectors for Okta, Entra, AWS, GCP and Azure describe the humans, keys and service accounts; the agent-event bus streams what TokenFuse, Wardryx, Mockryx, Verdryx and Scopyx watched the agents do. One core resolves the graph, walks delegation chains root-first, and runs the 27 detectors. Everything that leaves is an alert, a BOM, a proposed diff a human applies, or an identity_finding event on the bus.
 
 ### One graph, every identity
 
@@ -3799,7 +3923,7 @@ Detection is deterministic: statistics and rules over the graph. The model is an
 
 **Non-human identity hygiene.** Service accounts unused past ninety days, non-human identities holding admin-equivalent permissions or no owner at all, and the quiet escalation permissions that grant a path to admin without holding admin: `iam:PassRole` on AWS, `actAs` on GCP, role-assignment writes on Azure. A credential seen from many countries, IPs or devices is flagged for what it usually is: shared or leaked.
 
-**Agents and AI.** An agent that reaches admin through its delegation chain; egress to an LLM API nobody registered; an MCP server in use but missing from the sanctioned registry, and an agent whose declared tools are exposed by that unsanctioned server; a spend runaway correlated with the agent's privilege, delegation depth and blast radius; a privileged agent with no attestation on record; DLP-blocked actions accumulating within a day; a taint-tracked action stopped; an MCP server whose tooling changed under an agent; and an agent whose passport declares one set of model providers while its egress reaches another.
+**Agents and AI.** An agent that reaches admin through its delegation chain; egress to a known external LLM API; an MCP server in use but missing from the sanctioned registry, and an agent whose declared tools are exposed by that unsanctioned server; a spend runaway correlated with the agent's privilege, delegation depth and blast radius; a privileged agent with no attestation on record; DLP-blocked actions accumulating within a day; a taint-tracked action stopped; an MCP server whose tooling changed under an agent; an agent whose passport declares one set of model providers while its egress reaches another; connections to one destination on a regular cadence (beaconing); a process that names itself an agent identity which no Passport, IAM record or event knows (claimed_agent_unknown), or that reaches an LLM provider its Passport does not declare (claimed_agent_drift); an agent whose Passport binds it to a workload while its only runtime carrier is a process that named itself (claimed_agent_unattested); and an agent whose web egress an enforcement point governs but which opened its own connections to public addresses (unrouted_egress).
 
 **Least privilege.** Permissions granted and never exercised, with a revocation to propose. It fires only where usage data exists, so a source with no observed-usage signal produces no recommendations rather than confident nonsense.
 
@@ -3813,7 +3937,19 @@ What does this key reach, transitively? Idryx computes the union of every permis
 
 ### eBPF network sensor
 
-A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent fetching packages straight from PyPI on every start. That was one agent turn on one lab node, on 2026-09-27; it has not yet run on a fleet or a cloud host.
+A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent connecting straight to the PyPI package hosts when it started. That was one agent turn on one lab node, on 2026-09-27; it has not yet run on a fleet or a cloud host.
+
+### AI usage: declared, seen, in the code
+
+`idryx ai-inventory` compared its sources provider by provider. It now also says, for each agent or service, what was declared, what was seen and what the code can reach, and it names every disagreement. Nothing in it is scored or ranked, and nothing in it is a detector.
+
+**One row per source.** The report is built from up to five sources: `declared`, `bus`, `egress`, `ebpf` and `code`. A source nobody supplied is a row that says what its absence means. Code not scanned is not nothing in the code, and an absent capture is not a capture that saw nothing.
+
+**One row per subject and provider, with the disagreement named:** `declared_not_seen`, `declared_bus_only`, `seen_not_declared`, `seen_no_declaration`, `declares_no_models` and `no_declaration`, and on provider rows `in_code_not_seen`. The bus names no provider, so an agent active there through an enforcement point is shown as `bus_only`, which is a different statement from not seen: a governed agent's provider connection is made by the gateway's process, where only a capture of that host sees it. A source scan finds a file and a line, and no field binds a repository to an identity, so the code column stays per provider for the whole estate.
+
+It joins on the provider vocabulary `ai-inventory` already used, with no second vocabulary and no change to any shared contract. The JSON document gains `sources` and `subjects`, each provider row gains `gaps`, and the schema string `idryx.ai-inventory/v1` stays. There is no new subcommand and no new flag.
+
+The report agrees with the detectors, and a test holds it. The agents it names `seen_not_declared` are exactly the agents `undeclared_llm` fires for, and the processes it names `seen_no_declaration` are exactly the ones `unmanaged_egress` grades as having reached a model API. The qryx document it reads is untrusted input: its size and the number of providers and labels are bounded, every kept string is escaped and cut, and names from a passport, a bus envelope or a capture are escaped before they reach a terminal. Three monitoring limits travel with every report: attribution is self-declared, the eBPF sensor is Linux-only, and a process with code execution can open a socket of its own.
 
 ## Built for the identities that never log in.
 
@@ -3832,7 +3968,7 @@ Your IdP counts the humans. The keys, service accounts and agents acting on thei
 
 ## The one that reads everything and touches nothing.
 
-Idryx consumes the same envelope [TokenFuse](https://it-rat.com/services/tokenfuse.html), [Wardryx](https://it-rat.com/services/wardryx.html), [Mockryx](https://it-rat.com/services/mockryx.html) and [Verdryx](https://it-rat.com/services/verdryx.html) write: the agent-event. It validates Agent Passports against the [platform contract](https://it-rat.com/services/platform.html), and the loop closes at the policy plane: Wardryx's deny_if_unattested policy refuses an agent with no live attestation, and the gateway answers that refusal with a 403 instead of your production data. Idryx's attestation_missing detector reports those agents in the graph.
+Idryx consumes the same envelope [TokenFuse](https://it-rat.com/services/tokenfuse.html), [Wardryx](https://it-rat.com/services/wardryx.html), [Mockryx](https://it-rat.com/services/mockryx.html), [Verdryx](https://it-rat.com/services/verdryx.html) and [Scopyx](https://it-rat.com/services/scopyx.html) write: the agent-event. It validates Agent Passports against the [platform contract](https://it-rat.com/services/platform.html), and the loop closes at the policy plane: Wardryx's deny_if_unattested policy refuses an agent with no live attestation, and the gateway answers that refusal with a 403 instead of your production data. Idryx's attestation_missing detector reports those agents in the graph.
 
 Blast radius, shadow tooling and unattested agents are covered as failure modes in [AI agent security](https://it-rat.com/ai-agent-security.html), the graph's place among the planes in [AI agent governance](https://it-rat.com/ai-agent-governance.html), and what an agent identity has to be in [agent identity and authentication](https://it-rat.com/agent-identity.html).
 
@@ -3860,6 +3996,12 @@ Every one of those addresses always serves the newest release, so a link saved t
 
 Idryx's releases from 1 to 15 October 2026 are listed in [the October changelog](https://it-rat.com/changes-2026-10.html#idryx), beside the rest of the stack's.
 
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| v1.4.0 | idryx ai-inventory reports, for each agent or service, what was declared, what was seen and what the code can reach, and names every disagreement. Additive to the idryx.ai-inventory/v1 schema. |
+
 ## What it does not do, and what is not proven yet.
 
 - **Read-only by design:** it proposes Terraform diffs, it never applies. Applying a diff stays your decision.
@@ -3873,6 +4015,8 @@ Idryx's releases from 1 to 15 October 2026 are listed in [the October changelog]
 - The companion detector bom_incomplete flags the agents the BOM cannot yet prove.
 
 - The eBPF network sensor is Linux-only. It has attached and captured live flows on two kernels: a Docker Desktop Linux VM on a Mac (2026-09-08, arm64 kernel 7.0.12; a 12-second capture in a container, not against an agent: 3 flows on the fixed build, after 16 of the first run's 21 flows turned out to be the sensor's own traffic) and one x86_64 lab node (2026-09-27, one agent turn, 349 flows in 70 seconds). It has not yet run on a fleet or a cloud host.
+
+- The bus carries a model only in `call_retained`, which the AI usage report does not read, so it compares no model names with anything: the egress side names a host, never a model. Whether an identity has a declaration is read from its source or from a declared model or attestation, which is a reading of the graph and not an attested fact.
 
 - The room's runaway is a simulation, but it replays the shape of the live validation run.
 
@@ -3907,13 +4051,17 @@ The [Scopyx room](https://it-rat.com/services/scopyx.html) keeps the request in 
 
 - [Running it](https://it-rat.com/scopyx-guide.html#run)
 
+- [Behind the broker](https://it-rat.com/scopyx-guide.html#broker)
+
 - [What changed](https://it-rat.com/scopyx-guide.html#changes)
+
+- [What changed in November](https://it-rat.com/scopyx-guide.html#changes-november)
 
 - [Limits](https://it-rat.com/scopyx-guide.html#limits)
 
 ## Scopyx at a glance.
 
-- **Shipped:** v1.1.0, two images (default and -chromium).
+- **Shipped:** v1.2.0, two images (default and -chromium).
 
 - **Core:** Go 1.27 · one direct dependency.
 
@@ -3977,7 +4125,7 @@ It runs the page's own JavaScript, so a document assembled in the browser arrive
 
 ## A page is forty requests nobody named. Here is what stops them.
 
-A rendering backend is the first one that fetches things the caller never asked for: fonts, images, scripts, each potentially a different host. Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and see. Switch both off and the chromium test that asserts the refused server is never reached is the one that should fail. That run is not recorded yet.
+A rendering backend is the first one that fetches things the caller never asked for: fonts, images, scripts, each potentially a different host. Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and the refused server is still never reached; switch both off and it is reached once, and the chromium test that asserts otherwise goes red.
 
 The two switches are on the [room](https://it-rat.com/services/scopyx.html#mechanisms).
 
@@ -4027,11 +4175,27 @@ A fabricated subject makes every downstream count wrong and puts a name on an al
 
 - **SCOPYX_RETAIN=payload:** turning retention on is a decision, and the field it writes is called url_unprotected rather than url. There is no subject-keyed payload plane here, so a field called url would imply one and a reader would assume a protection that does not exist.
 
+- **SCOPYX_ACCEPT_KEY_IN_META=1:** read a tools/call credential from the call's own metadata instead of the header, for a plane that sits behind the TokenFuse MCP broker. Off by default.
+
+## The key can come through the TokenFuse MCP broker.
+
+Scopyx knows an agent by the key it presents in the `X-Scopyx-Key` header. The TokenFuse MCP broker forwards a call with nothing of the caller's, so a plane behind it never sees that header, and an agent that holds the key can go round the broker. Letting the key come through the broker means the broker can put a run's label on the act itself rather than on a tool name the agent reported; the [TokenFuse guide](https://it-rat.com/tokenfuse-guide.html#how-it-works) has that half.
+
+With `SCOPYX_ACCEPT_KEY_IN_META=1` the door reads a `tools/call` credential from `params._meta["scopyx/key"]`. The agent writes a `{{secret:NAME}}` handle, the broker fills it in on the last hop, and the agent never holds the key. The header wins when both are sent, the entry is taken out of the request at the door so nothing past it holds the key, and a `tools/call` with no id still needs a credential: this server dispatches on the method, so a missing id is not read as a notification.
+
+It is off by default, and then the door is the header, checked before the body, as it was. Nothing in Scopyx turns the broker on; that is deployment wiring. With the switch on, the door reads a bounded request body from whoever reaches the port, so the port belongs on a network only the broker reaches.
+
 ## What changed from 1 to 15 October
 
 No release in the window, still 1.0.1. The same entry, beside every other service's, is in [what changed in the stack](https://it-rat.com/changes-2026-10.html#scopyx).
 
 - Documentation and toolchain only: the Go toolchain moved to 1.27.2, the shared library pin moved to 1.3.0, the secret scan runs on every pull request, and the README was corrected against the code.
+
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| v1.2.0 | The key can come through the TokenFuse MCP broker: SCOPYX_ACCEPT_KEY_IN_META=1 reads a tools/call credential from the call's metadata, as a handle the broker fills in. Off by default. |
 
 ## What it will not do, stated rather than discovered.
 
@@ -4055,8 +4219,6 @@ Scopyx applies rules you wrote and infers nothing, so we do not treat it as an A
 
 ### What is not proven or not shipped
 
-- Switch both mechanisms off and the chromium test that asserts the refused server is never reached is the one that should fail. That run is not recorded yet.
-
 - A vendor API needs an adapter in front of it, and this repository ships none.
 
 - The default fetcher runs no JavaScript: a page assembled in a browser arrives as the shell that assembles it.
@@ -4072,9 +4234,9 @@ The [Scopyx room](https://it-rat.com/services/scopyx.html) has the request in fl
 
 # Vouchryx guide
 
-> How Vouchryx proves and ends an agent's delegation, its six endpoints, how to run and configure it, what changed in October 2026, and its limits.
+> How Vouchryx proves and ends an agent's delegation, its seven endpoints, how to run and configure it, what changed in October and November 2026, and its limits.
 
-The [Vouchryx room](https://it-rat.com/services/vouchryx.html) keeps the loop drawn end to end, the two kill switches, how to start it, and the common questions. This guide keeps the rest of what the room used to say: the gap it closes in full, the six endpoints, the configuration it will not start without, a measured revocation run, what changed from 1 to 15 October 2026, and what is not proven yet.
+The [Vouchryx room](https://it-rat.com/services/vouchryx.html) keeps the loop drawn end to end, the two kill switches, how to start it, and the common questions. This guide keeps the rest of what the room used to say: the gap it closes in full, the seven endpoints, the configuration it will not start without, a measured revocation run, what changed from 1 to 15 October 2026, and what is not proven yet.
 
 - [At a glance](https://it-rat.com/vouchryx-guide.html#overview)
 
@@ -4089,6 +4251,8 @@ The [Vouchryx room](https://it-rat.com/services/vouchryx.html) keeps the loop dr
 - [Running it](https://it-rat.com/vouchryx-guide.html#run)
 
 - [What changed](https://it-rat.com/vouchryx-guide.html#changes)
+
+- [What changed in November](https://it-rat.com/vouchryx-guide.html#changes-november)
 
 - [Limits](https://it-rat.com/vouchryx-guide.html#limits)
 
@@ -4126,15 +4290,16 @@ By one token id, or by subject for every token an agent already holds. The list 
 
 Public keys at a JWKS endpoint, so an enforcement point verifies offline. That is also why there is no introspection endpoint, on purpose: it would put this service on the request path of every enforcement point at once.
 
-## Six endpoints, and one that deliberately does not exist.
+## Seven endpoints, and one that deliberately does not exist.
 
-| POST /v1/token | The exchange. A `subject_token` and an `actor_token` in, plus a DPoP header. Out comes a short-lived JWT with nested `act` and `cnf.jkt`. Since 2026-09-24 the same route also runs Cross App Access's jwt-bearer grant (RFC 7523, an ID-JAG in), closed unless VOUCHRYX_CLIENTS is set. |
+| POST /v1/token | The exchange. A `subject_token` and an `actor_token` in, plus a DPoP header. Out comes a short-lived JWT with nested `act` and `cnf.jkt`. Since 2026-09-24 the same route also runs Cross App Access's jwt-bearer grant (RFC 7523, an ID-JAG in), closed unless VOUCHRYX_CLIENTS is set. It also runs the `client_credentials` grant: an agent enrolled in VOUCHRYX_AGENTS gets its own five-minute credential, bound to a key it proves with DPoP, closed while VOUCHRYX_AGENTS is unset. |
 |---|---|
-| POST /v1/revoke | By `jti` for one token, or by `subject` for every token an agent holds. Both `actor` and `reason` are required, because a revocation nobody can attribute is an outage rather than a decision. |
+| POST /v1/revoke | By `jti` for one token, or by `subject` for every token an agent holds. Both `actor` and `reason` are required, because a revocation nobody can attribute is an outage rather than a decision. With `"ban": true` on a subject it is also a ban: nothing names that party again until the ban is lifted. |
+| POST /v1/revoke/lift | Ends a ban. `subject`, `actor` and `reason` are required, and the subject must be banned. It never un-revokes: what the party held when it was banned stays revoked. |
 | GET /v1/revocations | What enforcement points poll, carrying `as_of`. Each entry holds only what a verifier needs, `jti`, `subject`, `issued_before` and `expires`; who revoked a token and why stay in the operator's record. |
 | GET /.well-known/jwks.json | Public keys. Verification is offline and stays offline. |
 | GET /.well-known/oauth-authorization-server | RFC 8414 metadata for this service's own endpoints and grants. |
-| GET /healthz | Liveness, no credential. Answers 200 once the process is listening. |
+| GET /healthz | No credential. Answers 200 once the process is listening; with `VOUCHRYX_SIGNER=keyryx` it answers 503 until a working key is certified, so there it reads as readiness. |
 | no introspection | Refused by design. Wardryx answers at a 3.2 ms p50 and nothing here is going to sit in front of that. |
 
 ## One stops the money. This one stops the authority.
@@ -4146,6 +4311,8 @@ Public keys at a JWKS endpoint, so an enforcement point verifies offline. That i
 Three values are required and have no default: VOUCHRYX_ISSUER, VOUCHRYX_SIGNING_KEY (for the file signer; the Keyryx signer needs its own four values instead) and VOUCHRYX_TRUSTED_ISSUERS (unless VOUCHRYX_AGENTS enrols an agent). The listen address and the token lifetime have defaults, and the others switch optional features on. A missing or malformed value aborts the process and names the variable. The reason is the shape of the two failures: a token service that came up trusting nothing would issue nothing and look healthy, and one that came up trusting a default would issue everything.
 
 In the stack-single launcher from 1.3.0 (released 2026-10-19), vouchryx starts on every default box and signs with its own key file, VOUCHRYX_SIGNING_KEY. Its optional Keyryx signer (VOUCHRYX_SIGNER=keyryx) is not set by the launcher, so tokens there are signed with the file key, not with a working key that Keyryx certifies.
+
+The key sets of the trusted and workload issuers are read from files, and they are read again while the service runs, every `VOUCHRYX_JWKS_RELOAD_SECONDS` (thirty unless set, 0 never, a day at most). A file that cannot be used, because it is unreadable, gone, not JSON, an error page, empty of keys or holding a key with no `kty` or `kid`, never replaces the keys held: a failure is logged once while it lasts and the recovery once. A key removed from a readable file stops verifying. The service still fetches nothing: a refresh job writes the file, and the service reads it.
 
 ## Mint it, prove it, then end it.
 
@@ -4163,7 +4330,13 @@ vouchryx-demo exchange -url http://127.0.0.1:4310 -idp-key idp.pem -kid idp-1 -i
 
 ### A measured run
 
-Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 218 tests, and the repository gates that number against its own suite.
+Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 359 tests, and the repository gates that number against its own suite.
+
+### A run against a real provider
+
+The loop was run against a real OpenID provider, in throwaway realms with generated credentials: the exchange, the DPoP binding, hostile tokens, revoke, ban and lift, agent credentials, the hand-off, and a workload token the provider issued. A provider's token was exchanged once the provider wrote a `user://` or `agent://` URI into `sub`, and a service account's token from the provider was presented as an RFC 7523 assertion.
+
+One phase of the run failed, rotation. The provider's new key was in its published set the second it was created, and a token signed by it was refused with `invalid_grant` (no key in the set has that kid) for the life of the process, because a key set file was read once, at start. Against the image published at the time the rotation phase failed; with the key set files followed while running, the whole run passes. The record and its commands are in `docs/live-oidc-run.md` in the repository.
 
 ## What changed from 1 to 15 October
 
@@ -4172,6 +4345,12 @@ Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather tha
 | shipped in | what it does |
 |---|---|
 | v0.2.0 | The public revocation list no longer says who revoked a token or why. |
+
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| v0.7.0 | Key set files are read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), so a provider that rotates its signing key is followed without a restart. Found by a run against a real OpenID provider. |
 
 ## What it does not do, and what is not proven yet.
 
@@ -4182,6 +4361,8 @@ Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather tha
 - The revocation timing on this page was measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release.
 
 - The cluster run that refused a revoked agent 2.2 seconds later had the gateway polling every second rather than its default of every 12.
+
+- The exchange takes only `user://` or `agent://` subjects, so a provider's opaque `sub` is refused; the provider has to write the URI into `sub`, which the live run did. A mapping for other providers is a naming decision, described in `docs/live-oidc-run.md`.
 
 - There is no introspection endpoint, on purpose: it would put this service on the request path of every enforcement point at once.
 
@@ -4307,7 +4488,7 @@ Qryx reads binaries, container images, live TLS endpoints, certificates, depende
 
 ## The inventory the rest of the stack borrows from.
 
-Qryx emits every finding as an agent-event onto the shared bus that [Platform](https://it-rat.com/services/platform.html) defines and every service writes to. It watches the same estate [TokenFuse](https://it-rat.com/services/tokenfuse.html) spends against, the binaries, endpoints and keys underneath the calls TokenFuse meters. [Mockryx](https://it-rat.com/services/mockryx.html) can demand a crypto reaction in its drills too: an expect.event assertion that a fire drill actually produced a crypto_finding, not silence.
+Qryx can write its agent-passport findings, drift, policy violations and signed-evidence records as agent-events onto the shared bus that [Platform](https://it-rat.com/services/platform.html) defines and every service writes to (opt-in, with --events). Only a finding that names a real agent emits an event, which today means the findings of qryx agents; scans of code, binaries, TLS and cloud KMS carry no agent and emit none. It watches the same estate [TokenFuse](https://it-rat.com/services/tokenfuse.html) spends against, the binaries, endpoints and keys underneath the calls TokenFuse meters. [Mockryx](https://it-rat.com/services/mockryx.html) can demand a crypto reaction in its drills too: an expect.event assertion that a fire drill actually produced a crypto_finding, not silence.
 
 Crypto posture is one plane of a wider practice: [AI agent governance](https://it-rat.com/ai-agent-governance.html), and the defensive picture in [AI agent security](https://it-rat.com/ai-agent-security.html).
 
@@ -4321,7 +4502,7 @@ qryx scan .
 qryx tls api.anthropic.com:443
 ```
 
-Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.2 toolchain downloads itself on the first build.
+Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.3 toolchain downloads itself on the first build.
 
 ### Download, any platform
 
@@ -4478,7 +4659,7 @@ keyryx verify streams --events events/ --checkpoints checkpoints/ \
 
 Each check prints ok, weak or broken for each item and ends with VERIFIED (exit 0) or NOT VERIFIED (exit 1). A directory with nothing in it is reported as measured nothing, never as verified.
 
-The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/arm64, with no moving tag. The stack-single Compose file pins v0.1.1 by digest.
+The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/arm64, with no moving tag. The stack-single Compose file pins v0.1.3 by digest.
 
 ## What each release is.
 
@@ -4488,15 +4669,17 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - **v0.1.2**, tagged 2026-10-19: a patch on v0.1.1. The witness writes each attestation with mode 0640, in directories of mode 0750, so a record plane in the witness's group can read it; v0.1.1 wrote them 0600. It also moves agent-stack-go to v2.0.1, which changes no code. Attestations written by v0.1.1 keep their mode until an operator changes it once, as the release notes say.
 
+- **v0.1.3**, tagged 2026-10-26: a patch on v0.1.2. The binary and the image are built with Go 1.27.3, which fixes GO-2026-6809 in crypto/x509 (reached through the time-stamping client, only when KEYRYX_WITNESS_TSA_URL is set). No key, statement, log, route or variable changes.
+
 **An operator-visible change in v0.1.1.** Since agent-stack-go v2, a stream file this service creates is mode 0640, not 0644, so only its owner and its group can read it. A new stream is created only in a directory this service's account owns. A bus directory shared with other services, and not owned by this account, gets no new stream unless each file is created beforehand by the uid of the service that writes it. Check the owner of the bus directory and the mode of each stream before upgrading.
 
 ## What is not proven yet, stated here.
 
-- The cosign signatures of v0.1.1 and v0.1.2 have not been verified. The build-provenance attestation of each release has (gh attestation verify, 2026-10-19).
+- The cosign signatures of v0.1.1, v0.1.2 and v0.1.3 have not been verified. The build-provenance attestation of each release has (gh attestation verify, 2026-10-19 for v0.1.0 to v0.1.2, 2026-10-26 for v0.1.3).
 
 - No admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one.
 
-- Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19 and stack-k8s since v1.6.1, tagged on 2026-10-20; stack-single does not set it. At keyryx v0.1.1, which stack-single pins, the witness writes each attestation readable only by its own user, so a record plane running as another user cannot open it; stack-up runs the witness and the record plane as one user, so it can. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group; stack-up and stack-k8s v1.6.1 pin it, and stack-k8s runs the witness in the record plane's group. stack-single does not pin it yet. None of this has run live.
+- Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19 and stack-k8s since v1.6.1, tagged on 2026-10-20; stack-single does not set it. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single, stack-up and stack-k8s now pin v0.1.3; stack-k8s runs the witness in the record plane's group. stack-single still does not set the attestations folder, so its packs carry no witness. None of this has run live.
 
 - The store root is rebuilt by hand in the tests from trailryx's construction. It is checked against trailryx's source, not against a store that trailryx itself sealed in this repository.
 
@@ -4518,7 +4701,7 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - In stack-single the witness is a separate user and volume; in stack-up both roles run as the user that started them. Either way, on one machine, it is not a separate trust domain. An off-host anchor closes that, and it is the operator's to switch on.
 
-- Post-quantum signatures come from Go's standard library, and no verifier outside this repository checks ML-DSA yet. The key set's AKP form follows a JOSE draft, not an RFC.
+- Post-quantum signatures come from Go's standard library. Vouchryx from 0.6.0 checks the ML-DSA-65 half of a key statement; the shared verifier in agent-stack-go checks the classical half only. The key set's AKP form follows a JOSE draft, not an RFC.
 
 ## Back to the room.
 
@@ -4551,11 +4734,13 @@ The [Verdryx room](https://it-rat.com/services/verdryx.html) keeps the sixty-sec
 
 - [What changed](https://it-rat.com/verdryx-guide.html#changes)
 
+- [What changed in November](https://it-rat.com/verdryx-guide.html#changes-november)
+
 - [Limits](https://it-rat.com/verdryx-guide.html#limits)
 
 ## Verdryx at a glance.
 
-- **Version:** 0.1.0 · Python 3.11+.
+- **Version:** 0.2.0 · Python 3.11+.
 
 - **Tests:** fully offline suite.
 
@@ -4601,6 +4786,20 @@ The graders and drift maths use only the standard library. The one runtime depen
 
 The suite runs against a deterministic StubLLMAdapter, with no network and no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.
 
+### Findings
+
+drift and slo used to print a verdict and forget it. A drift regression, or an SLO breach the interval establishes (the bar the bus already uses), is now stored as a finding: the agent, the window, the kind (`drift`, `slo_exhausted` or `slo_fast_burn`), the evidence (run ids, the lowest scoring cases, the gateway runs that failed an indicator) and a suspect model or version. The suspect says which of three things it is: a change, no change across the runs compared, or too few runs to compare. `verdryx eval` can record an `--agent-version` on a run. The same failure seen again is one finding seen again, and `verdryx findings list` and `show` read them back.
+
+### Fix verification
+
+`verdryx findings fix ID --note ...` registers a fix, with an optional `--version`. The next drift or slo decides it from the runs that started after it. Measured and clean is `verified`, and the finding closes. Measured and still failing is `failed`: the finding reopens and the attempt is kept with its numbers. Anything short of a measurement stays `pending` with its reason: no run since, too few runs, runs of another version, or an interval that still covers the target. A fix draws a line in time. Runs from before it neither verify it nor undo it, and a closed finding is not reopened by the runs it was closed over. Unmeasured is never a pass.
+
+### Human grades
+
+`verdryx grade RUN CASE VALUE --author NAME --key-file PATH` writes a person's grade. It replaces the model's value in a run's mean, in drift and in the quality floor, and the model's own value stays beside it. A later grade supersedes an earlier one, and both stay on record. Every grade carries its author, a principal registered with `verdryx principal add`, whose generated key is written once (mode 0600) and stored as a hash. The role `reviewer` can grade; the role `uploader` cannot. `eval` needs no credential and has no path to a grade: a gate reads the package for exactly one place that writes a grade and exactly one caller of it.
+
+All of it is deterministic: no model, no network and no new event type on the bus.
+
 ### Defensive by design
 
 Grades an operator's own agents against an eval set or a production outcome tag. The README puts it plainly: it “never manipulates outputs, never crafts adversarial prompts, and never attacks anything.”
@@ -4613,7 +4812,7 @@ The input is the gateway's own trace, not a second pipeline built to agree with 
 
 Rows are ordered by run and step, and the last non-empty tag a run carries is the one that counts: a case that escalated after two failed attempts is an escalation, not three separate stories.
 
-Then the parts most reports lose. Every call in a run folds into that run's bucket, not only the tagged one, so an untagged intermediate call's cost is not dropped on the floor. A run nobody ever tagged still appears, under an explicit untagged label, rather than vanishing from the report and making the average look better than it is. And a call the breaker blocked is still counted, because a refused call is part of what the outcome cost you.
+Then the parts most reports lose. Every call in a run folds into that run's bucket, not only the tagged one, so an untagged intermediate call's cost is not dropped on the floor. A run nobody ever tagged still appears, under an explicit untagged label, rather than vanishing from the report and making the average look better than it is. And a call the breaker blocked is still counted, but at no cost: the figure recorded for it is an avoided estimate, never a settled charge, so it stays out of what the outcome cost.
 
 The result is one row per outcome tag, with count, total and mean, plus an overall row pooling everything. A dollar figure per resolved case is a number an operator can act on; a monthly total is not.
 
@@ -4640,10 +4839,10 @@ Cost per resolved case sits inside a wider practice: [FinOps for AI](https://it-
 ```
 git clone https://github.com/TAIPANBOX/verdryx && cd verdryx
 python -m venv .venv && source .venv/bin/activate
-pip install -e .
+pip install -e '.[traces]'
 ```
 
-Into a virtual environment: system Python is usually externally managed. There is no PyPI package, so the version you run is the commit you can read.
+Into a virtual environment: system Python is usually externally managed. There is no PyPI package, so the version you run is the commit you can read. The traces extra adds pyarrow, which reads TokenFuse's Parquet traces; the stub run needs only the base install.
 
 ```
 verdryx eval evalset.json --model stub --db verdryx.db
@@ -4659,13 +4858,27 @@ verdryx cost-per-correct --traces $TOKENFUSE_DATA_DIR
 
 No release in the window, nine pull requests merged. The same entry, beside every other service's, is in [what changed in the stack](https://it-rat.com/changes-2026-10.html#verdryx).
 
-- **On main:** its price book mirrors the gateway's, row for row: every listed Claude id, the Gemini rows on Vertex AI, the vendors' prices of 13 October with their long-prompt tiers, and the `openai/...` rows.
+- **Shipped in v0.1.0, released 19 October:** its price book mirrors the gateway's, row for row: every listed Claude id, the Gemini rows on Vertex AI, the vendors' prices of 13 October with their long-prompt tiers, and the `openai/...` rows.
+
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| v0.2.0 | drift and slo failures are stored as findings, with their evidence and a suspect model or version. verdryx findings list and show read them. |
+| v0.2.0 | A fix is registered against a finding and decided by the runs that follow: verified, failed, or pending with its reason. |
+| v0.2.0 | A person's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's value stays beside it. |
+| v0.2.0 | drift writes its quality_drift event under the agent stored with the newest run when no --agent-id is given, and eval and drift say on stderr how many events were not written, to which file and why. |
+| v0.2.0 | eval has --typed-timeout for a slow Typryx, and the error now says "did not answer within Ns" instead of "could not reach". |
+| v0.2.0 | slo_burn carries burn_events_seen, the number of runs behind burn_rate, so a rate nobody measured is told apart from a measured zero. |
+| v0.2.0 | The price book mirrors gpt-6.1-terra and its openai/ twin from TokenFuse's default price book. |
 
 ## What runs only when you ask, and what is not proven.
 
 - Only the judge and the typed grader can spend money, and neither runs by default. The typed grader runs only when a run is given a Typryx address with `--typed-url`.
 
 - A case Typryx cannot answer is counted apart with its reason, never scored as a zero.
+
+- The store file is the trust boundary for grades. A console build that reads scores directly shows the model's value, not a person's, until it reads `human_grades` too.
 
 - There is no PyPI package, so the version you run is the commit you can read.
 
@@ -4863,23 +5076,23 @@ Mean squared error between the stated probabilities and the true outcome; here, 
 
 ## What each part of the stack would get.
 
-Three edges are built and wired in, but none is recorded as a live run yet. The Wardryx edge is built and released and runs only against the stub backend; the rest are what a later integration would read, not something built.
+Three edges are built and wired in, and each has been run: Claude Code as an MCP client and TokenFuse's MCP broker with typryx as a named upstream, both measured on 2026-09-25, and Verdryx's typed grader, run end to end against typryx v0.5.1 with a local model. The Wardryx edge is built and released and runs only against stand-ins; the rest are what a later integration would read, not something built.
 
 |  | what typryx gives it | status |
 |---|---|---|
 | MCP clients (Claude Code and others) | a typed answer with a probability, per call, over MCP | built |
 | TokenFuse, as broker | a named upstream; one tool_call recorded against the agent | built |
 | TokenFuse, router shadow mode | the class it would have routed to, alongside cost, recorded only | planned |
-| Verdryx | a typed grader beside the existing LLM judge, opt-in per run with `--typed-url` | built, not run live |
+| Verdryx | a typed grader beside the existing LLM judge, opt-in per run with `--typed-url` | built, and run end to end against a local model |
 | Wardryx | an `action.risk_class` signal a `hold_if_signal` rule may turn into a hold, never a deny; opt-in in the launchers, off by default | built and released, run only against a loopback stand-in (v0.4.0 release notes) |
-| CostCrew | a suggested class or priority at triage; a person still decides | built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL, not run live |
+| CostCrew | a suggested anomaly class at triage; a person still decides | built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL, not run live |
 | Genaryx | a panel, live only when `GENARYX_TYPRYX_URL` resolves | planned |
 | Engram | an optional importance score | planned |
 | Journal readers (Trailryx, Idryx) | the four event types reach the shared events volume; heraldyx renders them; Idryx lists typryx as a source and never calls it; Trailryx refuses them by design | on the shared bus |
 
 ## Optional, and it changes nothing when it is absent.
 
-Typryx sits behind [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the `request.complexity` template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. [Verdryx](https://it-rat.com/services/verdryx.html) can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built and not yet run live. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. [Wardryx](https://it-rat.com/services/wardryx.html) can read one: `typryx wardryx-proxy` sits in front of it, asks `action.risk_class` about a pending tool call, and adds the answer to the decision request, where a `hold_if_signal` rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.
+Typryx sits behind [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the `request.complexity` template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. [Verdryx](https://it-rat.com/services/verdryx.html) can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built, and run end to end against typryx v0.5.1 with a local model. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. [Wardryx](https://it-rat.com/services/wardryx.html) can read one: `typryx wardryx-proxy` sits in front of it, asks `action.risk_class` about a pending tool call, and adds the answer to the decision request, where a `hold_if_signal` rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.
 
 Without it, the rest of the stack behaves exactly as it does today: nothing here is consumed by anything else unless an operator wires it in.
 
@@ -4896,7 +5109,7 @@ TYPED_MODE=jev|own-model|off
 
 ## What changed, release by release.
 
-Released as v0.4.0 on 2026-10-04, adding the `action.risk_class` template and `wardryx-proxy`, after v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, with CI green on the v0.4.0 release run (2026-10-04). Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.
+Released as v0.5.1 on 2026-10-26, built on Go 1.27.3, after v0.5.0 on 2026-10-19, v0.4.1 on 2026-10-14, v0.4.0 on 2026-10-04 (which added the `action.risk_class` template and `wardryx-proxy`), v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, with the release run for v0.5.1 green. From v0.5.0 a new event stream file is created with mode 0640, and only in a directory the service's account owns. Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.
 
 The releases from 1 to 15 October 2026, with what each one shipped, are in [the stack's changes for October](https://it-rat.com/changes-2026-10.html#typryx).
 
@@ -4904,11 +5117,11 @@ The releases from 1 to 15 October 2026, with what each one shipped, are in [the 
 
 - **Not yet:** a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers in the tables above.
 
-- Three edges are built and wired in, but none is recorded as a live run yet. The Wardryx edge is built and released and runs only against the stub backend.
+- The Wardryx edge is built and released and runs only against stand-ins.
 
 - The launchers carry the Wardryx signal as an opt-in, off by default, and it was measured on the stub backend only, never with a real model behind it.
 
-- Verdryx's typed verdict is built and not yet run live; CostCrew's suggested class is built and released in costcrew v0.4.0 and not run live; the TokenFuse router, Genaryx and Engram readers are planned.
+- CostCrew's suggested class is built and released in costcrew v0.4.0 and not run live; the TokenFuse router, Genaryx and Engram readers are planned.
 
 - In the loop from a question to a tuned model, steps 1 to 5 are built, tested and run on the stub backend; steps 6 to 9 are not run end to end, and no tuned model is measured yet.
 
@@ -4933,9 +5146,9 @@ The [Typryx room](https://it-rat.com/services/typryx.html) has the measured repl
 
 # Mockryx guide
 
-> How Mockryx fire drills work, how to run and download it, the drills on main not yet released, and what it does not prove yet.
+> How Mockryx fire drills work, how to run and download it, the drills added since v0.2.1, and what it does not prove yet.
 
-The [Mockryx room](https://it-rat.com/services/mockryx.html) keeps the fire drill, the drawing of one target URL and three exit codes, and the common questions. This guide keeps the rest of what the room used to say: what a scenario names, how a reaction is proven, how a skipped guardrail is told from a gap, where it sits in the stack, how to run and download it, the drills on main, and the limits.
+The [Mockryx room](https://it-rat.com/services/mockryx.html) keeps the fire drill, the drawing of one target URL and three exit codes, and the common questions. This guide keeps the rest of what the room used to say: what a scenario names, how a reaction is proven, how a skipped guardrail is told from a gap, where it sits in the stack, how to run and download it, the drills added since v0.2.1, and the limits.
 
 - [At a glance](https://it-rat.com/mockryx-guide.html#overview)
 
@@ -4948,6 +5161,8 @@ The [Mockryx room](https://it-rat.com/services/mockryx.html) keeps the fire dril
 - [Running it](https://it-rat.com/mockryx-guide.html#run)
 
 - [What changed](https://it-rat.com/mockryx-guide.html#changes)
+
+- [What changed in November](https://it-rat.com/mockryx-guide.html#changes-november)
 
 - [Limits](https://it-rat.com/mockryx-guide.html#limits)
 
@@ -4967,11 +5182,11 @@ The [Mockryx room](https://it-rat.com/services/mockryx.html) keeps the fire dril
 
 ### What it is
 
-A guardrail nobody has ever fired is a guess. Mockryx replays hostile scenarios (a fake secret in a prompt, a budget burn, a denied tool, a forged delegation chain, an unapproved action, an injected page, a quality drift, a reaction chain that has to reach the mail, and a provider outage) against the one URL you hand it: your own pre-production gateway, with a fake provider behind it. The enforcement path is the real one; the spend is not. CI reads the verdict as an exit code.
+A guardrail nobody has ever fired is a guess. Mockryx replays hostile scenarios (a fake secret in a prompt, a budget burn, a denied tool, a forged delegation chain, an unapproved action, an injected page, a quality drift, a reaction chain that has to reach the mail, a token flood, personal data in a prompt, a poisoned tool description, a respelled allow-listed tool, and a provider outage) against the URL you hand it: your own pre-production gateway, with a fake provider behind it. The enforcement path is the real one; the spend is not. CI reads the verdict as an exit code.
 
-## One target URL. One report. Three exit codes.
+## One gateway URL. One report. Three exit codes.
 
-A scenario file names a request in the Anthropic Messages shape, the status it must be answered with, the headers that must ride the response and, optionally, the off-path event that must follow. The runner sends it at your gateway's /v1/messages, reads the gateway's own answer, polls the NDJSON event logs the off-path services write, and folds everything into a report and an exit code a CI gate can act on. It never talks to anything but the gateway you name.
+A scenario file names a request in the Anthropic Messages shape, the status it must be answered with, the headers that must ride the response and, optionally, the off-path event that must follow. A step is one of three kinds: a request to /v1/messages (which can carry tool history), a tool_check that asks the gateway whether a tool may run and expects allow or deny, or an mcp step that sends one JSON-RPC request to your MCP broker, named with --mcp-broker. The runner sends it at your gateway's /v1/messages, reads the gateway's own answer, polls the NDJSON event logs the off-path services write, and folds everything into a report and an exit code a CI gate can act on. It talks only to the URLs you name on the command line: your gateway and, for the optional broker drills, your MCP broker.
 
 ### Watch every guardrail answer for itself.
 
@@ -4997,6 +5212,14 @@ So a scenario can assert on that too. Name the source and the event type it expe
 
 Order matters here. A synchronous mismatch is never followed by an event check: chasing a downstream reaction to a request that did not even trigger the guardrail would turn one clear failure into two confusing ones. The drill reports the thing that actually broke.
 
+### A provider that is up but failing
+
+Three game-day drills rehearse it against a stub provider: `provider-5xx`, `provider-rate-limited` and `provider-timeout`. A fourth, `provider-outage`, needs no stub: point the gateway's upstream at an address that refuses the connection. They live in `scenarios/game-day/`, and a plain `mockryx run ./scenarios` never loads them: a failing provider sends no `x-fuse-*` header, so a routine CI run would show a false gap on any ordinary day. Each of the three sends the operator's own gateway a call and checks the chain in order. The call comes back with the provider's own status, 503, 429 or 504. The gateway puts a `dependency_failed` for the run on the bus, from source tokenfuse. And the run reaches a person: an `alert_sent` from heraldyx. The drills use the existing event check only, add no scenario capability and declare no `requires`, so a miss is a finding and never a skip.
+
+The provider is a local stub, `internal/providerstub`, started by `scripts/provider-stub.go` with `go run`. The script is excluded from the build, so the repository still builds one binary. The stub listens on loopback only and refuses any other address before binding, exiting 2. It makes no outbound call, and it holds a timeout for at most ten seconds, under Mockryx's own fifteen-second client timeout.
+
+Each drill is run through a model of the chain: the stub, a gateway that passes the status through and writes `dependency_failed` to a hash-chained file, and a notifier that writes `alert_sent`, read back by the real event watcher. All three pass with the chain whole. Each fails on the status when the gateway hides the failure, on `tokenfuse/dependency_failed` when the bus is silent, and on `heraldyx/alert_sent` when nobody is told. The self-test runs every drill against a gateway that answers 200 to everything, and every run comes back failed.
+
 ### A skip cannot hide a gap
 
 A guardrail that is off looks exactly like one that is broken. The runner insists on evidence before it calls a miss either one.
@@ -5005,7 +5228,7 @@ A guardrail that is off looks exactly like one that is broken. The runner insist
 
 The evidence is the gateway's own response headers. If the header for that feature appears even once anywhere in the run, whatever its value, the feature is clearly live and a mismatch is a genuine finding. If it never appears across every attempt, the gateway plainly does not have it configured, and the scenario reports itself as not configured, with its raw mismatches dropped: they describe an absent feature, not a broken defence.
 
-Two things can never be excused this way. A scenario with no optional guardrail declared, the budget breaker, is core and always on, so a miss there is always a finding. And a transport error, where the gateway could not be reached at all, is always a finding too: being unreachable is never evidence that a feature is merely switched off.
+Three things can never be excused this way. A scenario with no optional guardrail declared, the budget breaker, is core and always on, so a miss there is always a finding. A transport error, where the gateway could not be reached at all, is always a finding too: being unreachable is never evidence that a feature is merely switched off. So is a gateway that refuses the drill's own credential (a 401, or a 403 identity_mismatch): that is a finding, never a skip.
 
 When you know a guardrail must be there, one flag turns even a skip into a failure. That is the honest way round: the tool refuses to claim a pass it cannot prove, and it refuses to cry gap it cannot prove either.
 
@@ -5015,11 +5238,11 @@ Exit 0: every drill held. Exit 1: a real defensive gap, fail the build. Exit 2: 
 
 ### Zero real spend by design
 
-The provider behind the gateway is fake, so the runaway scenario can burn all it wants: the meter it trips is real, the invoice is not. And every hostile input stays inside your perimeter; Mockryx only ever talks to the one gateway URL you hand it.
+The provider behind the gateway is fake, so the runaway scenario can burn all it wants: the meter it trips is real, the invoice is not. And every hostile input stays inside your perimeter; Mockryx only talks to the URLs you hand it: the gateway and, for the broker drills, your MCP broker.
 
 ## It picks fights with the rest of the stack. On purpose, in pre-prod.
 
-In the request path, Mockryx rehearses [TokenFuse](https://it-rat.com/services/tokenfuse.html): the breaker's 402 and the DLP's 403, provoked deliberately and expected to answer. It does the same to [Wardryx](https://it-rat.com/services/wardryx.html), asserting that deny and hold verdicts land in the x-fuse-wardryx header. Off path, expect.event demands that [Verdryx](https://it-rat.com/services/verdryx.html), [Idryx](https://it-rat.com/services/idryx.html) and [Qryx](https://it-rat.com/services/qryx.html) visibly react to what just happened. And every finding it makes travels as sim_run and sim_finding events on the same bus as everything else: [the shared contract](https://it-rat.com/services/platform.html).
+In the request path, Mockryx rehearses [TokenFuse](https://it-rat.com/services/tokenfuse.html): the breaker's 402 and the DLP's 403, provoked deliberately and expected to answer. It does the same to [Wardryx](https://it-rat.com/services/wardryx.html), asserting that deny and hold verdicts land in the x-fuse-wardryx header. Off path, expect.event demands that [Verdryx](https://it-rat.com/services/verdryx.html), [Idryx](https://it-rat.com/services/idryx.html) and [Qryx](https://it-rat.com/services/qryx.html) visibly react to what just happened. And when MOCKRYX_EVENTS_PATH (or --events) is set, it also writes sim_run, sim_finding and blast_radius_measured events in the same agent-event format as everything else on the bus: [the shared contract](https://it-rat.com/services/platform.html).
 
 Why rehearsal belongs in CI, and what else it sits beside: [AI agent security](https://it-rat.com/ai-agent-security.html) and [AI agent governance](https://it-rat.com/ai-agent-governance.html).
 
@@ -5030,15 +5253,15 @@ Why rehearsal belongs in CI, and what else it sits beside: [AI agent security](h
 ./bin/mockryx report out/report.json
 ```
 
-Add `--save out/report.json` to keep the evidence. Point it at pre-prod, never at prod: the URL you pass is the only place it will ever send traffic.
+Add `--save out/report.json` to keep the evidence. Point it at pre-prod, never at prod: the URLs you pass are the only places it will ever send traffic.
 
 ### Download, any platform
 
 Every one of those addresses always serves the newest release, so a link saved today still works after the next one. The asset names carry no version, which is what makes that true; the version lives inside the binary, where `mockryx version` reads it back.
 
-## Four drills on main, not yet in a release
+## Four drills added in v0.2.2
 
-The last release is v0.2.1. These four drills are on main and are not in any release yet.
+These four drills shipped in v0.2.2. The current release is v0.4.0.
 
 | drill | what it rehearses |
 |---|---|
@@ -5049,9 +5272,15 @@ The last release is v0.2.1. These four drills are on main and are not in any rel
 
 What changed from 1 to 15 October 2026, release by release, is in [the stack's changes for October](https://it-rat.com/changes-2026-10.html#mockryx).
 
-## What it does not do, and what is not released yet.
+## What changed in November
 
-- The last release is v0.2.1. The four drills above are on main and are not in any release yet.
+| shipped in | what it does |
+|---|---|
+| v0.4.0 | Three game-day drills for a provider that is up but failing (a 5xx, a rate limit and a timeout), and a loopback-only local stub they run against. |
+
+## What it does not do.
+
+- The game-day drills (scenarios/game-day/) and the MCP broker drills (scenarios/mcp/) are not loaded by a plain mockryx run ./scenarios, on purpose: a failing provider sends no x-fuse-* header, so a routine CI run would show a false gap, and a broker drill needs --mcp-broker.
 
 - Of the five drills the room replays, three ran live against a real gateway on disposable boxes, twice; the other two are the Wardryx scenarios that ship in the same set.
 
@@ -5061,7 +5290,7 @@ What changed from 1 to 15 October 2026, release by release, is in [the stack's c
 
 - A scenario that declares an optional guardrail reports itself as not configured when the gateway never shows that feature's header; one flag turns even a skip into a failure.
 
-- It only ever talks to the one gateway URL you hand it. Point it at pre-prod, never at prod.
+- It only talks to the URLs you hand it: your gateway and, for the broker drills, your MCP broker. Point it at pre-prod, never at prod.
 
 ## Back to the room.
 
@@ -5189,9 +5418,9 @@ The [Trailryx room](https://it-rat.com/services/trailryx.html) has the replay, t
 
 # Heraldyx guide
 
-> How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed in v0.7.0 and v0.8.0, and its boundaries.
+> How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed from v0.7.0 to v0.9.0, and its boundaries.
 
-The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst replay, the drawing of the four checks, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped in v0.7.0 and v0.8.0, and the boundaries in full.
+The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst replay, the drawing of the four checks, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.
 
 - [At a glance](https://it-rat.com/heraldyx-guide.html#overview)
 
@@ -5204,6 +5433,8 @@ The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst r
 - [Running it](https://it-rat.com/heraldyx-guide.html#run)
 
 - [Who else writes to the log](https://it-rat.com/heraldyx-guide.html#sources)
+
+- [What changed in November](https://it-rat.com/heraldyx-guide.html#changes-november)
 
 - [What changed](https://it-rat.com/heraldyx-guide.html#changes)
 
@@ -5219,7 +5450,7 @@ The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst r
 
 - **Leaves behind:** a hash-chained dispatch record.
 
-- **Core:** Go, with one direct dependency.
+- **Core:** Go, with two direct dependencies (the shared agent-stack-go contract and a JSON canonicaliser).
 
 - **Licence:** Apache-2.0.
 
@@ -5229,7 +5460,15 @@ Every other plane in the stack records what happened. None of them wakes anybody
 
 ## Four checks, in this order, and the order is the point.
 
-The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. The last cell of the room's drawing was redrawn after a run on 2026-09-17: the v0.2.3 image sent one notice at the ceiling and then nothing for 28 minutes of high and critical events. Since v0.2.4 a critical passes the ceiling and whatever is held is summarised every ten minutes until the hour turns; the launchers pin v0.7.0 on their main branches.
+The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. The last cell of the room's drawing was redrawn after a run on 2026-09-17: the v0.2.3 image sent one notice at the ceiling and then nothing for 28 minutes of high and critical events. Since v0.2.4 a critical passes the ceiling and whatever is held is summarised every ten minutes until the hour turns; the launchers pin v0.8.2 on their main branches.
+
+### A provider that is down is one mail, not one per call
+
+For `dependency_failed` the dedup key is the dependency that failed and what the gateway did about it, not the run. A provider that is down fails every call that reaches it, and every call is its own run, so keyed on the run an hour of outage was one mail per call up to the hourly ceiling and a summary of the rest. Keyed on the dependency it is one mail per window. The key is read from the event's own `data.dependency` and `data.effect`, for a provider that fails calls it reads `dependency_failed:dependency/provider/call-failed`, and it is what an acknowledgement is made against and what the mail prints, so acknowledging a provider outage holds the whole storm.
+
+The effect is part of the key because the outcomes want opposite responses. A gateway that fails open lets calls through with no policy on them, and that must not hide behind an earlier mail about calls that were refused. Only the type `dependency_failed` and only the event contract's own words qualify. No data, an unknown dependency, a value that is not text, a path-like or oversized value, or another type carrying the same field keeps the key of its run, so a field read from a log this process does not own can never fold anything into anything. The event contract does not change, no data key is added to what the mail may print, and the link in the mail points where it did.
+
+The Cloud side of the same outage is [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s one incident per failing provider. The two are independent: this one changes only what is mailed.
 
 ### A hundred and twenty events arrive. Twenty-one messages leave.
 
@@ -5277,9 +5516,16 @@ The image is distroless: there is no shell in it to read the file with.
 
 Since v0.3.0 a line counts as the source it claims only when the file it came from may carry that source. Each plane's file carries its own name, `HERALDYX_STREAMS` declares anything else, and a line in the wrong file is refused, counted and raised once as `foreign_source`; a file nobody declared is raised once as `unknown_stream`. It does not stop a process that creates a plane's file before that plane does, or a writer forging its own stream. The checkpoint gate, from v0.8.0, answers that for streams a producer signs, and it is off by default.
 
-## Two more sources arrived on the bus.
+## Twelve planes write the log it reads.
 
-This plane mails about what other planes wrote, so its reach grows when theirs does. [Vouchryx](https://it-rat.com/services/vouchryx.html) reports a delegation issued, denied or revoked, and [CostCrew](https://it-rat.com/services/costcrew.html) reports spend spikes, budget thresholds and every move its crew makes on a finding. CostCrew's events have their own sentences here. Vouchryx's delegation events have none yet, so a mail about one says the box has no description for the event until one is written.
+This plane mails about what other planes wrote, so its reach grows when theirs does. Twelve planes write the shared log, and the Keyryx witness's findings file is read beside it. [Vouchryx](https://it-rat.com/services/vouchryx.html) reports a delegation issued, denied or revoked, and [CostCrew](https://it-rat.com/services/costcrew.html) reports spend spikes, budget thresholds and every move its crew makes on a finding. CostCrew's events have their own sentences here. Vouchryx's delegation events have none yet, so a mail about one says the box has no description for the event until one is written.
+
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| v0.9.0 | A dependency_failed repeats on the dependency, so a provider storm is one mail per window instead of one per failed call. |
+| v0.9.0 | The key of a dependency_failed mail is now dependency_failed:dependency/provider/call-failed. An acknowledgement made against the old per-run key does not hold the new one, so acknowledge the new key. |
 
 ## What changed in v0.8.0
 
@@ -5342,9 +5588,9 @@ The [Heraldyx room](https://it-rat.com/services/heraldyx.html) has the burst rep
 
 # Engram guide
 
-> How Engram works, the live runs against real Claude, how to install it, what changed on main, and what it does not do yet, in full.
+> How Engram works, the live runs against real Claude, how to install it, what changed in v3.0.0 and v3.1.0, and what it does not do yet, in full.
 
-The [Engram room](https://it-rat.com/services/engram.html) keeps the simulation, the drawing of one file on disk and the common questions. This guide keeps the rest of what the room used to say: what a memory holds and how each part works, the three live runs against real Claude, how it ships, what changed on main, and what it does not do yet.
+The [Engram room](https://it-rat.com/services/engram.html) keeps the simulation, the drawing of one file on disk and the common questions. This guide keeps the rest of what the room used to say: what a memory holds and how each part works, the three live runs against real Claude, how it ships, what changed in v3.0.0 and v3.1.0, and what it does not do yet.
 
 - [At a glance](https://it-rat.com/engram-guide.html#overview)
 
@@ -5359,6 +5605,8 @@ The [Engram room](https://it-rat.com/services/engram.html) keeps the simulation,
 - [Running it](https://it-rat.com/engram-guide.html#run)
 
 - [What changed](https://it-rat.com/engram-guide.html#changes)
+
+- [What changed in November](https://it-rat.com/engram-guide.html#changes-november)
 
 - [Limits](https://it-rat.com/engram-guide.html#limits)
 
@@ -5382,13 +5630,13 @@ Engram is an embeddable memory in one SQLite file. It stores raw episodes, disti
 
 ## Not a log of text. Beliefs with receipts.
 
-### One file on disk. One optional network call.
+### One file on disk. Model calls only when you ask.
 
-Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. Inside: three kinds of memory, bitemporal facts, spreading activation and Ebbinghaus decay. The only part that ever touches a network is reflect(), through a pluggable LLM adapter, and even that can route through TokenFuse.
+Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. Inside: episodic and semantic memory, bitemporal facts, spreading activation and Ebbinghaus decay. The only calls that leave the machine are reflect() and compress(), through a pluggable LLM adapter, and even those can route through TokenFuse; the embedding model downloads once, about 64 MB, on first use.
 
 ### Single file, embeddable
 
-One .engram file on SQLite plus sqlite-vec: no server, no Docker, no config file. pip install, two lines of Python, and the first memory is on disk. Writes land in about 4 ms because no LLM sits in the write path.
+One .engram file on SQLite plus sqlite-vec: no server, no Docker, no config file. pip install, two lines of Python, and the first memory is on disk. A write takes a median of 8 ms (200 writes on an Apple Silicon Mac, 2026-10-13) because no LLM sits in the write path.
 
 ### reflect() distills facts
 
@@ -5403,6 +5651,18 @@ Every fact carries two timelines: when it was true in reality, and when the syst
 With both, you can ask what the agent believed as of March and get March's answer rather than today's. That is the difference between an audit you can defend and a database that only ever shows the present. A support agent that promised a refund policy in March should be judged against the policy it knew in March.
 
 It also makes correction safe. When Ivan moves from Acme to Globex, the old fact is closed with an end date and the new one opens; nothing is overwritten, so the reason the agent said what it said in March survives the correction.
+
+### A person's own fact outranks a model's
+
+A fact is the person's own when its provenance is `user` and it was not written quarantined. A reflection pass whose extraction is not the person's own no longer closes such a fact by recency, and neither does a refutation that is not. The newer fact is recorded beside it, `contradictions()` lists the pair, and the existing `contradiction_found` event, with the same two data keys, names both. `reflect()` does not count that conflict in `contradictions_resolved`, because nothing was resolved. `assert_fact()` never closed anything and still does not; it now emits the same event for such a conflict. Between two facts that are both the person's own, the newer one still wins.
+
+A fact stamps its provenance when it is written, so the protection does not end when its source episodes are forgotten, compressed or pruned. `reflect()` stamps a fact with the least trusted provenance of all the episodes in its window, so a window that mixes `user` and `external` episodes yields facts that are not the person's own. Engram stores the provenance the caller declares and does not verify it. Over MCP a caller cannot claim `user`, and a fact written through MCP is `unknown`, so it can never be a person's fact.
+
+### A fact can be refuted without being erased
+
+`refute_fact()` closes a fact and keeps it: `valid_to` and `superseded_at` are set, `refuted_by` is recorded, and there is no replacement, so `timeline()` and `as_of` keep what was believed before. Every fact derived from it, at any depth and across agents, gets the refuted fact's id in `undermined_by` and stays active. A private fact of another agent is marked too and is not named in the result. `assert_fact(derived_from=[...])` records the derivation. Refuting twice changes nothing, and the person's own fact can be refuted only by the person. `forget_fact()` is unchanged: erasure stays the owner's right, and refutation is the path that keeps history.
+
+The store moves one schema step, recorded in `PRAGMA user_version`, with three nullable columns on facts: `provenance`, `refuted_by` and `undermined_by`. The step is idempotent and rewrites no row, and export and import carry the columns.
 
 ### Three ways to recall
 
@@ -5442,6 +5702,8 @@ Engram keeps a vector index in-process. It also keeps when each fact was true, w
 | What was true in March, before we knew better | Bitemporal facts: valid time and recorded time |
 | Why do you believe that | why(), a chain back to the source episodes |
 | These two things disagree | Contradictions detected and recorded as events |
+| Whose word counts when two disagree | A person's own fact is never closed by a lower provenance |
+| That is wrong, but keep the history | refute_fact(): closed, not erased, with derived facts marked |
 | Reach what the match is connected to | Spreading activation over Hebbian edges |
 | Stay useful instead of growing | Importance decay, and reflection prunes the bottom |
 | Forget a person | Targeted erase by episode, entity or fact |
@@ -5489,15 +5751,28 @@ Engram's own list for 1 to 15 October 2026 is in [the stack's changes](https://i
 
 Released as v3.0.0 on 2026-10-18. The library records a source for every observation: user for what the person typed, tool for what a tool returned, and external for anything else. Recall returns the source with each result, and why() reports the least trusted source behind a fact. Over MCP the server sets the most a write may carry, which defaults to external, so a caller cannot claim user. A server started with an agent id serves that agent alone; one started without serves the whole file and says so on stderr. A fact is private to its writer unless it is shared.
 
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| v3.1.0 | A person's own fact is never closed by a lower provenance: a model's extraction or refutation is recorded beside it, and contradictions() lists the pair. |
+| v3.1.0 | refute_fact() closes a fact without erasing it, and marks every fact derived from it as undermined. |
+| v3.1.0 | The documents no longer claim procedural memory: the store never modelled it, and remember(kind="procedural") is refused. |
+| v3.1.0 | A fact stamps its provenance when it is written, so a person's fact stays the person's after its source episodes are forgotten or pruned. The store moves to schema generation 2 with three nullable columns on facts, and assert_fact takes provenance and derived_from. |
+
 ## What it does not do, and what is still open.
 
 - The server cannot see what an agent read outside engram. A session turns untrusted when recall or why returns a memory that is not the user's own or is quarantined, when the caller labels its input or passes read_untrusted, or when the server is started with the untrusted flag.
+
+- Procedural memory is not part of the store: `remember(kind="procedural")` is refused.
+
+- Refutation emits no event, because the shared event contract has no type for it. The row it leaves in the store is the record. An older Engram that opens a migrated file ignores the new columns.
 
 - reflect() is deliberately not exposed to MCP clients.
 
 - Agent events (memory_written, reflection_run, contradiction_found, memory_forgotten) are opt-in and off by default.
 
-- The only part that ever touches a network is reflect(), through a pluggable LLM adapter.
+- The only calls that leave the machine are reflect() and compress(), through a pluggable LLM adapter, plus the one-time download of the embedding model on first use.
 
 - No per-platform binaries: this one is a Python library you import, so the package index is the download.
 
@@ -5560,7 +5835,7 @@ The room's simulation is labeled as one: a replay of the envelope's normal day. 
 
 ### Everything meets at the envelope.
 
-Fifteen registered sources write one shape onto one NDJSON bus: five required fields, six optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also the fourteenth source; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. The keyryx witness also reads every stream; in the launchers its findings stay on its own volume. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.
+Fifteen registered sources write one shape: twelve onto one NDJSON bus, and heraldyx, scopyx and the keyryx witness into files of their own (dashed). Five required fields, six optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also one of the fifteen sources; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. The keyryx witness also reads every stream; its findings go to a file of their own, off the bus, which Heraldyx mails and the Genaryx console shows as incidents through a read-only mount. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.
 
 ### The passport
 
@@ -5572,11 +5847,11 @@ Five required fields: schema, ts, source, type, agent_id. Four versions stay liv
 
 ### The Go binding
 
-agent-stack-go ships passport.Parse, an append-only event.Writer and chain.Validate. passport and chain need only the standard library; event adds one dependency, gowebpki/jcs, for the RFC 8785 canonical JSON its hash chain is computed over. It is the same validation Idryx runs on ingest: a passport that parses in your pipeline parses in the graph.
+agent-stack-go ships four packages: passport, event, chain and delegation (the RFC 8693 delegation token and offline verification of an agent's own access token). It ships passport.Parse, an append-only event.Writer and chain.Validate. passport and chain need only the standard library; event adds one dependency, gowebpki/jcs, for the RFC 8785 canonical JSON its hash chain is computed over. Since v2.0.0 the module path is github.com/TAIPANBOX/agent-stack-go/v2, and a stream file is created with mode 0640. It is the same validation Idryx runs on ingest: a passport that parses in your pipeline parses in the graph.
 
 ### agent-conform
 
-A standalone conformance CLI with the canonical JSON Schemas embedded. Files are classified by their own schema field, and unrecognized content is a FAIL, never silently skipped. Exit 0 or exit 1; it has already caught a real 63-versus-64 hex character prev_hash defect. Since agent-stack-go v1.1.0 it also runs on the box as `watch-dir`: it re-checks every stream's hash chain and writes `chain_broken` (high) or `chain_unchained` (low) to its own stream, exiting 2 on a usage or I/O error. It ships as a signed, distroless image, `ghcr.io/taipanbox/agent-conform`, and runs by default every five minutes on the single box and every fifteen on a cluster.
+A standalone conformance CLI with the canonical JSON Schemas embedded. Files are classified by their own schema field, and unrecognized content is a FAIL, never silently skipped. Exit 0 or exit 1; it has already caught a real 63-versus-64 hex character prev_hash defect. Since agent-stack-go v1.1.0 it also runs on the box as `watch-dir`: it re-checks every stream's hash chain and writes `chain_broken` (high), `chain_unchained` (low) or `chain_restarted` (medium, or high when no signed resume checkpoint explains it) to its own stream; with `-checkpoints` and `-checkpoint-keys` it also checks each stream's signed checkpoint. It exits 2 on a usage or I/O error. It ships as a signed, distroless image, `ghcr.io/taipanbox/agent-conform`, and runs by default every five minutes on the single box and every fifteen on a cluster.
 
 ### Governance as code
 
@@ -5615,7 +5890,7 @@ The sandbox, and it builds from source on purpose: nothing but your own compiler
 
 Open the link it prints and you are looking at your own local money plane, live, with a short demo dataset already in it. Point an agent's OpenAI base URL at the gateway to feed it your own.
 
-It builds and starts the stack's long-running services from source. Those are TokenFuse's gateway, cloud and dashboard, plus Wardryx, Idryx and Scopyx: six ports on loopback, as the stack-up README's port table lists them. Heraldyx is pinned to file mode there, writing what it would have mailed rather than mailing it. Trailryx is built and wired as a sealing routine rather than a port. Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs, installed into your home directory and started when you want them, each with its own try-it on its page. The delegation plane and the FinOps console stay behind a flag, `--with-delegation` and `--with-finops`, because one needs an issuer to trust and the other is a different product.
+It builds and starts the stack's long-running services from source. Those are TokenFuse's gateway, cloud and dashboard, plus Wardryx, Idryx and Scopyx, and Keyryx (custody and witness): eight ports on loopback, as the stack-up README's port table lists them. Heraldyx is pinned to file mode there, writing what it would have mailed rather than mailing it. Trailryx is built and wired as a sealing routine rather than a port. Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs, installed into your home directory and started when you want them, each with its own try-it on its page. The delegation plane, the FinOps console and the typed-answers service stay behind a flag, `--with-delegation`, `--with-finops` and `--with-typed`, because one needs an issuer to trust, one is a different product and one is optional.
 
 Press Ctrl-C and it stops clean, with no orphaned processes.
 
@@ -5671,7 +5946,7 @@ For teams whose answer to everything is a cluster. One script brings up k3s acro
 | proven on | Hetzner, AWS and GCP |
 | what it buys | high availability |
 | what it costs | a ReadWriteMany volume |
-| traps | 154 documented, with whose fault each was |
+| traps | 159 documented, with whose fault each was |
 
 **The commands, and the one thing a cluster costs you.**
 
@@ -5717,7 +5992,7 @@ The platform's own list for 1 to 15 October 2026, the agent-stack-go releases, a
 
 - In the sandbox Heraldyx is pinned to file mode, writing what it would have mailed rather than mailing it.
 
-- The delegation plane and the FinOps console stay behind a flag, `--with-delegation` and `--with-finops`.
+- The delegation plane, the FinOps console and the typed-answers service stay behind a flag: `--with-delegation`, `--with-finops` and `--with-typed`.
 
 - Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs.
 

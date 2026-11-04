@@ -140,8 +140,8 @@
         </div>
       </div>
       <div class="hero-side rv d2">
-        <div class="row"><span class="k">release</span><span class="v">v0.4.1 &#183; Go 1.27</span></div>
-        <div class="row"><span class="k">tests</span><span class="v">986 tests &#183; httptest fakes, no live calls</span></div>
+        <div class="row"><span class="k">release</span><span class="v">v0.5.1 &#183; Go 1.27</span></div>
+        <div class="row"><span class="k">tests</span><span class="v">998 tests &#183; httptest fakes, no live calls</span></div>
         <div class="row"><span class="k">deps</span><span class="v">one direct dependency</span></div>
         <div class="row"><span class="k">spend cap</span><span class="v">1,000 calls an hour, by default</span></div>
         <div class="row"><span class="k">image</span><span class="v">16.8 MB &#183; ghcr.io, signed</span></div>
@@ -226,7 +226,7 @@
           <rect x="555" y="376" width="366" height="30" rx="8" fill="#141C27" stroke="#FF7AA2" stroke-dasharray="3 3"/><text x="738" y="396" fill="#FF7AA2" font-size="10.5">verdryx: a typed grader beside the LLM judge</text>
           <rect x="555" y="414" width="366" height="30" rx="8" fill="#141C27" stroke="#2DD4BF" stroke-dasharray="3 3"/><text x="738" y="434" fill="#2DD4BF" font-size="10.5">wardryx: a signal that may become a hold, never a deny</text>
           <rect x="555" y="452" width="366" height="30" rx="8" fill="#141C27" stroke="#F4B23E" stroke-dasharray="3 3"/><text x="738" y="472" fill="#F4B23E" font-size="10.5">tokenfuse: router shadow mode</text>
-          <rect x="555" y="490" width="366" height="42" rx="8" fill="#141C27" stroke="#7DD3A0" stroke-dasharray="3 3"/><text x="738" y="507" fill="#7DD3A0" font-size="10.5">costcrew: a suggested class or priority</text><text x="738" y="521" fill="#7DD3A0" font-size="10.5">at triage (built, opt-in)</text>
+          <rect x="555" y="490" width="366" height="42" rx="8" fill="#141C27" stroke="#7DD3A0" stroke-dasharray="3 3"/><text x="738" y="507" fill="#7DD3A0" font-size="10.5">costcrew: a suggested anomaly class</text><text x="738" y="521" fill="#7DD3A0" font-size="10.5">at triage (built, opt-in)</text>
           <rect x="555" y="540" width="366" height="30" rx="8" fill="#141C27" stroke="#B48CFF" stroke-dasharray="3 3"/><text x="738" y="560" fill="#B48CFF" font-size="10.5">genaryx: a panel, live only when configured</text>
           <rect x="555" y="578" width="366" height="30" rx="8" fill="#141C27" stroke="#6C7BFF" stroke-dasharray="3 3"/><text x="738" y="598" fill="#6C7BFF" font-size="10.5">engram: an optional importance score</text>
           <text x="738" y="626" fill="#5A6675" font-size="10.5">journal: on the shared events volume:</text>
@@ -557,7 +557,7 @@
     <div class="sec-head rv">
       <div class="kicker">where it plugs in</div>
       <h2>What each part of the stack would get.</h2>
-      <p class="lede">Three edges are built and wired in, but none is recorded as a live run yet.</p>
+      <p class="lede">Three edges are built and wired in, and each has been run: MCP clients and the TokenFuse broker on 2026-09-25, Verdryx's typed grader against typryx v0.5.1.</p>
     </div>
     <div class="flight rv" id="hb-box">
       <div class="fl-head"><span class="dot"></span>typryx, and nine possible readers <span class="n">solid mint = built and wired in, dashed = planned or stub only</span></div>
@@ -740,7 +740,7 @@ Sim.mount(document.getElementById("tx-sim"),{
   title:"measured replay &#183; 60 judgements, qwen2.5:7b, 2026-09-25",
   window:60, duration:19000,
   clock:t=>"ask "+Math.min(60,Math.floor(t)+1),
-  badges:[{label:"measured run",color:"#34D399"},{label:"986 tests",color:"#60A5FA"}],
+  badges:[{label:"measured run",color:"#34D399"},{label:"998 tests",color:"#60A5FA"}],
   stage:{mode:"typed", rows:ROWS},
   series:[{id:"noop",label:"",color:"#8A97A6",max:1,points:[[0,0],[60,0]]}],
   counters:[
@@ -1153,7 +1153,7 @@ const NODES=[
   {id:"tf-router",col:"#F4B23E",label:"TokenFuse router (shadow)",x:840,y:150,measured:false,gives:"the class it would have routed to, recorded only, never used to route",template:"request.complexity",absent:"the router keeps deciding the way it does today",status:"planned, shadow only"},
   {id:"verdryx",col:"#FF7AA2",label:"Verdryx",x:840,y:270,measured:true,gives:"a typed grader beside the existing LLM judge, opt-in per run with --typed-url",template:"eval.outcome_met, eval.answer_quality",absent:"Verdryx keeps grading with its LLM judge alone",status:"built"},
   {id:"wardryx",col:"#2DD4BF",label:"Wardryx",x:740,y:360,measured:false,gives:"an action.risk_class signal, added by wardryx-proxy, that a hold_if_signal rule may turn into a hold, never a deny; opt-in, off by default",template:"action.risk_class",absent:"Wardryx's policy plane is unchanged",status:"built and released, run only against a loopback stand-in (v0.4.0 release notes)"},
-  {id:"costcrew",col:"#7DD3A0",label:"CostCrew",x:560,y:400,measured:false,gives:"a suggested class or priority shown at triage; a person still decides",template:"triage.anomaly_class",absent:"CostCrew's triage is unchanged",status:"built in costcrew v0.4.0, not run live"},
+  {id:"costcrew",col:"#7DD3A0",label:"CostCrew",x:560,y:400,measured:false,gives:"a suggested anomaly class shown at triage; a person still decides",template:"triage.anomaly_class",absent:"CostCrew's triage is unchanged",status:"built in costcrew v0.4.0, not run live"},
   {id:"genaryx",col:"#B48CFF",label:"Genaryx",x:380,y:400,measured:false,gives:"a panel of calibration verdicts, live only when GENARYX_TYPRYX_URL resolves",template:"any",absent:"no typryx panel is shown",status:"planned"},
   {id:"engram",col:"#6C7BFF",label:"Engram",x:200,y:360,measured:false,gives:"an optional importance score",template:"any",absent:"Engram's importance scoring is unchanged",status:"planned"},
   {id:"journal",col:"#E4626F",label:"Trailryx / Idryx",x:100,y:270,measured:false,gives:"the same agent-event envelope the rest of the stack writes; Idryx would only ever read it, never call typryx",template:"n/a, journal only",absent:"nothing to read; Idryx's detection stays deterministic either way",status:"on the shared bus"}

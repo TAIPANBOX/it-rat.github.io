@@ -26,7 +26,7 @@ window.CATEGORIES = CATEGORIES;
 const STACK = [
   {id:"genaryx",   name:"Genaryx",    plane:"control room", cat:"room",       color:"#B48CFF", what:"The control room over all of it, in your browser on your own box", href:"genaryx.html"},
   {id:"tokenfuse", name:"TokenFuse",  plane:"money",     cat:"money",      color:"#F4B23E", what:"Runtime spend control and the in-line kill switch", href:"services/tokenfuse.html"},
-  {id:"costcrew",  name:"CostCrew",   plane:"finops",    cat:"money",      color:"#7DD3A0", what:"A crew of agents takes your cloud bill apart, a person signs it off", href:"services/costcrew.html"},
+  {id:"costcrew",  name:"CostCrew",   plane:"finops",    cat:"money",      color:"#7DD3A0", what:"A crew of agents takes your cloud bill apart, a person stamps every deliverable", href:"services/costcrew.html"},
   {id:"pocket",    name:"TokenFuse Pocket", plane:"out of band", cat:"money", color:"#22D3EE", what:"The kill switch on a device the agent's host never touches", href:"services/pocket.html", note:"not wired in yet"},
   {id:"wardryx",   name:"Wardryx",    plane:"policy",    cat:"guardrails", color:"#2DD4BF", what:"Policy decisions with a human in the loop",       href:"services/wardryx.html"},
   {id:"idryx",     name:"Idryx",      plane:"access",    cat:"guardrails", color:"#34D399", what:"One identity graph for humans, keys and agents",  href:"services/idryx.html"},

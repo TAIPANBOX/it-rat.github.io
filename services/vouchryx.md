@@ -24,6 +24,10 @@ Public keys at a JWKS endpoint, so an enforcement point verifies offline. That i
 
 Three values are required and have no default: VOUCHRYX_ISSUER, VOUCHRYX_SIGNING_KEY (for the file signer; the Keyryx signer needs its own four values instead) and VOUCHRYX_TRUSTED_ISSUERS (unless VOUCHRYX_AGENTS enrols an agent). A missing or malformed value aborts the process and names the variable.
 
+### Run against a real provider
+
+A live run with a real OpenID provider found that a provider which rotated its signing key was refused until the service restarted. The key set files are now read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), and a file that cannot be used never replaces the keys held.
+
 ## Mint, prove, verify, end.
 
 Two signed tokens and a proof go in, a short-lived one comes out, and the enforcement point verifies it without asking anybody. The dotted path is the one that matters in an incident: a revocation reaches the poller and the same token stops working before it expires.
@@ -49,10 +53,10 @@ The client ships with the service: `vouchryx-demo` makes the keys, performs the 
 ## Proving and ending a delegation
 
 **Q: How is this different from just giving the agent an API key?**
-A key names nobody and ends nowhere. This mints a short-lived token that says which human the agent is acting for, in a nested `act` claim, bound to the caller's own key so a copy of the token is useless. When the delegation should end, one revocation ends it at every enforcement point on its next poll of the list, rather than waiting for an expiry. Today only the TokenFuse gateway polls that list; no other enforcement point does yet.
+A key names nobody and ends nowhere. This mints a short-lived token that says which human the agent is acting for, in a nested `act` claim, bound to the caller's own key so a copy of the token is useless. When the delegation should end, one revocation ends it at every enforcement point on its next poll of the list, rather than waiting for an expiry. Today the TokenFuse gateway polls that list, and so does Wardryx (from 2.3.0, when it is given the list's address); no other enforcement point does yet.
 
 **Q: What happens to a token that is already in flight when we revoke it?**
-Its next use is refused. Enforcement points poll the revocation list, every 12 seconds by default, and refuse anything on it, so the token's own expiry has no say; a call admitted before that poll is not pulled back, and a door that cannot reach the list keeps the last one it fetched and, past a minute, refuses by default. Measured on a live box: a proven chain answered 200, and after the revoke the same token answered 401.
+Its next use is refused. The TokenFuse gateway polls the revocation list every 12 seconds by default (Wardryx every 30) and refuses anything on it, so the token's own expiry has no say; a call admitted before that poll is not pulled back, and a door that cannot reach the list keeps the last one it fetched and, past a minute, refuses by default. Measured on a live box: a proven chain answered 200, and after the revoke the same token answered 401.
 
 **Q: Does this replace the delegation chain in the Passport?**
 No, it is the half the Passport spec deliberately leaves out. The spec says plainly that it names an agent without proving possession, and records who acted for whom without saying when. This provides both, and the record still lives where it lived.

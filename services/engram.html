@@ -57,7 +57,7 @@
   .deeper .cta-row{margin-top:16px}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Engram","url":"https://it-rat.com/services/engram.html","description":"Embeddable agent memory in one SQLite file: bitemporal facts, hybrid BM25 and vector recall, why() provenance and GDPR forget. No server, no API key to start.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/engram","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Engram","item":"https://it-rat.com/services/engram.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does it need a server, a container or an API key?","acceptedAnswer":{"@type":"Answer","text":"None of the three to write a memory. It is one .engram file on SQLite plus sqlite-vec, in-process, installed with pip. A model only enters the picture when you ask for reflect() , and even that call can be pointed at a local model or routed through TokenFuse so thinking has a budget too."}},{"@type":"Question","name":"Can I delete everything about one person?","acceptedAnswer":{"@type":"Answer","text":"Yes, and the cascade is the point. Erasing an entity removes the episodes about them, the facts derived from those episodes, and the graph edges that made them findable, and reports how many of each it deleted. That erasure reaches every agent in a shared store on purpose, because the request is about the person. What one agent cannot do is erase another agent's episodes by id: forget() is agent-scoped."}},{"@type":"Question","name":"Does it work with Claude Desktop, Claude Code or Cursor?","acceptedAnswer":{"@type":"Answer","text":"Yes, over MCP on stdio, so there is no network listener and no port to guard. Those clients get remember, recall, why and forget against the same store with no integration code."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Engram","url":"https://it-rat.com/services/engram.html","description":"Embeddable agent memory in one SQLite file: bitemporal facts, hybrid BM25 and vector recall, why() provenance and GDPR forget. No server, no API key to start.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/engram","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Engram","item":"https://it-rat.com/services/engram.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does it need a server, a container or an API key?","acceptedAnswer":{"@type":"Answer","text":"None of the three to write a memory. It is one .engram file on SQLite plus sqlite-vec, in-process, installed with pip. A model only enters the picture when you ask for reflect() or compress() , and even those calls can be pointed at a local model or routed through TokenFuse so thinking has a budget too."}},{"@type":"Question","name":"Can I delete everything about one person?","acceptedAnswer":{"@type":"Answer","text":"Yes, and the cascade is the point. Erasing an entity removes the episodes about them, the facts derived from those episodes, and the graph edges that made them findable, and reports how many of each it deleted. That erasure reaches every agent in a shared store on purpose, because the request is about the person. What one agent cannot do is erase another agent's episodes by id: forget() is agent-scoped."}},{"@type":"Question","name":"Does it work with Claude Desktop, Claude Code or Cursor?","acceptedAnswer":{"@type":"Answer","text":"Yes, over MCP on stdio, so there is no network listener and no port to guard. Those clients get remember, recall, why and forget against the same store with no integration code."}}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-service="engram" data-root="../">
@@ -119,8 +119,8 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
-      <h2>One file on disk. One optional network call.</h2>
-      <p class="lede">Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. The only part that ever touches a network is reflect(), through a pluggable LLM adapter, and even that can route through TokenFuse.</p>
+      <h2>One file on disk. Model calls only when you ask.</h2>
+      <p class="lede">Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. The only calls that leave the machine are reflect() and compress(), through a pluggable LLM adapter, and even those can route through TokenFuse; the embedding model downloads once, about 64 MB, on first use.</p>
     </div>
     <div class="diagram rv">
       <svg viewBox="0 0 960 330" role="img" aria-label="Engram architecture">
@@ -138,12 +138,12 @@
             <rect x="352" y="134" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="414" y="153" fill="#E9EFF6" font-size="10">spreading activation</text>
             <rect x="216" y="172" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="278" y="191" fill="#E9EFF6">Ebbinghaus decay</text>
             <rect x="352" y="172" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="414" y="191" fill="#E9EFF6">working memory</text>
-            <text x="346" y="228" fill="#5A6675" font-size="10.5">writes in ~4 ms &#183; no LLM in the write path</text>
+            <text x="346" y="228" fill="#5A6675" font-size="10.5">median write 8 ms &#183; no LLM in the write path</text>
           </g>
 
           <rect x="544" y="106" width="158" height="86" rx="12" fill="#141C27" stroke="#2a3547"/>
           <text x="623" y="130" fill="#E9EFF6" font-size="12.5" font-weight="700">LLM adapter</text>
-          <text x="623" y="149" fill="#8A97A6" font-size="10.5">Anthropic/OpenAI/Ollama</text>
+          <text x="623" y="149" fill="#8A97A6" font-size="10.5">6 adapters incl. Ollama</text>
           <text x="623" y="168" font-size="10.5"><tspan fill="#8A97A6">via </tspan><tspan fill="#F4B23E">TokenFuse</tspan><tspan fill="#8A97A6"> base_url</tspan></text>
           <text x="520" y="116" fill="#5A6675" font-size="9.5">reflect</text>
           <text x="520" y="188" fill="#5A6675" font-size="10.5">facts</text>
@@ -180,10 +180,12 @@
       <h2>Not a log of text. Beliefs with receipts.</h2>
     </div>
     <div class="bento">
-      <div class="card hover feature b-6 rv"><h3>Single file, embeddable</h3><p>One .engram file on SQLite plus sqlite-vec: no server, no Docker, no config file. Writes land in about 4 ms because no LLM sits in the write path.</p></div>
+      <div class="card hover feature b-6 rv"><h3>Single file, embeddable</h3><p>One .engram file on SQLite plus sqlite-vec: no server, no Docker, no config file. A write takes a median of 8 ms (200 writes on an Apple Silicon Mac, 2026-10-13) because no LLM sits in the write path.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>reflect() distills facts</h3><p>A background reflection loop groups recent episodes and asks an LLM to extract subject-predicate-object facts, each with a confidence score. Every fact keeps a why() chain.</p></div>
       <div class="card hover feature b-6 rv"><h3>Facts that know their dates</h3><p>Every fact carries two timelines: when it was true in reality, and when the system learned it. When Ivan changes jobs the old fact is closed with an end date, never deleted.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>Three ways to recall</h3><p>Cosine vectors for meaning, BM25 blended with vectors when exact terms matter, and spreading activation that walks the entity graph.</p></div>
+      <div class="card hover feature b-6 rv"><h3>A person's word outranks a model's</h3><p>A fact the person wrote is never closed by a fact a model extracted. The newer one is recorded beside it, contradictions() lists the pair, and the contradiction_found event names both.</p></div>
+      <div class="card hover feature b-6 rv d1"><h3>A fact can be refuted, not erased</h3><p>refute_fact() closes a fact without deleting it, so the timeline and as_of keep what was believed before. Every fact derived from it is marked as undermined and stays active.</p></div>
     </div>
   </div>
 </section>
@@ -224,7 +226,7 @@
     </div>
     <div class="card limits rv">
       <ul>
-        <li>Version 3.0.0, released 2026-10-18, sets provenance and scope on the MCP server: a call cannot claim user, the server's ceiling is external unless its operator raises it, and a server started with an agent id serves that agent alone (one started without serves the whole file and says so). A session turns untrusted when recall or why returns a memory that is not the user's own or is quarantined, when the caller labels what it writes as tool or external, or passes read_untrusted=true, or when the flag is set. The server cannot see what an agent read outside engram.</li>
+        <li>Since version 3.0.0 (released 2026-10-18) the MCP server sets provenance and scope: a call cannot claim user, the server's ceiling is external unless its operator raises it, and a server started with an agent id serves that agent alone (one started without serves the whole file and says so). A session turns untrusted when recall or why returns a memory that is not the user's own or is quarantined, when the caller labels what it writes as tool or external, or passes read_untrusted=true, or when the flag is set. The server cannot see what an agent read outside engram.</li>
         <li>reflect() is deliberately not exposed to MCP clients.</li>
         <li>Agent events are opt-in and off by default.</li>
       </ul>
@@ -266,7 +268,7 @@
     <div class="faq rv">
       <details>
         <summary>Does it need a server, a container or an API key?</summary>
-        <div class="a"><p>None of the three to write a memory. It is one <span class="mono">.engram</span> file on SQLite plus sqlite-vec, in-process, installed with pip. A model only enters the picture when you ask for <span class="mono">reflect()</span>, and even that call can be pointed at a local model or routed through <a href="tokenfuse.html">TokenFuse</a> so thinking has a budget too.</p></div>
+        <div class="a"><p>None of the three to write a memory. It is one <span class="mono">.engram</span> file on SQLite plus sqlite-vec, in-process, installed with pip. A model only enters the picture when you ask for <span class="mono">reflect()</span> or <span class="mono">compress()</span>, and even those calls can be pointed at a local model or routed through <a href="tokenfuse.html">TokenFuse</a> so thinking has a budget too.</p></div>
       </details>
       <details>
         <summary>Can I delete everything about one person?</summary>

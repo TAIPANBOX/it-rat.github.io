@@ -168,7 +168,7 @@
         </div>
       </div>
       <div class="hero-side rv d2">
-        <div class="row"><span class="k">shipped</span><span class="v">v1.1.0, two images (default and -chromium)</span></div>
+        <div class="row"><span class="k">shipped</span><span class="v">v1.2.0, two images (default and -chromium)</span></div>
         <div class="row"><span class="k">core</span><span class="v">Go 1.27 &#183; one direct dependency</span></div>
         <div class="row"><span class="k">one way out</span><span class="v">http and https, and nothing else</span></div>
         <div class="row"><span class="k">fails</span><span class="v">closed, and says which refusal</span></div>
@@ -502,7 +502,11 @@
       <code class="cmd">the -chromium image: <a href="https://github.com/TAIPANBOX/scopyx#backends" rel="noopener">Backends in the repository</a></code>
       <span class="note">the same service with a browser: 267 MB to pull against 3.5 MB (measured on v0.1.2, 2026-08-10)</span>
     </div>
-    <div class="cta-row rv d2" style="margin-top:18px">
+    <div class="install rv d2" style="margin-top:12px">
+      <code class="cmd">SCOPYX_ACCEPT_KEY_IN_META=1</code>
+      <span class="note">behind the TokenFuse MCP broker the key can arrive in the call itself, as a handle the broker fills in, so the agent never holds it; off by default</span>
+    </div>
+    <div class="cta-row rv d3" style="margin-top:18px">
       <a class="btn" href="../scopyx-guide.html#run">Full install and configuration in the guide <span class="mono">&#8594;</span></a>
     </div>
   </div>
@@ -519,7 +523,6 @@
       <ul>
         <li>No stealth, no CAPTCHA solving, no TLS-fingerprint matching, no bulk crawl, no image harvesting, and <span class="mono">robots.txt</span> is honoured.</li>
         <li>A vendor API needs an adapter in front of it, and this repository ships none.</li>
-        <li>With both mechanisms off, the chromium test that asserts the refused server is never reached is the one that should fail. That run is not recorded yet.</li>
       </ul>
     </div>
   </div>
@@ -743,7 +746,7 @@ const STATES={
   "0,1":{state:"the floor off", where:"refused by the accountant", verdict:"never reached", stop:true,
     title:"tracker.example: refused", why2:["CDP failed the request","before it was sent"],
     saw:"saw nothing",
-    text:"With the proxy decision removed, the request is still refused, because CDP interception decided it by its full URL. This is the state a run with the proxy's decision removed should measure, and the refused server should still never be reached. That run is not recorded yet. What is lost here is not the refusal but the guarantee: the accountant is the browser's own cooperation, and a bug, a flag or a version can withdraw it."},
+    text:"With the proxy decision removed, the request is still refused, because CDP interception decided it by its full URL. The refused server is still never reached. What is lost here is not the refusal but the guarantee: the accountant is the browser's own cooperation, and a bug, a flag or a version can withdraw it."},
   "1,0":{state:"the accountant off", where:"refused by the floor", verdict:"never reached", stop:true,
     title:"tracker.example: refused", why2:"the proxy did not open the socket",
     saw:"saw nothing",
@@ -751,7 +754,7 @@ const STATES={
   "0,0":{state:"both off", where:"nothing decided it", verdict:"REACHED", stop:false,
     title:"tracker.example: fetched", why2:["nothing stood between","the page and its server"],
     saw:"saw one request, from your agent's IP",
-    text:"Both removed, and the pixel is fetched. This is the fourth mutation, and it is the one that should go red: the case asserts on the SERVER that would have served it, not on what the result says. That run is not recorded yet. An outcome assertion would pass equally well if the request happened and the answer were discarded, which is the difference between governing egress and filtering a report about it."}
+    text:"Both removed, and the pixel is fetched. The refused server is reached once and the test goes red: the case asserts on the SERVER that would have served it, not on what the result says. An outcome assertion would pass equally well if the request happened and the answer were discarded, which is the difference between governing egress and filtering a report about it."}
 };
 
 function render(){

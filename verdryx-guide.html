@@ -79,7 +79,7 @@
   </div>
 </section>
 
-<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#grades">What it grades</a></li><li><a href="#cost-per-outcome">Cost per outcome</a></li><li><a href="#graders">The six graders</a></li><li><a href="#in-the-stack">In the stack</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
+<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#grades">What it grades</a></li><li><a href="#cost-per-outcome">Cost per outcome</a></li><li><a href="#graders">The six graders</a></li><li><a href="#in-the-stack">In the stack</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#changes-november">What changed in November</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
 
 <section class="sec" id="overview" style="padding-top:14px">
   <div class="wrap">
@@ -89,7 +89,7 @@
     </div>
     <div class="prose rv">
       <ul>
-        <li><span><b>Version:</b> 0.1.0 &#183; Python 3.11+.</span></li>
+        <li><span><b>Version:</b> 0.2.0 &#183; Python 3.11+.</span></li>
         <li><span><b>Tests:</b> fully offline suite.</span></li>
         <li><span><b>Core deps:</b> one, rfc8785 (+ optional extras).</span></li>
         <li><span><b>Reads:</b> tokenfuse Parquet traces &#183; NDJSON &#183; CSV.</span></li>
@@ -133,6 +133,13 @@
       <p>The graders and drift maths use only the standard library. The one runtime dependency is rfc8785, which canonicalises the JSON the event chain is hashed over. Anthropic and Parquet support are opt-in extras, not a tax on the common path.</p>
       <h3>Offline test suite</h3>
       <p>The suite runs against a deterministic StubLLMAdapter, with no network and no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.</p>
+      <h3>Findings</h3>
+      <p>drift and slo used to print a verdict and forget it. A drift regression, or an SLO breach the interval establishes (the bar the bus already uses), is now stored as a finding: the agent, the window, the kind (<span class="mono">drift</span>, <span class="mono">slo_exhausted</span> or <span class="mono">slo_fast_burn</span>), the evidence (run ids, the lowest scoring cases, the gateway runs that failed an indicator) and a suspect model or version. The suspect says which of three things it is: a change, no change across the runs compared, or too few runs to compare. <span class="mono">verdryx eval</span> can record an <span class="mono">--agent-version</span> on a run. The same failure seen again is one finding seen again, and <span class="mono">verdryx findings list</span> and <span class="mono">show</span> read them back.</p>
+      <h3>Fix verification</h3>
+      <p><span class="mono">verdryx findings fix ID --note ...</span> registers a fix, with an optional <span class="mono">--version</span>. The next drift or slo decides it from the runs that started after it. Measured and clean is <span class="mono">verified</span>, and the finding closes. Measured and still failing is <span class="mono">failed</span>: the finding reopens and the attempt is kept with its numbers. Anything short of a measurement stays <span class="mono">pending</span> with its reason: no run since, too few runs, runs of another version, or an interval that still covers the target. A fix draws a line in time. Runs from before it neither verify it nor undo it, and a closed finding is not reopened by the runs it was closed over. Unmeasured is never a pass.</p>
+      <h3>Human grades</h3>
+      <p><span class="mono">verdryx grade RUN CASE VALUE --author NAME --key-file PATH</span> writes a person's grade. It replaces the model's value in a run's mean, in drift and in the quality floor, and the model's own value stays beside it. A later grade supersedes an earlier one, and both stay on record. Every grade carries its author, a principal registered with <span class="mono">verdryx principal add</span>, whose generated key is written once (mode 0600) and stored as a hash. The role <span class="mono">reviewer</span> can grade; the role <span class="mono">uploader</span> cannot. <span class="mono">eval</span> needs no credential and has no path to a grade: a gate reads the package for exactly one place that writes a grade and exactly one caller of it.</p>
+      <p>All of it is deterministic: no model, no network and no new event type on the bus.</p>
       <h3>Defensive by design</h3>
       <p>Grades an operator's own agents against an eval set or a production outcome tag. The README puts it plainly: it &#8220;never manipulates outputs, never crafts adversarial prompts, and never attacks anything.&#8221;</p>
     </div>
@@ -149,7 +156,7 @@
       <h3>How the figure is built</h3>
       <p>The input is the gateway's own trace, not a second pipeline built to agree with it: run id, step, outcome tag, decision, and cost in microdollars, read straight from TokenFuse's Parquet segments, NDJSON or CSV. Verdryx reduces it the same way TokenFuse itself does, so the two never quietly disagree about what a run cost.</p>
       <p>Rows are ordered by run and step, and the last non-empty tag a run carries is the one that counts: a case that escalated after two failed attempts is an escalation, not three separate stories.</p>
-      <p>Then the parts most reports lose. Every call in a run folds into that run's bucket, not only the tagged one, so an untagged intermediate call's cost is not dropped on the floor. A run nobody ever tagged still appears, under an explicit untagged label, rather than vanishing from the report and making the average look better than it is. And a call the breaker blocked is still counted, because a refused call is part of what the outcome cost you.</p>
+      <p>Then the parts most reports lose. Every call in a run folds into that run's bucket, not only the tagged one, so an untagged intermediate call's cost is not dropped on the floor. A run nobody ever tagged still appears, under an explicit untagged label, rather than vanishing from the report and making the average look better than it is. And a call the breaker blocked is still counted, but at no cost: the figure recorded for it is an avoided estimate, never a settled charge, so it stays out of what the outcome cost.</p>
       <p>The result is one row per outcome tag, with count, total and mean, plus an overall row pooling everything. A dollar figure per resolved case is a number an operator can act on; a monthly total is not.</p>
     </div>
   </div>
@@ -191,8 +198,8 @@
       <h2>Grade with a stub, then price the traces.</h2>
     </div>
     <div class="prose rv">
-      <div class="cmd">git clone https://github.com/TAIPANBOX/verdryx &amp;&amp; cd verdryx<br>python -m venv .venv &amp;&amp; source .venv/bin/activate<br>pip install -e .</div>
-      <p>Into a virtual environment: system Python is usually externally managed. There is no PyPI package, so the version you run is the commit you can read.</p>
+      <div class="cmd">git clone https://github.com/TAIPANBOX/verdryx &amp;&amp; cd verdryx<br>python -m venv .venv &amp;&amp; source .venv/bin/activate<br>pip install -e '.[traces]'</div>
+      <p>Into a virtual environment: system Python is usually externally managed. There is no PyPI package, so the version you run is the commit you can read. The traces extra adds pyarrow, which reads TokenFuse's Parquet traces; the stub run needs only the base install.</p>
       <div class="cmd">verdryx eval evalset.json --model stub --db verdryx.db</div>
       <p>No network, no key: <span class="mono">--model stub</span> is deterministic. Then price the traces it left behind.</p>
       <div class="cmd">verdryx cost-per-correct --traces $TOKENFUSE_DATA_DIR</div>
@@ -209,8 +216,31 @@
     </div>
     <div class="prose rv">
       <ul>
-        <li><span><b>On main:</b> its price book mirrors the gateway's, row for row: every listed Claude id, the Gemini rows on Vertex AI, the vendors' prices of 13 October with their long-prompt tiers, and the <span class="mono">openai/...</span> rows.</span></li>
+        <li><span><b>Shipped in v0.1.0, released 19 October:</b> its price book mirrors the gateway's, row for row: every listed Claude id, the Gemini rows on Vertex AI, the vendors' prices of 13 October with their long-prompt tiers, and the <span class="mono">openai/...</span> rows.</span></li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="changes-november" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">November 2026</div>
+      <h2>What changed in November</h2>
+    </div>
+    <div class="tbl-scroll rv">
+      <table class="tbl">
+        <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
+        <tbody>
+          <tr><td>v0.2.0</td><td>drift and slo failures are stored as findings, with their evidence and a suspect model or version. verdryx findings list and show read them.</td></tr>
+          <tr><td>v0.2.0</td><td>A fix is registered against a finding and decided by the runs that follow: verified, failed, or pending with its reason.</td></tr>
+          <tr><td>v0.2.0</td><td>A person's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's value stays beside it.</td></tr>
+          <tr><td>v0.2.0</td><td>drift writes its quality_drift event under the agent stored with the newest run when no --agent-id is given, and eval and drift say on stderr how many events were not written, to which file and why.</td></tr>
+          <tr><td>v0.2.0</td><td>eval has --typed-timeout for a slow Typryx, and the error now says "did not answer within Ns" instead of "could not reach".</td></tr>
+          <tr><td>v0.2.0</td><td>slo_burn carries burn_events_seen, the number of runs behind burn_rate, so a rate nobody measured is told apart from a measured zero.</td></tr>
+          <tr><td>v0.2.0</td><td>The price book mirrors gpt-6.1-terra and its openai/ twin from TokenFuse's default price book.</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -225,6 +255,7 @@
       <ul>
         <li><span>Only the judge and the typed grader can spend money, and neither runs by default. The typed grader runs only when a run is given a Typryx address with <span class="mono">--typed-url</span>.</span></li>
         <li><span>A case Typryx cannot answer is counted apart with its reason, never scored as a zero.</span></li>
+        <li><span>The store file is the trust boundary for grades. A console build that reads scores directly shows the model's value, not a person's, until it reads <span class="mono">human_grades</span> too.</span></li>
         <li><span>There is no PyPI package, so the version you run is the commit you can read.</span></li>
         <li><span>The sixty seconds on the room are a simulation, shaped by the real run: a live, Claude-backed support workload whose outcome-tagged traces were read back and graded.</span></li>
       </ul>

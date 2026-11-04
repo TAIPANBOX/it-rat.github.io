@@ -205,7 +205,7 @@
       "markdown": "https://it-rat.com/vouchryx-guide.md",
       "title": "Vouchryx guide",
       "kind": "guide",
-      "description": "How Vouchryx proves and ends an agent's delegation, its six endpoints, how to run and configure it, what changed in October 2026, and its limits."
+      "description": "How Vouchryx proves and ends an agent's delegation, its seven endpoints, how to run and configure it, what changed in October and November 2026, and its limits."
     },
     {
       "url": "https://it-rat.com/qryx-guide.html",
@@ -240,7 +240,7 @@
       "markdown": "https://it-rat.com/mockryx-guide.md",
       "title": "Mockryx guide",
       "kind": "guide",
-      "description": "How Mockryx fire drills work, how to run and download it, the drills on main not yet released, and what it does not prove yet."
+      "description": "How Mockryx fire drills work, how to run and download it, the drills added since v0.2.1, and what it does not prove yet."
     },
     {
       "url": "https://it-rat.com/trailryx-guide.html",
@@ -254,14 +254,14 @@
       "markdown": "https://it-rat.com/heraldyx-guide.md",
       "title": "Heraldyx guide",
       "kind": "guide",
-      "description": "How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed in v0.7.0 and v0.8.0, and its boundaries."
+      "description": "How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed from v0.7.0 to v0.9.0, and its boundaries."
     },
     {
       "url": "https://it-rat.com/engram-guide.html",
       "markdown": "https://it-rat.com/engram-guide.md",
       "title": "Engram guide",
       "kind": "guide",
-      "description": "How Engram works, the live runs against real Claude, how to install it, what changed on main, and what it does not do yet, in full."
+      "description": "How Engram works, the live runs against real Claude, how to install it, what changed in v3.0.0 and v3.1.0, and what it does not do yet, in full."
     },
     {
       "url": "https://it-rat.com/platform-guide.html",

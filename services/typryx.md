@@ -56,7 +56,7 @@ Eight groups, 480 judgements, never pooled. Every group was 96% to 100% confiden
 
 ## What each part of the stack would get.
 
-Three edges are built and wired in, but none is recorded as a live run yet.
+Three edges are built and wired in, and each has been run: MCP clients and the TokenFuse broker on 2026-09-25, Verdryx's typed grader against typryx v0.5.1.
 
 Click or focus a node above for what typryx gives it, which template, and what happens with typryx absent.
 
