@@ -34,11 +34,11 @@ Snapshot the graph, then fail the build the moment a new weak or quantum-vulnera
 
 ## The inventory the rest of the stack borrows from.
 
-Qryx emits every finding as an agent-event onto the shared bus that [Platform](https://it-rat.com/services/platform.html) defines and every service writes to. Crypto posture is one plane of a wider practice: [AI agent governance](https://it-rat.com/ai-agent-governance.html), and the defensive picture in [AI agent security](https://it-rat.com/ai-agent-security.html).
+Qryx can write its agent-passport findings, drift, policy violations and signed-evidence records as agent-events onto the shared bus that [Platform](https://it-rat.com/services/platform.html) defines and every service writes to (opt-in, with --events). Only a finding that names a real agent emits an event, which today means the findings of qryx agents; scans of code, binaries, TLS and cloud KMS carry no agent and emit none. Crypto posture is one plane of a wider practice: [AI agent governance](https://it-rat.com/ai-agent-governance.html), and the defensive picture in [AI agent security](https://it-rat.com/ai-agent-security.html).
 
 ## One binary, any platform.
 
-Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.2 toolchain downloads itself on the first build.
+Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.3 toolchain downloads itself on the first build.
 
 ## What it leaves out, on purpose.
 
@@ -57,7 +57,7 @@ With an inventory, because you cannot migrate what you have not found. Qryx scan
 A cryptographic bill of materials in CycloneDX 1.6: one component per unique asset and risk class, with every occurrence attached. It lives in the same supply-chain tooling as your SBOMs, so cryptography stops having its own isolated report nobody reads.
 
 **Q: Can it fail a build when someone ships a weak key?**
-Yes. Snapshot the graph as a baseline, and a new weak or quantum-vulnerable asset fails the build with a distinct exit code, with separate codes for a standards violation and a regressed compliance trend. That is the day it matters, not the next audit cycle.
+Yes. Snapshot the graph as a baseline, and a new weak or quantum-vulnerable asset fails the build with exit code 2. The policy engine (a standards violation) and a regressed compliance trend both exit 3, so CI can tell a new weak asset from the other two. That is the day it matters, not the next audit cycle.
 
 **Q: Does it find hardcoded keys?**
 It does, and it counts them honestly: cryptography that exists only in test fixtures is scanned, reported and kept out of the production inventory, with one line saying how much was set aside. Counting fixtures inflates the number you are trying to drive to zero.

@@ -135,7 +135,7 @@
 
           <rect x="390" y="88" width="230" height="130" rx="16" fill="#10161F" stroke="#34D399" stroke-width="1.6"/>
           <text x="505" y="118" fill="#34D399" font-size="13.5" font-weight="700">your Cloud plane</text>
-          <text x="505" y="138" fill="#8A97A6" font-size="10.5">TokenFuse &#183; Wardryx &#183; Idryx</text>
+          <text x="505" y="138" fill="#8A97A6" font-size="10.5">TokenFuse &#183; Wardryx &#183; Vouchryx</text>
           <text x="505" y="154" fill="#8A97A6" font-size="10.5">self-hosted &#183; firewalled</text>
           <text x="505" y="170" fill="#8A97A6" font-size="10.5">never faces the internet</text>
           <text x="505" y="196" fill="#5A6675" font-size="10">audit chain &#183; evidence packs</text>
@@ -168,10 +168,10 @@
       <h3>One core, one shell</h3>
       <p>The browser console is the product, and it is deliberately thin: every screen is a call into one shared Rust command layer - stores, connectors, ceremonies, the graph all live in the core, never in a screen. Written once, tested once, so a command cannot mean one thing in one place and something else in another.</p>
       <h3>Hardware signatures, shipped</h3>
-      <p>Kills, budget changes and approval grants are confirmed per action with a passkey on your own device: Touch ID, Windows Hello or a security key. With no passkey enrolled the action is refused until one is enrolled, unless an operator sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY; then it still works and is journaled software-signed, labeled honestly.</p>
+      <p>Kills, budget changes, approval grants, closing a retained reservation, revoking a delegation and stopping an agent are confirmed per action with a passkey on your own device: Touch ID, Windows Hello or a security key. Stop agent asks <a href="services/vouchryx.html">Vouchryx</a> to ban the agent, so the tokens it holds die at every door that polls the revocation list, then kills each of its open runs on the Cloud. With no passkey enrolled the action is refused until one is enrolled, unless an operator sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY; then it still works and is journaled software-signed, labeled honestly.</p>
       <p><b>What the console signs, and what it writes down.</b> The console mints a challenge bound to that exact command and its exact arguments, verifies the ES256 assertion server-side, and journals which enrolled credential confirmed it, next to the typed break-glass reason. A signature over a different command, or over the same command with different arguments, does not verify.</p>
       <p>No passkey enrolled yet? The action is refused until you enroll one. Only an operator who sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY gets the software-signed fallback, labeled honestly, never dressed up as hardware.</p>
-      <p>From genaryx 03c6c88. On 2026-10-19 stack-single and stack-k8s pin the console image v1.1.48, which gets the same refusal from GENARYX_WEB_REQUIRE_PASSKEY=1, and both launchers set that variable. stack-up starts no console.</p>
+      <p>Since 2026-10-19 the passkey is required by default: GENARYX_WEB_REQUIRE_PASSKEY is no longer read for its setting, and a stack that still sets it gets the same required mode. stack-up starts no console.</p>
       <h3>WireGuard, but yours</h3>
       <p>Your box runs the WireGuard side and issues each device its own peer config as a QR: scan, connect, done. Inside that tunnel the console answers over HTTPS on its own name and nowhere else, and it never faces the internet.</p>
       <p><b>Why the tunnel, and what the certificate is actually for.</b> The tunnel is raised by your own client, not by anything of ours. On the box itself the console is bound to loopback, so the only way in is the tunnel.</p>
@@ -238,7 +238,7 @@
     <div class="prose rv">
       <p>Incident 360 has a Case section: a deterministic case file for an incident, assembled from reads the console already makes. There is no model in it, no new service, no new event type and no write to any plane. Each fact names its plane, its row id and a digest, the SHA-256 of the row, so a changed row gives a different digest, and the same inputs give the same case.</p>
       <h3>What goes in</h3>
-      <p>For an incident that is a bus event: the event itself, the run's timeline in time order, and the earlier events of the same type, newest first. From the identity plane, the subject agent's record and its alerts, and its blast radius; an agent the identity plane does not know is an empty answer, not a failure. From the policy plane, the policy status and the run's approvals. From the Cloud, the run's spend row.</p>
+      <p>For an incident that is a bus event: the event itself, the run's timeline in time order, and the earlier events of the same type, newest first. From the identity plane, the subject agent's record and its alerts, and its blast radius; an agent the identity plane does not know is an empty answer, not a failure. From the policy plane, the policy status and the run's approvals. From the Cloud, the run's spend and the gateway's decisions on it. From Engram, what memory recalls for that kind of incident.</p>
       <h3>A missing plane is a line in the case</h3>
       <p>A plane that did not answer is a line in the case, and a plane that answered with nothing is told apart from it. A question that was never asked is a line too. Incident 360 lists what was gathered and what is missing in the console's own words, so a case with no reachable plane still has a line for every section.</p>
       <h3>A refusal is filed under its key</h3>
@@ -342,6 +342,8 @@
           <tr><td><!-- release-slot: genaryx -->on main</td><td>Incident 360 has a Case section: a deterministic case file for an incident, assembled from reads the console already makes, each fact naming its plane, its row and a digest.</td></tr>
           <tr><td><!-- release-slot: genaryx -->on main</td><td>Felyx names only ids and amounts a tool returned, reads plane text as fenced data, and files a card only for a target a tool returned.</td></tr>
           <tr><td><!-- release-slot: genaryx -->on main</td><td>Felyx can read a case file instead of running a tool loop: it is given the case and no tool, cites only ids the case holds and proposes nothing.</td></tr>
+          <tr><td><!-- release-slot: genaryx -->on main</td><td>A candidate policy is proved against the decisions already recorded (a Wardryx replay) and a candidate budget against the calls already made (a TokenFuse backtest): each says whether it would have stopped the incident and how many other decisions or calls it would have changed, and applies nothing.</td></tr>
+          <tr><td><!-- release-slot: genaryx -->on main</td><td>A case can be sealed as one canonical document, written in the form RFC 8785 fixes, with the operator's decision and the proofs they asked for; its digest is the target of one line in the console's own chain, and sealing changes nothing in any plane.</td></tr>
         </tbody>
       </table>
     </div>

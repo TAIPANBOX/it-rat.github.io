@@ -88,10 +88,10 @@
         </div>
       </div>
       <div class="hero-side rv d2">
-        <div class="row"><span class="k">status</span><span class="v">v2.4.0, surface frozen at 1.0 &#183; main is supported</span></div>
+        <div class="row"><span class="k">status</span><span class="v">v2.5.1, surface frozen at 1.0 &#183; main is supported</span></div>
         <div class="row"><span class="k">core</span><span class="v">Go 1.27 &#183; deterministic PDP</span></div>
         <div class="row"><span class="k">API</span><span class="v">POST /v1/decide on :8090</span></div>
-        <div class="row"><span class="k">rules</span><span class="v" style="text-align:right">deny_tool &#183; allow_tool &#183; deny_if_unattested &#183; deny_if_chain_unproven &#183; max_steps &#183; allow_domains &#183; deny_above_usd &#183; require_human_above_usd &#183; hold_if_signal</span></div>
+        <div class="row"><span class="k">rules</span><span class="v" style="text-align:right">deny_tool &#183; allow_tool &#183; allow_models &#183; allow_domains &#183; max_steps &#183; deny_if_unattested &#183; require_identity_source &#183; max_chain_depth &#183; require_root_principal &#183; deny_if_chain_unproven &#183; deny_above_usd &#183; require_human_above_usd &#183; hold_if_signal</span></div>
         <div class="row"><span class="k">lineage</span><span class="v">PDP/PEP &#183; XACML's good ideas</span></div>
         <div class="row"><span class="k">licence</span><span class="v">Apache-2.0</span></div>
       </div>
@@ -120,7 +120,7 @@
       <p class="lede">The PEP posts the proposed action: agent, tools, declared domains, step count, estimated cost, attestation. Wardryx matches policies by agent:// glob and applies the rules in a fixed order, where deny_above_usd outranks every approval and the hold check comes after it.</p>
     </div>
     <div class="diagram rv">
-      <svg viewBox="0 0 960 340" role="img" aria-label="Wardryx architecture: Two enforcement points, TokenFuse on the money path and Scopyx on the web path, both post /v1/decide; the Wardryx PDP returns allow, deny or hold with a cacheable flag; holds resolve via signed approval tokens; events and OTLP spans flow out; Terraform manages policies as code">
+      <svg viewBox="0 0 960 340" role="img" aria-label="Wardryx architecture: Two enforcement points, TokenFuse on the money path and Scopyx on the web path, both post /v1/decide; the Wardryx PDP returns allow, deny or hold with a cacheable flag; holds resolve via signed approval tokens; events and OTLP spans flow out; Terraform manages policies as code; an optional Verdryx event file adds a standing slo_burn signal that a hold_if_signal rule can turn into a hold.">
         <defs><marker id="a2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker></defs>
         <g font-family="ui-monospace,Menlo" text-anchor="middle">
           <rect x="10" y="92" width="118" height="52" rx="12" fill="#141C27" stroke="#F4B23E" stroke-width="1.4"/>
@@ -147,11 +147,16 @@
             <text x="292" y="158" fill="#E9EFF6">attestation</text>
             <text x="292" y="173" font-size="9.5">&#8220;None&#8221; never passes</text>
             <rect x="364" y="140" width="128" height="42" rx="8" fill="#141C27" stroke="#2a3547"/>
-            <text x="428" y="158" fill="#E9EFF6">decision cache</text>
-            <text x="428" y="173" font-size="9.5">agent+tools+attest</text>
+            <text x="428" y="158" fill="#E9EFF6">cacheable flag</text>
+            <text x="428" y="173" font-size="9.5">the caller's cache</text>
             <text x="360" y="208" fill="#5A6675" font-size="10.5">deterministic: same request, same verdict</text>
             <text x="360" y="224" fill="#5A6675" font-size="10.5">no LLM anywhere in the decision path</text>
           </g>
+
+
+          <rect x="10" y="224" width="170" height="46" rx="12" fill="#141C27" stroke="#FF7AA2" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="95" y="244" fill="#FF7AA2" font-size="11.5" font-weight="700">verdryx event file</text>
+          <text x="95" y="260" fill="#8A97A6" font-size="10">slo_burn &#183; optional</text>
 
           <rect x="570" y="118" width="140" height="62" rx="12" fill="#141C27" stroke="#2a3547"/>
           <text x="640" y="140" fill="#E9EFF6" font-size="12.5" font-weight="700">verdict</text>
@@ -180,6 +185,7 @@
           <line x1="710" y1="132" x2="734" y2="92" marker-end="url(#a2)"/>
           <line x1="710" y1="166" x2="734" y2="230" marker-end="url(#a2)"/>
           <line x1="360" y1="284" x2="360" y2="254" marker-end="url(#a2)"/>
+          <line x1="180" y1="236" x2="202" y2="236" stroke="#FF7AA2" marker-end="url(#a2)"/>
         </g>
       </svg>
     </div>
@@ -250,7 +256,7 @@
         <li>When the decision point is unreachable, the TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing. The unset default under enforce became closed on 2026-10-17. All three launchers set the failure mode to closed on purpose.</li>
         <li>With no shared database, an approval token's single-use guarantee is per process, and the server says so at startup.</li>
         <li>With no database, the record of accepted DPoP proofs is per process too, and serve says so at start.</li>
-        <li>The typed risk signal from Typryx is an opt-in the launchers leave off by default, and it was measured on the stub backend only.</li>
+        <li>The typed risk signal from Typryx is an opt-in the launchers leave off by default.</li>
       </ul>
     </div>
   </div>

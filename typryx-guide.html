@@ -259,7 +259,7 @@
       <h2>What each part of the stack would get.</h2>
     </div>
     <div class="prose rv">
-      <p>Three edges are built and wired in, but none is recorded as a live run yet. The Wardryx edge is built and released and runs only against the stub backend; the rest are what a later integration would read, not something built.</p>
+      <p>Three edges are built and wired in, and each has been run: Claude Code as an MCP client and TokenFuse's MCP broker with typryx as a named upstream, both measured on 2026-09-25, and Verdryx's typed grader, run end to end against typryx v0.5.1 with a local model. The Wardryx edge is built and released and runs only against stand-ins; the rest are what a later integration would read, not something built.</p>
     </div>
     <div class="tbl-scroll rv" style="margin-top:20px">
       <table class="tbl">
@@ -268,9 +268,9 @@
           <tr><td>MCP clients (Claude Code and others)</td><td>a typed answer with a probability, per call, over MCP</td><td class="yes">built</td></tr>
           <tr><td>TokenFuse, as broker</td><td>a named upstream; one tool_call recorded against the agent</td><td class="yes">built</td></tr>
           <tr><td>TokenFuse, router shadow mode</td><td>the class it would have routed to, alongside cost, recorded only</td><td class="warn">planned</td></tr>
-          <tr><td>Verdryx</td><td>a typed grader beside the existing LLM judge, opt-in per run with <span class="mono" style="font-size:12.5px">--typed-url</span></td><td class="yes">built, not run live</td></tr>
+          <tr><td>Verdryx</td><td>a typed grader beside the existing LLM judge, opt-in per run with <span class="mono" style="font-size:12.5px">--typed-url</span></td><td class="yes">built, and run end to end against a local model</td></tr>
           <tr><td>Wardryx</td><td>an <span class="mono" style="font-size:12.5px">action.risk_class</span> signal a <span class="mono" style="font-size:12.5px">hold_if_signal</span> rule may turn into a hold, never a deny; opt-in in the launchers, off by default</td><td class="warn">built and released, run only against a loopback stand-in (v0.4.0 release notes)</td></tr>
-          <tr><td>CostCrew</td><td>a suggested class or priority at triage; a person still decides</td><td class="warn">built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL, not run live</td></tr>
+          <tr><td>CostCrew</td><td>a suggested anomaly class at triage; a person still decides</td><td class="warn">built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL, not run live</td></tr>
           <tr><td>Genaryx</td><td>a panel, live only when <span class="mono" style="font-size:12.5px">GENARYX_TYPRYX_URL</span> resolves</td><td class="warn">planned</td></tr>
           <tr><td>Engram</td><td>an optional importance score</td><td class="warn">planned</td></tr>
           <tr><td>Journal readers (Trailryx, Idryx)</td><td>the four event types reach the shared events volume; heraldyx renders them; Idryx lists typryx as a source and never calls it; Trailryx refuses them by design</td><td class="warn">on the shared bus</td></tr>
@@ -287,7 +287,7 @@
       <h2>Optional, and it changes nothing when it is absent.</h2>
     </div>
     <div class="prose rv">
-      <p>Typryx sits behind <a href="services/tokenfuse.html">TokenFuse</a>'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the <span class="mono" style="font-size:12.5px">request.complexity</span> template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. <a href="services/verdryx.html">Verdryx</a> can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built and not yet run live. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. <a href="services/wardryx.html">Wardryx</a> can read one: <span class="mono" style="font-size:12.5px">typryx wardryx-proxy</span> sits in front of it, asks <span class="mono" style="font-size:12.5px">action.risk_class</span> about a pending tool call, and adds the answer to the decision request, where a <span class="mono" style="font-size:12.5px">hold_if_signal</span> rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.</p>
+      <p>Typryx sits behind <a href="services/tokenfuse.html">TokenFuse</a>'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the <span class="mono" style="font-size:12.5px">request.complexity</span> template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. <a href="services/verdryx.html">Verdryx</a> can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built, and run end to end against typryx v0.5.1 with a local model. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. <a href="services/wardryx.html">Wardryx</a> can read one: <span class="mono" style="font-size:12.5px">typryx wardryx-proxy</span> sits in front of it, asks <span class="mono" style="font-size:12.5px">action.risk_class</span> about a pending tool call, and adds the answer to the decision request, where a <span class="mono" style="font-size:12.5px">hold_if_signal</span> rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.</p>
       <p>Without it, the rest of the stack behaves exactly as it does today: nothing here is consumed by anything else unless an operator wires it in.</p>
     </div>
   </div>
@@ -313,7 +313,7 @@
       <h2>What changed, release by release.</h2>
     </div>
     <div class="prose rv">
-      <p>Released as v0.4.0 on 2026-10-04, adding the <span class="mono" style="font-size:12.5px">action.risk_class</span> template and <span class="mono" style="font-size:12.5px">wardryx-proxy</span>, after v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, with CI green on the v0.4.0 release run (2026-10-04). Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.</p>
+      <p>Released as v0.5.1 on 2026-10-26, built on Go 1.27.3, after v0.5.0 on 2026-10-19, v0.4.1 on 2026-10-14, v0.4.0 on 2026-10-04 (which added the <span class="mono" style="font-size:12.5px">action.risk_class</span> template and <span class="mono" style="font-size:12.5px">wardryx-proxy</span>), v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, with the release run for v0.5.1 green. From v0.5.0 a new event stream file is created with mode 0640, and only in a directory the service's account owns. Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.</p>
       <p>The releases from 1 to 15 October 2026, with what each one shipped, are in <a href="changes-2026-10.html#typryx">the stack's changes for October</a>.</p>
     </div>
   </div>
@@ -328,9 +328,9 @@
     <div class="prose rv">
       <ul>
         <li><span><b>Not yet:</b> a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers in the tables above.</span></li>
-        <li><span>Three edges are built and wired in, but none is recorded as a live run yet. The Wardryx edge is built and released and runs only against the stub backend.</span></li>
+        <li><span>The Wardryx edge is built and released and runs only against stand-ins.</span></li>
         <li><span>The launchers carry the Wardryx signal as an opt-in, off by default, and it was measured on the stub backend only, never with a real model behind it.</span></li>
-        <li><span>Verdryx's typed verdict is built and not yet run live; CostCrew's suggested class is built and released in costcrew v0.4.0 and not run live; the TokenFuse router, Genaryx and Engram readers are planned.</span></li>
+        <li><span>CostCrew's suggested class is built and released in costcrew v0.4.0 and not run live; the TokenFuse router, Genaryx and Engram readers are planned.</span></li>
         <li><span>In the loop from a question to a tuned model, steps 1 to 5 are built, tested and run on the stub backend; steps 6 to 9 are not run end to end, and no tuned model is measured yet.</span></li>
         <li><span>The own model measured is a small 7B model on a machine with no GPU. A model you have tuned, or a machine with a GPU, is not measured.</span></li>
         <li><span>OpenAI's current models, gpt-5.x and gpt-6, refuse token probabilities outright, so the openai-logprobs backend reaches only earlier hosted models and open models.</span></li>

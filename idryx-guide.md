@@ -48,7 +48,7 @@ This is a simulation, but it replays the shape of the live validation run: Token
 
 ### Sources in. Findings out. Nothing written back.
 
-Five read-only connectors describe the humans, keys and service accounts; the agent-event bus streams what TokenFuse, Wardryx, Mockryx and Verdryx watched the agents do. One core resolves the graph, walks delegation chains root-first, and runs the 27 detectors. Everything that leaves is an alert, a BOM, or a proposed diff a human applies.
+Read-only connectors for Okta, Entra, AWS, GCP and Azure describe the humans, keys and service accounts; the agent-event bus streams what TokenFuse, Wardryx, Mockryx, Verdryx and Scopyx watched the agents do. One core resolves the graph, walks delegation chains root-first, and runs the 27 detectors. Everything that leaves is an alert, a BOM, a proposed diff a human applies, or an identity_finding event on the bus.
 
 ### One graph, every identity
 
@@ -78,7 +78,7 @@ Detection is deterministic: statistics and rules over the graph. The model is an
 
 **Non-human identity hygiene.** Service accounts unused past ninety days, non-human identities holding admin-equivalent permissions or no owner at all, and the quiet escalation permissions that grant a path to admin without holding admin: `iam:PassRole` on AWS, `actAs` on GCP, role-assignment writes on Azure. A credential seen from many countries, IPs or devices is flagged for what it usually is: shared or leaked.
 
-**Agents and AI.** An agent that reaches admin through its delegation chain; egress to an LLM API nobody registered; an MCP server in use but missing from the sanctioned registry, and an agent whose declared tools are exposed by that unsanctioned server; a spend runaway correlated with the agent's privilege, delegation depth and blast radius; a privileged agent with no attestation on record; DLP-blocked actions accumulating within a day; a taint-tracked action stopped; an MCP server whose tooling changed under an agent; and an agent whose passport declares one set of model providers while its egress reaches another.
+**Agents and AI.** An agent that reaches admin through its delegation chain; egress to a known external LLM API; an MCP server in use but missing from the sanctioned registry, and an agent whose declared tools are exposed by that unsanctioned server; a spend runaway correlated with the agent's privilege, delegation depth and blast radius; a privileged agent with no attestation on record; DLP-blocked actions accumulating within a day; a taint-tracked action stopped; an MCP server whose tooling changed under an agent; an agent whose passport declares one set of model providers while its egress reaches another; connections to one destination on a regular cadence (beaconing); a process that names itself an agent identity which no Passport, IAM record or event knows (claimed_agent_unknown), or that reaches an LLM provider its Passport does not declare (claimed_agent_drift); an agent whose Passport binds it to a workload while its only runtime carrier is a process that named itself (claimed_agent_unattested); and an agent whose web egress an enforcement point governs but which opened its own connections to public addresses (unrouted_egress).
 
 **Least privilege.** Permissions granted and never exercised, with a revocation to propose. It fires only where usage data exists, so a source with no observed-usage signal produces no recommendations rather than confident nonsense.
 
@@ -92,7 +92,7 @@ What does this key reach, transitively? Idryx computes the union of every permis
 
 ### eBPF network sensor
 
-A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent fetching packages straight from PyPI on every start. That was one agent turn on one lab node, on 2026-09-27; it has not yet run on a fleet or a cloud host.
+A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent connecting straight to the PyPI package hosts when it started. That was one agent turn on one lab node, on 2026-09-27; it has not yet run on a fleet or a cloud host.
 
 ### AI usage: declared, seen, in the code
 
@@ -123,7 +123,7 @@ Your IdP counts the humans. The keys, service accounts and agents acting on thei
 
 ## The one that reads everything and touches nothing.
 
-Idryx consumes the same envelope [TokenFuse](https://it-rat.com/services/tokenfuse.html), [Wardryx](https://it-rat.com/services/wardryx.html), [Mockryx](https://it-rat.com/services/mockryx.html) and [Verdryx](https://it-rat.com/services/verdryx.html) write: the agent-event. It validates Agent Passports against the [platform contract](https://it-rat.com/services/platform.html), and the loop closes at the policy plane: Wardryx's deny_if_unattested policy refuses an agent with no live attestation, and the gateway answers that refusal with a 403 instead of your production data. Idryx's attestation_missing detector reports those agents in the graph.
+Idryx consumes the same envelope [TokenFuse](https://it-rat.com/services/tokenfuse.html), [Wardryx](https://it-rat.com/services/wardryx.html), [Mockryx](https://it-rat.com/services/mockryx.html), [Verdryx](https://it-rat.com/services/verdryx.html) and [Scopyx](https://it-rat.com/services/scopyx.html) write: the agent-event. It validates Agent Passports against the [platform contract](https://it-rat.com/services/platform.html), and the loop closes at the policy plane: Wardryx's deny_if_unattested policy refuses an agent with no live attestation, and the gateway answers that refusal with a 403 instead of your production data. Idryx's attestation_missing detector reports those agents in the graph.
 
 Blast radius, shadow tooling and unattested agents are covered as failure modes in [AI agent security](https://it-rat.com/ai-agent-security.html), the graph's place among the planes in [AI agent governance](https://it-rat.com/ai-agent-governance.html), and what an agent identity has to be in [agent identity and authentication](https://it-rat.com/agent-identity.html).
 
@@ -155,7 +155,7 @@ Idryx's releases from 1 to 15 October 2026 are listed in [the October changelog]
 
 | shipped in | what it does |
 |---|---|
-| on main | idryx ai-inventory reports, for each agent or service, what was declared, what was seen and what the code can reach, and names every disagreement. Additive to the idryx.ai-inventory/v1 schema. |
+| v1.4.0 | idryx ai-inventory reports, for each agent or service, what was declared, what was seen and what the code can reach, and names every disagreement. Additive to the idryx.ai-inventory/v1 schema. |
 
 ## What it does not do, and what is not proven yet.
 

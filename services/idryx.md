@@ -12,7 +12,7 @@ This is a simulation, but it replays the shape of the live validation run: Token
 
 ## Sources in. Findings out. Nothing written back.
 
-Five read-only connectors describe the humans, keys and service accounts; the agent-event bus streams what TokenFuse, Wardryx, Mockryx and Verdryx watched the agents do. Everything that leaves is an alert, a BOM, or a proposed diff a human applies.
+Read-only connectors for Okta, Entra, AWS, GCP and Azure describe the humans, keys and service accounts; the agent-event bus streams what TokenFuse, Wardryx, Mockryx, Verdryx and Scopyx watched the agents do. Everything that leaves is an alert, a BOM, a proposed diff a human applies, or an identity_finding event on the bus.
 
 ## Five identity kinds. One set of answers.
 
@@ -38,7 +38,7 @@ idryx ai-inventory now says, for each agent or service, what was declared, what 
 
 ### The one that reads everything and touches nothing.
 
-Idryx consumes the same envelope [TokenFuse](https://it-rat.com/services/tokenfuse.html), [Wardryx](https://it-rat.com/services/wardryx.html), [Mockryx](https://it-rat.com/services/mockryx.html) and [Verdryx](https://it-rat.com/services/verdryx.html) write: the agent-event. It validates Agent Passports against the [platform contract](https://it-rat.com/services/platform.html).
+Idryx consumes the same envelope [TokenFuse](https://it-rat.com/services/tokenfuse.html), [Wardryx](https://it-rat.com/services/wardryx.html), [Mockryx](https://it-rat.com/services/mockryx.html), [Verdryx](https://it-rat.com/services/verdryx.html) and [Scopyx](https://it-rat.com/services/scopyx.html) write: the agent-event. It validates Agent Passports against the [platform contract](https://it-rat.com/services/platform.html).
 
 Download [the latest release binary](https://github.com/TAIPANBOX/idryx/releases) (SHA256SUMS ships next to it), run detect against a log, then serve for the read-only dashboard on `:8080`.
 

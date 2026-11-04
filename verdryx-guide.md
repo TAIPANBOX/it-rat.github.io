@@ -28,7 +28,7 @@ The [Verdryx room](https://it-rat.com/services/verdryx.html) keeps the sixty-sec
 
 ## Verdryx at a glance.
 
-- **Version:** 0.1.0 · Python 3.11+.
+- **Version:** 0.2.0 · Python 3.11+.
 
 - **Tests:** fully offline suite.
 
@@ -100,7 +100,7 @@ The input is the gateway's own trace, not a second pipeline built to agree with 
 
 Rows are ordered by run and step, and the last non-empty tag a run carries is the one that counts: a case that escalated after two failed attempts is an escalation, not three separate stories.
 
-Then the parts most reports lose. Every call in a run folds into that run's bucket, not only the tagged one, so an untagged intermediate call's cost is not dropped on the floor. A run nobody ever tagged still appears, under an explicit untagged label, rather than vanishing from the report and making the average look better than it is. And a call the breaker blocked is still counted, because a refused call is part of what the outcome cost you.
+Then the parts most reports lose. Every call in a run folds into that run's bucket, not only the tagged one, so an untagged intermediate call's cost is not dropped on the floor. A run nobody ever tagged still appears, under an explicit untagged label, rather than vanishing from the report and making the average look better than it is. And a call the breaker blocked is still counted, but at no cost: the figure recorded for it is an avoided estimate, never a settled charge, so it stays out of what the outcome cost.
 
 The result is one row per outcome tag, with count, total and mean, plus an overall row pooling everything. A dollar figure per resolved case is a number an operator can act on; a monthly total is not.
 
@@ -127,10 +127,10 @@ Cost per resolved case sits inside a wider practice: [FinOps for AI](https://it-
 ```
 git clone https://github.com/TAIPANBOX/verdryx && cd verdryx
 python -m venv .venv && source .venv/bin/activate
-pip install -e .
+pip install -e '.[traces]'
 ```
 
-Into a virtual environment: system Python is usually externally managed. There is no PyPI package, so the version you run is the commit you can read.
+Into a virtual environment: system Python is usually externally managed. There is no PyPI package, so the version you run is the commit you can read. The traces extra adds pyarrow, which reads TokenFuse's Parquet traces; the stub run needs only the base install.
 
 ```
 verdryx eval evalset.json --model stub --db verdryx.db
@@ -146,15 +146,19 @@ verdryx cost-per-correct --traces $TOKENFUSE_DATA_DIR
 
 No release in the window, nine pull requests merged. The same entry, beside every other service's, is in [what changed in the stack](https://it-rat.com/changes-2026-10.html#verdryx).
 
-- **On main:** its price book mirrors the gateway's, row for row: every listed Claude id, the Gemini rows on Vertex AI, the vendors' prices of 13 October with their long-prompt tiers, and the `openai/...` rows.
+- **Shipped in v0.1.0, released 19 October:** its price book mirrors the gateway's, row for row: every listed Claude id, the Gemini rows on Vertex AI, the vendors' prices of 13 October with their long-prompt tiers, and the `openai/...` rows.
 
 ## What changed in November
 
 | shipped in | what it does |
 |---|---|
-| on main | drift and slo failures are stored as findings, with their evidence and a suspect model or version. verdryx findings list and show read them. |
-| on main | A fix is registered against a finding and decided by the runs that follow: verified, failed, or pending with its reason. |
-| on main | A person's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's value stays beside it. |
+| v0.2.0 | drift and slo failures are stored as findings, with their evidence and a suspect model or version. verdryx findings list and show read them. |
+| v0.2.0 | A fix is registered against a finding and decided by the runs that follow: verified, failed, or pending with its reason. |
+| v0.2.0 | A person's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's value stays beside it. |
+| v0.2.0 | drift writes its quality_drift event under the agent stored with the newest run when no --agent-id is given, and eval and drift say on stderr how many events were not written, to which file and why. |
+| v0.2.0 | eval has --typed-timeout for a slow Typryx, and the error now says "did not answer within Ns" instead of "could not reach". |
+| v0.2.0 | slo_burn carries burn_events_seen, the number of runs behind burn_rate, so a rate nobody measured is told apart from a measured zero. |
+| v0.2.0 | The price book mirrors gpt-6.1-terra and its openai/ twin from TokenFuse's default price book. |
 
 ## What runs only when you ask, and what is not proven.
 

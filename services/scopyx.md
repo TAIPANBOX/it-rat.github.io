@@ -54,6 +54,4 @@ The path and the query string are not dropped later or redacted later. The field
 
 - A vendor API needs an adapter in front of it, and this repository ships none.
 
-- With both mechanisms off, the chromium test that asserts the refused server is never reached is the one that should fail. That run is not recorded yet.
-
 ### The Scopyx guide

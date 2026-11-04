@@ -89,7 +89,7 @@
     </div>
     <div class="prose rv">
       <ul>
-        <li><span><b>Version:</b> 0.1.0 &#183; Python 3.11+.</span></li>
+        <li><span><b>Version:</b> 0.2.0 &#183; Python 3.11+.</span></li>
         <li><span><b>Tests:</b> fully offline suite.</span></li>
         <li><span><b>Core deps:</b> one, rfc8785 (+ optional extras).</span></li>
         <li><span><b>Reads:</b> tokenfuse Parquet traces &#183; NDJSON &#183; CSV.</span></li>
@@ -156,7 +156,7 @@
       <h3>How the figure is built</h3>
       <p>The input is the gateway's own trace, not a second pipeline built to agree with it: run id, step, outcome tag, decision, and cost in microdollars, read straight from TokenFuse's Parquet segments, NDJSON or CSV. Verdryx reduces it the same way TokenFuse itself does, so the two never quietly disagree about what a run cost.</p>
       <p>Rows are ordered by run and step, and the last non-empty tag a run carries is the one that counts: a case that escalated after two failed attempts is an escalation, not three separate stories.</p>
-      <p>Then the parts most reports lose. Every call in a run folds into that run's bucket, not only the tagged one, so an untagged intermediate call's cost is not dropped on the floor. A run nobody ever tagged still appears, under an explicit untagged label, rather than vanishing from the report and making the average look better than it is. And a call the breaker blocked is still counted, because a refused call is part of what the outcome cost you.</p>
+      <p>Then the parts most reports lose. Every call in a run folds into that run's bucket, not only the tagged one, so an untagged intermediate call's cost is not dropped on the floor. A run nobody ever tagged still appears, under an explicit untagged label, rather than vanishing from the report and making the average look better than it is. And a call the breaker blocked is still counted, but at no cost: the figure recorded for it is an avoided estimate, never a settled charge, so it stays out of what the outcome cost.</p>
       <p>The result is one row per outcome tag, with count, total and mean, plus an overall row pooling everything. A dollar figure per resolved case is a number an operator can act on; a monthly total is not.</p>
     </div>
   </div>
@@ -198,8 +198,8 @@
       <h2>Grade with a stub, then price the traces.</h2>
     </div>
     <div class="prose rv">
-      <div class="cmd">git clone https://github.com/TAIPANBOX/verdryx &amp;&amp; cd verdryx<br>python -m venv .venv &amp;&amp; source .venv/bin/activate<br>pip install -e .</div>
-      <p>Into a virtual environment: system Python is usually externally managed. There is no PyPI package, so the version you run is the commit you can read.</p>
+      <div class="cmd">git clone https://github.com/TAIPANBOX/verdryx &amp;&amp; cd verdryx<br>python -m venv .venv &amp;&amp; source .venv/bin/activate<br>pip install -e '.[traces]'</div>
+      <p>Into a virtual environment: system Python is usually externally managed. There is no PyPI package, so the version you run is the commit you can read. The traces extra adds pyarrow, which reads TokenFuse's Parquet traces; the stub run needs only the base install.</p>
       <div class="cmd">verdryx eval evalset.json --model stub --db verdryx.db</div>
       <p>No network, no key: <span class="mono">--model stub</span> is deterministic. Then price the traces it left behind.</p>
       <div class="cmd">verdryx cost-per-correct --traces $TOKENFUSE_DATA_DIR</div>
@@ -216,7 +216,7 @@
     </div>
     <div class="prose rv">
       <ul>
-        <li><span><b>On main:</b> its price book mirrors the gateway's, row for row: every listed Claude id, the Gemini rows on Vertex AI, the vendors' prices of 13 October with their long-prompt tiers, and the <span class="mono">openai/...</span> rows.</span></li>
+        <li><span><b>Shipped in v0.1.0, released 19 October:</b> its price book mirrors the gateway's, row for row: every listed Claude id, the Gemini rows on Vertex AI, the vendors' prices of 13 October with their long-prompt tiers, and the <span class="mono">openai/...</span> rows.</span></li>
       </ul>
     </div>
   </div>
@@ -232,9 +232,13 @@
       <table class="tbl">
         <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
         <tbody>
-          <tr><td><!-- release-slot: verdryx -->on main</td><td>drift and slo failures are stored as findings, with their evidence and a suspect model or version. verdryx findings list and show read them.</td></tr>
-          <tr><td><!-- release-slot: verdryx -->on main</td><td>A fix is registered against a finding and decided by the runs that follow: verified, failed, or pending with its reason.</td></tr>
-          <tr><td><!-- release-slot: verdryx -->on main</td><td>A person's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's value stays beside it.</td></tr>
+          <tr><td>v0.2.0</td><td>drift and slo failures are stored as findings, with their evidence and a suspect model or version. verdryx findings list and show read them.</td></tr>
+          <tr><td>v0.2.0</td><td>A fix is registered against a finding and decided by the runs that follow: verified, failed, or pending with its reason.</td></tr>
+          <tr><td>v0.2.0</td><td>A person's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's value stays beside it.</td></tr>
+          <tr><td>v0.2.0</td><td>drift writes its quality_drift event under the agent stored with the newest run when no --agent-id is given, and eval and drift say on stderr how many events were not written, to which file and why.</td></tr>
+          <tr><td>v0.2.0</td><td>eval has --typed-timeout for a slow Typryx, and the error now says "did not answer within Ns" instead of "could not reach".</td></tr>
+          <tr><td>v0.2.0</td><td>slo_burn carries burn_events_seen, the number of runs behind burn_rate, so a rate nobody measured is told apart from a measured zero.</td></tr>
+          <tr><td>v0.2.0</td><td>The price book mirrors gpt-6.1-terra and its openai/ twin from TokenFuse's default price book.</td></tr>
         </tbody>
       </table>
     </div>

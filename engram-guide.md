@@ -2,9 +2,9 @@
 
 # Engram guide
 
-> How Engram works, the live runs against real Claude, how to install it, what changed on main, and what it does not do yet, in full.
+> How Engram works, the live runs against real Claude, how to install it, what changed in v3.0.0 and v3.1.0, and what it does not do yet, in full.
 
-The [Engram room](https://it-rat.com/services/engram.html) keeps the simulation, the drawing of one file on disk and the common questions. This guide keeps the rest of what the room used to say: what a memory holds and how each part works, the three live runs against real Claude, how it ships, what changed on main, and what it does not do yet.
+The [Engram room](https://it-rat.com/services/engram.html) keeps the simulation, the drawing of one file on disk and the common questions. This guide keeps the rest of what the room used to say: what a memory holds and how each part works, the three live runs against real Claude, how it ships, what changed in v3.0.0 and v3.1.0, and what it does not do yet.
 
 - [At a glance](https://it-rat.com/engram-guide.html#overview)
 
@@ -44,13 +44,13 @@ Engram is an embeddable memory in one SQLite file. It stores raw episodes, disti
 
 ## Not a log of text. Beliefs with receipts.
 
-### One file on disk. One optional network call.
+### One file on disk. Model calls only when you ask.
 
-Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. Inside: episodic and semantic memory, bitemporal facts, spreading activation and Ebbinghaus decay. The only part that ever touches a network is reflect(), through a pluggable LLM adapter, and even that can route through TokenFuse.
+Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. Inside: episodic and semantic memory, bitemporal facts, spreading activation and Ebbinghaus decay. The only calls that leave the machine are reflect() and compress(), through a pluggable LLM adapter, and even those can route through TokenFuse; the embedding model downloads once, about 64 MB, on first use.
 
 ### Single file, embeddable
 
-One .engram file on SQLite plus sqlite-vec: no server, no Docker, no config file. pip install, two lines of Python, and the first memory is on disk. Writes land in about 4 ms because no LLM sits in the write path.
+One .engram file on SQLite plus sqlite-vec: no server, no Docker, no config file. pip install, two lines of Python, and the first memory is on disk. A write takes a median of 8 ms (200 writes on an Apple Silicon Mac, 2026-10-13) because no LLM sits in the write path.
 
 ### reflect() distills facts
 
@@ -169,9 +169,10 @@ Released as v3.0.0 on 2026-10-18. The library records a source for every observa
 
 | shipped in | what it does |
 |---|---|
-| on main | A person's own fact is never closed by a lower provenance: a model's extraction or refutation is recorded beside it, and contradictions() lists the pair. |
-| on main | refute_fact() closes a fact without erasing it, and marks every fact derived from it as undermined. |
-| on main | The documents no longer claim procedural memory: the store never modelled it, and remember(kind="procedural") is refused. |
+| v3.1.0 | A person's own fact is never closed by a lower provenance: a model's extraction or refutation is recorded beside it, and contradictions() lists the pair. |
+| v3.1.0 | refute_fact() closes a fact without erasing it, and marks every fact derived from it as undermined. |
+| v3.1.0 | The documents no longer claim procedural memory: the store never modelled it, and remember(kind="procedural") is refused. |
+| v3.1.0 | A fact stamps its provenance when it is written, so a person's fact stays the person's after its source episodes are forgotten or pruned. The store moves to schema generation 2 with three nullable columns on facts, and assert_fact takes provenance and derived_from. |
 
 ## What it does not do, and what is still open.
 
@@ -185,7 +186,7 @@ Released as v3.0.0 on 2026-10-18. The library records a source for every observa
 
 - Agent events (memory_written, reflection_run, contradiction_found, memory_forgotten) are opt-in and off by default.
 
-- The only part that ever touches a network is reflect(), through a pluggable LLM adapter.
+- The only calls that leave the machine are reflect() and compress(), through a pluggable LLM adapter, plus the one-time download of the embedding model on first use.
 
 - No per-platform binaries: this one is a Python library you import, so the package index is the download.
 

@@ -57,7 +57,7 @@
   .deeper .cta-row{margin-top:16px}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Qryx","url":"https://it-rat.com/services/qryx.html","description":"Inventory every key, certificate and algorithm you actually run, grade the post-quantum risk against the NCSC 2028, 2031 and 2035 dates, sign the evidence.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/qryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Qryx","item":"https://it-rat.com/services/qryx.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I start a post-quantum migration?","acceptedAnswer":{"@type":"Answer","text":"With an inventory, because you cannot migrate what you have not found. Qryx scans binaries, containers, live TLS endpoints, certificates, dependencies and cloud KMS, and returns a cryptographic asset graph graded against the NCSC milestones: discovery by 2028, the highest-priority systems by 2031, everything by 2035."}},{"@type":"Question","name":"What is a CBOM?","acceptedAnswer":{"@type":"Answer","text":"A cryptographic bill of materials in CycloneDX 1.6: one component per unique asset and risk class, with every occurrence attached. It lives in the same supply-chain tooling as your SBOMs, so cryptography stops having its own isolated report nobody reads."}},{"@type":"Question","name":"Can it fail a build when someone ships a weak key?","acceptedAnswer":{"@type":"Answer","text":"Yes. Snapshot the graph as a baseline, and a new weak or quantum-vulnerable asset fails the build with a distinct exit code, with separate codes for a standards violation and a regressed compliance trend. That is the day it matters, not the next audit cycle."}},{"@type":"Question","name":"Does it find hardcoded keys?","acceptedAnswer":{"@type":"Answer","text":"It does, and it counts them honestly: cryptography that exists only in test fixtures is scanned, reported and kept out of the production inventory, with one line saying how much was set aside. Counting fixtures inflates the number you are trying to drive to zero."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Qryx","url":"https://it-rat.com/services/qryx.html","description":"Inventory every key, certificate and algorithm you actually run, grade the post-quantum risk against the NCSC 2028, 2031 and 2035 dates, sign the evidence.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/qryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Qryx","item":"https://it-rat.com/services/qryx.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I start a post-quantum migration?","acceptedAnswer":{"@type":"Answer","text":"With an inventory, because you cannot migrate what you have not found. Qryx scans binaries, containers, live TLS endpoints, certificates, dependencies and cloud KMS, and returns a cryptographic asset graph graded against the NCSC milestones: discovery by 2028, the highest-priority systems by 2031, everything by 2035."}},{"@type":"Question","name":"What is a CBOM?","acceptedAnswer":{"@type":"Answer","text":"A cryptographic bill of materials in CycloneDX 1.6: one component per unique asset and risk class, with every occurrence attached. It lives in the same supply-chain tooling as your SBOMs, so cryptography stops having its own isolated report nobody reads."}},{"@type":"Question","name":"Can it fail a build when someone ships a weak key?","acceptedAnswer":{"@type":"Answer","text":"Yes. Snapshot the graph as a baseline, and a new weak or quantum-vulnerable asset fails the build with exit code 2. The policy engine (a standards violation) and a regressed compliance trend both exit 3, so CI can tell a new weak asset from the other two. That is the day it matters, not the next audit cycle."}},{"@type":"Question","name":"Does it find hardcoded keys?","acceptedAnswer":{"@type":"Answer","text":"It does, and it counts them honestly: cryptography that exists only in test fixtures is scanned, reported and kept out of the production inventory, with one line saying how much was set aside. Counting fixtures inflates the number you are trying to drive to zero."}}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-service="qryx" data-root="../">
@@ -143,7 +143,7 @@
 
           <rect x="14" y="278" width="180" height="54" rx="12" fill="#141C27" stroke="#2a3547"/>
           <text x="104" y="299" fill="#E9EFF6" font-size="11.5" font-weight="700">source + IaC</text>
-          <text x="104" y="316" fill="#8A97A6" font-size="10.5">Go &#183; Py &#183; JS/TS &#183; HCL</text>
+          <text x="104" y="316" fill="#8A97A6" font-size="10.5">Go &#183; Py &#183; JS/TS &#183; Rust</text>
 
           <rect x="246" y="14" width="280" height="318" rx="16" fill="#10161F" stroke="#B48CFF" stroke-width="1.4"/>
           <text x="386" y="42" fill="#B48CFF" font-size="14" font-weight="700">qryx core</text>
@@ -173,7 +173,7 @@
           <text x="753" y="232" fill="#93A8C4" font-size="12.5" font-weight="700">agent-events</text>
           <text x="753" y="254" fill="#8A97A6" font-size="10.5">crypto_finding &#183; crypto_drift</text>
           <text x="753" y="274" fill="#8A97A6" font-size="10.5">policy_violation &#183; evidence_signed</text>
-          <text x="753" y="300" fill="#5A6675" font-size="10.5">onto the shared bus &#183; agent-passport SPEC.md &#167;6.2</text>
+          <text x="753" y="300" fill="#5A6675" font-size="10.5">opt-in (--events) &#183; agent-passport SPEC.md &#167;6.2</text>
         </g>
         <g stroke="#5A6675" stroke-width="1.5" class="flow">
           <line x1="194" y1="41" x2="238" y2="41" marker-end="url(#a3)"/>
@@ -211,7 +211,7 @@
     <div class="sec-head rv">
       <div class="kicker">in the stack</div>
       <h2>The inventory the rest of the stack borrows from.</h2>
-      <p class="lede">Qryx emits every finding as an agent-event onto the shared bus that <a href="platform.html" data-dir="fwd" style="color:var(--steel)">Platform</a> defines and every service writes to. Crypto posture is one plane of a wider practice: <a href="../ai-agent-governance.html" style="color:var(--accent)">AI agent governance</a>, and the defensive picture in <a href="../ai-agent-security.html" style="color:var(--accent)">AI agent security</a>.</p>
+      <p class="lede">Qryx can write its agent-passport findings, drift, policy violations and signed-evidence records as agent-events onto the shared bus that <a href="platform.html" data-dir="fwd" style="color:var(--steel)">Platform</a> defines and every service writes to (opt-in, with --events). Only a finding that names a real agent emits an event, which today means the findings of qryx agents; scans of code, binaries, TLS and cloud KMS carry no agent and emit none. Crypto posture is one plane of a wider practice: <a href="../ai-agent-governance.html" style="color:var(--accent)">AI agent governance</a>, and the defensive picture in <a href="../ai-agent-security.html" style="color:var(--accent)">AI agent security</a>.</p>
     </div>
   </div>
 </section>
@@ -222,7 +222,7 @@
     <div class="sec-head rv">
       <div class="kicker">try it now</div>
       <h2>One binary, any platform.</h2>
-      <p class="lede">Grab the latest binary from the <a href="https://github.com/TAIPANBOX/qryx/releases" style="color:var(--accent)">releases page</a> (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.2 toolchain downloads itself on the first build.</p>
+      <p class="lede">Grab the latest binary from the <a href="https://github.com/TAIPANBOX/qryx/releases" style="color:var(--accent)">releases page</a> (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.3 toolchain downloads itself on the first build.</p>
     </div>
     <div class="install rv">
       <code class="cmd">qryx <b>scan</b> .</code>
@@ -294,7 +294,7 @@
       </details>
       <details>
         <summary>Can it fail a build when someone ships a weak key?</summary>
-        <div class="a"><p>Yes. Snapshot the graph as a baseline, and a new weak or quantum-vulnerable asset fails the build with a distinct exit code, with separate codes for a standards violation and a regressed compliance trend. That is the day it matters, not the next audit cycle.</p></div>
+        <div class="a"><p>Yes. Snapshot the graph as a baseline, and a new weak or quantum-vulnerable asset fails the build with exit code 2. The policy engine (a standards violation) and a regressed compliance trend both exit 3, so CI can tell a new weak asset from the other two. That is the day it matters, not the next audit cycle.</p></div>
       </details>
       <details>
         <summary>Does it find hardcoded keys?</summary>

@@ -18,7 +18,7 @@ What it may spend, and the switch that stops it.
 
 - **TokenFuse** money Runtime spend control and the in-line kill switch. [Room →](https://it-rat.com/services/tokenfuse.html)[Guide →](https://it-rat.com/tokenfuse-guide.html)
 
-- **CostCrew** finops A crew of agents takes your cloud bill apart, a person signs it off. [Room →](https://it-rat.com/services/costcrew.html)[Guide →](https://it-rat.com/costcrew-guide.html)
+- **CostCrew** finops A crew of agents takes your cloud bill apart, a person stamps every deliverable. [Room →](https://it-rat.com/services/costcrew.html)[Guide →](https://it-rat.com/costcrew-guide.html)
 
 - **TokenFuse Pocket** out of band not wired in yet The kill switch on a device the agent's host never touches. [Room →](https://it-rat.com/services/pocket.html)[Guide →](https://it-rat.com/pocket-guide.html)
 
@@ -62,7 +62,7 @@ Memory, alerts and one contract under all of it.
 
 ## One passport, one event bus, four planes of control.
 
-Every request carries an Agent Passport. An agent has two ways out, not one: a call to a model, and a fetch of something on the internet, and each has a gate standing in it. Below, memory, identity, crypto, quality, rehearsal and alerting read the same NDJSON stream off-path. Nothing here is a dashboard after the fact: the gates enforce in-line, in seconds.
+Every request carries an Agent Passport. An agent has two ways out, not one: a call to a model, and a fetch of something on the internet, and each has a gate standing in it. Below, memory, identity, crypto, quality, rehearsal, alerting, the record and the key witness read the same NDJSON stream off-path, and one of them feeds back in: Wardryx reads Verdryx's slo_burn events and can hold an agent whose error budget is spent. Nothing here is a dashboard after the fact: the gates enforce in-line, in seconds.
 
 New to this? [The guides](https://it-rat.com/guides.html) are grouped by what you came for: [where to start](https://it-rat.com/first-alert.html), [how the stack is secured](https://it-rat.com/security-by-design.html), the practice of running agents, from [governance](https://it-rat.com/ai-agent-governance.html) to [FinOps for AI](https://it-rat.com/finops-for-ai.html), each service in depth, and [what changed in October](https://it-rat.com/changes-2026-10.html). Every room above links its own guide, and [the stack in depth](https://it-rat.com/stack-guide.html) holds the rest of this page.
 

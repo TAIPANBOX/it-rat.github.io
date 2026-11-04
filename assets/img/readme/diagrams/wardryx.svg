@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 -18 996 376" width="996" height="376" role="img" aria-label="Wardryx: the PEP asks per request, the PDP answers allow, deny or hold">
-  <title>Wardryx: the PEP asks per request, the PDP answers allow, deny or hold</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 -18 996 376" width="996" height="376" role="img" aria-label="Wardryx: the PEP asks per request, the PDP answers allow, deny or hold, and an optional Verdryx event file can add a hold">
+  <title>Wardryx: the PEP asks per request, the PDP answers allow, deny or hold, and an optional Verdryx event file can add a hold</title>
   <style>@media (prefers-reduced-motion: reduce){.rd-anim{display:none}}</style>
   <rect x="-18" y="-18" width="996" height="376" rx="16" fill="#0A0E13"/>
   <rect x="-17.5" y="-17.5" width="995" height="375" rx="15.5" fill="none" stroke="rgba(255,255,255,.09)"/>
@@ -30,11 +30,16 @@
             <text x="292" y="158" fill="#E9EFF6">attestation</text>
             <text x="292" y="173" font-size="9.5">&#8220;None&#8221; never passes</text>
             <rect x="364" y="140" width="128" height="42" rx="8" fill="#141C27" stroke="#2a3547"/>
-            <text x="428" y="158" fill="#E9EFF6">decision cache</text>
-            <text x="428" y="173" font-size="9.5">agent+tools+attest</text>
+            <text x="428" y="158" fill="#E9EFF6">cacheable flag</text>
+            <text x="428" y="173" font-size="9.5">the caller's cache</text>
             <text x="360" y="208" fill="#5A6675" font-size="10.5">deterministic: same request, same verdict</text>
             <text x="360" y="224" fill="#5A6675" font-size="10.5">no LLM anywhere in the decision path</text>
           </g>
+
+
+          <rect x="10" y="224" width="170" height="46" rx="12" fill="#141C27" stroke="#FF7AA2" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="95" y="244" fill="#FF7AA2" font-size="11.5" font-weight="700">verdryx event file</text>
+          <text x="95" y="260" fill="#8A97A6" font-size="10">slo_burn &#183; optional</text>
 
           <rect x="570" y="118" width="140" height="62" rx="12" fill="#141C27" stroke="#2a3547"/>
           <text x="640" y="140" fill="#E9EFF6" font-size="12.5" font-weight="700">verdict</text>
@@ -63,6 +68,7 @@
           <line x1="710" y1="132" x2="734" y2="92" marker-end="url(#a2)"/>
           <line x1="710" y1="166" x2="734" y2="230" marker-end="url(#a2)"/>
           <line x1="360" y1="284" x2="360" y2="254" marker-end="url(#a2)"/>
+          <line x1="180" y1="236" x2="202" y2="236" stroke="#FF7AA2" marker-end="url(#a2)"/>
         </g>
       
   <g fill="none" class="rd-anim">
@@ -71,5 +77,6 @@
   <line x1="710" y1="132" x2="734" y2="92" pathLength="100" stroke="#2DD4BF" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="7 100" stroke-dashoffset="7"><animate attributeName="stroke-dashoffset" from="7" to="-100" dur="2.4s" begin="-0.74s" repeatCount="indefinite"/></line>
   <line x1="710" y1="166" x2="734" y2="230" pathLength="100" stroke="#2DD4BF" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="7 100" stroke-dashoffset="7"><animate attributeName="stroke-dashoffset" from="7" to="-100" dur="2.4s" begin="-1.11s" repeatCount="indefinite"/></line>
   <line x1="360" y1="284" x2="360" y2="254" pathLength="100" stroke="#2DD4BF" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="7 100" stroke-dashoffset="7"><animate attributeName="stroke-dashoffset" from="7" to="-100" dur="2.4s" begin="-1.48s" repeatCount="indefinite"/></line>
+  <line x1="180" y1="236" x2="202" y2="236" pathLength="100" stroke="#2DD4BF" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="7 100" stroke-dashoffset="7"><animate attributeName="stroke-dashoffset" from="7" to="-100" dur="2.4s" begin="-1.85s" repeatCount="indefinite"/></line>
   </g>
 </svg>

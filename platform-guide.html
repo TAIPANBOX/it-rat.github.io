@@ -113,10 +113,10 @@
       <h3>One envelope, end to end.</h3>
       <p>The room's simulation is labeled as one: a replay of the envelope's normal day. A passport is issued, the planes emit their own event types into one NDJSON stream, two schema versions ride side by side, and agent-conform validates the whole stream at the end. Exit 0.</p>
       <h3>Everything meets at the envelope.</h3>
-      <p>Fifteen registered sources write one shape onto one NDJSON bus: five required fields, six optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also the fourteenth source; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. The keyryx witness also reads every stream; in the launchers its findings stay on its own volume. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.</p>
+      <p>Fifteen registered sources write one shape: twelve onto one NDJSON bus, and heraldyx, scopyx and the keyryx witness into files of their own (dashed). Five required fields, six optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also one of the fifteen sources; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. The keyryx witness also reads every stream; its findings go to a file of their own, off the bus, which Heraldyx mails and the Genaryx console shows as incidents through a read-only mount. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.</p>
     </div>
     <div class="diagram rv">
-      <svg viewBox="0 0 960 400" role="img" aria-label="Platform contract: fifteen registered sources feed the agent-event bus, agent-conform among them writing its chain findings back, the envelope card lists its eleven fields, five consumers read the stream, and the Terraform loop manages budgets, passports and policies as code">
+      <svg viewBox="0 0 960 400" role="img" aria-label="Platform contract: fifteen registered sources, twelve of them writing the agent-event bus (agent-conform among them, writing its chain findings back) and three keeping a file of their own, the envelope card lists its eleven fields, five consumers read the stream, and the Terraform loop manages budgets, passports and policies as code">
         <defs><marker id="ap" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker></defs>
         <g font-family="ui-monospace,Menlo" text-anchor="middle">
           <!-- fourteen registered sources, two rows; the fifteenth is
@@ -135,16 +135,17 @@
             <rect x="500" y="14" width="88" height="28" rx="9" fill="#141C27" stroke="#FF7AA2"/><text x="544" y="32" fill="#FF7AA2">verdryx</text>
             <rect x="596" y="14" width="88" height="28" rx="9" fill="#141C27" stroke="#FF8A5B"/><text x="640" y="32" fill="#FF8A5B">mockryx</text>
             <rect x="68"  y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#B48CFF"/><text x="112" y="66" fill="#B48CFF">console</text>
-            <rect x="164" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#5BC8F5"/><text x="208" y="66" fill="#5BC8F5">heraldyx</text>
+            <rect x="164" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#5BC8F5" stroke-dasharray="3 3"/><text x="208" y="66" fill="#5BC8F5">heraldyx</text>
             <rect x="260" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#8B9DFF"/><text x="304" y="66" fill="#8B9DFF">vouchryx</text>
-            <rect x="356" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#F0ABFC"/><text x="400" y="66" fill="#F0ABFC">scopyx</text>
+            <rect x="356" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#F0ABFC" stroke-dasharray="3 3"/><text x="400" y="66" fill="#F0ABFC">scopyx</text>
             <rect x="452" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#7DD3A0"/><text x="496" y="66" fill="#7DD3A0">costcrew</text>
             <rect x="548" y="48" width="88" height="28" rx="9" fill="#141C27" stroke="#60A5FA"/><text x="592" y="66" fill="#60A5FA">typryx</text>
-            <rect x="644" y="48" width="64" height="28" rx="9" fill="#141C27" stroke="#2a3547"/><text x="676" y="66" fill="#8A97A6">keyryx</text>
+            <rect x="644" y="48" width="64" height="28" rx="9" fill="#141C27" stroke="#2a3547" stroke-dasharray="3 3"/><text x="676" y="66" fill="#8A97A6">keyryx</text>
           </g>
           <!-- the bus -->
           <rect x="20" y="84" width="688" height="30" rx="9" fill="#0F151E" stroke="#2a3547"/>
           <text x="352" y="103" fill="#8A97A6" font-size="10.5" letter-spacing="2">agent-event bus &#183; NDJSON &#183; one JSON object per line</text>
+          <text x="700" y="103" fill="#5A6675" font-size="10" text-anchor="end">dashed: own file</text>
           <!-- the envelope card -->
           <rect x="170" y="138" width="364" height="158" rx="14" fill="#10161F" stroke="#93A8C4" stroke-width="1.4"/>
           <text x="352" y="162" fill="#93A8C4" font-size="13" font-weight="700">the agent-event envelope</text>
@@ -225,9 +226,7 @@
           <line x1="544" y1="42" x2="544" y2="80" marker-end="url(#ap)"/>
           <line x1="640" y1="42" x2="640" y2="80" marker-end="url(#ap)"/>
           <line x1="112" y1="76" x2="112" y2="80" marker-end="url(#ap)"/>
-          <line x1="208" y1="76" x2="208" y2="80" marker-end="url(#ap)"/>
           <line x1="304" y1="76" x2="304" y2="80" marker-end="url(#ap)"/>
-          <line x1="400" y1="76" x2="400" y2="80" marker-end="url(#ap)"/>
           <line x1="496" y1="76" x2="496" y2="80" marker-end="url(#ap)"/>
           <line x1="592" y1="76" x2="592" y2="80" marker-end="url(#ap)"/>
           <line x1="34" y1="330" x2="34" y2="118" stroke="#93A8C4" marker-end="url(#ap)"/>
@@ -249,9 +248,9 @@
       <h3>The envelope</h3>
       <p>Five required fields: schema, ts, source, type, agent_id. Four versions stay live by design: v0.1 with a closed source enum, v0.2 with an open string, v0.3 adding a self-declared, claimed agent_id, and v1.0, which is v0.3's shape under the 1.0 compatibility promise. The passport document has two, v0.1 and v1.0. Event types live in a per-source registry, so tokenfuse can add a type without asking engram.</p>
       <h3>The Go binding</h3>
-      <p>agent-stack-go ships passport.Parse, an append-only event.Writer and chain.Validate. passport and chain need only the standard library; event adds one dependency, gowebpki/jcs, for the RFC 8785 canonical JSON its hash chain is computed over. It is the same validation Idryx runs on ingest: a passport that parses in your pipeline parses in the graph.</p>
+      <p>agent-stack-go ships four packages: passport, event, chain and delegation (the RFC 8693 delegation token and offline verification of an agent's own access token). It ships passport.Parse, an append-only event.Writer and chain.Validate. passport and chain need only the standard library; event adds one dependency, gowebpki/jcs, for the RFC 8785 canonical JSON its hash chain is computed over. Since v2.0.0 the module path is github.com/TAIPANBOX/agent-stack-go/v2, and a stream file is created with mode 0640. It is the same validation Idryx runs on ingest: a passport that parses in your pipeline parses in the graph.</p>
       <h3>agent-conform</h3>
-      <p>A standalone conformance CLI with the canonical JSON Schemas embedded. Files are classified by their own schema field, and unrecognized content is a FAIL, never silently skipped. Exit 0 or exit 1; it has already caught a real 63-versus-64 hex character prev_hash defect. Since agent-stack-go v1.1.0 it also runs on the box as <span class="mono" style="font-size:12.5px">watch-dir</span>: it re-checks every stream's hash chain and writes <span class="mono" style="font-size:12.5px">chain_broken</span> (high) or <span class="mono" style="font-size:12.5px">chain_unchained</span> (low) to its own stream, exiting 2 on a usage or I/O error. It ships as a signed, distroless image, <span class="mono" style="font-size:12.5px">ghcr.io/taipanbox/agent-conform</span>, and runs by default every five minutes on the single box and every fifteen on a cluster.</p>
+      <p>A standalone conformance CLI with the canonical JSON Schemas embedded. Files are classified by their own schema field, and unrecognized content is a FAIL, never silently skipped. Exit 0 or exit 1; it has already caught a real 63-versus-64 hex character prev_hash defect. Since agent-stack-go v1.1.0 it also runs on the box as <span class="mono" style="font-size:12.5px">watch-dir</span>: it re-checks every stream's hash chain and writes <span class="mono" style="font-size:12.5px">chain_broken</span> (high), <span class="mono" style="font-size:12.5px">chain_unchained</span> (low) or <span class="mono" style="font-size:12.5px">chain_restarted</span> (medium, or high when no signed resume checkpoint explains it) to its own stream; with <span class="mono" style="font-size:12.5px">-checkpoints</span> and <span class="mono" style="font-size:12.5px">-checkpoint-keys</span> it also checks each stream's signed checkpoint. It exits 2 on a usage or I/O error. It ships as a signed, distroless image, <span class="mono" style="font-size:12.5px">ghcr.io/taipanbox/agent-conform</span>, and runs by default every five minutes on the single box and every fifteen on a cluster.</p>
       <h3>Governance as code</h3>
       <p>Four Terraform resources: taipan_budget, taipan_unit_budget, taipan_agent_passport, taipan_wardryx_policy. Run budgets, business-unit budgets, passports and policies get PRs, plans and diffs like everything else, and edits made out of band surface on the next plan. Where the API has no delete, the provider says so instead of pretending.</p>
       <h3>Honest scope</h3>
@@ -278,7 +277,7 @@
       <p>The sandbox, and it builds from source on purpose: nothing but your own compilers touches it. That is the cost as well as the point, so it wants Rust, Go, Node and Python already installed. Measured on 2026-09-01 from an empty build cache: <b>221 seconds</b> to a working dashboard. A cold run with both optional planes took <b>325 seconds</b> on 2026-09-13. Binds <span class="mono">127.0.0.1</span> only, stops on Ctrl-C, keeps nothing.</p>
       <h3>What the first run actually does</h3>
       <p>Open the link it prints and you are looking at your own local money plane, live, with a short demo dataset already in it. Point an agent's OpenAI base URL at the gateway to feed it your own.</p>
-      <p>It builds and starts the stack's long-running services from source. Those are TokenFuse's gateway, cloud and dashboard, plus Wardryx, Idryx and Scopyx: six ports on loopback, as the stack-up README's port table lists them. Heraldyx is pinned to file mode there, writing what it would have mailed rather than mailing it. Trailryx is built and wired as a sealing routine rather than a port. Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs, installed into your home directory and started when you want them, each with its own try-it on its page. The delegation plane and the FinOps console stay behind a flag, <span class="mono">--with-delegation</span> and <span class="mono">--with-finops</span>, because one needs an issuer to trust and the other is a different product.</p>
+      <p>It builds and starts the stack's long-running services from source. Those are TokenFuse's gateway, cloud and dashboard, plus Wardryx, Idryx and Scopyx, and Keyryx (custody and witness): eight ports on loopback, as the stack-up README's port table lists them. Heraldyx is pinned to file mode there, writing what it would have mailed rather than mailing it. Trailryx is built and wired as a sealing routine rather than a port. Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs, installed into your home directory and started when you want them, each with its own try-it on its page. The delegation plane, the FinOps console and the typed-answers service stay behind a flag, <span class="mono">--with-delegation</span>, <span class="mono">--with-finops</span> and <span class="mono">--with-typed</span>, because one needs an issuer to trust, one is a different product and one is optional.</p>
       <p>Press Ctrl-C and it stops clean, with no orphaned processes.</p>
       <h3>What comes up</h3>
       <div class="tbl-scroll">
@@ -330,7 +329,7 @@
             <tr><td>proven on</td><td>Hetzner, AWS and GCP</td></tr>
             <tr><td>what it buys</td><td>high availability</td></tr>
             <tr><td>what it costs</td><td>a ReadWriteMany volume</td></tr>
-            <tr><td>traps</td><td>154 documented, with whose fault each was</td></tr>
+            <tr><td>traps</td><td>159 documented, with whose fault each was</td></tr>
           </tbody>
         </table>
       </div>
@@ -394,7 +393,7 @@
         <li><span>Where the API has no delete, the provider says so instead of pretending.</span></li>
         <li><span>The laptop sandbox is a sandbox to try the stack, not a production deployment. It binds loopback only, so nothing on it is reachable by an agent on another machine.</span></li>
         <li><span>In the sandbox Heraldyx is pinned to file mode, writing what it would have mailed rather than mailing it.</span></li>
-        <li><span>The delegation plane and the FinOps console stay behind a flag, <span class="mono">--with-delegation</span> and <span class="mono">--with-finops</span>.</span></li>
+        <li><span>The delegation plane, the FinOps console and the typed-answers service stay behind a flag: <span class="mono">--with-delegation</span>, <span class="mono">--with-finops</span> and <span class="mono">--with-typed</span>.</span></li>
         <li><span>Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs.</span></li>
         <li><span>The one-box install coming back after a reboot was measured once, on 2026-09-17.</span></li>
       </ul>

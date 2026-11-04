@@ -48,7 +48,7 @@ The room's simulation is labeled as one: a replay of the envelope's normal day. 
 
 ### Everything meets at the envelope.
 
-Fifteen registered sources write one shape onto one NDJSON bus: five required fields, six optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also the fourteenth source; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. The keyryx witness also reads every stream; in the launchers its findings stay on its own volume. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.
+Fifteen registered sources write one shape: twelve onto one NDJSON bus, and heraldyx, scopyx and the keyryx witness into files of their own (dashed). Five required fields, six optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also one of the fifteen sources; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. The keyryx witness also reads every stream; its findings go to a file of their own, off the bus, which Heraldyx mails and the Genaryx console shows as incidents through a read-only mount. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.
 
 ### The passport
 
@@ -60,11 +60,11 @@ Five required fields: schema, ts, source, type, agent_id. Four versions stay liv
 
 ### The Go binding
 
-agent-stack-go ships passport.Parse, an append-only event.Writer and chain.Validate. passport and chain need only the standard library; event adds one dependency, gowebpki/jcs, for the RFC 8785 canonical JSON its hash chain is computed over. It is the same validation Idryx runs on ingest: a passport that parses in your pipeline parses in the graph.
+agent-stack-go ships four packages: passport, event, chain and delegation (the RFC 8693 delegation token and offline verification of an agent's own access token). It ships passport.Parse, an append-only event.Writer and chain.Validate. passport and chain need only the standard library; event adds one dependency, gowebpki/jcs, for the RFC 8785 canonical JSON its hash chain is computed over. Since v2.0.0 the module path is github.com/TAIPANBOX/agent-stack-go/v2, and a stream file is created with mode 0640. It is the same validation Idryx runs on ingest: a passport that parses in your pipeline parses in the graph.
 
 ### agent-conform
 
-A standalone conformance CLI with the canonical JSON Schemas embedded. Files are classified by their own schema field, and unrecognized content is a FAIL, never silently skipped. Exit 0 or exit 1; it has already caught a real 63-versus-64 hex character prev_hash defect. Since agent-stack-go v1.1.0 it also runs on the box as `watch-dir`: it re-checks every stream's hash chain and writes `chain_broken` (high) or `chain_unchained` (low) to its own stream, exiting 2 on a usage or I/O error. It ships as a signed, distroless image, `ghcr.io/taipanbox/agent-conform`, and runs by default every five minutes on the single box and every fifteen on a cluster.
+A standalone conformance CLI with the canonical JSON Schemas embedded. Files are classified by their own schema field, and unrecognized content is a FAIL, never silently skipped. Exit 0 or exit 1; it has already caught a real 63-versus-64 hex character prev_hash defect. Since agent-stack-go v1.1.0 it also runs on the box as `watch-dir`: it re-checks every stream's hash chain and writes `chain_broken` (high), `chain_unchained` (low) or `chain_restarted` (medium, or high when no signed resume checkpoint explains it) to its own stream; with `-checkpoints` and `-checkpoint-keys` it also checks each stream's signed checkpoint. It exits 2 on a usage or I/O error. It ships as a signed, distroless image, `ghcr.io/taipanbox/agent-conform`, and runs by default every five minutes on the single box and every fifteen on a cluster.
 
 ### Governance as code
 
@@ -103,7 +103,7 @@ The sandbox, and it builds from source on purpose: nothing but your own compiler
 
 Open the link it prints and you are looking at your own local money plane, live, with a short demo dataset already in it. Point an agent's OpenAI base URL at the gateway to feed it your own.
 
-It builds and starts the stack's long-running services from source. Those are TokenFuse's gateway, cloud and dashboard, plus Wardryx, Idryx and Scopyx: six ports on loopback, as the stack-up README's port table lists them. Heraldyx is pinned to file mode there, writing what it would have mailed rather than mailing it. Trailryx is built and wired as a sealing routine rather than a port. Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs, installed into your home directory and started when you want them, each with its own try-it on its page. The delegation plane and the FinOps console stay behind a flag, `--with-delegation` and `--with-finops`, because one needs an issuer to trust and the other is a different product.
+It builds and starts the stack's long-running services from source. Those are TokenFuse's gateway, cloud and dashboard, plus Wardryx, Idryx and Scopyx, and Keyryx (custody and witness): eight ports on loopback, as the stack-up README's port table lists them. Heraldyx is pinned to file mode there, writing what it would have mailed rather than mailing it. Trailryx is built and wired as a sealing routine rather than a port. Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs, installed into your home directory and started when you want them, each with its own try-it on its page. The delegation plane, the FinOps console and the typed-answers service stay behind a flag, `--with-delegation`, `--with-finops` and `--with-typed`, because one needs an issuer to trust, one is a different product and one is optional.
 
 Press Ctrl-C and it stops clean, with no orphaned processes.
 
@@ -159,7 +159,7 @@ For teams whose answer to everything is a cluster. One script brings up k3s acro
 | proven on | Hetzner, AWS and GCP |
 | what it buys | high availability |
 | what it costs | a ReadWriteMany volume |
-| traps | 154 documented, with whose fault each was |
+| traps | 159 documented, with whose fault each was |
 
 **The commands, and the one thing a cluster costs you.**
 
@@ -205,7 +205,7 @@ The platform's own list for 1 to 15 October 2026, the agent-stack-go releases, a
 
 - In the sandbox Heraldyx is pinned to file mode, writing what it would have mailed rather than mailing it.
 
-- The delegation plane and the FinOps console stay behind a flag, `--with-delegation` and `--with-finops`.
+- The delegation plane, the FinOps console and the typed-answers service stay behind a flag: `--with-delegation`, `--with-finops` and `--with-typed`.
 
 - Engram, Qryx, Verdryx and Mockryx are deliberately not servers: they are libraries and one-shot CLIs.
 

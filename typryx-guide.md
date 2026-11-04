@@ -183,23 +183,23 @@ Mean squared error between the stated probabilities and the true outcome; here, 
 
 ## What each part of the stack would get.
 
-Three edges are built and wired in, but none is recorded as a live run yet. The Wardryx edge is built and released and runs only against the stub backend; the rest are what a later integration would read, not something built.
+Three edges are built and wired in, and each has been run: Claude Code as an MCP client and TokenFuse's MCP broker with typryx as a named upstream, both measured on 2026-09-25, and Verdryx's typed grader, run end to end against typryx v0.5.1 with a local model. The Wardryx edge is built and released and runs only against stand-ins; the rest are what a later integration would read, not something built.
 
 |  | what typryx gives it | status |
 |---|---|---|
 | MCP clients (Claude Code and others) | a typed answer with a probability, per call, over MCP | built |
 | TokenFuse, as broker | a named upstream; one tool_call recorded against the agent | built |
 | TokenFuse, router shadow mode | the class it would have routed to, alongside cost, recorded only | planned |
-| Verdryx | a typed grader beside the existing LLM judge, opt-in per run with `--typed-url` | built, not run live |
+| Verdryx | a typed grader beside the existing LLM judge, opt-in per run with `--typed-url` | built, and run end to end against a local model |
 | Wardryx | an `action.risk_class` signal a `hold_if_signal` rule may turn into a hold, never a deny; opt-in in the launchers, off by default | built and released, run only against a loopback stand-in (v0.4.0 release notes) |
-| CostCrew | a suggested class or priority at triage; a person still decides | built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL, not run live |
+| CostCrew | a suggested anomaly class at triage; a person still decides | built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL, not run live |
 | Genaryx | a panel, live only when `GENARYX_TYPRYX_URL` resolves | planned |
 | Engram | an optional importance score | planned |
 | Journal readers (Trailryx, Idryx) | the four event types reach the shared events volume; heraldyx renders them; Idryx lists typryx as a source and never calls it; Trailryx refuses them by design | on the shared bus |
 
 ## Optional, and it changes nothing when it is absent.
 
-Typryx sits behind [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the `request.complexity` template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. [Verdryx](https://it-rat.com/services/verdryx.html) can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built and not yet run live. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. [Wardryx](https://it-rat.com/services/wardryx.html) can read one: `typryx wardryx-proxy` sits in front of it, asks `action.risk_class` about a pending tool call, and adds the answer to the decision request, where a `hold_if_signal` rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.
+Typryx sits behind [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the `request.complexity` template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. [Verdryx](https://it-rat.com/services/verdryx.html) can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built, and run end to end against typryx v0.5.1 with a local model. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. [Wardryx](https://it-rat.com/services/wardryx.html) can read one: `typryx wardryx-proxy` sits in front of it, asks `action.risk_class` about a pending tool call, and adds the answer to the decision request, where a `hold_if_signal` rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.
 
 Without it, the rest of the stack behaves exactly as it does today: nothing here is consumed by anything else unless an operator wires it in.
 
@@ -216,7 +216,7 @@ TYPED_MODE=jev|own-model|off
 
 ## What changed, release by release.
 
-Released as v0.4.0 on 2026-10-04, adding the `action.risk_class` template and `wardryx-proxy`, after v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, with CI green on the v0.4.0 release run (2026-10-04). Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.
+Released as v0.5.1 on 2026-10-26, built on Go 1.27.3, after v0.5.0 on 2026-10-19, v0.4.1 on 2026-10-14, v0.4.0 on 2026-10-04 (which added the `action.risk_class` template and `wardryx-proxy`), v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, with the release run for v0.5.1 green. From v0.5.0 a new event stream file is created with mode 0640, and only in a directory the service's account owns. Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.
 
 The releases from 1 to 15 October 2026, with what each one shipped, are in [the stack's changes for October](https://it-rat.com/changes-2026-10.html#typryx).
 
@@ -224,11 +224,11 @@ The releases from 1 to 15 October 2026, with what each one shipped, are in [the 
 
 - **Not yet:** a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers in the tables above.
 
-- Three edges are built and wired in, but none is recorded as a live run yet. The Wardryx edge is built and released and runs only against the stub backend.
+- The Wardryx edge is built and released and runs only against stand-ins.
 
 - The launchers carry the Wardryx signal as an opt-in, off by default, and it was measured on the stub backend only, never with a real model behind it.
 
-- Verdryx's typed verdict is built and not yet run live; CostCrew's suggested class is built and released in costcrew v0.4.0 and not run live; the TokenFuse router, Genaryx and Engram readers are planned.
+- CostCrew's suggested class is built and released in costcrew v0.4.0 and not run live; the TokenFuse router, Genaryx and Engram readers are planned.
 
 - In the loop from a question to a tuned model, steps 1 to 5 are built, tested and run on the stub backend; steps 6 to 9 are not run end to end, and no tuned model is measured yet.
 

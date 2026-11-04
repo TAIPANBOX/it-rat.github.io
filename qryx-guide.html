@@ -202,7 +202,7 @@
       <h2>The inventory the rest of the stack borrows from.</h2>
     </div>
     <div class="prose rv">
-      <p>Qryx emits every finding as an agent-event onto the shared bus that <a href="services/platform.html">Platform</a> defines and every service writes to. It watches the same estate <a href="services/tokenfuse.html">TokenFuse</a> spends against, the binaries, endpoints and keys underneath the calls TokenFuse meters. <a href="services/mockryx.html">Mockryx</a> can demand a crypto reaction in its drills too: an expect.event assertion that a fire drill actually produced a crypto_finding, not silence.</p>
+      <p>Qryx can write its agent-passport findings, drift, policy violations and signed-evidence records as agent-events onto the shared bus that <a href="services/platform.html">Platform</a> defines and every service writes to (opt-in, with --events). Only a finding that names a real agent emits an event, which today means the findings of qryx agents; scans of code, binaries, TLS and cloud KMS carry no agent and emit none. It watches the same estate <a href="services/tokenfuse.html">TokenFuse</a> spends against, the binaries, endpoints and keys underneath the calls TokenFuse meters. <a href="services/mockryx.html">Mockryx</a> can demand a crypto reaction in its drills too: an expect.event assertion that a fire drill actually produced a crypto_finding, not silence.</p>
       <p>Crypto posture is one plane of a wider practice: <a href="ai-agent-governance.html">AI agent governance</a>, and the defensive picture in <a href="ai-agent-security.html">AI agent security</a>.</p>
     </div>
   </div>
@@ -217,7 +217,7 @@
     <div class="prose rv">
       <div class="cmd">qryx scan .</div>
       <div class="cmd">qryx tls api.anthropic.com:443</div>
-      <p>Grab the latest binary from the <a href="https://github.com/TAIPANBOX/qryx/releases">releases page</a> (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.2 toolchain downloads itself on the first build.</p>
+      <p>Grab the latest binary from the <a href="https://github.com/TAIPANBOX/qryx/releases">releases page</a> (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.3 toolchain downloads itself on the first build.</p>
       <h3>Download, any platform</h3>
       <div class="dl-row"><a class="pill" href="https://github.com/TAIPANBOX/qryx/releases/latest/download/qryx_linux_amd64.tar.gz">Linux x86-64</a><a class="pill" href="https://github.com/TAIPANBOX/qryx/releases/latest/download/qryx_linux_arm64.tar.gz">Linux arm64</a><a class="pill" href="https://github.com/TAIPANBOX/qryx/releases/latest/download/qryx_darwin_arm64.tar.gz">macOS Apple silicon</a><a class="pill" href="https://github.com/TAIPANBOX/qryx/releases/latest/download/qryx_darwin_amd64.tar.gz">macOS Intel</a><a class="pill" href="https://github.com/TAIPANBOX/qryx/releases/latest/download/qryx_windows_amd64.zip">Windows x86-64</a><a class="pill" href="https://github.com/TAIPANBOX/qryx/releases/latest/download/SHA256SUMS">SHA256SUMS</a></div>
       <p>Every one of those addresses always serves the newest release, so a link saved today still works after the next one. The asset names carry no version, which is what makes that true; the version lives inside the binary, where <span class="mono">qryx version</span> reads it back.</p>

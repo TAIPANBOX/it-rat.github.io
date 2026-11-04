@@ -22,7 +22,7 @@ The [CostCrew room](https://it-rat.com/services/costcrew.html) keeps the console
 
 ## CostCrew at a glance.
 
-- **A crew of agents works your bill**, and a person signs off every line.
+- **A crew of agents works your bill**, and a person stamps every deliverable and decides everything above a set amount.
 
 - **Status:** pre-1.0, and main is supported.
 
@@ -68,7 +68,7 @@ Every frame in the room's gallery is a fresh installation of the binary on its o
 
 - **One analyst.** Its desk and mission, three open tasks of the thirteen it has ever been given, and 173.97 of work against a 60.00 monthly guard.
 
-- **Hiring.** Everything the form asks is a governance fact, asked once. The name becomes part of an agent:// identity that other services parse.
+- **Hiring.** Everything the form asks is a governance fact, asked once. The name becomes part of an agent://<host>/costcrew/<name> identity that other services parse, so one gateway key bound to agent://<host>/costcrew/* covers the crew and nothing else.
 
 - **Anomalies.** Every irregularity ranked by money rather than by how far out it sits, 2,475.10 of it still unexplained. A four sigma move worth three dollars is real and is not worth your morning.
 
@@ -114,7 +114,7 @@ The KPI library reports a number or says by name why it cannot. A practice that 
 
 ## Genaryx governs agents. This is a crew of agents that works your bill.
 
-They are floors, not alternatives. [Genaryx](https://it-rat.com/genaryx.html) is the control room over a fleet: it watches what is running now, demands a signature for anything destructive, and stops things. CostCrew's analysts are agents like any other, so Genaryx governs them too. This console runs the other way round: it reads last month's invoices, hands you drafts, and stops nothing. It emits its own work onto the same agent-event bus, so [Trailryx](https://it-rat.com/services/trailryx.html) can seal it and [Heraldyx](https://it-rat.com/services/heraldyx.html) can mail you about it.
+They are floors, not alternatives. [Genaryx](https://it-rat.com/genaryx.html) is the control room over a fleet: it watches what is running now, demands a signature for anything destructive, and stops things. CostCrew's analysts are agents like any other, so Genaryx governs them too. This console runs the other way round: it reads last month's invoices, hands you drafts, and stops nothing. It emits its own work onto the same agent-event bus, so [Trailryx](https://it-rat.com/services/trailryx.html) can seal it and [Heraldyx](https://it-rat.com/services/heraldyx.html) can mail you about it. Optionally it asks [Typryx](https://it-rat.com/services/typryx.html) for a typed hint about each open anomaly, a suggestion an analyst may disagree with and never an action.
 
 ### Runtime is not the ledger
 
@@ -130,7 +130,7 @@ Per-agent attribution of AI spend is not possible from an invoice: the charge ca
 
 ## One binary, one directory.
 
-No interpreter, no virtual environment, no second database engine in the process. It listens on loopback by default and expects a proxy in front of it for TLS. First account created at /signup becomes the admin of that installation, so make one before you hand anybody the address.
+No interpreter, no virtual environment, no second database engine in the process. It listens on loopback by default. From v0.10.0 it refuses to start on any other address unless a TLS proxy is in front and -behind-tls is set, or -insecure-http says plain HTTP is intended there. First account created at /signup becomes the admin of that installation, so make one before you hand anybody the address.
 
 ```
 go install github.com/TAIPANBOX/costcrew/cmd/costcrew@latest
@@ -144,15 +144,15 @@ go install github.com/TAIPANBOX/costcrew/cmd/costcrew@latest
 
 ### A measured run
 
-Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.6.0, and it has one.
+Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.10.0, and it reads the AWS and GCP billing exports.
 
 ### The supervisor settles what it may
 
-v0.3.0 lets the crew's supervisor settle what its job description already said it could. It now applies an analyst's own option by itself when the amount is at or under the anomaly threshold, and still sends anything larger, anything that is the owner's call and any disagreement between two analysts to the owner. That threshold, T.anomaly, is now USD 2,500, and the urgent one, T.urgent, USD 12,500: half the earlier figures, and recorded as decisions rather than defaults, so more requests reach the owner for the same work. An admin who answers for an owner has to give a reason, and it is recorded on the option, in the journal and on the bus. A task stopped partway keeps the charge the gateway already settled instead of showing zero. The supervisor pass is tested; the console buttons were not run end to end.
+v0.3.0 lets the crew's supervisor settle what its job description already said it could. It now applies an analyst's own option by itself when its figure is at or under the anomaly threshold (for an option tied to an anomaly the figure is the excess the detector recorded, since v0.7.0, and an option whose figure differs goes to the owner with both numbers), and still sends anything larger, anything that is the owner's call and any disagreement between two analysts to the owner. That threshold, T.anomaly, is now USD 2,500, and the urgent one, T.urgent, USD 12,500: half the earlier figures, and recorded as decisions rather than defaults, so more requests reach the owner for the same work. An admin who answers for an owner has to give a reason, and it is recorded on the option, in the journal and on the bus. A task stopped partway keeps the charge the gateway already settled instead of showing zero. The supervisor pass is tested; the console buttons were not run end to end.
 
 ### Real money in, kept honest
 
-v0.4.0 and v0.5.0 bring real money in and keep it honest. The console reads the AWS and GCP billing exports from a synced folder, exact to the micro-dollar, and reconciles the vendors' own usage reports against the gateway's rows. It can sign people in through the organisation's identity provider, run the whole crew on a model the organisation hosts itself, and decide how much of the bill a model is ever shown: everything, the names masked, or totals only. A re-exported gateway trace is counted once, and a call refused for identity is filed under the credential that made it, never under the agent it claimed. The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
+v0.4.0 and v0.5.0 bring real money in and keep it honest. The console reads the AWS and GCP billing exports from a synced folder, exact to the micro-dollar, and reconciles the vendors' own usage reports against the gateway's rows. It can sign people in through the organisation's identity provider, run the whole crew on a model the organisation hosts itself, and decide how much of the bill a model is ever shown: everything, the names masked, or totals only; from v0.10.0 the default is masked. A re-exported gateway trace is counted once, and a call refused for identity is filed under the credential that made it, never under the agent it claimed. The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
 
 ### Announced decisions
 
@@ -169,7 +169,7 @@ The repository gates more than its suite: every scenario written in the language
 | v0.4.0 | Provider usage is read from the vendors' own usage reports and reconciled against the gateway's rows, so the gap between the two is shown. |
 | v0.4.0 | Sign-in through the organisation's identity provider, over OpenID Connect with signed tokens and PKCE. Session tokens are stored hashed. |
 | v0.6.0 | A cost decision the crew recommends can be announced before it lands. Only the owner can confirm it, and a day that matches the announcement is not raised as an anomaly. |
-| not yet released | On main: a FOCUS 1.1 file of agent spend, by agent, unit, model and credential, for a FinOps platform's custom ingress. No file has been accepted by a live tenant yet. |
+| v0.7.0 | A FOCUS 1.1 file of agent spend, by agent, unit, model and credential, for a FinOps platform's custom ingress (the costcrew-cloudability binary in the image). No file has been accepted by a live tenant yet. |
 
 ## What it does not do, and what is not proven yet.
 
@@ -183,9 +183,9 @@ The repository gates more than its suite: every scenario written in the language
 
 - The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
 
-- Every run in v0.6.0 used the generated estate, so detection quality and forecast accuracy on real spend are still open.
+- Release gates through v0.10.0 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
 
-- The FOCUS 1.1 file of agent spend is on main and not yet released. No file has been accepted by a live tenant yet.
+- The FOCUS 1.1 file of agent spend (costcrew-cloudability, in the image since v0.7.0) has not been accepted by a live tenant yet.
 
 - The figures in the console frames are the fixture's, and the console says on each page which of its numbers are real money and which the estate generated.
 

@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Heraldyx guide: how it works, running it, what changed · IT-RAT</title>
-<meta name="description" content="How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed in v0.7.0 and v0.8.0, and its boundaries.">
+<meta name="description" content="How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed from v0.7.0 to v0.9.0, and its boundaries.">
 <link rel="canonical" href="https://it-rat.com/heraldyx-guide.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/heraldyx-guide.html">
 <meta property="og:title" content="Heraldyx guide: how it works, running it, what changed · IT-RAT">
-<meta property="og:description" content="Everything the Heraldyx room leaves out: why the four checks run in that order, what a mail may carry and who it names, what the dispatch record does and does not prove, who else writes to the log it reads, what shipped in v0.7.0 and v0.8.0, and the boundaries in full.">
+<meta property="og:description" content="Everything the Heraldyx room leaves out: why the four checks run in that order, what a mail may carry and who it names, what the dispatch record does and does not prove, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.">
 <meta property="og:image" content="https://it-rat.com/assets/og/heraldyx.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Heraldyx guide: how it works, running it, what changed · IT-RAT">
-<meta name="twitter:description" content="Everything the Heraldyx room leaves out: why the four checks run in that order, what a mail may carry and who it names, what the dispatch record does and does not prove, who else writes to the log it reads, what shipped in v0.7.0 and v0.8.0, and the boundaries in full.">
+<meta name="twitter:description" content="Everything the Heraldyx room leaves out: why the four checks run in that order, what a mail may carry and who it names, what the dispatch record does and does not prove, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/heraldyx.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -52,7 +52,7 @@
   .gtoc a:hover{color:var(--accent)}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Heraldyx guide: how it works, running it, what changed","name":"Heraldyx guide","url":"https://it-rat.com/heraldyx-guide.html","description":"How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed in v0.7.0 and v0.8.0, and its boundaries.","inLanguage":"en","datePublished":"2026-10-16","dateModified":"2026-10-16","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/heraldyx-guide.html","about":{"@type":"SoftwareApplication","name":"Heraldyx","url":"https://it-rat.com/services/heraldyx.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"Heraldyx guide","item":"https://it-rat.com/heraldyx-guide.html"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Heraldyx guide: how it works, running it, what changed","name":"Heraldyx guide","url":"https://it-rat.com/heraldyx-guide.html","description":"How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed from v0.7.0 to v0.9.0, and its boundaries.","inLanguage":"en","datePublished":"2026-10-16","dateModified":"2026-10-16","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/heraldyx-guide.html","about":{"@type":"SoftwareApplication","name":"Heraldyx","url":"https://it-rat.com/services/heraldyx.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"Heraldyx guide","item":"https://it-rat.com/heraldyx-guide.html"}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-root="">
@@ -74,7 +74,7 @@
   <div class="wrap">
     <div class="kicker rv">a guide &#183; heraldyx</div>
     <h1 class="rv d1">How Heraldyx works, how to run it, what changed.</h1>
-    <p class="lede rv d2">The <a href="services/heraldyx.html">Heraldyx room</a> keeps the burst replay, the drawing of the four checks, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped in v0.7.0 and v0.8.0, and the boundaries in full.</p>
+    <p class="lede rv d2">The <a href="services/heraldyx.html">Heraldyx room</a> keeps the burst replay, the drawing of the four checks, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.</p>
     <div class="back rv d3"><a class="btn" href="services/heraldyx.html"><span class="mono">&#8592;</span> Back to the Heraldyx room</a></div>
   </div>
 </section>
@@ -93,7 +93,7 @@
         <li><span><b>One way out:</b> it reads the log, speaks SMTP, and nothing else.</span></li>
         <li><span><b>Limits:</b> a severity floor, a dedup window of 10 minutes, and 20 mails an hour.</span></li>
         <li><span><b>Leaves behind:</b> a hash-chained dispatch record.</span></li>
-        <li><span><b>Core:</b> Go, with one direct dependency.</span></li>
+        <li><span><b>Core:</b> Go, with two direct dependencies (the shared agent-stack-go contract and a JSON canonicaliser).</span></li>
         <li><span><b>Licence:</b> Apache-2.0.</span></li>
       </ul>
       <h3>What it is</h3>
@@ -109,7 +109,7 @@
       <h2>Four checks, in this order, and the order is the point.</h2>
     </div>
     <div class="prose rv">
-      <p>The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. The last cell of the room's drawing was redrawn after a run on 2026-09-17: the v0.2.3 image sent one notice at the ceiling and then nothing for 28 minutes of high and critical events. Since v0.2.4 a critical passes the ceiling and whatever is held is summarised every ten minutes until the hour turns; the launchers pin v0.7.0 on their main branches.</p>
+      <p>The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. The last cell of the room's drawing was redrawn after a run on 2026-09-17: the v0.2.3 image sent one notice at the ceiling and then nothing for 28 minutes of high and critical events. Since v0.2.4 a critical passes the ceiling and whatever is held is summarised every ten minutes until the hour turns; the launchers pin v0.8.2 on their main branches.</p>
       <h3>A provider that is down is one mail, not one per call</h3>
       <p>For <span class="mono">dependency_failed</span> the dedup key is the dependency that failed and what the gateway did about it, not the run. A provider that is down fails every call that reaches it, and every call is its own run, so keyed on the run an hour of outage was one mail per call up to the hourly ceiling and a summary of the rest. Keyed on the dependency it is one mail per window. The key is read from the event's own <span class="mono">data.dependency</span> and <span class="mono">data.effect</span>, for a provider that fails calls it reads <span class="mono">dependency_failed:dependency/provider/call-failed</span>, and it is what an acknowledgement is made against and what the mail prints, so acknowledging a provider outage holds the whole storm.</p>
       <p>The effect is part of the key because the outcomes want opposite responses. A gateway that fails open lets calls through with no policy on them, and that must not hide behind an earlier mail about calls that were refused. Only the type <span class="mono">dependency_failed</span> and only the event contract's own words qualify. No data, an unknown dependency, a value that is not text, a path-like or oversized value, or another type carrying the same field keeps the key of its run, so a field read from a log this process does not own can never fold anything into anything. The event contract does not change, no data key is added to what the mail may print, and the link in the mail points where it did.</p>
@@ -174,10 +174,10 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">who else writes to the log it reads</div>
-      <h2>Two more sources arrived on the bus.</h2>
+      <h2>Twelve planes write the log it reads.</h2>
     </div>
     <div class="prose rv">
-      <p>This plane mails about what other planes wrote, so its reach grows when theirs does. <a href="services/vouchryx.html">Vouchryx</a> reports a delegation issued, denied or revoked, and <a href="services/costcrew.html">CostCrew</a> reports spend spikes, budget thresholds and every move its crew makes on a finding. CostCrew's events have their own sentences here. Vouchryx's delegation events have none yet, so a mail about one says the box has no description for the event until one is written.</p>
+      <p>This plane mails about what other planes wrote, so its reach grows when theirs does. Twelve planes write the shared log, and the Keyryx witness's findings file is read beside it. <a href="services/vouchryx.html">Vouchryx</a> reports a delegation issued, denied or revoked, and <a href="services/costcrew.html">CostCrew</a> reports spend spikes, budget thresholds and every move its crew makes on a finding. CostCrew's events have their own sentences here. Vouchryx's delegation events have none yet, so a mail about one says the box has no description for the event until one is written.</p>
     </div>
   </div>
 </section>
@@ -192,7 +192,8 @@
       <table class="tbl">
         <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
         <tbody>
-          <tr><td><!-- release-slot: heraldyx -->on main</td><td>A dependency_failed repeats on the dependency, so a provider storm is one mail per window instead of one per failed call.</td></tr>
+          <tr><td>v0.9.0</td><td>A dependency_failed repeats on the dependency, so a provider storm is one mail per window instead of one per failed call.</td></tr>
+          <tr><td>v0.9.0</td><td>The key of a dependency_failed mail is now dependency_failed:dependency/provider/call-failed. An acknowledgement made against the old per-run key does not hold the new one, so acknowledge the new key.</td></tr>
         </tbody>
       </table>
     </div>

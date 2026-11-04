@@ -12,10 +12,11 @@
             <rect x="16" y="112" width="132" height="34" rx="10" fill="#141C27" stroke="#2a3547"/><text x="82" y="133" fill="#E9EFF6">AWS</text>
             <rect x="16" y="156" width="132" height="34" rx="10" fill="#141C27" stroke="#2a3547"/><text x="82" y="177" fill="#E9EFF6">GCP</text>
             <rect x="16" y="200" width="132" height="34" rx="10" fill="#141C27" stroke="#2a3547"/><text x="82" y="221" fill="#E9EFF6">Azure</text>
-            <rect x="16" y="244" width="132" height="52" rx="10" fill="#141C27" stroke="#93A8C4"/><text x="82" y="262" fill="#93A8C4" font-size="11.5">agent-event bus</text>
+            <rect x="16" y="244" width="132" height="80" rx="10" fill="#141C27" stroke="#93A8C4"/><text x="82" y="262" fill="#93A8C4" font-size="11.5">agent-event bus</text>
           </g>
-          <text x="82" y="276" fill="#8A97A6" font-size="10.5">tokenfuse &#183; wardryx</text>
-          <text x="82" y="288" fill="#8A97A6" font-size="10.5">mockryx &#183; verdryx</text>
+          <text x="82" y="277" fill="#8A97A6" font-size="10.5">tokenfuse &#183; wardryx</text>
+          <text x="82" y="291" fill="#8A97A6" font-size="10.5">mockryx &#183; verdryx</text>
+          <text x="82" y="305" fill="#8A97A6" font-size="10.5">scopyx</text>
 
           <rect x="196" y="36" width="300" height="252" rx="16" fill="#10161F" stroke="#34D399" stroke-width="1.4"/><rect x="196" y="36" width="300" height="252" rx="16" fill="none" stroke="#0A0E13" stroke-width="1.6" class="rd-anim" opacity="0"><animate attributeName="opacity" values="0;.55;0" dur="3.4s" repeatCount="indefinite"/></rect>
           <text x="346" y="66" fill="#34D399" font-size="14" font-weight="700">idryx core</text>
@@ -33,7 +34,7 @@
           <g>
             <rect x="640" y="36" width="300" height="52" rx="12" fill="#141C27" stroke="#2a3547"/>
             <text x="790" y="57" fill="#E9EFF6" font-size="12" font-weight="700">alerts</text>
-            <text x="790" y="74" fill="#8A97A6" font-size="10.5">Slack &#183; SIEM webhook, filtered by severity</text>
+            <text x="790" y="74" fill="#8A97A6" font-size="10.5">Slack &#183; SIEM &#183; OTLP, filtered by severity</text>
             <rect x="640" y="102" width="300" height="52" rx="12" fill="#141C27" stroke="#2a3547"/>
             <text x="790" y="123" fill="#E9EFF6" font-size="12" font-weight="700">Agent-BOM</text>
             <text x="790" y="140" fill="#8A97A6" font-size="10.5">CycloneDX 1.6 &#183; idryx bom</text>

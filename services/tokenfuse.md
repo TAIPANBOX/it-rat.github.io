@@ -22,7 +22,7 @@ The run is the unit that pays. A sub-agent's run rolls up into its parent run, s
 
 ### Loop detection
 
-A retrying agent looks exactly like a compromised one from the budget's side. Sustained loops and fan-out explosions trip the breaker before they become a four-digit night.
+A retrying agent looks exactly like a compromised one from the budget's side. A sustained loop trips the breaker, and a fan-out explosion opens an incident in the Cloud, before either becomes a four-digit night.
 
 ### Burn forecast
 
@@ -46,7 +46,7 @@ TokenFuse asks [Wardryx](https://it-rat.com/services/wardryx.html) before lettin
 
 Run it from [the repository](https://github.com/TAIPANBOX/tokenfuse#-get-started), where the one-line command lives beside the image tag it pulls.
 
-Then point `ANTHROPIC_BASE_URL` at `localhost:4100` and give your next run a budget header. That's the whole migration.
+Then point `ANTHROPIC_BASE_URL` at `localhost:4100` and give your next run a run id and a budget (the x-fuse-run-id and x-fuse-budget-usd headers). A call with no run id is refused with 400 metering_required. That's the whole migration.
 
 ## It stops the spend. Two neighbours stop other things.
 
@@ -54,7 +54,7 @@ A breaker is the right answer to a runaway and the wrong one to a compromised de
 
 ## What the default install does not do.
 
-- The raft cluster build is an optional build, not what the shipped images run: those run one gateway with its ledger in memory.
+- The raft cluster build is optional and ships as its own image tag (tokenfuse:<tag>-cluster); the default image and the launchers run one gateway with its ledger in memory.
 
 - A business unit's monthly cap is not yet shared across a fleet of gateways: each gateway counts its own calls on top of a tally it reads from the Cloud when it starts.
 
@@ -71,10 +71,10 @@ Give the run a budget. Every call is priced before it happens, the reserve is ta
 It gets a 402 with the reason, which is a status every framework already understands, and an incident is recorded against that run. Nothing else in the fleet is affected, and the spend that would have followed simply never happens.
 
 **Q: Do I have to rewrite my agent to use it?**
-No. It is a one-line base-URL change to a gateway that speaks the Anthropic Messages API and the OpenAI chat completions API. Run it in shadow mode first and it prices and records everything while refusing nothing, so you can see what would have been blocked before anything is. Its own bookkeeping fails open, so a lost event or an unreachable control plane never refuses a call; what happens when the policy plane is unreachable is the deployment's choice, and both launchers ship it closed.
+No. It is a one-line base-URL change to a gateway that speaks the Anthropic Messages API and the OpenAI chat completions API. Set TOKENFUSE_MODE=shadow first and it prices and records everything while refusing nothing, so you can see what would have been blocked before anything is. Its own bookkeeping fails open, so a lost event or a failed telemetry push never refuses a call; the one exception is the start, when a gateway with a Cloud configured answers 503 seed_pending until it has read its money state. What happens when the policy plane is unreachable is the deployment's choice, and all three launchers ship it closed.
 
 **Q: Can it catch a retry loop before the bill does?**
-That is the case it was built for. A sustained loop or a fan-out explosion looks the same as a compromised agent from the budget's side, and both trip the breaker. In the live campaign, the runaway that mattered was caught and killed on the day, not on the invoice.
+That is the case it was built for. A sustained loop trips the breaker, and a fan-out explosion opens an incident in the Cloud; either looks the same as a compromised agent from the budget's side. In the live campaign, the runaway that mattered was caught and killed on the day, not on the invoice.
 
 **Q: Does it still work with several gateways behind a load balancer?**
-In the cluster build, yes: the spend ledger is raft-replicated and the affordability check is linearized across the fleet, so four nodes on four machines admit exactly what one budget allows. The cluster record tests that with 30 concurrent reserves against a 5-unit budget, a kill of the leader and a real network partition. That build is optional and not what the shipped images run; the default profile is one gateway whose ledger lives in memory and is read back from the Cloud when it starts, each run's spend over the last 31 days, so a restart does not hand a run its budget again. That read-back does not let two gateways share one budget; only the cluster build does.
+In the cluster build, yes: the spend ledger is raft-replicated and the affordability check is linearized across the fleet, so four nodes on four machines admit exactly what one budget allows. The cluster record tests that with 30 concurrent reserves against a 5-unit budget, a kill of the leader and a real network partition. That build is optional and ships as its own image tag, not what the default image runs; the default profile is one gateway whose ledger lives in memory and is read back from the Cloud when it starts, each run's spend over the last 31 days, so a restart does not hand a run its budget again. That read-back does not let two gateways share one budget; only the cluster build does.

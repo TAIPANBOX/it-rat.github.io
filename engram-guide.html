@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Engram guide: how it works, running it, what changed · IT-RAT</title>
-<meta name="description" content="How Engram works, the live runs against real Claude, how to install it, what changed on main, and what it does not do yet, in full.">
+<meta name="description" content="How Engram works, the live runs against real Claude, how to install it, what changed in v3.0.0 and v3.1.0, and what it does not do yet, in full.">
 <link rel="canonical" href="https://it-rat.com/engram-guide.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/engram-guide.html">
 <meta property="og:title" content="Engram guide: how it works, running it, what changed · IT-RAT">
-<meta property="og:description" content="Everything the Engram room leaves out: the six things a memory holds, two timelines per fact, three recall modes, what forget() removes, the three live runs against real Claude, how it ships, what changed on main, and what it does not do yet.">
+<meta property="og:description" content="Everything the Engram room leaves out: the six things a memory holds, two timelines per fact, three recall modes, what forget() removes, the three live runs against real Claude, how it ships, what changed in v3.0.0 and v3.1.0, and what it does not do yet.">
 <meta property="og:image" content="https://it-rat.com/assets/og/engram.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Engram guide: how it works, running it, what changed · IT-RAT">
-<meta name="twitter:description" content="Everything the Engram room leaves out: the six things a memory holds, two timelines per fact, three recall modes, what forget() removes, the three live runs against real Claude, how it ships, what changed on main, and what it does not do yet.">
+<meta name="twitter:description" content="Everything the Engram room leaves out: the six things a memory holds, two timelines per fact, three recall modes, what forget() removes, the three live runs against real Claude, how it ships, what changed in v3.0.0 and v3.1.0, and what it does not do yet.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/engram.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -53,7 +53,7 @@
   .gtoc a:hover{color:var(--accent)}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Engram guide: how it works, running it, what changed","name":"Engram guide","url":"https://it-rat.com/engram-guide.html","description":"How Engram works, the live runs against real Claude, how to install it, what changed on main, and what it does not do yet, in full.","inLanguage":"en","datePublished":"2026-10-16","dateModified":"2026-10-16","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/engram-guide.html","about":{"@type":"SoftwareApplication","name":"Engram","url":"https://it-rat.com/services/engram.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"Engram guide","item":"https://it-rat.com/engram-guide.html"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Engram guide: how it works, running it, what changed","name":"Engram guide","url":"https://it-rat.com/engram-guide.html","description":"How Engram works, the live runs against real Claude, how to install it, what changed in v3.0.0 and v3.1.0, and what it does not do yet, in full.","inLanguage":"en","datePublished":"2026-10-16","dateModified":"2026-10-16","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/engram-guide.html","about":{"@type":"SoftwareApplication","name":"Engram","url":"https://it-rat.com/services/engram.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"Engram guide","item":"https://it-rat.com/engram-guide.html"}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-root="">
@@ -75,7 +75,7 @@
   <div class="wrap">
     <div class="kicker rv">a guide &#183; engram</div>
     <h1 class="rv d1">How Engram works, how to run it, what changed.</h1>
-    <p class="lede rv d2">The <a href="services/engram.html">Engram room</a> keeps the simulation, the drawing of one file on disk and the common questions. This guide keeps the rest of what the room used to say: what a memory holds and how each part works, the three live runs against real Claude, how it ships, what changed on main, and what it does not do yet.</p>
+    <p class="lede rv d2">The <a href="services/engram.html">Engram room</a> keeps the simulation, the drawing of one file on disk and the common questions. This guide keeps the rest of what the room used to say: what a memory holds and how each part works, the three live runs against real Claude, how it ships, what changed in v3.0.0 and v3.1.0, and what it does not do yet.</p>
     <div class="back rv d3"><a class="btn" href="services/engram.html"><span class="mono">&#8592;</span> Back to the Engram room</a></div>
   </div>
 </section>
@@ -110,8 +110,8 @@
       <h2>Not a log of text. Beliefs with receipts.</h2>
     </div>
     <div class="prose rv">
-      <h3>One file on disk. One optional network call.</h3>
-      <p>Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. Inside: episodic and semantic memory, bitemporal facts, spreading activation and Ebbinghaus decay. The only part that ever touches a network is reflect(), through a pluggable LLM adapter, and even that can route through TokenFuse.</p>
+      <h3>One file on disk. Model calls only when you ask.</h3>
+      <p>Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. Inside: episodic and semantic memory, bitemporal facts, spreading activation and Ebbinghaus decay. The only calls that leave the machine are reflect() and compress(), through a pluggable LLM adapter, and even those can route through TokenFuse; the embedding model downloads once, about 64 MB, on first use.</p>
     </div>
     <div class="diagram rv">
       <svg viewBox="0 0 960 330" role="img" aria-label="Engram architecture">
@@ -129,12 +129,12 @@
             <rect x="352" y="134" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="414" y="153" fill="#E9EFF6" font-size="10">spreading activation</text>
             <rect x="216" y="172" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="278" y="191" fill="#E9EFF6">Ebbinghaus decay</text>
             <rect x="352" y="172" width="125" height="30" rx="8" fill="#141C27" stroke="#2a3547"/><text x="414" y="191" fill="#E9EFF6">working memory</text>
-            <text x="346" y="228" fill="#5A6675" font-size="10.5">writes in ~4 ms &#183; no LLM in the write path</text>
+            <text x="346" y="228" fill="#5A6675" font-size="10.5">median write 8 ms &#183; no LLM in the write path</text>
           </g>
 
           <rect x="544" y="106" width="158" height="86" rx="12" fill="#141C27" stroke="#2a3547"/>
           <text x="623" y="130" fill="#E9EFF6" font-size="12.5" font-weight="700">LLM adapter</text>
-          <text x="623" y="149" fill="#8A97A6" font-size="10.5">Anthropic/OpenAI/Ollama</text>
+          <text x="623" y="149" fill="#8A97A6" font-size="10.5">6 adapters incl. Ollama</text>
           <text x="623" y="168" font-size="10.5"><tspan fill="#8A97A6">via </tspan><tspan fill="#F4B23E">TokenFuse</tspan><tspan fill="#8A97A6"> base_url</tspan></text>
           <text x="520" y="116" fill="#5A6675" font-size="9.5">reflect</text>
           <text x="520" y="188" fill="#5A6675" font-size="10.5">facts</text>
@@ -162,7 +162,7 @@
     </div>
     <div class="prose rv">
       <h3>Single file, embeddable</h3>
-      <p>One .engram file on SQLite plus sqlite-vec: no server, no Docker, no config file. pip install, two lines of Python, and the first memory is on disk. Writes land in about 4 ms because no LLM sits in the write path.</p>
+      <p>One .engram file on SQLite plus sqlite-vec: no server, no Docker, no config file. pip install, two lines of Python, and the first memory is on disk. A write takes a median of 8 ms (200 writes on an Apple Silicon Mac, 2026-10-13) because no LLM sits in the write path.</p>
       <h3>reflect() distills facts</h3>
       <p>A background reflection loop groups recent episodes and asks an LLM to extract subject-predicate-object facts, each with a confidence score. Every fact keeps a why() chain: which episodes produced it, which run extracted it, which model, at what confidence.</p>
       <h3>Facts that know their dates</h3>
@@ -301,9 +301,10 @@
       <table class="tbl">
         <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
         <tbody>
-          <tr><td><!-- release-slot: engram -->on main</td><td>A person's own fact is never closed by a lower provenance: a model's extraction or refutation is recorded beside it, and contradictions() lists the pair.</td></tr>
-          <tr><td><!-- release-slot: engram -->on main</td><td>refute_fact() closes a fact without erasing it, and marks every fact derived from it as undermined.</td></tr>
-          <tr><td><!-- release-slot: engram -->on main</td><td>The documents no longer claim procedural memory: the store never modelled it, and remember(kind="procedural") is refused.</td></tr>
+          <tr><td>v3.1.0</td><td>A person's own fact is never closed by a lower provenance: a model's extraction or refutation is recorded beside it, and contradictions() lists the pair.</td></tr>
+          <tr><td>v3.1.0</td><td>refute_fact() closes a fact without erasing it, and marks every fact derived from it as undermined.</td></tr>
+          <tr><td>v3.1.0</td><td>The documents no longer claim procedural memory: the store never modelled it, and remember(kind="procedural") is refused.</td></tr>
+          <tr><td>v3.1.0</td><td>A fact stamps its provenance when it is written, so a person's fact stays the person's after its source episodes are forgotten or pruned. The store moves to schema generation 2 with three nullable columns on facts, and assert_fact takes provenance and derived_from.</td></tr>
         </tbody>
       </table>
     </div>
@@ -323,7 +324,7 @@
         <li><span>Refutation emits no event, because the shared event contract has no type for it. The row it leaves in the store is the record. An older Engram that opens a migrated file ignores the new columns.</span></li>
         <li><span>reflect() is deliberately not exposed to MCP clients.</span></li>
         <li><span>Agent events (memory_written, reflection_run, contradiction_found, memory_forgotten) are opt-in and off by default.</span></li>
-        <li><span>The only part that ever touches a network is reflect(), through a pluggable LLM adapter.</span></li>
+        <li><span>The only calls that leave the machine are reflect() and compress(), through a pluggable LLM adapter, plus the one-time download of the embedding model on first use.</span></li>
         <li><span>No per-platform binaries: this one is a Python library you import, so the package index is the download.</span></li>
         <li><span>Nothing from the three live runs is still standing: the boxes were disposable and deleted after each run.</span></li>
       </ul>

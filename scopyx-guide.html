@@ -109,7 +109,7 @@
     </div>
     <div class="prose rv">
       <ul>
-        <li><span><b>Shipped:</b> v1.1.0, two images (default and -chromium).</span></li>
+        <li><span><b>Shipped:</b> v1.2.0, two images (default and -chromium).</span></li>
         <li><span><b>Core:</b> Go 1.27 &#183; one direct dependency.</span></li>
         <li><span><b>One way out:</b> http and https, and nothing else.</span></li>
         <li><span><b>Fails:</b> closed, and says which refusal.</span></li>
@@ -207,7 +207,7 @@
       <h2>A page is forty requests nobody named. Here is what stops them.</h2>
     </div>
     <div class="prose rv">
-      <p>A rendering backend is the first one that fetches things the caller never asked for: fonts, images, scripts, each potentially a different host. Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and see. Switch both off and the chromium test that asserts the refused server is never reached is the one that should fail. That run is not recorded yet.</p>
+      <p>A rendering backend is the first one that fetches things the caller never asked for: fonts, images, scripts, each potentially a different host. Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and the refused server is still never reached; switch both off and it is reached once, and the chromium test that asserts otherwise goes red.</p>
       <p>The two switches are on the <a href="services/scopyx.html#mechanisms">room</a>.</p>
     </div>
   </div>
@@ -316,7 +316,7 @@
       <table class="tbl">
         <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
         <tbody>
-          <tr><td><!-- release-slot: scopyx -->on main</td><td>The key can come through the TokenFuse MCP broker: SCOPYX_ACCEPT_KEY_IN_META=1 reads a tools/call credential from the call's metadata, as a handle the broker fills in. Off by default.</td></tr>
+          <tr><td>v1.2.0</td><td>The key can come through the TokenFuse MCP broker: SCOPYX_ACCEPT_KEY_IN_META=1 reads a tools/call credential from the call's metadata, as a handle the broker fills in. Off by default.</td></tr>
         </tbody>
       </table>
     </div>
@@ -341,7 +341,6 @@
       <p>Scopyx applies rules you wrote and infers nothing, so we do not treat it as an AI system under Article 3(1). Whether a system you run is one is for your own legal review. Used beside one, it supplies evidence for Article 12 record-keeping and Article 14 human oversight. The wording here is "covers the requirements of Article 12", never "AI Act compliant", because there is no certification and no auditor behind those words, and a claim nobody can hold is worse than no claim.</p>
       <h3>What is not proven or not shipped</h3>
       <ul>
-        <li><span>Switch both mechanisms off and the chromium test that asserts the refused server is never reached is the one that should fail. That run is not recorded yet.</span></li>
         <li><span>A vendor API needs an adapter in front of it, and this repository ships none.</span></li>
         <li><span>The default fetcher runs no JavaScript: a page assembled in a browser arrives as the shell that assembles it.</span></li>
       </ul>

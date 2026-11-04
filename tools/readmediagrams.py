@@ -31,19 +31,19 @@ DUR = 2.4  # seconds for one pulse to cross a wire, whatever that wire's length
 ROOMS = {
     "tokenfuse": ("services/tokenfuse.html", "#F4B23E",
                   "TokenFuse: every agent call priced and gated in-line, one gateway by default and a raft cluster build when you need several",
-                  "de020e052276"),
+                  "3e4d28cb348a"),
     "wardryx":   ("services/wardryx.html", "#2DD4BF",
-                  "Wardryx: the PEP asks per request, the PDP answers allow, deny or hold",
-                  "3afdc200f904"),
+                  "Wardryx: the PEP asks per request, the PDP answers allow, deny or hold, and an optional Verdryx event file can add a hold",
+                  "f6f11fc1593f"),
     "idryx":     ("services/idryx.html", "#34D399",
                   "Idryx: identity sources feed one graph that emits alerts, an Agent-BOM and proposed diffs",
-                  "fd83459a2b8b"),
+                  "900e8fdfa8bd"),
     "qryx":      ("services/qryx.html", "#B48CFF",
                   "Qryx: the estate is swept into a crypto inventory and scored for post-quantum risk",
-                  "11ec58689354"),
+                  "a7c5b48f983c"),
     "keyryx":   ("services/keyryx.html", "#FDE68A",
                   "Keyryx: custody signs for granted consumers and publishes key sets, and a read-only witness signs its tree heads and reports a rewritten stream",
-                  "6fda500faf99"),
+                  "a3658b56d2c4"),
     "verdryx":   ("services/verdryx.html", "#FF7AA2",
                   "Verdryx: outcomes judged and priced per resolved case, with drift watched over time",
                   "c61935fe07c8"),
@@ -52,14 +52,14 @@ ROOMS = {
                   "74a7940b101b"),
     "engram":    ("services/engram.html", "#6C7BFF",
                   "Engram: agent memory in one SQLite file, recalled with provenance",
-                  "2b486f69f82b"),
+                  "df03b29d9082"),
     "platform":  ("services/platform.html", "#93A8C4",
-                  "Platform: fifteen registered sources write one envelope onto one NDJSON bus, "
+                  "Platform: fifteen registered sources write one envelope, twelve of them onto one NDJSON bus, "
                   "and five consumers read it back",
-                  "a99d90140f87"),
+                  "5fa985abd7da"),
     "genaryx":   ("genaryx.html", "#B48CFF",
                   "Genaryx: one browser control room over the stack, reached only over the tunnel",
-                  "81bdf83f6f14"),
+                  "9a774670aaf6"),
     "costcrew":  ("services/costcrew.html", "#7DD3A0",
                   "CostCrew: charges arrive from the connectors built so far (the TokenFuse FOCUS export, "
                   "seats, recommendations; the AWS and GCP billing exports are read, the Azure one is specified), a two-sided "
@@ -81,7 +81,7 @@ ROOMS = {
                   "Typryx: an ask crosses the door, template lookup, egress filter and hourly cap to a "
                   "swappable backend, stub, openai-logprobs or jev, and every answer or refusal is "
                   "journaled, with a calibration loop and the journal on the shared events volume",
-                  "197af5861681"),
+                  "4b7b9704b075"),
 }
 
 # Rooms whose README diagram is drawn by hand, and the reason for each. This

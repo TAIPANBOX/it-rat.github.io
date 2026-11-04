@@ -90,9 +90,9 @@
     <div class="prose rv">
       <ul>
         <li><span><b>Deterministic allow, deny or hold, with a human on the expensive actions.</b></span></li>
-        <li><span><b>Status:</b> v2.4.0, surface frozen at 1.0 &#183; main is supported.</span></li>
+        <li><span><b>Status:</b> v2.5.1, surface frozen at 1.0 &#183; main is supported.</span></li>
         <li><span><b>Core:</b> Go 1.27 &#183; deterministic PDP. <b>API:</b> POST /v1/decide on :8090.</span></li>
-        <li><span><b>Rules:</b> deny_tool &#183; allow_tool &#183; deny_if_unattested &#183; deny_if_chain_unproven &#183; max_steps &#183; allow_domains &#183; deny_above_usd &#183; require_human_above_usd &#183; hold_if_signal.</span></li>
+        <li><span><b>Rules:</b> deny_tool &#183; allow_tool &#183; allow_models &#183; allow_domains &#183; max_steps &#183; deny_if_unattested &#183; require_identity_source &#183; max_chain_depth &#183; require_root_principal &#183; deny_if_chain_unproven &#183; deny_above_usd &#183; require_human_above_usd &#183; hold_if_signal.</span></li>
         <li><span><b>Lineage:</b> PDP/PEP &#183; XACML's good ideas.</span></li>
         <li><span><b>Licence:</b> Apache-2.0.</span></li>
       </ul>
@@ -115,7 +115,7 @@
       <p>The PEP posts the proposed action: agent, tools, declared domains, step count, estimated cost, attestation. Wardryx matches policies by agent:// glob and applies the rules in a fixed order, where deny_above_usd outranks every approval and the hold check comes after it. The verdict returns with a cacheable flag, the caller's cache keys on agent, tool set and attestation, and every decision leaves as an event.</p>
     </div>
     <div class="diagram rv">
-      <svg viewBox="0 0 960 340" role="img" aria-label="Wardryx architecture: Two enforcement points, TokenFuse on the money path and Scopyx on the web path, both post /v1/decide; the Wardryx PDP returns allow, deny or hold with a cacheable flag; holds resolve via signed approval tokens; events and OTLP spans flow out; Terraform manages policies as code">
+      <svg viewBox="0 0 960 340" role="img" aria-label="Wardryx architecture: Two enforcement points, TokenFuse on the money path and Scopyx on the web path, both post /v1/decide; the Wardryx PDP returns allow, deny or hold with a cacheable flag; holds resolve via signed approval tokens; events and OTLP spans flow out; Terraform manages policies as code; an optional Verdryx event file adds a standing slo_burn signal that a hold_if_signal rule can turn into a hold.">
         <defs><marker id="a2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker></defs>
         <g font-family="ui-monospace,Menlo" text-anchor="middle">
           <rect x="10" y="92" width="118" height="52" rx="12" fill="#141C27" stroke="#F4B23E" stroke-width="1.4"/>
@@ -142,11 +142,16 @@
             <text x="292" y="158" fill="#E9EFF6">attestation</text>
             <text x="292" y="173" font-size="9.5">&#8220;None&#8221; never passes</text>
             <rect x="364" y="140" width="128" height="42" rx="8" fill="#141C27" stroke="#2a3547"/>
-            <text x="428" y="158" fill="#E9EFF6">decision cache</text>
-            <text x="428" y="173" font-size="9.5">agent+tools+attest</text>
+            <text x="428" y="158" fill="#E9EFF6">cacheable flag</text>
+            <text x="428" y="173" font-size="9.5">the caller's cache</text>
             <text x="360" y="208" fill="#5A6675" font-size="10.5">deterministic: same request, same verdict</text>
             <text x="360" y="224" fill="#5A6675" font-size="10.5">no LLM anywhere in the decision path</text>
           </g>
+
+
+          <rect x="10" y="224" width="170" height="46" rx="12" fill="#141C27" stroke="#FF7AA2" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <text x="95" y="244" fill="#FF7AA2" font-size="11.5" font-weight="700">verdryx event file</text>
+          <text x="95" y="260" fill="#8A97A6" font-size="10">slo_burn &#183; optional</text>
 
           <rect x="570" y="118" width="140" height="62" rx="12" fill="#141C27" stroke="#2a3547"/>
           <text x="640" y="140" fill="#E9EFF6" font-size="12.5" font-weight="700">verdict</text>
@@ -175,6 +180,7 @@
           <line x1="710" y1="132" x2="734" y2="92" marker-end="url(#a2)"/>
           <line x1="710" y1="166" x2="734" y2="230" marker-end="url(#a2)"/>
           <line x1="360" y1="284" x2="360" y2="254" marker-end="url(#a2)"/>
+          <line x1="180" y1="236" x2="202" y2="236" stroke="#FF7AA2" marker-end="url(#a2)"/>
         </g>
       </svg>
     </div>
@@ -202,7 +208,7 @@
       <p>When a decide carries an agent's DPoP proof, Wardryx accepts that proof once. With <span class="mono">WARDRYX_DB</span> set, the record of accepted proofs is the table <span class="mono">agent_proof_replays</span>, shared by every instance on that database. A proof presented at a second instance, or again after a restart, is refused with <span class="mono">403 agent_token_proof_invalid</span>. The claim is one atomic insert and the last step of the check, so only a proof that passed every other check reaches the database, and the key is a hash over the holder's key thumbprint and the proof's id, so no client byte reaches SQL and one holder cannot spend another's id. A row is kept until the longest proof window has closed, and a purge removes the rows after that.</p>
       <p>A record that cannot be asked refuses. A proof nobody could check for replay may be a replay, so a store that is gone answers <span class="mono">503 agent_token_proof_unrecorded</span>, a store that failed with an error of its own answers 500, and the process does not stand in with a memory of its own. TokenFuse treats any answer outside 2xx as its fail mode, closed under enforce unless an operator set it open. A request with no proof decides from memory as before. Without a database the record stays in the process, and serve says so at start.</p>
       <h3>Fail-open or fail-closed, your call</h3>
-      <p>When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; both launchers set it closed on purpose. The egress point fails closed with no override. Every default is documented, and so is the tradeoff.</p>
+      <p>When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; all three launchers set it closed on purpose. The egress point fails closed with no override. Every default is documented, and so is the tradeoff.</p>
       <h3>Three modes at the call site, and one honest choice about outages</h3>
       <p>Wardryx itself never acts. It answers; the enforcement point, a gateway or a proxy, decides how much weight to give the answer. There are three settings at that call site.</p>
       <p>Two enforcement points ask this plane, and the answer lives at the call site rather than here. <b>TokenFuse</b>'s binary closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing. It was open under enforce until 2026-10-17, for the reason a money plane gives: a call refused on every policy blink costs production traffic during a network partition. All three launchers set it closed, because on a box that exists to govern, policy wins. That is not a reading of the configuration. On 2026-09-17 the policy plane was stopped under a box governing two clouds, and every call came back <span class="mono">403 wardryx unreachable</span> in 0.3 s, none reaching the provider, until it was started again. <b>Scopyx</b> fails closed with no override: an egress point that failed open is an unrestricted fetch proxy wearing a governance label, and that failure would be silent.</p>
@@ -222,7 +228,7 @@
       <h2>The desk every expensive idea stops at.</h2>
     </div>
     <div class="prose rv">
-      <p><a href="services/tokenfuse.html">TokenFuse</a>'s PEP hook asks Wardryx on every request and stamps the verdict on the response. Each decision lands on the bus as a source: wardryx event, which <a href="services/idryx.html">Idryx</a> correlates into the identity graph. <a href="services/mockryx.html">Mockryx</a> rehearses the denials in pre-prod, so the first real no is never the first no ever. And the policies themselves are code: the <a href="services/platform.html">Platform</a> page's Terraform provider creates, changes and destroys them like any other resource. A typed risk signal from <a href="services/typryx.html">Typryx</a> can turn an allow into a hold for a person and never into a deny: since v1.2.0 a decision reads <span class="mono">signals</span> and the pending <span class="mono">tool_call</span>, a <span class="mono">hold_if_signal</span> rule can only hold, and Typryx's <span class="mono">wardryx-proxy</span> adds the signal on the way in. The launchers offer it as an opt-in, off by default, and it was measured on the stub backend only.</p>
+      <p><a href="services/tokenfuse.html">TokenFuse</a>'s PEP hook asks Wardryx on every request and stamps the verdict on the response. Each decision lands on the bus as a source: wardryx event, which <a href="services/idryx.html">Idryx</a> correlates into the identity graph. <a href="services/mockryx.html">Mockryx</a> rehearses the denials in pre-prod, so the first real no is never the first no ever. And the policies themselves are code: the <a href="services/platform.html">Platform</a> page's Terraform provider creates, changes and destroys them like any other resource. A typed risk signal from <a href="services/typryx.html">Typryx</a> can turn an allow into a hold for a person and never into a deny: since v1.2.0 a decision reads <span class="mono">signals</span> and the pending <span class="mono">tool_call</span>, a <span class="mono">hold_if_signal</span> rule can only hold, and Typryx's <span class="mono">wardryx-proxy</span> adds the signal on the way in. The launchers offer it as an opt-in, off by default.</p>
       <p>The policy point is one control among several: see <a href="ai-agent-security.html">AI agent security</a> for the failure modes it answers, and <a href="ai-agent-governance.html">AI agent governance</a> for how the planes fit together.</p>
       <h3>A decision is only as good as the identity under it.</h3>
       <p>This plane answers about an action. What it cannot answer is whether the caller really holds the delegation it claims, which is a different question with a different mechanism: <a href="services/vouchryx.html">Vouchryx</a> mints a short-lived token bound to the caller's own key and lets a person end it, and a hold resolved by a signed approval token is the same idea pointed at one action rather than at a delegation.</p>
@@ -276,8 +282,9 @@
       <table class="tbl">
         <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
         <tbody>
-          <tr><td><!-- release-slot: wardryx -->on main</td><td>With a database set, the record of accepted DPoP proofs is shared by every instance and survives a restart: a proof is accepted once, and a record that cannot be asked refuses the decide with a 503.</td></tr>
-          <tr><td><!-- release-slot: wardryx -->on main</td><td>A spent error budget can put an agent's tool calls to a person: with WARDRYX_SIGNAL_EVENTS set, a hold_if_signal rule on slo_burn holds the call.</td></tr>
+          <tr><td>v2.5.0</td><td>With a database set, the record of accepted DPoP proofs is shared by every instance and survives a restart: a proof is accepted once, and a record that cannot be asked refuses the decide with a 503.</td></tr>
+          <tr><td>v2.5.0</td><td>A spent error budget can put an agent's tool calls to a person: with WARDRYX_SIGNAL_EVENTS set, a hold_if_signal rule on slo_burn holds the call.</td></tr>
+          <tr><td>v2.5.1</td><td>The policy archive is created with directory mode 0750 and file mode 0640, so the account that runs wardryx replay can read it from the group of the account that writes it. An archive written before keeps its modes until an operator widens it.</td></tr>
         </tbody>
       </table>
     </div>
@@ -292,13 +299,13 @@
     </div>
     <div class="prose rv">
       <ul>
-        <li><span>When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; both launchers set it closed on purpose. The egress point fails closed with no override.</span></li>
+        <li><span>When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; all three launchers set it closed on purpose. The egress point fails closed with no override.</span></li>
         <li><span>Started with no policy configured, it starts anyway and allows, and it says so in the log rather than pretending to enforce something it was never given.</span></li>
         <li><span>With no shared database the single-use guarantee of an approval token is per process, and the server says so at startup rather than letting you assume otherwise. Setting <span class="mono">WARDRYX_APPROVAL_SINGLE_USE=false</span> makes a token reusable within its window.</span></li>
         <li><span>A call whose arguments were too large to send binds only its name and target.</span></li>
         <li><span>An outage of the store behind the proof record stops every decide that carries a proof. Every instance must run this build, because an older one keeps its own record, and two clocks more than five minutes apart can accept a proof twice.</span></li>
         <li><span>The chain behind the budget signal shows that a line was not edited or removed from the middle. It does not say who wrote the file and cannot see lines cut from the end, so the file is as trustworthy as its permissions. An event is matched by exact agent id, in no org, and a crash mid-write leaves the file broken until it is moved aside. Under <span class="mono">when_absent: hold</span>, a file that cannot be read holds every tool call of the agents the rule matches.</span></li>
-        <li><span>The typed risk signal from Typryx: the launchers offer it as an opt-in, off by default, and it was measured on the stub backend only.</span></li>
+        <li><span>The typed risk signal from Typryx: the launchers offer it as an opt-in, off by default.</span></li>
         <li><span>The room's stampede is a simulation, and it says so: it replays the shape of the live validation record.</span></li>
       </ul>
     </div>

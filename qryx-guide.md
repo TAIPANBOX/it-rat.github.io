@@ -111,7 +111,7 @@ Qryx reads binaries, container images, live TLS endpoints, certificates, depende
 
 ## The inventory the rest of the stack borrows from.
 
-Qryx emits every finding as an agent-event onto the shared bus that [Platform](https://it-rat.com/services/platform.html) defines and every service writes to. It watches the same estate [TokenFuse](https://it-rat.com/services/tokenfuse.html) spends against, the binaries, endpoints and keys underneath the calls TokenFuse meters. [Mockryx](https://it-rat.com/services/mockryx.html) can demand a crypto reaction in its drills too: an expect.event assertion that a fire drill actually produced a crypto_finding, not silence.
+Qryx can write its agent-passport findings, drift, policy violations and signed-evidence records as agent-events onto the shared bus that [Platform](https://it-rat.com/services/platform.html) defines and every service writes to (opt-in, with --events). Only a finding that names a real agent emits an event, which today means the findings of qryx agents; scans of code, binaries, TLS and cloud KMS carry no agent and emit none. It watches the same estate [TokenFuse](https://it-rat.com/services/tokenfuse.html) spends against, the binaries, endpoints and keys underneath the calls TokenFuse meters. [Mockryx](https://it-rat.com/services/mockryx.html) can demand a crypto reaction in its drills too: an expect.event assertion that a fire drill actually produced a crypto_finding, not silence.
 
 Crypto posture is one plane of a wider practice: [AI agent governance](https://it-rat.com/ai-agent-governance.html), and the defensive picture in [AI agent security](https://it-rat.com/ai-agent-security.html).
 
@@ -125,7 +125,7 @@ qryx scan .
 qryx tls api.anthropic.com:443
 ```
 
-Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.2 toolchain downloads itself on the first build.
+Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.3 toolchain downloads itself on the first build.
 
 ### Download, any platform
 

@@ -35,15 +35,15 @@ Every page below is available as markdown at the same path with a .md extension.
 - [Wardryx guide](https://it-rat.com/wardryx-guide.md): How Wardryx decides allow, deny or hold, how to run it, what changed from 1 to 15 October 2026, and what is open by default or not proven yet.
 - [Idryx guide](https://it-rat.com/idryx-guide.md): How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do or prove yet.
 - [Scopyx guide](https://it-rat.com/scopyx-guide.md): How Scopyx decides an agent's web egress, how to run its two images, what changed from 1 to 15 October 2026, and what it will not do, in full.
-- [Vouchryx guide](https://it-rat.com/vouchryx-guide.md): How Vouchryx proves and ends an agent's delegation, its six endpoints, how to run and configure it, what changed in October 2026, and its limits.
+- [Vouchryx guide](https://it-rat.com/vouchryx-guide.md): How Vouchryx proves and ends an agent's delegation, its seven endpoints, how to run and configure it, what changed in October and November 2026, and its limits.
 - [Qryx guide](https://it-rat.com/qryx-guide.md): How Qryx finds every key and grades its post-quantum risk, the risk model, how to run it, what changed in October 2026, and what it leaves out.
 - [Keyryx guide](https://it-rat.com/keyryx-guide.md): How Keyryx signs, publishes and witnesses keys and the record, its routes, how to configure, run and verify it offline, its releases, and its limits.
 - [Verdryx guide](https://it-rat.com/verdryx-guide.md): How Verdryx turns agent spend into cost per resolved case, its six graders, how to run it offline, what changed in October 2026, and its limits.
 - [Typryx guide](https://it-rat.com/typryx-guide.md): How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and what it does not prove yet.
-- [Mockryx guide](https://it-rat.com/mockryx-guide.md): How Mockryx fire drills work, how to run and download it, the drills on main not yet released, and what it does not prove yet.
+- [Mockryx guide](https://it-rat.com/mockryx-guide.md): How Mockryx fire drills work, how to run and download it, the drills added since v0.2.1, and what it does not prove yet.
 - [Trailryx guide](https://it-rat.com/trailryx-guide.md): How Trailryx proves an answer complete, how erasure leaves the chain intact, the durability runs, the offline verifier, and its limits.
-- [Heraldyx guide](https://it-rat.com/heraldyx-guide.md): How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed in v0.7.0 and v0.8.0, and its boundaries.
-- [Engram guide](https://it-rat.com/engram-guide.md): How Engram works, the live runs against real Claude, how to install it, what changed on main, and what it does not do yet, in full.
+- [Heraldyx guide](https://it-rat.com/heraldyx-guide.md): How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed from v0.7.0 to v0.9.0, and its boundaries.
+- [Engram guide](https://it-rat.com/engram-guide.md): How Engram works, the live runs against real Claude, how to install it, what changed in v3.0.0 and v3.1.0, and what it does not do yet, in full.
 - [Platform guide](https://it-rat.com/platform-guide.md): How the Agent Passport contract works, how to run the stack on a laptop, one box or a cluster, and what it does not claim, in full.
 
 ## Services

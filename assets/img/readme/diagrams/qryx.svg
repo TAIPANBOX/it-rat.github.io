@@ -24,7 +24,7 @@
 
           <rect x="14" y="278" width="180" height="54" rx="12" fill="#141C27" stroke="#2a3547"/>
           <text x="104" y="299" fill="#E9EFF6" font-size="11.5" font-weight="700">source + IaC</text>
-          <text x="104" y="316" fill="#8A97A6" font-size="10.5">Go &#183; Py &#183; JS/TS &#183; HCL</text>
+          <text x="104" y="316" fill="#8A97A6" font-size="10.5">Go &#183; Py &#183; JS/TS &#183; Rust</text>
 
           <rect x="246" y="14" width="280" height="318" rx="16" fill="#10161F" stroke="#B48CFF" stroke-width="1.4"/><rect x="246" y="14" width="280" height="318" rx="16" fill="none" stroke="#0A0E13" stroke-width="1.6" class="rd-anim" opacity="0"><animate attributeName="opacity" values="0;.55;0" dur="3.4s" repeatCount="indefinite"/></rect>
           <text x="386" y="42" fill="#B48CFF" font-size="14" font-weight="700">qryx core</text>
@@ -54,7 +54,7 @@
           <text x="753" y="232" fill="#93A8C4" font-size="12.5" font-weight="700">agent-events</text>
           <text x="753" y="254" fill="#8A97A6" font-size="10.5">crypto_finding &#183; crypto_drift</text>
           <text x="753" y="274" fill="#8A97A6" font-size="10.5">policy_violation &#183; evidence_signed</text>
-          <text x="753" y="300" fill="#5A6675" font-size="10.5">onto the shared bus &#183; agent-passport SPEC.md &#167;6.2</text>
+          <text x="753" y="300" fill="#5A6675" font-size="10.5">opt-in (--events) &#183; agent-passport SPEC.md &#167;6.2</text>
         </g>
         <g stroke="#5A6675" stroke-width="1.5" class="flow">
           <line x1="194" y1="41" x2="238" y2="41" marker-end="url(#a3)"/>

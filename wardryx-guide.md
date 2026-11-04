@@ -24,11 +24,11 @@ The [Wardryx room](https://it-rat.com/services/wardryx.html) keeps the simulatio
 
 - **Deterministic allow, deny or hold, with a human on the expensive actions.**
 
-- **Status:** v2.4.0, surface frozen at 1.0 · main is supported.
+- **Status:** v2.5.1, surface frozen at 1.0 · main is supported.
 
 - **Core:** Go 1.27 · deterministic PDP. **API:** POST /v1/decide on :8090.
 
-- **Rules:** deny_tool · allow_tool · deny_if_unattested · deny_if_chain_unproven · max_steps · allow_domains · deny_above_usd · require_human_above_usd · hold_if_signal.
+- **Rules:** deny_tool · allow_tool · allow_models · allow_domains · max_steps · deny_if_unattested · require_identity_source · max_chain_depth · require_root_principal · deny_if_chain_unproven · deny_above_usd · require_human_above_usd · hold_if_signal.
 
 - **Lineage:** PDP/PEP · XACML's good ideas.
 
@@ -101,7 +101,7 @@ A record that cannot be asked refuses. A proof nobody could check for replay may
 
 ### Fail-open or fail-closed, your call
 
-When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; both launchers set it closed on purpose. The egress point fails closed with no override. Every default is documented, and so is the tradeoff.
+When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; all three launchers set it closed on purpose. The egress point fails closed with no override. Every default is documented, and so is the tradeoff.
 
 ### Three modes at the call site, and one honest choice about outages
 
@@ -121,7 +121,7 @@ PUT, GET and DELETE /v1/policies/{id} manage a runtime policy layer with validat
 
 ## The desk every expensive idea stops at.
 
-[TokenFuse](https://it-rat.com/services/tokenfuse.html)'s PEP hook asks Wardryx on every request and stamps the verdict on the response. Each decision lands on the bus as a source: wardryx event, which [Idryx](https://it-rat.com/services/idryx.html) correlates into the identity graph. [Mockryx](https://it-rat.com/services/mockryx.html) rehearses the denials in pre-prod, so the first real no is never the first no ever. And the policies themselves are code: the [Platform](https://it-rat.com/services/platform.html) page's Terraform provider creates, changes and destroys them like any other resource. A typed risk signal from [Typryx](https://it-rat.com/services/typryx.html) can turn an allow into a hold for a person and never into a deny: since v1.2.0 a decision reads `signals` and the pending `tool_call`, a `hold_if_signal` rule can only hold, and Typryx's `wardryx-proxy` adds the signal on the way in. The launchers offer it as an opt-in, off by default, and it was measured on the stub backend only.
+[TokenFuse](https://it-rat.com/services/tokenfuse.html)'s PEP hook asks Wardryx on every request and stamps the verdict on the response. Each decision lands on the bus as a source: wardryx event, which [Idryx](https://it-rat.com/services/idryx.html) correlates into the identity graph. [Mockryx](https://it-rat.com/services/mockryx.html) rehearses the denials in pre-prod, so the first real no is never the first no ever. And the policies themselves are code: the [Platform](https://it-rat.com/services/platform.html) page's Terraform provider creates, changes and destroys them like any other resource. A typed risk signal from [Typryx](https://it-rat.com/services/typryx.html) can turn an allow into a hold for a person and never into a deny: since v1.2.0 a decision reads `signals` and the pending `tool_call`, a `hold_if_signal` rule can only hold, and Typryx's `wardryx-proxy` adds the signal on the way in. The launchers offer it as an opt-in, off by default.
 
 The policy point is one control among several: see [AI agent security](https://it-rat.com/ai-agent-security.html) for the failure modes it answers, and [AI agent governance](https://it-rat.com/ai-agent-governance.html) for how the planes fit together.
 
@@ -157,12 +157,13 @@ The whole stack's fortnight, Wardryx among it, is in [the October changelog](htt
 
 | shipped in | what it does |
 |---|---|
-| on main | With a database set, the record of accepted DPoP proofs is shared by every instance and survives a restart: a proof is accepted once, and a record that cannot be asked refuses the decide with a 503. |
-| on main | A spent error budget can put an agent's tool calls to a person: with WARDRYX_SIGNAL_EVENTS set, a hold_if_signal rule on slo_burn holds the call. |
+| v2.5.0 | With a database set, the record of accepted DPoP proofs is shared by every instance and survives a restart: a proof is accepted once, and a record that cannot be asked refuses the decide with a 503. |
+| v2.5.0 | A spent error budget can put an agent's tool calls to a person: with WARDRYX_SIGNAL_EVENTS set, a hold_if_signal rule on slo_burn holds the call. |
+| v2.5.1 | The policy archive is created with directory mode 0750 and file mode 0640, so the account that runs wardryx replay can read it from the group of the account that writes it. An archive written before keeps its modes until an operator widens it. |
 
 ## What is open by default, and what is not proven yet.
 
-- When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; both launchers set it closed on purpose. The egress point fails closed with no override.
+- When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; all three launchers set it closed on purpose. The egress point fails closed with no override.
 
 - Started with no policy configured, it starts anyway and allows, and it says so in the log rather than pretending to enforce something it was never given.
 
@@ -174,7 +175,7 @@ The whole stack's fortnight, Wardryx among it, is in [the October changelog](htt
 
 - The chain behind the budget signal shows that a line was not edited or removed from the middle. It does not say who wrote the file and cannot see lines cut from the end, so the file is as trustworthy as its permissions. An event is matched by exact agent id, in no org, and a crash mid-write leaves the file broken until it is moved aside. Under `when_absent: hold`, a file that cannot be read holds every tool call of the agents the rule matches.
 
-- The typed risk signal from Typryx: the launchers offer it as an opt-in, off by default, and it was measured on the stub backend only.
+- The typed risk signal from Typryx: the launchers offer it as an opt-in, off by default.
 
 - The room's stampede is a simulation, and it says so: it replays the shape of the live validation record.
 

@@ -58,7 +58,7 @@ Verifiers read the published key sets and never call custody for each request. I
 
 - Trailryx packs are unsigned by default. The Keyryx root signer is opt-in, and the launcher leaves it off.
 
-- Its findings stay on its own volume: Heraldyx does not read them yet, so a finding sends no mail. An operator reads alerts.ndjson, or checks the witness log with keyryx verify.
+- Its findings go to keyryx.ndjson on a volume of their own, which Heraldyx and the console mount read only. Heraldyx mails the high ones (the medium ones go in the digest), and the console shows them as incidents. An operator can also check the witness log with keyryx verify.
 
 - No admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one.
 

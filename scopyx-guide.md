@@ -32,7 +32,7 @@ The [Scopyx room](https://it-rat.com/services/scopyx.html) keeps the request in 
 
 ## Scopyx at a glance.
 
-- **Shipped:** v1.1.0, two images (default and -chromium).
+- **Shipped:** v1.2.0, two images (default and -chromium).
 
 - **Core:** Go 1.27 · one direct dependency.
 
@@ -96,7 +96,7 @@ It runs the page's own JavaScript, so a document assembled in the browser arrive
 
 ## A page is forty requests nobody named. Here is what stops them.
 
-A rendering backend is the first one that fetches things the caller never asked for: fonts, images, scripts, each potentially a different host. Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and see. Switch both off and the chromium test that asserts the refused server is never reached is the one that should fail. That run is not recorded yet.
+A rendering backend is the first one that fetches things the caller never asked for: fonts, images, scripts, each potentially a different host. Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and the refused server is still never reached; switch both off and it is reached once, and the chromium test that asserts otherwise goes red.
 
 The two switches are on the [room](https://it-rat.com/services/scopyx.html#mechanisms).
 
@@ -166,7 +166,7 @@ No release in the window, still 1.0.1. The same entry, beside every other servic
 
 | shipped in | what it does |
 |---|---|
-| on main | The key can come through the TokenFuse MCP broker: SCOPYX_ACCEPT_KEY_IN_META=1 reads a tools/call credential from the call's metadata, as a handle the broker fills in. Off by default. |
+| v1.2.0 | The key can come through the TokenFuse MCP broker: SCOPYX_ACCEPT_KEY_IN_META=1 reads a tools/call credential from the call's metadata, as a handle the broker fills in. Off by default. |
 
 ## What it will not do, stated rather than discovered.
 
@@ -189,8 +189,6 @@ Every other line above holds because no code path exists to do it, and an absenc
 Scopyx applies rules you wrote and infers nothing, so we do not treat it as an AI system under Article 3(1). Whether a system you run is one is for your own legal review. Used beside one, it supplies evidence for Article 12 record-keeping and Article 14 human oversight. The wording here is "covers the requirements of Article 12", never "AI Act compliant", because there is no certification and no auditor behind those words, and a claim nobody can hold is worse than no claim.
 
 ### What is not proven or not shipped
-
-- Switch both mechanisms off and the chromium test that asserts the refused server is never reached is the one that should fail. That run is not recorded yet.
 
 - A vendor API needs an adapter in front of it, and this repository ships none.
 

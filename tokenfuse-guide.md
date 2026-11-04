@@ -24,7 +24,7 @@ The [TokenFuse room](https://it-rat.com/services/tokenfuse.html) keeps the simul
 
 - **The breaker between your agents and your invoice.**
 
-- **Release:** latest · ghcr images. **Core:** Rust.
+- **Release:** pinned tags · ghcr images (no :latest). **Core:** Rust.
 
 - **Ledger:** in-process by default · raft cluster build optional.
 
@@ -60,11 +60,11 @@ A business unit can also carry a monthly cap, the first budget above the run. It
 
 Accounting is reserve then settle. Each call is priced before it happens, the reserve is taken, and the real cost settles afterwards; a call that would cross the cap is refused before the provider ever sees it. Models the price book does not recognise get a fallback price rather than passing through untracked, because untracked spend is exactly the failure mode this exists to remove.
 
-Adoption is a one-line base-URL swap, and the gateway runs in shadow mode first: it prices and records everything while refusing nothing, so you can see what would have been blocked before anything is. Its own bookkeeping fails open: a telemetry push, an event write or a control-plane call that fails never refuses a call. The one failure mode that is a choice is the policy hook, and the launchers make it for you: both ship it fail-closed, so a policy plane that cannot be reached refuses every governed call rather than waving it through. That is measured, not read off a config file: on 2026-09-17 the policy plane was stopped under a box governing two clouds and every call came back 403 in 0.3 s until it was started again. The enforcement decision itself is in-process Rust, about 0.4 microseconds at p99. The thing standing between an agent and a four-digit night should not be the slow part.
+Adoption is a one-line base-URL swap. Since v1.19.0 the default governed profile enforces budgets; set TOKENFUSE_MODE=shadow and the gateway prices and records everything while refusing nothing, so you can see what would have been blocked before anything is. Its own bookkeeping fails open: a telemetry push or an event write that fails never refuses a call. The one exception is the start: with a Cloud configured, a gateway answers 503 seed_pending (retryable) until it has read its money state, so a restart cannot hand a run its budget again. The one failure mode that is a choice is the policy hook, and the launchers make it for you: all three ship it fail-closed, so a policy plane that cannot be reached refuses every governed call rather than waving it through. That is measured, not read off a config file: on 2026-09-17 the policy plane was stopped under a box governing two clouds and every call came back 403 in 0.3 s until it was started again. The enforcement decision itself is in-process Rust, about 0.4 microseconds at p99. The thing standing between an agent and a four-digit night should not be the slow part.
 
 ### Loop detection
 
-A retrying agent looks exactly like a compromised one from the budget's side. Sustained loops and fan-out explosions trip the breaker before they become a four-digit night.
+A retrying agent looks exactly like a compromised one from the budget's side. A sustained loop trips the breaker, and a fan-out explosion opens an incident in the Cloud, before either becomes a four-digit night.
 
 ### Burn forecast
 
@@ -72,11 +72,11 @@ Reserve-then-settle accounting prices each call before it happens, with a built-
 
 ### Model router
 
-Routine calls ride a cheaper model that still clears your quality bar; hard ones stay on the frontier model. In live runs the router and cache together stripped about 22% of routine spend. Both ship switched off: the router is off by default, and the cache is off in the gateway and in the launchers, so that figure arrives when you turn them on, not by default.
+Routine calls ride a cheaper model that still clears your quality bar; hard ones stay on the frontier model. Both ship switched off: the router is off by default, and the cache is off in the gateway and in the launchers.
 
 ### Cluster build: a raft-replicated ledger
 
-An optional build, not what the shipped images run. Four nodes on four machines held one shared budget through a leader kill and a real network partition: the majority kept serving, the isolated node could not overspend, nothing split-brained.
+An optional build that ships as its own image tag (tokenfuse:<tag>-cluster). The default image does not run it. Four nodes on four machines held one shared budget through a leader kill and a real network partition: the majority kept serving, the isolated node could not overspend, nothing split-brained.
 
 ### What a budget survives: a crash, a restart, a partition
 
@@ -94,7 +94,7 @@ Agent spend lands in the same FinOps Foundation format as the rest of your cloud
 
 A run carries labels for what it has read, the web label for one, and its next tool call is judged with them: after a page was read, a request to run a shell is refused. That label used to follow a tool name the agent reported. The gateway read the name from the conversation the caller sends, so a fetch reported under a name the policy trusts carried that name's labels, and a fetch left out of the conversation carried none. The label now comes from two witnesses that do not depend on that string.
 
-**The MCP broker.** It made the connection, so it knows which server answered. `TOKENFUSE_MCP_UPSTREAM_LABELS="scopyx=web"` classifies an upstream by the server, not by the name a request chose. After a classified upstream answers a `tools/call`, and before the answer leaves, the broker reports to `POST /v1/fuse/observed-act` and the gateway puts the labels on the run. The report has no member for a tool name. A call that names no run is refused before anything is forwarded, and an answer whose label the gateway did not take is withheld.
+**The MCP broker.** It made the connection, so it knows which server answered. `TOKENFUSE_MCP_UPSTREAM_LABELS="scopyx=web"` classifies an upstream by the server, not by the name a request chose. It needs `TOKENFUSE_MCP_TAINT_GATEWAY`, and the broker refuses to start on a name that matches no upstream or on a classification with no taint gateway. After a classified upstream answers a `tools/call`, and before the answer leaves, the broker reports to `POST /v1/fuse/observed-act` and the gateway puts the labels on the run. The report has no member for a tool name. A call that names no run is refused before anything is forwarded, and an answer whose label the gateway did not take is withheld.
 
 **The provider's answer.** `server_tool_use` and `mcp_tool_use` blocks record a tool the provider ran, such as a built-in search. The gateway reads them, buffered and streamed, and labels the run before that answer's own tool calls are judged. The name map stays as the fallback, and a run carries the union of what the three say.
 
@@ -102,7 +102,7 @@ The event contract does not change: the same `taint_raised` event and the same `
 
 ### One incident per failing provider
 
-A provider that is up but failing fails every call that reaches it, and each call is its own run. The gateway counts the `dependency_failed` events whose dependency is the provider and sends the Cloud one report every two seconds, with the Cloud key it already holds; a report it cannot deliver is dropped, not queued. A provider that has failed `TOKENFUSE_CLOUD_INCIDENT_PROVIDER_FAILURES` calls (three unless set) within ten minutes opens one incident, `dependency_failed:provider:NAME`, with severity high, the failures folded into its occurrences and a summary naming the provider and the last detail. It shows on `GET /v1/incidents`, on the stream and in push like any incident.
+A provider that is up but failing fails every call that reaches it, and each call is its own run. The gateway counts the `dependency_failed` events whose dependency is the provider and sends the Cloud one report every two seconds, with the Cloud key it already holds; a report it cannot deliver is dropped, not queued. A provider that has failed `TOKENFUSE_CLOUD_INCIDENT_PROVIDER_FAILURES` calls (three unless set) within ten minutes opens one incident per provider and reporting site, `dependency_failed:provider:NAME` (with `@SITE` appended for a key bound to a site), with severity high, the failures folded into its occurrences and a summary naming the provider and the last detail. It shows on `GET /v1/incidents`, on the stream and in push like any incident.
 
 The route is `POST /v1/provider-failures`, for an admin or ingest key only, and it is held to a caller who may be hostile: the body is bounded, the label is cleaned, and providers past a bound fold into one visible `other` bucket instead of evicting a real one. The provider label is the host and port of `TOKENFUSE_UPSTREAM` with any `user:password@` removed. The per-call event on the bus is unchanged, and the incident names a provider and no agent or run, so it is not exported to the bus. [Heraldyx](https://it-rat.com/services/heraldyx.html) folds the same outage into one mail on its own side.
 
@@ -120,13 +120,13 @@ A breaker is the right answer to a runaway and the wrong one to a compromised de
 
 Run it from [the repository](https://github.com/TAIPANBOX/tokenfuse#-get-started), where the one-line command lives beside the image tag it pulls.
 
-Then point `ANTHROPIC_BASE_URL` at `localhost:4100` and give your next run a budget header. That's the whole migration. Behind a launcher, a header above USD 5.00 is lowered to the operator's ceiling unless the operator raises it.
+Then point `ANTHROPIC_BASE_URL` at `localhost:4100` and give your next run a run id and a budget (the x-fuse-run-id and x-fuse-budget-usd headers). A call with no run id is refused with 400 metering_required. That's the whole migration. Behind a launcher, a header above USD 5.00 is lowered to the operator's ceiling unless the operator raises it.
 
 Want more than the gateway? [Run the live services locally](https://it-rat.com/services/platform.html#run) in one command.
 
 ### TokenFuse ships as an image, and since v0.4.3 as binaries
 
-The current release is v1.14.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
+The current release is v1.21.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
 
 ## What the gateway gained from 1 to 15 October
 
@@ -154,12 +154,12 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 
 | shipped in | what it does |
 |---|---|
-| on main | A run's taint label comes from what an enforcement point saw: the MCP broker labels a call by the server that answered, and the provider's own tool blocks label the run before that answer's tool calls are judged. |
-| on main | A provider that keeps failing is one incident in the Cloud console and API, not one per call. |
+| v1.21.0 | A run's taint label comes from what an enforcement point saw: the MCP broker labels a call by the server that answered, and the provider's own tool blocks label the run before that answer's tool calls are judged. |
+| v1.21.0 | A provider that keeps failing is one incident in the Cloud console and API, not one per call. |
 
 ## What the default install does not do, and what is not proven yet.
 
-- **The cluster build is an optional build, not what the shipped images run.** The images every launcher installs run one gateway with its ledger in memory.
+- **The cluster build is optional and ships as its own image tag.** The default image every launcher installs runs one gateway with its ledger in memory.
 
 - A business unit's monthly cap: each gateway counts its own calls on top of a tally it reads from the Cloud when it starts, so that cap is not yet shared across a fleet of gateways.
 

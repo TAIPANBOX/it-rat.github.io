@@ -58,7 +58,7 @@ This plane answers about an action. What it cannot answer is whether the caller 
 
 - With no database, the record of accepted DPoP proofs is per process too, and serve says so at start.
 
-- The typed risk signal from Typryx is an opt-in the launchers leave off by default, and it was measured on the stub backend only.
+- The typed risk signal from Typryx is an opt-in the launchers leave off by default.
 
 ### The Wardryx guide
 
