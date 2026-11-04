@@ -20,6 +20,8 @@ The [Vouchryx room](https://it-rat.com/services/vouchryx.html) keeps the loop dr
 
 - [What changed](https://it-rat.com/vouchryx-guide.html#changes)
 
+- [What changed in November](https://it-rat.com/vouchryx-guide.html#changes-november)
+
 - [Limits](https://it-rat.com/vouchryx-guide.html#limits)
 
 ## Vouchryx at a glance.
@@ -77,6 +79,8 @@ Three values are required and have no default: VOUCHRYX_ISSUER, VOUCHRYX_SIGNING
 
 In the stack-single launcher from 1.3.0 (released 2026-10-19), vouchryx starts on every default box and signs with its own key file, VOUCHRYX_SIGNING_KEY. Its optional Keyryx signer (VOUCHRYX_SIGNER=keyryx) is not set by the launcher, so tokens there are signed with the file key, not with a working key that Keyryx certifies.
 
+The key sets of the trusted and workload issuers are read from files, and they are read again while the service runs, every `VOUCHRYX_JWKS_RELOAD_SECONDS` (thirty unless set, 0 never, a day at most). A file that cannot be used, because it is unreadable, gone, not JSON, an error page, empty of keys or holding a key with no `kty` or `kid`, never replaces the keys held: a failure is logged once while it lasts and the recovery once. A key removed from a readable file stops verifying. The service still fetches nothing: a refresh job writes the file, and the service reads it.
+
 ## Mint it, prove it, then end it.
 
 An RFC 8693 exchange takes two signed input tokens and a DPoP proof whose public key travels in the JWS header, which is a JOSE client before it is a curl command. So the client ships with the service: `vouchryx-demo` makes the keys, performs the exchange and prints a proof.
@@ -95,6 +99,12 @@ vouchryx-demo exchange -url http://127.0.0.1:4310 -idp-key idp.pem -kid idp-1 -i
 
 Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 218 tests, and the repository gates that number against its own suite.
 
+### A run against a real provider
+
+The loop was run against a real OpenID provider, in throwaway realms with generated credentials: the exchange, the DPoP binding, hostile tokens, revoke, ban and lift, agent credentials, the hand-off, and a workload token the provider issued. A provider's token was exchanged once the provider wrote a `user://` or `agent://` URI into `sub`, and a service account's token from the provider was presented as an RFC 7523 assertion.
+
+One phase of the run failed, rotation. The provider's new key was in its published set the second it was created, and a token signed by it was refused with `invalid_grant` (no key in the set has that kid) for the life of the process, because a key set file was read once, at start. Against the image published at the time the rotation phase failed; with the key set files followed while running, the whole run passes. The record and its commands are in `docs/live-oidc-run.md` in the repository.
+
 ## What changed from 1 to 15 October
 
 0.1.0 to 0.2.0, one release. The same entry, beside every other service's, is in [what changed in the stack](https://it-rat.com/changes-2026-10.html#vouchryx).
@@ -102,6 +112,12 @@ Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather tha
 | shipped in | what it does |
 |---|---|
 | v0.2.0 | The public revocation list no longer says who revoked a token or why. |
+
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| on main | Key set files are read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), so a provider that rotates its signing key is followed without a restart. Found by a run against a real OpenID provider. |
 
 ## What it does not do, and what is not proven yet.
 
@@ -112,6 +128,8 @@ Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather tha
 - The revocation timing on this page was measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release.
 
 - The cluster run that refused a revoked agent 2.2 seconds later had the gateway polling every second rather than its default of every 12.
+
+- The exchange takes only `user://` or `agent://` subjects, so a provider's opaque `sub` is refused; the provider has to write the URI into `sub`, which the live run did. A mapping for other providers is a naming decision, described in `docs/live-oidc-run.md`.
 
 - There is no introspection endpoint, on purpose: it would put this service on the request path of every enforcement point at once.
 

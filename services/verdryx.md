@@ -32,6 +32,14 @@ An llm_judge case's cost is a real dollar figure, priced against the same book T
 
 The graders and drift maths use only the standard library. The one runtime dependency is rfc8785, which canonicalises the JSON the event chain is hashed over.
 
+### A failure becomes a record
+
+A drift regression or an SLO breach is stored as a finding, with its evidence and a suspect model or version. Register a fix and the runs that follow decide it: verified, failed, or pending with its reason. Unmeasured is never a pass.
+
+### A person's grade outranks the model's
+
+A reviewer's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's own value stays beside it. eval has no path to a grade, and every grade carries its author.
+
 ## The line that turns spend into a verdict.
 
 Verdryx prices the traces [TokenFuse](https://it-rat.com/services/tokenfuse.html) writes: outcome tags and spend data share the same request path, so cost and quality can never quietly drift apart. Cost per resolved case sits inside a wider practice: [FinOps for AI](https://it-rat.com/finops-for-ai.html), and the controls around it in [AI agent governance](https://it-rat.com/ai-agent-governance.html).

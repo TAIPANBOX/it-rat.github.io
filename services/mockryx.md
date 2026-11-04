@@ -32,6 +32,10 @@ A drill can demand that the off-path services actually react, not only that the 
 
 A guardrail that is off looks exactly like one that is broken. The runner insists on evidence before it calls a miss either one.
 
+### Drills for a failing provider
+
+Three drills rehearse a provider that is up but failing: a 5xx, a rate limit and a timeout. Each checks the chain in order. The call comes back with the provider's own status, the gateway puts a dependency_failed for the run on the bus, and the run reaches a person. A local stub plays the provider.
+
 ## It picks fights with the rest of the stack. On purpose, in pre-prod.
 
 In the request path, Mockryx rehearses [TokenFuse](https://it-rat.com/services/tokenfuse.html): the breaker's 402 and the DLP's 403, provoked deliberately and expected to answer. It does the same to [Wardryx](https://it-rat.com/services/wardryx.html), asserting that deny and hold verdicts land in the x-fuse-wardryx header.

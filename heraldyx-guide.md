@@ -18,6 +18,8 @@ The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst r
 
 - [Who else writes to the log](https://it-rat.com/heraldyx-guide.html#sources)
 
+- [What changed in November](https://it-rat.com/heraldyx-guide.html#changes-november)
+
 - [What changed](https://it-rat.com/heraldyx-guide.html#changes)
 
 - [Limits](https://it-rat.com/heraldyx-guide.html#limits)
@@ -43,6 +45,14 @@ Every other plane in the stack records what happened. None of them wakes anybody
 ## Four checks, in this order, and the order is the point.
 
 The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. The last cell of the room's drawing was redrawn after a run on 2026-09-17: the v0.2.3 image sent one notice at the ceiling and then nothing for 28 minutes of high and critical events. Since v0.2.4 a critical passes the ceiling and whatever is held is summarised every ten minutes until the hour turns; the launchers pin v0.7.0 on their main branches.
+
+### A provider that is down is one mail, not one per call
+
+For `dependency_failed` the dedup key is the dependency that failed and what the gateway did about it, not the run. A provider that is down fails every call that reaches it, and every call is its own run, so keyed on the run an hour of outage was one mail per call up to the hourly ceiling and a summary of the rest. Keyed on the dependency it is one mail per window. The key is read from the event's own `data.dependency` and `data.effect`, for a provider that fails calls it reads `dependency_failed:dependency/provider/call-failed`, and it is what an acknowledgement is made against and what the mail prints, so acknowledging a provider outage holds the whole storm.
+
+The effect is part of the key because the outcomes want opposite responses. A gateway that fails open lets calls through with no policy on them, and that must not hide behind an earlier mail about calls that were refused. Only the type `dependency_failed` and only the event contract's own words qualify. No data, an unknown dependency, a value that is not text, a path-like or oversized value, or another type carrying the same field keeps the key of its run, so a field read from a log this process does not own can never fold anything into anything. The event contract does not change, no data key is added to what the mail may print, and the link in the mail points where it did.
+
+The Cloud side of the same outage is [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s one incident per failing provider. The two are independent: this one changes only what is mailed.
 
 ### A hundred and twenty events arrive. Twenty-one messages leave.
 
@@ -93,6 +103,12 @@ Since v0.3.0 a line counts as the source it claims only when the file it came fr
 ## Two more sources arrived on the bus.
 
 This plane mails about what other planes wrote, so its reach grows when theirs does. [Vouchryx](https://it-rat.com/services/vouchryx.html) reports a delegation issued, denied or revoked, and [CostCrew](https://it-rat.com/services/costcrew.html) reports spend spikes, budget thresholds and every move its crew makes on a finding. CostCrew's events have their own sentences here. Vouchryx's delegation events have none yet, so a mail about one says the box has no description for the event until one is written.
+
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| on main | A dependency_failed repeats on the dependency, so a provider storm is one mail per window instead of one per failed call. |
 
 ## What changed in v0.8.0
 

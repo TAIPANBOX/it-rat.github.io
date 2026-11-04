@@ -80,7 +80,7 @@
   </div>
 </section>
 
-<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#recall">Recall is one part of a memory</a></li><li><a href="#live-run">The live runs</a></li><li><a href="#where-it-sits">Where it sits</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
+<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#recall">Recall is one part of a memory</a></li><li><a href="#live-run">The live runs</a></li><li><a href="#where-it-sits">Where it sits</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#changes-november">What changed in November</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
 
 <section class="sec" id="overview" style="padding-top:14px">
   <div class="wrap">
@@ -111,7 +111,7 @@
     </div>
     <div class="prose rv">
       <h3>One file on disk. One optional network call.</h3>
-      <p>Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. Inside: three kinds of memory, bitemporal facts, spreading activation and Ebbinghaus decay. The only part that ever touches a network is reflect(), through a pluggable LLM adapter, and even that can route through TokenFuse.</p>
+      <p>Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. Inside: episodic and semantic memory, bitemporal facts, spreading activation and Ebbinghaus decay. The only part that ever touches a network is reflect(), through a pluggable LLM adapter, and even that can route through TokenFuse.</p>
     </div>
     <div class="diagram rv">
       <svg viewBox="0 0 960 330" role="img" aria-label="Engram architecture">
@@ -170,6 +170,12 @@
       <p><b>Two timelines, and the questions only two can answer.</b> A fact in Engram carries <span class="mono" style="font-size:12.5px">valid_from</span> and <span class="mono" style="font-size:12.5px">valid_to</span>, which say when it was true in reality, and <span class="mono" style="font-size:12.5px">recorded_at</span> and <span class="mono" style="font-size:12.5px">superseded_at</span>, which say when the system learned it and when it stopped believing it. Those are different clocks, and collapsing them into one is how a memory quietly starts lying.</p>
       <p>With both, you can ask what the agent believed as of March and get March's answer rather than today's. That is the difference between an audit you can defend and a database that only ever shows the present. A support agent that promised a refund policy in March should be judged against the policy it knew in March.</p>
       <p>It also makes correction safe. When Ivan moves from Acme to Globex, the old fact is closed with an end date and the new one opens; nothing is overwritten, so the reason the agent said what it said in March survives the correction.</p>
+      <h3>A person's own fact outranks a model's</h3>
+      <p>A fact is the person's own when its provenance is <span class="mono">user</span> and it was not written quarantined. A reflection pass whose extraction is not the person's own no longer closes such a fact by recency, and neither does a refutation that is not. The newer fact is recorded beside it, <span class="mono">contradictions()</span> lists the pair, and the existing <span class="mono">contradiction_found</span> event, with the same two data keys, names both. <span class="mono">reflect()</span> does not count that conflict in <span class="mono">contradictions_resolved</span>, because nothing was resolved. <span class="mono">assert_fact()</span> never closed anything and still does not; it now emits the same event for such a conflict. Between two facts that are both the person's own, the newer one still wins.</p>
+      <p>A fact stamps its provenance when it is written, so the protection does not end when its source episodes are forgotten, compressed or pruned. <span class="mono">reflect()</span> stamps a fact with the least trusted provenance of all the episodes in its window, so a window that mixes <span class="mono">user</span> and <span class="mono">external</span> episodes yields facts that are not the person's own. Engram stores the provenance the caller declares and does not verify it. Over MCP a caller cannot claim <span class="mono">user</span>, and a fact written through MCP is <span class="mono">unknown</span>, so it can never be a person's fact.</p>
+      <h3>A fact can be refuted without being erased</h3>
+      <p><span class="mono">refute_fact()</span> closes a fact and keeps it: <span class="mono">valid_to</span> and <span class="mono">superseded_at</span> are set, <span class="mono">refuted_by</span> is recorded, and there is no replacement, so <span class="mono">timeline()</span> and <span class="mono">as_of</span> keep what was believed before. Every fact derived from it, at any depth and across agents, gets the refuted fact's id in <span class="mono">undermined_by</span> and stays active. A private fact of another agent is marked too and is not named in the result. <span class="mono">assert_fact(derived_from=[...])</span> records the derivation. Refuting twice changes nothing, and the person's own fact can be refuted only by the person. <span class="mono">forget_fact()</span> is unchanged: erasure stays the owner's right, and refutation is the path that keeps history.</p>
+      <p>The store moves one schema step, recorded in <span class="mono">PRAGMA user_version</span>, with three nullable columns on facts: <span class="mono">provenance</span>, <span class="mono">refuted_by</span> and <span class="mono">undermined_by</span>. The step is idempotent and rewrites no row, and export and import carry the columns.</p>
       <h3>Three ways to recall</h3>
       <p>Cosine vectors for meaning, BM25 blended with vectors when exact terms matter, and spreading activation that walks the entity graph.</p>
       <p><b>Three retrieval modes, one call.</b> One API, three modes, because one retrieval strategy does not fit every question.</p>
@@ -203,6 +209,8 @@
           <tr><td>What was true in March, before we knew better</td><td class="yes">Bitemporal facts: valid time and recorded time</td></tr>
           <tr><td>Why do you believe that</td><td class="yes">why(), a chain back to the source episodes</td></tr>
           <tr><td>These two things disagree</td><td class="yes">Contradictions detected and recorded as events</td></tr>
+          <tr><td>Whose word counts when two disagree</td><td class="yes">A person's own fact is never closed by a lower provenance</td></tr>
+          <tr><td>That is wrong, but keep the history</td><td class="yes">refute_fact(): closed, not erased, with derived facts marked</td></tr>
           <tr><td>Reach what the match is connected to</td><td class="yes">Spreading activation over Hebbian edges</td></tr>
           <tr><td>Stay useful instead of growing</td><td class="yes">Importance decay, and reflection prunes the bottom</td></tr>
           <tr><td>Forget a person</td><td class="yes">Targeted erase by episode, entity or fact</td></tr>
@@ -283,6 +291,25 @@
   </div>
 </section>
 
+<section class="sec" id="changes-november" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">November 2026</div>
+      <h2>What changed in November</h2>
+    </div>
+    <div class="tbl-scroll rv">
+      <table class="tbl">
+        <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
+        <tbody>
+          <tr><td><!-- release-slot: engram -->on main</td><td>A person's own fact is never closed by a lower provenance: a model's extraction or refutation is recorded beside it, and contradictions() lists the pair.</td></tr>
+          <tr><td><!-- release-slot: engram -->on main</td><td>refute_fact() closes a fact without erasing it, and marks every fact derived from it as undermined.</td></tr>
+          <tr><td><!-- release-slot: engram -->on main</td><td>The documents no longer claim procedural memory: the store never modelled it, and remember(kind="procedural") is refused.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <section class="sec" id="limits" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
@@ -292,6 +319,8 @@
     <div class="prose rv">
       <ul>
         <li><span>The server cannot see what an agent read outside engram. A session turns untrusted when recall or why returns a memory that is not the user's own or is quarantined, when the caller labels its input or passes read_untrusted, or when the server is started with the untrusted flag.</span></li>
+        <li><span>Procedural memory is not part of the store: <span class="mono">remember(kind="procedural")</span> is refused.</span></li>
+        <li><span>Refutation emits no event, because the shared event contract has no type for it. The row it leaves in the store is the record. An older Engram that opens a migrated file ignores the new columns.</span></li>
         <li><span>reflect() is deliberately not exposed to MCP clients.</span></li>
         <li><span>Agent events (memory_written, reflection_run, contradiction_found, memory_forgotten) are opt-in and off by default.</span></li>
         <li><span>The only part that ever touches a network is reflect(), through a pluggable LLM adapter.</span></li>

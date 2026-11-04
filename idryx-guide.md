@@ -18,6 +18,8 @@ The [Idryx room](https://it-rat.com/services/idryx.html) keeps the simulation, t
 
 - [What changed](https://it-rat.com/idryx-guide.html#changes)
 
+- [What changed in November](https://it-rat.com/idryx-guide.html#changes-november)
+
 - [Limits](https://it-rat.com/idryx-guide.html#limits)
 
 ## Idryx at a glance.
@@ -92,6 +94,18 @@ What does this key reach, transitively? Idryx computes the union of every permis
 
 A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent fetching packages straight from PyPI on every start. That was one agent turn on one lab node, on 2026-09-27; it has not yet run on a fleet or a cloud host.
 
+### AI usage: declared, seen, in the code
+
+`idryx ai-inventory` compared its sources provider by provider. It now also says, for each agent or service, what was declared, what was seen and what the code can reach, and it names every disagreement. Nothing in it is scored or ranked, and nothing in it is a detector.
+
+**One row per source.** The report is built from up to five sources: `declared`, `bus`, `egress`, `ebpf` and `code`. A source nobody supplied is a row that says what its absence means. Code not scanned is not nothing in the code, and an absent capture is not a capture that saw nothing.
+
+**One row per subject and provider, with the disagreement named:** `declared_not_seen`, `declared_bus_only`, `seen_not_declared`, `seen_no_declaration`, `declares_no_models` and `no_declaration`, and on provider rows `in_code_not_seen`. The bus names no provider, so an agent active there through an enforcement point is shown as `bus_only`, which is a different statement from not seen: a governed agent's provider connection is made by the gateway's process, where only a capture of that host sees it. A source scan finds a file and a line, and no field binds a repository to an identity, so the code column stays per provider for the whole estate.
+
+It joins on the provider vocabulary `ai-inventory` already used, with no second vocabulary and no change to any shared contract. The JSON document gains `sources` and `subjects`, each provider row gains `gaps`, and the schema string `idryx.ai-inventory/v1` stays. There is no new subcommand and no new flag.
+
+The report agrees with the detectors, and a test holds it. The agents it names `seen_not_declared` are exactly the agents `undeclared_llm` fires for, and the processes it names `seen_no_declaration` are exactly the ones `unmanaged_egress` grades as having reached a model API. The qryx document it reads is untrusted input: its size and the number of providers and labels are bounded, every kept string is escaped and cut, and names from a passport, a bus envelope or a capture are escaped before they reach a terminal. Three monitoring limits travel with every report: attribution is self-declared, the eBPF sensor is Linux-only, and a process with code execution can open a socket of its own.
+
 ## Built for the identities that never log in.
 
 Your IdP counts the humans. The keys, service accounts and agents acting on their behalf are what this is built around: an agent is a node kind here, not a field bolted onto a user record. It reads Okta, Entra, AWS, GCP and Azure as sources of truth and proposes changes back as Terraform, never applying them itself.
@@ -137,6 +151,12 @@ Every one of those addresses always serves the newest release, so a link saved t
 
 Idryx's releases from 1 to 15 October 2026 are listed in [the October changelog](https://it-rat.com/changes-2026-10.html#idryx), beside the rest of the stack's.
 
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| on main | idryx ai-inventory reports, for each agent or service, what was declared, what was seen and what the code can reach, and names every disagreement. Additive to the idryx.ai-inventory/v1 schema. |
+
 ## What it does not do, and what is not proven yet.
 
 - **Read-only by design:** it proposes Terraform diffs, it never applies. Applying a diff stays your decision.
@@ -150,6 +170,8 @@ Idryx's releases from 1 to 15 October 2026 are listed in [the October changelog]
 - The companion detector bom_incomplete flags the agents the BOM cannot yet prove.
 
 - The eBPF network sensor is Linux-only. It has attached and captured live flows on two kernels: a Docker Desktop Linux VM on a Mac (2026-09-08, arm64 kernel 7.0.12; a 12-second capture in a container, not against an agent: 3 flows on the fixed build, after 16 of the first run's 21 flows turned out to be the sensor's own traffic) and one x86_64 lab node (2026-09-27, one agent turn, 349 flows in 70 seconds). It has not yet run on a fleet or a cloud host.
+
+- The bus carries a model only in `call_retained`, which the AI usage report does not read, so it compares no model names with anything: the egress side names a host, never a model. Whether an identity has a declaration is read from its source or from a declared model or attestation, which is a reading of the graph and not an attested fact.
 
 - The room's runaway is a simulation, but it replays the shape of the live validation run.
 

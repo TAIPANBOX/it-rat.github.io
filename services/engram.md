@@ -32,6 +32,14 @@ Every fact carries two timelines: when it was true in reality, and when the syst
 
 Cosine vectors for meaning, BM25 blended with vectors when exact terms matter, and spreading activation that walks the entity graph.
 
+### A person's word outranks a model's
+
+A fact the person wrote is never closed by a fact a model extracted. The newer one is recorded beside it, contradictions() lists the pair, and the contradiction_found event names both.
+
+### A fact can be refuted, not erased
+
+refute_fact() closes a fact without deleting it, so the timeline and as_of keep what was believed before. Every fact derived from it is marked as undermined and stays active.
+
 ### The plane that remembers.
 
 Engram is the knowledge plane of the stack. Every memory_written, reflection_run, contradiction_found and memory_forgotten goes out as an agent-event on the same NDJSON bus [Idryx](https://it-rat.com/services/idryx.html) correlates into the identity graph.

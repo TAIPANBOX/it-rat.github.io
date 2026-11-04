@@ -18,6 +18,8 @@ The [Mockryx room](https://it-rat.com/services/mockryx.html) keeps the fire dril
 
 - [What changed](https://it-rat.com/mockryx-guide.html#changes)
 
+- [What changed in November](https://it-rat.com/mockryx-guide.html#changes-november)
+
 - [Limits](https://it-rat.com/mockryx-guide.html#limits)
 
 ## Mockryx at a glance.
@@ -65,6 +67,14 @@ A drill can demand that the off-path services actually react, not only that the 
 So a scenario can assert on that too. Name the source and the event type it expects, optionally how long to wait, and after the synchronous check passes the runner polls those event logs for a matching event correlated by the exact run id it put on the wire. Not "an event appeared", but "the event this request should have caused appeared".
 
 Order matters here. A synchronous mismatch is never followed by an event check: chasing a downstream reaction to a request that did not even trigger the guardrail would turn one clear failure into two confusing ones. The drill reports the thing that actually broke.
+
+### A provider that is up but failing
+
+Three game-day drills rehearse it: `provider-5xx`, `provider-rate-limited` and `provider-timeout`. Each sends the operator's own gateway a call and checks the chain in order. The call comes back with the provider's own status, 503, 429 or 504. The gateway puts a `dependency_failed` for the run on the bus, from source tokenfuse. And the run reaches a person: an `alert_sent` from heraldyx. The drills use the existing event check only, add no scenario capability and declare no `requires`, so a miss is a finding and never a skip.
+
+The provider is a local stub, `internal/providerstub`, started by `scripts/provider-stub.go` with `go run`. The script is excluded from the build, so the repository still builds one binary. The stub listens on loopback only and refuses any other address before binding, exiting 2. It makes no outbound call, and it holds a timeout for at most ten seconds, under Mockryx's own fifteen-second client timeout.
+
+Each drill is run through a model of the chain: the stub, a gateway that passes the status through and writes `dependency_failed` to a hash-chained file, and a notifier that writes `alert_sent`, read back by the real event watcher. All three pass with the chain whole. Each fails on the status when the gateway hides the failure, on `tokenfuse/dependency_failed` when the bus is silent, and on `heraldyx/alert_sent` when nobody is told. The self-test runs every drill against a gateway that answers 200 to everything, and every run comes back failed.
 
 ### A skip cannot hide a gap
 
@@ -117,6 +127,12 @@ The last release is v0.2.1. These four drills are on main and are not in any rel
 | Respelled allow-listed tool | A policy allows a tool by its exact name. A request that declares the same tool under a respelled name must be refused by the allow-list. |
 
 What changed from 1 to 15 October 2026, release by release, is in [the stack's changes for October](https://it-rat.com/changes-2026-10.html#mockryx).
+
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| on main | Three game-day drills for a provider that is up but failing (a 5xx, a rate limit and a timeout), and a loopback-only local stub they run against. |
 
 ## What it does not do, and what is not released yet.
 

@@ -110,6 +110,7 @@
       <div class="card hover feature b-6 rv d1"><h3>Revocation an incident can use</h3><p>By one token id, or by subject for every token an agent already holds. The list carries <span class="mono">as_of</span>, so an empty answer and an unreachable service are never the same answer to a machine reading it.</p></div>
       <div class="card hover feature b-6 rv"><h3>Verification without a round trip</h3><p>Public keys at a JWKS endpoint, so an enforcement point verifies offline. That is also why there is no introspection endpoint, on purpose.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>It refuses to start rather than start permissive</h3><p>Three values are required and have no default: VOUCHRYX_ISSUER, VOUCHRYX_SIGNING_KEY (for the file signer; the Keyryx signer needs its own four values instead) and VOUCHRYX_TRUSTED_ISSUERS (unless VOUCHRYX_AGENTS enrols an agent). A missing or malformed value aborts the process and names the variable.</p></div>
+      <div class="card hover feature b-12 rv"><h3>Run against a real provider</h3><p>A live run with a real OpenID provider found that a provider which rotated its signing key was refused until the service restarted. The key set files are now read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), and a file that cannot be used never replaces the keys held.</p></div>
     </div>
   </div>
 </section>

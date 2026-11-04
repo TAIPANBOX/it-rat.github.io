@@ -198,6 +198,8 @@
       <div class="card hover feature b-6 rv d1"><h3>Hold means a human</h3><p>A big spend becomes a hold, not a guess. A human grants it out of band and the agent resubmits with a signed token.</p></div>
       <div class="card hover feature b-6 rv"><h3>A hard ceiling that outranks approvals</h3><p>deny_above_usd is the rule no token can talk past. It is checked before the hold logic ever runs, so even a granted approval cannot authorize a spend over the ceiling.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>Attestation as a first-class gate</h3><p>deny_if_unattested demands a live attestation before an agent touches the sensitive rules.</p></div>
+      <div class="card hover feature b-6 rv"><h3>A spent error budget puts the agent to a person</h3><p>The quality plane writes an slo_burn event when an agent's error budget is exhausted or burning fast. A hold_if_signal rule on it holds that agent's tool calls for a person, and a granted approval lets one call through. Off until WARDRYX_SIGNAL_EVENTS names the event file.</p></div>
+      <div class="card hover feature b-6 rv d1"><h3>A DPoP proof is accepted once</h3><p>With WARDRYX_DB set, the record of accepted proofs is shared by every instance on that database and survives a restart, so a replay at a second instance is refused. A record that cannot be asked refuses the decide instead of passing the proof.</p></div>
     </div>
   </div>
 </section>
@@ -247,6 +249,7 @@
       <ul>
         <li>When the decision point is unreachable, the TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing. The unset default under enforce became closed on 2026-10-17. All three launchers set the failure mode to closed on purpose.</li>
         <li>With no shared database, an approval token's single-use guarantee is per process, and the server says so at startup.</li>
+        <li>With no database, the record of accepted DPoP proofs is per process too, and serve says so at start.</li>
         <li>The typed risk signal from Typryx is an opt-in the launchers leave off by default, and it was measured on the stub backend only.</li>
       </ul>
     </div>

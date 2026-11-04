@@ -85,7 +85,7 @@
   </div>
 </section>
 
-<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#surface">The endpoints</a></li><li><a href="#two-switches">Two kill switches</a></li><li><a href="#configuration">Configuration</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
+<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#surface">The endpoints</a></li><li><a href="#two-switches">Two kill switches</a></li><li><a href="#configuration">Configuration</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#changes-november">What changed in November</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
 
 <section class="sec" id="overview" style="padding-top:14px">
   <div class="wrap">
@@ -165,6 +165,7 @@
     <div class="prose rv">
       <p>Three values are required and have no default: VOUCHRYX_ISSUER, VOUCHRYX_SIGNING_KEY (for the file signer; the Keyryx signer needs its own four values instead) and VOUCHRYX_TRUSTED_ISSUERS (unless VOUCHRYX_AGENTS enrols an agent). The listen address and the token lifetime have defaults, and the others switch optional features on. A missing or malformed value aborts the process and names the variable. The reason is the shape of the two failures: a token service that came up trusting nothing would issue nothing and look healthy, and one that came up trusting a default would issue everything.</p>
       <p>In the stack-single launcher from 1.3.0 (released 2026-10-19), vouchryx starts on every default box and signs with its own key file, VOUCHRYX_SIGNING_KEY. Its optional Keyryx signer (VOUCHRYX_SIGNER=keyryx) is not set by the launcher, so tokens there are signed with the file key, not with a working key that Keyryx certifies.</p>
+      <p>The key sets of the trusted and workload issuers are read from files, and they are read again while the service runs, every <span class="mono">VOUCHRYX_JWKS_RELOAD_SECONDS</span> (thirty unless set, 0 never, a day at most). A file that cannot be used, because it is unreadable, gone, not JSON, an error page, empty of keys or holding a key with no <span class="mono">kty</span> or <span class="mono">kid</span>, never replaces the keys held: a failure is logged once while it lasts and the recovery once. A key removed from a readable file stops verifying. The service still fetches nothing: a refresh job writes the file, and the service reads it.</p>
     </div>
   </div>
 </section>
@@ -181,6 +182,9 @@
       <div class="cmd"><span class="c"># prints the token, its nested act and the key thumbprint bound to it</span><br>vouchryx-demo exchange -url http://127.0.0.1:4310 -idp-key idp.pem -kid idp-1 -iss https://idp.local -aud http://127.0.0.1:4310 -subject user://acme/ada -actor agent://acme/triage -holder-key holder.pem</div>
       <h3>A measured run</h3>
       <p>Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 218 tests, and the repository gates that number against its own suite.</p>
+      <h3>A run against a real provider</h3>
+      <p>The loop was run against a real OpenID provider, in throwaway realms with generated credentials: the exchange, the DPoP binding, hostile tokens, revoke, ban and lift, agent credentials, the hand-off, and a workload token the provider issued. A provider's token was exchanged once the provider wrote a <span class="mono">user://</span> or <span class="mono">agent://</span> URI into <span class="mono">sub</span>, and a service account's token from the provider was presented as an RFC 7523 assertion.</p>
+      <p>One phase of the run failed, rotation. The provider's new key was in its published set the second it was created, and a token signed by it was refused with <span class="mono">invalid_grant</span> (no key in the set has that kid) for the life of the process, because a key set file was read once, at start. Against the image published at the time the rotation phase failed; with the key set files followed while running, the whole run passes. The record and its commands are in <span class="mono">docs/live-oidc-run.md</span> in the repository.</p>
     </div>
   </div>
 </section>
@@ -203,6 +207,23 @@
   </div>
 </section>
 
+<section class="sec" id="changes-november" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">November 2026</div>
+      <h2>What changed in November</h2>
+    </div>
+    <div class="tbl-scroll rv">
+      <table class="tbl">
+        <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
+        <tbody>
+          <tr><td><!-- release-slot: vouchryx -->on main</td><td>Key set files are read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), so a provider that rotates its signing key is followed without a restart. Found by a run against a real OpenID provider.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <section class="sec" id="limits" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
@@ -215,6 +236,7 @@
         <li><span>Revoking a delegation ends the right to act on somebody's behalf at every enforcement point on its next poll of the list, 12 seconds by default at the gateway; a call admitted before that poll is not pulled back.</span></li>
         <li><span>The revocation timing on this page was measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release.</span></li>
         <li><span>The cluster run that refused a revoked agent 2.2 seconds later had the gateway polling every second rather than its default of every 12.</span></li>
+        <li><span>The exchange takes only <span class="mono">user://</span> or <span class="mono">agent://</span> subjects, so a provider's opaque <span class="mono">sub</span> is refused; the provider has to write the URI into <span class="mono">sub</span>, which the live run did. A mapping for other providers is a naming decision, described in <span class="mono">docs/live-oidc-run.md</span>.</span></li>
         <li><span>There is no introspection endpoint, on purpose: it would put this service on the request path of every enforcement point at once.</span></li>
         <li><span><b>Status:</b> pre-1.0, and main is supported.</span></li>
       </ul>

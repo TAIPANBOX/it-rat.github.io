@@ -12,7 +12,7 @@ This is a scripted scenario: `scripts/burst-demo.sh` in the repository feeds 120
 
 ## Four checks, in this order, and the order is the point.
 
-The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server.
+The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. A provider outage is one mail per window and not one per failed call: a dependency_failed repeats on the dependency, not on the run.
 
 ## Four short paragraphs, and three links that are views.
 

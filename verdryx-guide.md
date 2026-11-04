@@ -22,6 +22,8 @@ The [Verdryx room](https://it-rat.com/services/verdryx.html) keeps the sixty-sec
 
 - [What changed](https://it-rat.com/verdryx-guide.html#changes)
 
+- [What changed in November](https://it-rat.com/verdryx-guide.html#changes-november)
+
 - [Limits](https://it-rat.com/verdryx-guide.html#limits)
 
 ## Verdryx at a glance.
@@ -71,6 +73,20 @@ The graders and drift maths use only the standard library. The one runtime depen
 ### Offline test suite
 
 The suite runs against a deterministic StubLLMAdapter, with no network and no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.
+
+### Findings
+
+drift and slo used to print a verdict and forget it. A drift regression, or an SLO breach the interval establishes (the bar the bus already uses), is now stored as a finding: the agent, the window, the kind (`drift`, `slo_exhausted` or `slo_fast_burn`), the evidence (run ids, the lowest scoring cases, the gateway runs that failed an indicator) and a suspect model or version. The suspect says which of three things it is: a change, no change across the runs compared, or too few runs to compare. `verdryx eval` can record an `--agent-version` on a run. The same failure seen again is one finding seen again, and `verdryx findings list` and `show` read them back.
+
+### Fix verification
+
+`verdryx findings fix ID --note ...` registers a fix, with an optional `--version`. The next drift or slo decides it from the runs that started after it. Measured and clean is `verified`, and the finding closes. Measured and still failing is `failed`: the finding reopens and the attempt is kept with its numbers. Anything short of a measurement stays `pending` with its reason: no run since, too few runs, runs of another version, or an interval that still covers the target. A fix draws a line in time. Runs from before it neither verify it nor undo it, and a closed finding is not reopened by the runs it was closed over. Unmeasured is never a pass.
+
+### Human grades
+
+`verdryx grade RUN CASE VALUE --author NAME --key-file PATH` writes a person's grade. It replaces the model's value in a run's mean, in drift and in the quality floor, and the model's own value stays beside it. A later grade supersedes an earlier one, and both stay on record. Every grade carries its author, a principal registered with `verdryx principal add`, whose generated key is written once (mode 0600) and stored as a hash. The role `reviewer` can grade; the role `uploader` cannot. `eval` needs no credential and has no path to a grade: a gate reads the package for exactly one place that writes a grade and exactly one caller of it.
+
+All of it is deterministic: no model, no network and no new event type on the bus.
 
 ### Defensive by design
 
@@ -132,11 +148,21 @@ No release in the window, nine pull requests merged. The same entry, beside ever
 
 - **On main:** its price book mirrors the gateway's, row for row: every listed Claude id, the Gemini rows on Vertex AI, the vendors' prices of 13 October with their long-prompt tiers, and the `openai/...` rows.
 
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| on main | drift and slo failures are stored as findings, with their evidence and a suspect model or version. verdryx findings list and show read them. |
+| on main | A fix is registered against a finding and decided by the runs that follow: verified, failed, or pending with its reason. |
+| on main | A person's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's value stays beside it. |
+
 ## What runs only when you ask, and what is not proven.
 
 - Only the judge and the typed grader can spend money, and neither runs by default. The typed grader runs only when a run is given a Typryx address with `--typed-url`.
 
 - A case Typryx cannot answer is counted apart with its reason, never scored as a zero.
+
+- The store file is the trust boundary for grades. A console build that reads scores directly shows the model's value, not a person's, until it reads `human_grades` too.
 
 - There is no PyPI package, so the version you run is the commit you can read.
 

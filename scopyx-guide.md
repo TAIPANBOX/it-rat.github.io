@@ -22,7 +22,11 @@ The [Scopyx room](https://it-rat.com/services/scopyx.html) keeps the request in 
 
 - [Running it](https://it-rat.com/scopyx-guide.html#run)
 
+- [Behind the broker](https://it-rat.com/scopyx-guide.html#broker)
+
 - [What changed](https://it-rat.com/scopyx-guide.html#changes)
+
+- [What changed in November](https://it-rat.com/scopyx-guide.html#changes-november)
 
 - [Limits](https://it-rat.com/scopyx-guide.html#limits)
 
@@ -142,11 +146,27 @@ A fabricated subject makes every downstream count wrong and puts a name on an al
 
 - **SCOPYX_RETAIN=payload:** turning retention on is a decision, and the field it writes is called url_unprotected rather than url. There is no subject-keyed payload plane here, so a field called url would imply one and a reader would assume a protection that does not exist.
 
+- **SCOPYX_ACCEPT_KEY_IN_META=1:** read a tools/call credential from the call's own metadata instead of the header, for a plane that sits behind the TokenFuse MCP broker. Off by default.
+
+## The key can come through the TokenFuse MCP broker.
+
+Scopyx knows an agent by the key it presents in the `X-Scopyx-Key` header. The TokenFuse MCP broker forwards a call with nothing of the caller's, so a plane behind it never sees that header, and an agent that holds the key can go round the broker. Letting the key come through the broker means the broker can put a run's label on the act itself rather than on a tool name the agent reported; the [TokenFuse guide](https://it-rat.com/tokenfuse-guide.html#how-it-works) has that half.
+
+With `SCOPYX_ACCEPT_KEY_IN_META=1` the door reads a `tools/call` credential from `params._meta["scopyx/key"]`. The agent writes a `{{secret:NAME}}` handle, the broker fills it in on the last hop, and the agent never holds the key. The header wins when both are sent, the entry is taken out of the request at the door so nothing past it holds the key, and a `tools/call` with no id still needs a credential: this server dispatches on the method, so a missing id is not read as a notification.
+
+It is off by default, and then the door is the header, checked before the body, as it was. Nothing in Scopyx turns the broker on; that is deployment wiring. With the switch on, the door reads a bounded request body from whoever reaches the port, so the port belongs on a network only the broker reaches.
+
 ## What changed from 1 to 15 October
 
 No release in the window, still 1.0.1. The same entry, beside every other service's, is in [what changed in the stack](https://it-rat.com/changes-2026-10.html#scopyx).
 
 - Documentation and toolchain only: the Go toolchain moved to 1.27.2, the shared library pin moved to 1.3.0, the secret scan runs on every pull request, and the README was corrected against the code.
+
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| on main | The key can come through the TokenFuse MCP broker: SCOPYX_ACCEPT_KEY_IN_META=1 reads a tools/call credential from the call's metadata, as a handle the broker fills in. Off by default. |
 
 ## What it will not do, stated rather than discovered.
 

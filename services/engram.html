@@ -184,6 +184,8 @@
       <div class="card hover feature b-6 rv d1"><h3>reflect() distills facts</h3><p>A background reflection loop groups recent episodes and asks an LLM to extract subject-predicate-object facts, each with a confidence score. Every fact keeps a why() chain.</p></div>
       <div class="card hover feature b-6 rv"><h3>Facts that know their dates</h3><p>Every fact carries two timelines: when it was true in reality, and when the system learned it. When Ivan changes jobs the old fact is closed with an end date, never deleted.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>Three ways to recall</h3><p>Cosine vectors for meaning, BM25 blended with vectors when exact terms matter, and spreading activation that walks the entity graph.</p></div>
+      <div class="card hover feature b-6 rv"><h3>A person's word outranks a model's</h3><p>A fact the person wrote is never closed by a fact a model extracted. The newer one is recorded beside it, contradictions() lists the pair, and the contradiction_found event names both.</p></div>
+      <div class="card hover feature b-6 rv d1"><h3>A fact can be refuted, not erased</h3><p>refute_fact() closes a fact without deleting it, so the timeline and as_of keep what was believed before. Every fact derived from it is marked as undermined and stays active.</p></div>
     </div>
   </div>
 </section>

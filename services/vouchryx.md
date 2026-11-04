@@ -24,6 +24,10 @@ Public keys at a JWKS endpoint, so an enforcement point verifies offline. That i
 
 Three values are required and have no default: VOUCHRYX_ISSUER, VOUCHRYX_SIGNING_KEY (for the file signer; the Keyryx signer needs its own four values instead) and VOUCHRYX_TRUSTED_ISSUERS (unless VOUCHRYX_AGENTS enrols an agent). A missing or malformed value aborts the process and names the variable.
 
+### Run against a real provider
+
+A live run with a real OpenID provider found that a provider which rotated its signing key was refused until the service restarted. The key set files are now read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), and a file that cannot be used never replaces the keys held.
+
 ## Mint, prove, verify, end.
 
 Two signed tokens and a proof go in, a short-lived one comes out, and the enforcement point verifies it without asking anybody. The dotted path is the one that matters in an incident: a revocation reaches the poller and the same token stops working before it expires.

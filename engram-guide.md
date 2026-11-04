@@ -20,6 +20,8 @@ The [Engram room](https://it-rat.com/services/engram.html) keeps the simulation,
 
 - [What changed](https://it-rat.com/engram-guide.html#changes)
 
+- [What changed in November](https://it-rat.com/engram-guide.html#changes-november)
+
 - [Limits](https://it-rat.com/engram-guide.html#limits)
 
 ## Engram at a glance.
@@ -44,7 +46,7 @@ Engram is an embeddable memory in one SQLite file. It stores raw episodes, disti
 
 ### One file on disk. One optional network call.
 
-Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. Inside: three kinds of memory, bitemporal facts, spreading activation and Ebbinghaus decay. The only part that ever touches a network is reflect(), through a pluggable LLM adapter, and even that can route through TokenFuse.
+Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. Inside: episodic and semantic memory, bitemporal facts, spreading activation and Ebbinghaus decay. The only part that ever touches a network is reflect(), through a pluggable LLM adapter, and even that can route through TokenFuse.
 
 ### Single file, embeddable
 
@@ -63,6 +65,18 @@ Every fact carries two timelines: when it was true in reality, and when the syst
 With both, you can ask what the agent believed as of March and get March's answer rather than today's. That is the difference between an audit you can defend and a database that only ever shows the present. A support agent that promised a refund policy in March should be judged against the policy it knew in March.
 
 It also makes correction safe. When Ivan moves from Acme to Globex, the old fact is closed with an end date and the new one opens; nothing is overwritten, so the reason the agent said what it said in March survives the correction.
+
+### A person's own fact outranks a model's
+
+A fact is the person's own when its provenance is `user` and it was not written quarantined. A reflection pass whose extraction is not the person's own no longer closes such a fact by recency, and neither does a refutation that is not. The newer fact is recorded beside it, `contradictions()` lists the pair, and the existing `contradiction_found` event, with the same two data keys, names both. `reflect()` does not count that conflict in `contradictions_resolved`, because nothing was resolved. `assert_fact()` never closed anything and still does not; it now emits the same event for such a conflict. Between two facts that are both the person's own, the newer one still wins.
+
+A fact stamps its provenance when it is written, so the protection does not end when its source episodes are forgotten, compressed or pruned. `reflect()` stamps a fact with the least trusted provenance of all the episodes in its window, so a window that mixes `user` and `external` episodes yields facts that are not the person's own. Engram stores the provenance the caller declares and does not verify it. Over MCP a caller cannot claim `user`, and a fact written through MCP is `unknown`, so it can never be a person's fact.
+
+### A fact can be refuted without being erased
+
+`refute_fact()` closes a fact and keeps it: `valid_to` and `superseded_at` are set, `refuted_by` is recorded, and there is no replacement, so `timeline()` and `as_of` keep what was believed before. Every fact derived from it, at any depth and across agents, gets the refuted fact's id in `undermined_by` and stays active. A private fact of another agent is marked too and is not named in the result. `assert_fact(derived_from=[...])` records the derivation. Refuting twice changes nothing, and the person's own fact can be refuted only by the person. `forget_fact()` is unchanged: erasure stays the owner's right, and refutation is the path that keeps history.
+
+The store moves one schema step, recorded in `PRAGMA user_version`, with three nullable columns on facts: `provenance`, `refuted_by` and `undermined_by`. The step is idempotent and rewrites no row, and export and import carry the columns.
 
 ### Three ways to recall
 
@@ -102,6 +116,8 @@ Engram keeps a vector index in-process. It also keeps when each fact was true, w
 | What was true in March, before we knew better | Bitemporal facts: valid time and recorded time |
 | Why do you believe that | why(), a chain back to the source episodes |
 | These two things disagree | Contradictions detected and recorded as events |
+| Whose word counts when two disagree | A person's own fact is never closed by a lower provenance |
+| That is wrong, but keep the history | refute_fact(): closed, not erased, with derived facts marked |
 | Reach what the match is connected to | Spreading activation over Hebbian edges |
 | Stay useful instead of growing | Importance decay, and reflection prunes the bottom |
 | Forget a person | Targeted erase by episode, entity or fact |
@@ -149,9 +165,21 @@ Engram's own list for 1 to 15 October 2026 is in [the stack's changes](https://i
 
 Released as v3.0.0 on 2026-10-18. The library records a source for every observation: user for what the person typed, tool for what a tool returned, and external for anything else. Recall returns the source with each result, and why() reports the least trusted source behind a fact. Over MCP the server sets the most a write may carry, which defaults to external, so a caller cannot claim user. A server started with an agent id serves that agent alone; one started without serves the whole file and says so on stderr. A fact is private to its writer unless it is shared.
 
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| on main | A person's own fact is never closed by a lower provenance: a model's extraction or refutation is recorded beside it, and contradictions() lists the pair. |
+| on main | refute_fact() closes a fact without erasing it, and marks every fact derived from it as undermined. |
+| on main | The documents no longer claim procedural memory: the store never modelled it, and remember(kind="procedural") is refused. |
+
 ## What it does not do, and what is still open.
 
 - The server cannot see what an agent read outside engram. A session turns untrusted when recall or why returns a memory that is not the user's own or is quarantined, when the caller labels its input or passes read_untrusted, or when the server is started with the untrusted flag.
+
+- Procedural memory is not part of the store: `remember(kind="procedural")` is refused.
+
+- Refutation emits no event, because the shared event contract has no type for it. The row it leaves in the store is the record. An older Engram that opens a migrated file ignores the new columns.
 
 - reflect() is deliberately not exposed to MCP clients.
 

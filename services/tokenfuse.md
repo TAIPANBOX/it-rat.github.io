@@ -32,6 +32,14 @@ Reserve-then-settle accounting prices each call before it happens. The estimate 
 
 Agent spend lands in the same FinOps Foundation format as the rest of your cloud bill, so showback and chargeback reuse the pipes and dashboards finance already trusts.
 
+### A label from the act
+
+A run's taint follows what an enforcement point saw happen, not the tool name the agent reported. The MCP broker labels a call by the server that answered, and a search the provider ran itself labels the run too.
+
+### One incident per failing provider
+
+A provider that keeps failing is one incident in the Cloud console and API, not one per call. The per-call event stays on the bus.
+
 ### The loud neighbor everyone listens to.
 
 TokenFuse asks [Wardryx](https://it-rat.com/services/wardryx.html) before letting a declared tool through, and stamps the verdict on the response. Everything travels as one envelope, the agent-event, and [Genaryx](https://it-rat.com/genaryx.html) lifts that same signed kill into a console you reach over your own tunnel, where it becomes a passkey break-glass ceremony.

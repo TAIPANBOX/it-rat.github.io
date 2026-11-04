@@ -199,6 +199,8 @@
       <div class="card hover feature b-6 rv d1"><h3>Drift with statistics</h3><p>A flat threshold catches the obvious drop. A two-sample significance check beside it, Welch's t plus a bootstrap interval, catches the small, consistent regression a threshold tuned for noise would miss.</p></div>
       <div class="card hover feature b-6 rv"><h3>The LLM judge is metered</h3><p>An llm_judge case's cost is a real dollar figure, priced against the same book TokenFuse uses.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>One-dependency core</h3><p>The graders and drift maths use only the standard library. The one runtime dependency is rfc8785, which canonicalises the JSON the event chain is hashed over.</p></div>
+      <div class="card hover feature b-6 rv"><h3>A failure becomes a record</h3><p>A drift regression or an SLO breach is stored as a finding, with its evidence and a suspect model or version. Register a fix and the runs that follow decide it: verified, failed, or pending with its reason. Unmeasured is never a pass.</p></div>
+      <div class="card hover feature b-6 rv d1"><h3>A person's grade outranks the model's</h3><p>A reviewer's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's own value stays beside it. eval has no path to a grade, and every grade carries its author.</p></div>
     </div>
   </div>
 </section>

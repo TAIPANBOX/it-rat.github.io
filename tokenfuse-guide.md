@@ -16,6 +16,8 @@ The [TokenFuse room](https://it-rat.com/services/tokenfuse.html) keeps the simul
 
 - [What changed](https://it-rat.com/tokenfuse-guide.html#changes)
 
+- [What changed in November](https://it-rat.com/tokenfuse-guide.html#changes-november)
+
 - [Limits](https://it-rat.com/tokenfuse-guide.html#limits)
 
 ## TokenFuse at a glance.
@@ -88,6 +90,22 @@ That was tested rather than assumed. A four-node cluster across two datacenters 
 
 Agent spend lands in the same FinOps Foundation format as the rest of your cloud bill, so showback and chargeback reuse the pipes and dashboards finance already trusts.
 
+### A label comes from the act, not from a name
+
+A run carries labels for what it has read, the web label for one, and its next tool call is judged with them: after a page was read, a request to run a shell is refused. That label used to follow a tool name the agent reported. The gateway read the name from the conversation the caller sends, so a fetch reported under a name the policy trusts carried that name's labels, and a fetch left out of the conversation carried none. The label now comes from two witnesses that do not depend on that string.
+
+**The MCP broker.** It made the connection, so it knows which server answered. `TOKENFUSE_MCP_UPSTREAM_LABELS="scopyx=web"` classifies an upstream by the server, not by the name a request chose. After a classified upstream answers a `tools/call`, and before the answer leaves, the broker reports to `POST /v1/fuse/observed-act` and the gateway puts the labels on the run. The report has no member for a tool name. A call that names no run is refused before anything is forwarded, and an answer whose label the gateway did not take is withheld.
+
+**The provider's answer.** `server_tool_use` and `mcp_tool_use` blocks record a tool the provider ran, such as a built-in search. The gateway reads them, buffered and streamed, and labels the run before that answer's own tool calls are judged. The name map stays as the fallback, and a run carries the union of what the three say.
+
+The event contract does not change: the same `taint_raised` event and the same `mcp_tool_call` and `model_tool_call` stages. A deployment that sets no classification sees no difference, apart from the provider's blocks, which now label.
+
+### One incident per failing provider
+
+A provider that is up but failing fails every call that reaches it, and each call is its own run. The gateway counts the `dependency_failed` events whose dependency is the provider and sends the Cloud one report every two seconds, with the Cloud key it already holds; a report it cannot deliver is dropped, not queued. A provider that has failed `TOKENFUSE_CLOUD_INCIDENT_PROVIDER_FAILURES` calls (three unless set) within ten minutes opens one incident, `dependency_failed:provider:NAME`, with severity high, the failures folded into its occurrences and a summary naming the provider and the last detail. It shows on `GET /v1/incidents`, on the stream and in push like any incident.
+
+The route is `POST /v1/provider-failures`, for an admin or ingest key only, and it is held to a caller who may be hostile: the body is bounded, the label is cleaned, and providers past a bound fold into one visible `other` bucket instead of evicting a real one. The provider label is the host and port of `TOKENFUSE_UPSTREAM` with any `user:password@` removed. The per-call event on the bus is unchanged, and the incident names a provider and no agent or run, so it is not exported to the bus. [Heraldyx](https://it-rat.com/services/heraldyx.html) folds the same outage into one mail on its own side.
+
 ## The loud neighbor everyone listens to.
 
 TokenFuse asks [Wardryx](https://it-rat.com/services/wardryx.html) before letting a declared tool through, and stamps the verdict on the response. Its Parquet traces are the raw material [Verdryx](https://it-rat.com/services/verdryx.html) prices outcomes from. [Mockryx](https://it-rat.com/services/mockryx.html) attacks it on purpose in pre-prod. [Idryx](https://it-rat.com/services/idryx.html) correlates its events into the identity graph. Everything travels as one envelope, the agent-event, and [Genaryx](https://it-rat.com/genaryx.html) lifts that same signed kill into a console you reach over your own tunnel, where it becomes a passkey break-glass ceremony.
@@ -132,6 +150,13 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 | v1.14.0 | IBANs are a kind of personal data the scanner finds, checked by country code, length and check digits. |
 | v1.14.0 | Every FOCUS export row says whether it was priced from the price book or from the fallback. |
 
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| on main | A run's taint label comes from what an enforcement point saw: the MCP broker labels a call by the server that answered, and the provider's own tool blocks label the run before that answer's tool calls are judged. |
+| on main | A provider that keeps failing is one incident in the Cloud console and API, not one per call. |
+
 ## What the default install does not do, and what is not proven yet.
 
 - **The cluster build is an optional build, not what the shipped images run.** The images every launcher installs run one gateway with its ledger in memory.
@@ -147,6 +172,12 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 - The operator's run-budget ceiling bounds each run, not an agent's total: a new run id gets a new ceiling.
 
 - A poisoned tool description marks the run as a suspected injection. The request itself is not refused.
+
+- A label follows an act that passed through an enforcement point. A process with its own socket passes through none.
+
+- A provider's built-in search is labelled and not controlled: nothing can refuse it, and no domain policy reaches it. The OpenAI wire carries its built-in search as annotations and no tool block, so it is not read.
+
+- A deployment gets the broker half of the label by routing its fetch plane through the broker, which is separate wiring.
 
 - No Windows build yet.
 

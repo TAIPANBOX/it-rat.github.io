@@ -79,7 +79,7 @@
   </div>
 </section>
 
-<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#what-it-proves">What it proves</a></li><li><a href="#where-it-sits">Where it sits</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
+<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#what-it-proves">What it proves</a></li><li><a href="#where-it-sits">Where it sits</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#changes-november">What changed in November</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
 
 <section class="sec" id="overview" style="padding-top:14px">
   <div class="wrap">
@@ -132,6 +132,10 @@
       <p><b>Proving the services that answer later answered at all.</b> The gateway's own status and headers can only speak for the guardrails standing in the request path. Verdryx, Idryx and Qryx never touch that response: they react off path, on their own schedule, and record what they did as an agent-event envelope in the same NDJSON format everything else in the stack writes.</p>
       <p>So a scenario can assert on that too. Name the source and the event type it expects, optionally how long to wait, and after the synchronous check passes the runner polls those event logs for a matching event correlated by the exact run id it put on the wire. Not "an event appeared", but "the event this request should have caused appeared".</p>
       <p>Order matters here. A synchronous mismatch is never followed by an event check: chasing a downstream reaction to a request that did not even trigger the guardrail would turn one clear failure into two confusing ones. The drill reports the thing that actually broke.</p>
+      <h3>A provider that is up but failing</h3>
+      <p>Three game-day drills rehearse it: <span class="mono">provider-5xx</span>, <span class="mono">provider-rate-limited</span> and <span class="mono">provider-timeout</span>. Each sends the operator's own gateway a call and checks the chain in order. The call comes back with the provider's own status, 503, 429 or 504. The gateway puts a <span class="mono">dependency_failed</span> for the run on the bus, from source tokenfuse. And the run reaches a person: an <span class="mono">alert_sent</span> from heraldyx. The drills use the existing event check only, add no scenario capability and declare no <span class="mono">requires</span>, so a miss is a finding and never a skip.</p>
+      <p>The provider is a local stub, <span class="mono">internal/providerstub</span>, started by <span class="mono">scripts/provider-stub.go</span> with <span class="mono">go run</span>. The script is excluded from the build, so the repository still builds one binary. The stub listens on loopback only and refuses any other address before binding, exiting 2. It makes no outbound call, and it holds a timeout for at most ten seconds, under Mockryx's own fifteen-second client timeout.</p>
+      <p>Each drill is run through a model of the chain: the stub, a gateway that passes the status through and writes <span class="mono">dependency_failed</span> to a hash-chained file, and a notifier that writes <span class="mono">alert_sent</span>, read back by the real event watcher. All three pass with the chain whole. Each fails on the status when the gateway hides the failure, on <span class="mono">tokenfuse/dependency_failed</span> when the bus is silent, and on <span class="mono">heraldyx/alert_sent</span> when nobody is told. The self-test runs every drill against a gateway that answers 200 to everything, and every run comes back failed.</p>
       <h3>A skip cannot hide a gap</h3>
       <p>A guardrail that is off looks exactly like one that is broken. The runner insists on evidence before it calls a miss either one.</p>
       <p><b>The difference between a gap and a feature you never turned on.</b> A finding means the guardrail was supposed to hold and did not: something to fix today. A scenario that declares an optional guardrail is telling the runner something narrower, that a miss counts as a real gap only if there is other evidence the feature is actually wired in.</p>
@@ -197,6 +201,23 @@
     </div>
     <div class="prose rv">
       <p>What changed from 1 to 15 October 2026, release by release, is in <a href="changes-2026-10.html#mockryx">the stack's changes for October</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="changes-november" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">November 2026</div>
+      <h2>What changed in November</h2>
+    </div>
+    <div class="tbl-scroll rv">
+      <table class="tbl">
+        <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
+        <tbody>
+          <tr><td><!-- release-slot: mockryx -->on main</td><td>Three game-day drills for a provider that is up but failing (a 5xx, a rate limit and a timeout), and a loopback-only local stub they run against.</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>

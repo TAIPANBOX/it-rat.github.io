@@ -32,6 +32,10 @@ Statistics and rules over the graph, in four families. The LLM is never in the d
 
 What does this key reach, transitively? Idryx computes the union of every permission reachable through an identity's delegation chain.
 
+### Declared, seen, in the code
+
+idryx ai-inventory now says, for each agent or service, what was declared, what was seen and what the code can reach, and it names every disagreement. It is a report: nothing in it is scored, ranked or a detector.
+
 ### The one that reads everything and touches nothing.
 
 Idryx consumes the same envelope [TokenFuse](https://it-rat.com/services/tokenfuse.html), [Wardryx](https://it-rat.com/services/wardryx.html), [Mockryx](https://it-rat.com/services/mockryx.html) and [Verdryx](https://it-rat.com/services/verdryx.html) write: the agent-event. It validates Agent Passports against the [platform contract](https://it-rat.com/services/platform.html).

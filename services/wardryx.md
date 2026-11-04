@@ -32,6 +32,14 @@ deny_above_usd is the rule no token can talk past. It is checked before the hold
 
 deny_if_unattested demands a live attestation before an agent touches the sensitive rules.
 
+### A spent error budget puts the agent to a person
+
+The quality plane writes an slo_burn event when an agent's error budget is exhausted or burning fast. A hold_if_signal rule on it holds that agent's tool calls for a person, and a granted approval lets one call through. Off until WARDRYX_SIGNAL_EVENTS names the event file.
+
+### A DPoP proof is accepted once
+
+With WARDRYX_DB set, the record of accepted proofs is shared by every instance on that database and survives a restart, so a replay at a second instance is refused. A record that cannot be asked refuses the decide instead of passing the proof.
+
 ### The desk every expensive idea stops at.
 
 [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s PEP hook asks Wardryx on every request and stamps the verdict on the response. Each decision lands on the bus as a source: wardryx event, which [Idryx](https://it-rat.com/services/idryx.html) correlates into the identity graph.
@@ -47,6 +55,8 @@ This plane answers about an action. What it cannot answer is whether the caller 
 - When the decision point is unreachable, the TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing. The unset default under enforce became closed on 2026-10-17. All three launchers set the failure mode to closed on purpose.
 
 - With no shared database, an approval token's single-use guarantee is per process, and the server says so at startup.
+
+- With no database, the record of accepted DPoP proofs is per process too, and serve says so at start.
 
 - The typed risk signal from Typryx is an opt-in the launchers leave off by default, and it was measured on the stub backend only.
 

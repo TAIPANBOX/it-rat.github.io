@@ -16,6 +16,8 @@ The [Wardryx room](https://it-rat.com/services/wardryx.html) keeps the simulatio
 
 - [What changed](https://it-rat.com/wardryx-guide.html#changes)
 
+- [What changed in November](https://it-rat.com/wardryx-guide.html#changes-november)
+
 - [Limits](https://it-rat.com/wardryx-guide.html#limits)
 
 ## Wardryx at a glance.
@@ -64,6 +66,25 @@ Since v1.2.0 an approval is also bound to the tool call a person read, when the 
 
 The signing is fail-closed. The token is signed by Keyryx custody (ES256) when WARDRYX_APPROVAL_SIGNER=keyryx, which the stack-single and stack-up launchers set (and stack-k8s sets it by default from 1.6.0, tagged 2026-10-19, unless it is deployed with --without-keyryx), and with an HMAC secret otherwise. With neither a signer nor the secret, Wardryx refuses to mint or verify rather than accepting anything, because there is no such thing as an unsigned or always-valid approval. Since 1.0 a token works once by default: the first redemption is recorded atomically, so presenting the same token twice falls back to a fresh hold instead of silently allowing the action again. Setting `WARDRYX_APPROVAL_SINGLE_USE=false` makes it reusable within its window. With no shared database that single-use guarantee is per process, and the server says so at startup rather than letting you assume otherwise.
 
+### A spent error budget is a reason to hold
+
+The quality plane, [Verdryx](https://it-rat.com/services/verdryx.html), writes an `slo_burn` event to its event file when an agent's error budget is exhausted or burning fast. With `WARDRYX_SIGNAL_EVENTS` pointing at that file, Wardryx adds one standing signal named `slo_burn` to the agent's decisions, and a `hold_if_signal` rule on it holds the call. A granted approval lets that one call through, as for any hold. It is off unless the setting is set, and it changes nothing without a rule that reads the signal: same answer, same policy version.
+
+```
+name: hold-while-the-budget-is-spent
+target: "agent://acme.example/support/*"
+hold_if_signal:
+  name: slo_burn
+  values: [exhausted, fast_burn]
+  min_probability: 1
+```
+
+The signal takes four values, `exhausted`, `fast_burn`, `unmeasured` and `none`, always at probability 1. An unmeasured zero is not evidence of health: a fast burn whose `burn_events_seen` is missing, zero, negative, fractional or not a number reads as `unmeasured`, never as `none` and never as `fast_burn`. An exhausted event stands on the budget, so its `burn_events_seen` does not matter. While the file is sound the signal is present for every agent, because `when_absent: hold` holds every call with no signal of the rule's name, and a signal only for agents with an event would make that setting hold the healthy ones too. Absence therefore means one thing: the file cannot be believed, and the policy's `when_absent` decides.
+
+The reader sits outside the decision code, so the signal can add a hold and nothing else, and a recorded decision replays with the file gone. A caller's own `slo_burn` signal is dropped, so it cannot end an absence hold. An event signals for `WARDRYX_SIGNAL_EVENTS_MAX_AGE` after its time (48 hours unless set), the newest event of an indicator replaces its older ones, and the quality plane writes no event on recovery, so recovery is a weaker event or the age running out.
+
+The file is checked before it is believed. The hash chain is verified, and a broken chain, a malformed line, a restart, a start in the middle of a chain, a time in the future or a file past its size bound reads as `broken`; a missing file, or one that is not a plain file, reads as `unreadable`. `/readyz` says which in `signal_events` without changing its status code, and the log names the file and the reason once per change.
+
 ### A hard ceiling that outranks approvals
 
 deny_above_usd is the rule no token can talk past. It is checked before the hold logic ever runs, so even a granted approval cannot authorize a spend over the ceiling. Some numbers should end the conversation, and this one does.
@@ -71,6 +92,12 @@ deny_above_usd is the rule no token can talk past. It is checked before the hold
 ### Attestation as a first-class gate
 
 deny_if_unattested demands a live attestation before an agent touches the sensitive rules. Methods are trimmed and lowercased on the way in, so a literal “None” string reads as no attestation instead of sneaking past as a value.
+
+### A proof is accepted once, on every instance
+
+When a decide carries an agent's DPoP proof, Wardryx accepts that proof once. With `WARDRYX_DB` set, the record of accepted proofs is the table `agent_proof_replays`, shared by every instance on that database. A proof presented at a second instance, or again after a restart, is refused with `403 agent_token_proof_invalid`. The claim is one atomic insert and the last step of the check, so only a proof that passed every other check reaches the database, and the key is a hash over the holder's key thumbprint and the proof's id, so no client byte reaches SQL and one holder cannot spend another's id. A row is kept until the longest proof window has closed, and a purge removes the rows after that.
+
+A record that cannot be asked refuses. A proof nobody could check for replay may be a replay, so a store that is gone answers `503 agent_token_proof_unrecorded`, a store that failed with an error of its own answers 500, and the process does not stand in with a memory of its own. TokenFuse treats any answer outside 2xx as its fail mode, closed under enforce unless an operator set it open. A request with no proof decides from memory as before. Without a database the record stays in the process, and serve says so at start.
 
 ### Fail-open or fail-closed, your call
 
@@ -126,6 +153,13 @@ The whole stack's fortnight, Wardryx among it, is in [the October changelog](htt
 | v1.4.0 | A policy can hold a tool call whose risk signal never arrives (when_absent: hold), for a person to decide. |
 | v1.5.0 | A policy can name the only models its agents may use. A request for any other model is denied on that call. |
 
+## What changed in November
+
+| shipped in | what it does |
+|---|---|
+| on main | With a database set, the record of accepted DPoP proofs is shared by every instance and survives a restart: a proof is accepted once, and a record that cannot be asked refuses the decide with a 503. |
+| on main | A spent error budget can put an agent's tool calls to a person: with WARDRYX_SIGNAL_EVENTS set, a hold_if_signal rule on slo_burn holds the call. |
+
 ## What is open by default, and what is not proven yet.
 
 - When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; both launchers set it closed on purpose. The egress point fails closed with no override.
@@ -135,6 +169,10 @@ The whole stack's fortnight, Wardryx among it, is in [the October changelog](htt
 - With no shared database the single-use guarantee of an approval token is per process, and the server says so at startup rather than letting you assume otherwise. Setting `WARDRYX_APPROVAL_SINGLE_USE=false` makes a token reusable within its window.
 
 - A call whose arguments were too large to send binds only its name and target.
+
+- An outage of the store behind the proof record stops every decide that carries a proof. Every instance must run this build, because an older one keeps its own record, and two clocks more than five minutes apart can accept a proof twice.
+
+- The chain behind the budget signal shows that a line was not edited or removed from the middle. It does not say who wrote the file and cannot see lines cut from the end, so the file is as trustworthy as its permissions. An event is matched by exact agent id, in no org, and a crash mid-write leaves the file broken until it is moved aside. Under `when_absent: hold`, a file that cannot be read holds every tool call of the agents the rule matches.
 
 - The typed risk signal from Typryx: the launchers offer it as an opt-in, off by default, and it was measured on the stub backend only.
 

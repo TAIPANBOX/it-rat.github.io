@@ -193,6 +193,7 @@
       <div class="card hover feature b-6 rv d1"><h3>In-path checks, on the real path</h3><p>Assertions read the gateway's own answers: the breaker's 402, DLP's 403, the deny or hold riding the x-fuse-wardryx header.</p></div>
       <div class="card hover feature b-6 rv"><h3>Async reaction checks</h3><p>A drill can demand that the off-path services actually react, not only that the gateway answered.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>A skip cannot hide a gap</h3><p>A guardrail that is off looks exactly like one that is broken. The runner insists on evidence before it calls a miss either one.</p></div>
+      <div class="card hover feature b-12 rv"><h3>Drills for a failing provider</h3><p>Three drills rehearse a provider that is up but failing: a 5xx, a rate limit and a timeout. Each checks the chain in order. The call comes back with the provider's own status, the gateway puts a dependency_failed for the run on the bus, and the run reaches a person. A local stub plays the provider.</p></div>
     </div>
   </div>
 </section>
