@@ -28,6 +28,7 @@ committed is published.
 ./scripts/room-budget.sh          # invariant 12
 ./scripts/list-items-are-one-block.sh  # invariant 13
 ./scripts/room-backdrop.sh        # invariant 14
+./scripts/security-txt-current.sh  # invariant 15
 ./scripts/demo-bundle-current.sh
 ./scripts/deploy-target-current.sh  # invariant 9; needs network
 # demo-bundle-current.sh also runs daily on its own schedule; see invariant 7
@@ -502,6 +503,14 @@ true.
    It does not judge whether a motif looks like anything, says anything true,
    or can be seen behind the hero's text; that still needs somebody to open
    the page, at desktop width and on a phone.)*
+
+15. **`/.well-known/security.txt` is present, current and really published.**
+   Its `Expires` stays in the future and within a year, as RFC 9116 asks. The
+   Pages upload drops every path starting with a dot unless
+   `include-hidden-files` is true, so a committed file can answer 404 while every
+   check is green; the workflow removes the other hidden files first.
+   *(gate: `scripts/security-txt-current.sh`, run in the Pages workflow, with
+   cases in `scripts/gates-have-teeth.sh`)*
 
 ## Decisions that have no gate yet
 

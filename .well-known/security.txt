@@ -1,0 +1,4 @@
+Contact: mailto:itratmail@gmail.com
+Expires: 2027-10-31T00:00:00Z
+Preferred-Languages: en, uk
+Canonical: https://it-rat.com/.well-known/security.txt
