@@ -658,6 +658,30 @@ assert m, "ambient.js has no MAP"
 open(p, "w").write(s.replace(m.group(0), "const MAP={};", 1))')" \
 	"measured nothing"
 
+run_case "security-txt: the file has expired" fail \
+	'./scripts/security-txt-current.sh' \
+	"$(py 'edit(".well-known/security.txt", "Expires: 2027-10-31", "Expires: 2020-10-31")')" \
+	"expired on"
+
+run_case "security-txt: the Contact line is gone" fail \
+	'./scripts/security-txt-current.sh' \
+	"$(py 'edit(".well-known/security.txt", "Contact: mailto:itratmail@gmail.com\n", "")')" \
+	"has no Contact field"
+
+run_case "security-txt: the Pages upload drops hidden paths" fail \
+	'./scripts/security-txt-current.sh' \
+	"$(py 'edit(".github/workflows/pages.yml", "include-hidden-files: true", "include-hidden-files: false")')" \
+	"never ships"
+
+run_case "security-txt: a comment line is not a field (non-fault)" pass \
+	'./scripts/security-txt-current.sh' \
+	"$(py 'edit(".well-known/security.txt", "Expires:", "# Contact is above\nExpires:")')"
+
+run_case "security-txt: the file itself is gone" fail \
+	'./scripts/security-txt-current.sh' \
+	"$(py 'import os; os.remove(".well-known/security.txt")')" \
+	"measured nothing"
+
 echo
 if [ -n "$(git status --porcelain)" ]; then
 	printf 'FAIL: this script left the tree dirty, so it cannot be trusted about anything above\n'
