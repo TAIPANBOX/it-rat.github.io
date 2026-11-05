@@ -197,10 +197,12 @@ true.
    now runs the gate on the UNMUTATED tree first and reports `UNJUDGEABLE`
    rather than a pass. Verified by writing exactly that case and watching it
    refuse.
-   *(gate: `scripts/gates-have-teeth.sh`, 48 cases: thirty-one real faults,
-   eight non-faults, and nine subjects taken away entirely, counted from the
-   harness's own "OK: 48 cases" on 2026-11-01, after invariant 11's two
-   command-twin cases were added. Before that it was 46, counted from
+   *(gate: `scripts/gates-have-teeth.sh`, 53 cases, counted from the harness's
+   own "OK: 53 cases" in CI run 41821156987 on 2026-11-04, after invariant 15's
+   five cases were added. Before that it was 48: thirty-one real faults, eight
+   non-faults, and nine subjects taken away entirely, counted from "OK: 48
+   cases" on 2026-11-01, after invariant 11's two command-twin cases were
+   added. Before that it was 46, counted from
    "OK: 46 cases" on 2026-10-26, after invariant 14's eight cases were added.
    Before that it was 38, counted from "OK: 38 cases" on
    2026-10-19, after the demo was rebuilt (31 cases

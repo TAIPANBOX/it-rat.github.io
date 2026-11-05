@@ -42,7 +42,7 @@ First account created at /signup becomes the admin of that installation, so make
 
 ## What is not proven yet.
 
-- Release gates through v0.10.0 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
+- Release gates through v0.10.1 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
 
 - The AWS reader was proven on a real export, the GCP one only against a hand-written file.
 
