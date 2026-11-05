@@ -144,7 +144,7 @@ go install github.com/TAIPANBOX/costcrew/cmd/costcrew@latest
 
 ### A measured run
 
-Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.10.0, and it reads the AWS and GCP billing exports.
+Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.10.1, and it reads the AWS and GCP billing exports.
 
 ### The supervisor settles what it may
 
@@ -183,7 +183,7 @@ The repository gates more than its suite: every scenario written in the language
 
 - The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
 
-- Release gates through v0.10.0 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
+- Release gates through v0.10.1 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
 
 - The FOCUS 1.1 file of agent spend (costcrew-cloudability, in the image since v0.7.0) has not been accepted by a live tenant yet.
 

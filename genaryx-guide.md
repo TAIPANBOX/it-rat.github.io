@@ -236,11 +236,11 @@ The console's own list for 1 to 15 October 2026 is in [the stack's changes](http
 
 | shipped in | what it does |
 |---|---|
-| on main | Incident 360 has a Case section: a deterministic case file for an incident, assembled from reads the console already makes, each fact naming its plane, its row and a digest. |
-| on main | Felyx names only ids and amounts a tool returned, reads plane text as fenced data, and files a card only for a target a tool returned. |
-| on main | Felyx can read a case file instead of running a tool loop: it is given the case and no tool, cites only ids the case holds and proposes nothing. |
-| on main | A candidate policy is proved against the decisions already recorded (a Wardryx replay) and a candidate budget against the calls already made (a TokenFuse backtest): each says whether it would have stopped the incident and how many other decisions or calls it would have changed, and applies nothing. |
-| on main | A case can be sealed as one canonical document, written in the form RFC 8785 fixes, with the operator's decision and the proofs they asked for; its digest is the target of one line in the console's own chain, and sealing changes nothing in any plane. |
+| console 1.7.5 | Incident 360 has a Case section: a deterministic case file for an incident, assembled from reads the console already makes, each fact naming its plane, its row and a digest. |
+| console 1.7.5 | Felyx names only ids and amounts a tool returned, reads plane text as fenced data, and files a card only for a target a tool returned. |
+| console 1.7.5 | Felyx can read a case file instead of running a tool loop: it is given the case and no tool, cites only ids the case holds and proposes nothing. |
+| console 1.7.5 | A candidate policy is proved against the decisions already recorded (a Wardryx replay) and a candidate budget against the calls already made (a TokenFuse backtest): each says whether it would have stopped the incident and how many other decisions or calls it would have changed, and applies nothing. |
+| console 1.7.5 | A case can be sealed as one canonical document, written in the form RFC 8785 fixes, with the operator's decision and the proofs they asked for; its digest is the target of one line in the console's own chain, and sealing changes nothing in any plane. |
 
 ## What is reported and not yet in the record, and what it does not do.
 
