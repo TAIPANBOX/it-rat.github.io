@@ -148,7 +148,7 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - No admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one.
 
-- Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19 and stack-k8s since v1.6.1, tagged on 2026-10-20; stack-single does not set it. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single, stack-up and stack-k8s now pin v0.1.3; stack-k8s runs the witness in the record plane's group. stack-single still does not set the attestations folder, so its packs carry no witness. None of this has run live.
+- Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19, stack-k8s since v1.6.1, tagged on 2026-10-20, and stack-single since v1.6.0, tagged on 2026-11-05. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single, stack-up and stack-k8s now pin v0.1.3; stack-k8s and stack-single run the witness in the record plane's group. On a stack-single box on 2026-11-05, a pack of 1024 records verified with the root signature and the witness on it.
 
 - The store root is rebuilt by hand in the tests from trailryx's construction. It is checked against trailryx's source, not against a store that trailryx itself sealed in this repository.
 
@@ -158,7 +158,7 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - The witness reads the bus and the record, not custody's use log, and custody writes no key rotation or revocation event yet.
 
-- Vouchryx consumes key statements from 0.5.0 and, from 0.6.0, checks each one against a pinned root. TokenFuse consumes them for its checkpoint key from 1.18.0. Both are opt-in, no launcher switches either on, and no producer in a launcher writes signed checkpoints yet.
+- Vouchryx consumes key statements from 0.5.0 and, from 0.6.0, checks each one against a pinned root, and stack-single switches that on by default from v1.6.0. TokenFuse consumes them for its checkpoint key from 1.18.0, which is opt-in: no launcher switches it on, and no producer in a launcher writes signed checkpoints yet.
 
 - The state MAC proves custody wrote a state, not that it is the latest. Whoever can write the data directory can restore an earlier copy of a record whose MAC still holds.
 
