@@ -52,6 +52,6 @@ The same harness, the honest-disk assumption removed (as recorded, undated, in V
 
 - Erasure is a library and the demo path today: trailryx-node has no erase command and keeps no payload plane, so an operator cannot yet erase one subject through the shipped binary.
 
-- A pack from stack-single carries no root signature and no witness, so the verdict proves the chain was not altered, not who published it or when. Since 2026-10-19 stack-up signs each sealed root through Keyryx by default and attaches the witness's attestations, and stack-k8s has done the same since 2026-10-20. Neither witness is an outside party: stack-up's runs on the same host as the same user, and stack-k8s's runs in the same cluster, as its own user in the record plane's group. trailryx-verify does not warn about that. None of this has run live.
+- All three launchers sign each sealed root through Keyryx by default and attach the witness's attestations: stack-up since 2026-10-19, stack-k8s since 2026-10-20, and stack-single since 2026-11-05. No witness is an outside party: stack-up's runs on the same host as the same user, stack-k8s's in the same cluster and stack-single's on the same box, each of those two as its own user in the record plane's group. trailryx-verify does not warn about that. So the verdict proves the chain was not altered and which key signed it; a date an outside party can vouch for takes an anchor off the box.
 
 ### The Trailryx guide
