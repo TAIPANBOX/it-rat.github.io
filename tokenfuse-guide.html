@@ -222,7 +222,7 @@
       <h3>TokenFuse ships as an image, and since v0.4.3 as binaries</h3>
       <div class="dl-row"><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/pkgs/container/tokenfuse">container image</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases">releases</a></div>
       <div class="dl-row" style="margin-top:10px"><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/tokenfuse-x86_64-unknown-linux-musl">Linux x86-64</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/tokenfuse-aarch64-unknown-linux-musl">Linux arm64</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/tokenfuse-x86_64-apple-darwin">macOS x86-64</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/tokenfuse-aarch64-apple-darwin">macOS arm64</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/SHA256SUMS">SHA256SUMS</a></div>
-      <p>The current release is v1.21.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, <span class="mono">TOKENFUSE_UPSTREAM</span> set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.</p>
+      <p>The current release is v1.22.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, <span class="mono">TOKENFUSE_UPSTREAM</span> set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.</p>
     </div>
   </div>
 </section>
@@ -271,6 +271,10 @@
         <tbody>
           <tr><td>v1.21.0</td><td>A run's taint label comes from what an enforcement point saw: the MCP broker labels a call by the server that answered, and the provider's own tool blocks label the run before that answer's tool calls are judged.</td></tr>
           <tr><td>v1.21.0</td><td>A provider that keeps failing is one incident in the Cloud console and API, not one per call.</td></tr>
+          <tr><td>v1.22.0</td><td>The MCP broker tells an upstream that labels a run which run is asking, and tells no other, so a read of the web is recorded under the run that asked for it.</td></tr>
+          <tr><td>v1.22.0</td><td>The MCP broker follows no redirect, so the secrets it writes into a body cannot be carried to a host an upstream named, and a tool call in a stream's closing chunk is held like any other.</td></tr>
+          <tr><td>v1.22.0</td><td>A call that searched on the OpenAI door labels its run, so a shell the run asks for afterwards can be refused.</td></tr>
+          <tr><td>v1.22.0</td><td>A response that stopped short is charged the input as reported and the output at the request's cap, under the cost basis PartialUsage.</td></tr>
         </tbody>
       </table>
     </div>

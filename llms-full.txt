@@ -3242,7 +3242,7 @@ Want more than the gateway? [Run the live services locally](https://it-rat.com/s
 
 ### TokenFuse ships as an image, and since v0.4.3 as binaries
 
-The current release is v1.21.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
+The current release is v1.22.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
 
 ## What the gateway gained from 1 to 15 October
 
@@ -3272,6 +3272,10 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 |---|---|
 | v1.21.0 | A run's taint label comes from what an enforcement point saw: the MCP broker labels a call by the server that answered, and the provider's own tool blocks label the run before that answer's tool calls are judged. |
 | v1.21.0 | A provider that keeps failing is one incident in the Cloud console and API, not one per call. |
+| v1.22.0 | The MCP broker tells an upstream that labels a run which run is asking, and tells no other, so a read of the web is recorded under the run that asked for it. |
+| v1.22.0 | The MCP broker follows no redirect, so the secrets it writes into a body cannot be carried to a host an upstream named, and a tool call in a stream's closing chunk is held like any other. |
+| v1.22.0 | A call that searched on the OpenAI door labels its run, so a shell the run asks for afterwards can be refused. |
+| v1.22.0 | A response that stopped short is charged the input as reported and the output at the request's cap, under the cost basis PartialUsage. |
 
 ## What the default install does not do, and what is not proven yet.
 
@@ -4061,7 +4065,7 @@ The [Scopyx room](https://it-rat.com/services/scopyx.html) keeps the request in 
 
 ## Scopyx at a glance.
 
-- **Shipped:** v1.2.0, two images (default and -chromium).
+- **Shipped:** v1.3.0, two images (default and -chromium).
 
 - **Core:** Go 1.27 · one direct dependency.
 
@@ -4196,6 +4200,7 @@ No release in the window, still 1.0.1. The same entry, beside every other servic
 | shipped in | what it does |
 |---|---|
 | v1.2.0 | The key can come through the TokenFuse MCP broker: SCOPYX_ACCEPT_KEY_IN_META=1 reads a tools/call credential from the call's metadata, as a handle the broker fills in. Off by default. |
+| v1.3.0 | A fetch through the TokenFuse MCP broker carries the run that asked for it, so the record names that run. |
 
 ## What it will not do, stated rather than discovered.
 
@@ -5109,7 +5114,7 @@ TYPED_MODE=jev|own-model|off
 
 ## What changed, release by release.
 
-Released as v0.5.1 on 2026-10-26, built on Go 1.27.3, after v0.5.0 on 2026-10-19, v0.4.1 on 2026-10-14, v0.4.0 on 2026-10-04 (which added the `action.risk_class` template and `wardryx-proxy`), v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, with the release run for v0.5.1 green. From v0.5.0 a new event stream file is created with mode 0640, and only in a directory the service's account owns. Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.
+Released as v0.6.0 on 2026-11-06, which reaches OpenAI's current models through three request variables, after v0.5.1 on 2026-10-26, built on Go 1.27.3, v0.5.0 on 2026-10-19, v0.4.1 on 2026-10-14, v0.4.0 on 2026-10-04 (which added the `action.risk_class` template and `wardryx-proxy`), v0.3.0 on 2026-09-30 and a first tag, v0.1.0, on 2026-09-25: a signed image on ghcr.io for amd64 and arm64, and a release page with SBOMs; public on GitHub, with the release run for v0.6.0 green. From v0.5.0 a new event stream file is created with mode 0640, and only in a directory the service's account owns. Built and tested: the HTTP and MCP surfaces, the stub, openai-logprobs and jev backends, the journal and ledger, calibration, and the opt-in training log and export. Jev ran live on 2026-09-30, and all three data modes were measured on the same 434 questions.
 
 The releases from 1 to 15 October 2026, with what each one shipped, are in [the stack's changes for October](https://it-rat.com/changes-2026-10.html#typryx).
 
