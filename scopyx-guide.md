@@ -32,7 +32,7 @@ The [Scopyx room](https://it-rat.com/services/scopyx.html) keeps the request in 
 
 ## Scopyx at a glance.
 
-- **Shipped:** v1.2.0, two images (default and -chromium).
+- **Shipped:** v1.3.0, two images (default and -chromium).
 
 - **Core:** Go 1.27 · one direct dependency.
 
@@ -167,6 +167,7 @@ No release in the window, still 1.0.1. The same entry, beside every other servic
 | shipped in | what it does |
 |---|---|
 | v1.2.0 | The key can come through the TokenFuse MCP broker: SCOPYX_ACCEPT_KEY_IN_META=1 reads a tools/call credential from the call's metadata, as a handle the broker fills in. Off by default. |
+| v1.3.0 | A fetch through the TokenFuse MCP broker carries the run that asked for it, so the record names that run. |
 
 ## What it will not do, stated rather than discovered.
 

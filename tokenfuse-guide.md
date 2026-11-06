@@ -126,7 +126,7 @@ Want more than the gateway? [Run the live services locally](https://it-rat.com/s
 
 ### TokenFuse ships as an image, and since v0.4.3 as binaries
 
-The current release is v1.21.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
+The current release is v1.22.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
 
 ## What the gateway gained from 1 to 15 October
 
@@ -156,6 +156,10 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 |---|---|
 | v1.21.0 | A run's taint label comes from what an enforcement point saw: the MCP broker labels a call by the server that answered, and the provider's own tool blocks label the run before that answer's tool calls are judged. |
 | v1.21.0 | A provider that keeps failing is one incident in the Cloud console and API, not one per call. |
+| v1.22.0 | The MCP broker tells an upstream that labels a run which run is asking, and tells no other, so a read of the web is recorded under the run that asked for it. |
+| v1.22.0 | The MCP broker follows no redirect, so the secrets it writes into a body cannot be carried to a host an upstream named, and a tool call in a stream's closing chunk is held like any other. |
+| v1.22.0 | A call that searched on the OpenAI door labels its run, so a shell the run asks for afterwards can be refused. |
+| v1.22.0 | A response that stopped short is charged the input as reported and the output at the request's cap, under the cost basis PartialUsage. |
 
 ## What the default install does not do, and what is not proven yet.
 
