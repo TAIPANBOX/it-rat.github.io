@@ -152,6 +152,8 @@ No release in the window, nine pull requests merged. The same entry, beside ever
 
 | shipped in | what it does |
 |---|---|
+| v0.3.0 | slo measures the window it names, so a run stops counting once the window has passed it. |
+| v0.3.0 | --holds-spend-no-budget keeps a Wardryx hold from spending the budget that caused it, so an agent on hold can earn its budget back. |
 | v0.2.0 | drift and slo failures are stored as findings, with their evidence and a suspect model or version. verdryx findings list and show read them. |
 | v0.2.0 | A fix is registered against a finding and decided by the runs that follow: verified, failed, or pending with its reason. |
 | v0.2.0 | A person's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's value stays beside it. |

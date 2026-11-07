@@ -202,7 +202,7 @@
       <div class="card hover feature b-6 rv"><h3>A failure becomes a record</h3><p>A drift regression or an SLO breach is stored as a finding, with its evidence and a suspect model or version. Register a fix and the runs that follow decide it: verified, failed, or pending with its reason. Unmeasured is never a pass.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>A person's grade outranks the model's</h3><p>A reviewer's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's own value stays beside it. eval has no path to a grade, and every grade carries its author.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>Error budgets, measured and never enforced</h3><p>verdryx slo reads the same traces as four ratios of good runs over eligible runs, each with the budget left and the rate it is going. It sends an slo_burn event only when the confidence interval sits below the objective, and it enforces nothing.</p></div>
-      <div class="card hover feature b-6 rv"><h3>An exhausted budget has two readers</h3><p><a href="wardryx.html">Wardryx</a> can turn a spent budget into a hold for a person, off unless its event file is set. <a href="heraldyx.html">Heraldyx</a> mails an slo_burn at once, in words that say nothing was enforced.</p></div>
+      <div class="card hover feature b-6 rv"><h3>An exhausted budget has two readers</h3><p><a href="wardryx.html">Wardryx</a> turns a spent budget into a hold for a person, in both launchers, which measure every six hours. <a href="heraldyx.html">Heraldyx</a> mails an slo_burn at once, in words that say nothing was enforced.</p></div>
     </div>
   </div>
 </section>

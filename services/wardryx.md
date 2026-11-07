@@ -34,7 +34,7 @@ deny_if_unattested demands a live attestation before an agent touches the sensit
 
 ### A spent error budget puts the agent to a person
 
-The quality plane writes an slo_burn event when an agent's error budget is exhausted or burning fast. A hold_if_signal rule on it holds that agent's tool calls for a person, and a granted approval lets one call through. Off until WARDRYX_SIGNAL_EVENTS names the event file.
+The quality plane writes an slo_burn event when an agent's error budget is exhausted or burning fast. A hold_if_signal rule on it holds that agent's calls for a person, model calls included, and a granted approval lets one call through. Both launchers set this up, so a spent budget waits for a person out of the box. On its own, wardryx stays off until WARDRYX_SIGNAL_EVENTS names the event file.
 
 ### A DPoP proof is accepted once
 

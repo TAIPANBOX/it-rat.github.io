@@ -68,7 +68,7 @@ The signing is fail-closed. The token is signed by Keyryx custody (ES256) when W
 
 ### A spent error budget is a reason to hold
 
-The quality plane, [Verdryx](https://it-rat.com/services/verdryx.html), writes an `slo_burn` event to its event file when an agent's error budget is exhausted or burning fast. With `WARDRYX_SIGNAL_EVENTS` pointing at that file, Wardryx adds one standing signal named `slo_burn` to the agent's decisions, and a `hold_if_signal` rule on it holds the call. A granted approval lets that one call through, as for any hold. It is off unless the setting is set, and it changes nothing without a rule that reads the signal: same answer, same policy version.
+The quality plane, [Verdryx](https://it-rat.com/services/verdryx.html), writes an `slo_burn` event to its event file when an agent's error budget is exhausted or burning fast. With `WARDRYX_SIGNAL_EVENTS` pointing at that file, Wardryx adds one standing signal named `slo_burn` to the agent's decisions, and a `hold_if_signal` rule on it holds the call. A granted approval lets that one call through, as for any hold. Both launchers set it and seed the rule, so a spent budget waits for a person out of the box. On its own it is off unless the setting is set, and it changes nothing without a rule that reads the signal: same answer, same policy version.
 
 ```
 name: hold-while-the-budget-is-spent
