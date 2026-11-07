@@ -46,7 +46,7 @@ verdryx slo reads the same traces as four ratios of good runs over eligible runs
 
 ### An exhausted budget has two readers
 
-[Wardryx](https://it-rat.com/services/wardryx.html) can turn a spent budget into a hold for a person, off unless its event file is set. [Heraldyx](https://it-rat.com/services/heraldyx.html) mails an slo_burn at once, in words that say nothing was enforced.
+[Wardryx](https://it-rat.com/services/wardryx.html) turns a spent budget into a hold for a person, in both launchers, which measure every six hours. [Heraldyx](https://it-rat.com/services/heraldyx.html) mails an slo_burn at once, in words that say nothing was enforced.
 
 ## The line that turns spend into a verdict.
 
