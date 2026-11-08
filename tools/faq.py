@@ -41,7 +41,7 @@ FAQ = {
  ("What has not been established yet?",
   "<p>Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Not every shipped pre-production drill has been fired at a real gateway; the ledger records the ones that have. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.</p>"),
  ("Why publish the things that went wrong?",
-  "<p>Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 160 entries and 83 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.</p>"),
+  "<p>Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 163 entries and 84 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.</p>"),
 ]),
 
 "first-alert.html": ("common questions", "What people ask before starting", [

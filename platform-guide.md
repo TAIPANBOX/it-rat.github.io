@@ -159,7 +159,7 @@ For teams whose answer to everything is a cluster. One script brings up k3s acro
 | proven on | Hetzner, AWS and GCP |
 | what it buys | high availability |
 | what it costs | a ReadWriteMany volume |
-| traps | 160 documented, with whose fault each was |
+| traps | 163 documented, with whose fault each was |
 
 **The commands, and the one thing a cluster costs you.**
 
