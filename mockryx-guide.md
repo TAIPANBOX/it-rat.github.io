@@ -117,7 +117,7 @@ Every one of those addresses always serves the newest release, so a link saved t
 
 ## Four drills added in v0.2.2
 
-These four drills shipped in v0.2.2. The current release is v0.4.0.
+These four drills shipped in v0.2.2. The current release is v0.5.0.
 
 | drill | what it rehearses |
 |---|---|

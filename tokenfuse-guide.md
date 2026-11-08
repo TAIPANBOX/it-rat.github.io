@@ -126,7 +126,7 @@ Want more than the gateway? [Run the live services locally](https://it-rat.com/s
 
 ### TokenFuse ships as an image, and since v0.4.3 as binaries
 
-The current release is v1.22.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
+The current release is v1.24.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
 
 ## What the gateway gained from 1 to 15 October
 
