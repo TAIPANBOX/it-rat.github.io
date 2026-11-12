@@ -2441,16 +2441,16 @@
     },
     {
       "page": "tokenfuse-guide.html",
-      "claim": "v1.24.0",
+      "claim": "v1.25.0",
       "occurrences": 1,
       "repo": "TAIPANBOX/tokenfuse",
       "command": "gh api repos/TAIPANBOX/tokenfuse/releases/latest --jq .tag_name",
       "status": "measured",
-      "measured_on": "2026-11-08",
+      "measured_on": "2026-11-12",
       "repo_dir": "tokenfuse",
       "check": "gh api repos/TAIPANBOX/tokenfuse/releases/latest --jq .tag_name",
       "slow": false,
-      "note": "Moved 2026-11-08: tokenfuse v1.24.0 published 2026-11-08. Previously v1.22.0, and v1.23.0 (2026-11-07) was never named here."
+      "note": "Moved 2026-11-12: tokenfuse v1.25.0 published 2026-11-12. Previously v1.24.0 (2026-11-08)."
     },
     {
       "page": "tokenfuse-guide.html",
@@ -2493,16 +2493,16 @@
     },
     {
       "page": "tokenfuse-guide.md",
-      "claim": "v1.24.0",
+      "claim": "v1.25.0",
       "occurrences": 1,
       "repo": "TAIPANBOX/tokenfuse",
       "command": "gh api repos/TAIPANBOX/tokenfuse/releases/latest --jq .tag_name",
       "status": "measured",
-      "measured_on": "2026-11-08",
+      "measured_on": "2026-11-12",
       "repo_dir": "tokenfuse",
       "check": "gh api repos/TAIPANBOX/tokenfuse/releases/latest --jq .tag_name",
       "slow": false,
-      "note": "Moved 2026-11-08: tokenfuse v1.24.0 published 2026-11-08. Previously v1.22.0, and v1.23.0 (2026-11-07) was never named here."
+      "note": "Moved 2026-11-12: tokenfuse v1.25.0 published 2026-11-12. Previously v1.24.0 (2026-11-08)."
     },
     {
       "page": "tokenfuse-guide.md",
