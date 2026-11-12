@@ -2610,16 +2610,16 @@
     },
     {
       "page": "mockryx-guide.html",
-      "claim": "v0.5.0",
+      "claim": "v0.5.1",
       "occurrences": 1,
       "repo": "TAIPANBOX/mockryx",
       "command": "gh api repos/TAIPANBOX/mockryx/releases/latest --jq .tag_name",
       "status": "measured",
-      "measured_on": "2026-11-08",
+      "measured_on": "2026-11-12",
       "repo_dir": "mockryx",
       "check": "gh api repos/TAIPANBOX/mockryx/releases/latest --jq .tag_name",
       "slow": false,
-      "note": "Moved 2026-11-08: mockryx v0.5.0 published 2026-11-08. Previously v0.4.0."
+      "note": "Moved 2026-11-12: mockryx v0.5.1 published 2026-11-12. Previously v0.5.0."
     },
     {
       "page": "mockryx-guide.html",
