@@ -2,8 +2,8 @@
   "_": "Where demo/ came from. Checked by scripts/demo-bundle-current.sh; written by scripts/refresh-demo.sh. Do not edit by hand.",
   "source": "TAIPANBOX/genaryx",
   "path": "apps/web",
-  "commit": "6a31648611ebc147dd1b608b08fe4bfcc1dbfb51",
-  "bundle": "assets/index-B1btpdaW.js",
+  "commit": "92f736f1b114bec30c22b25da1aaf75a529eab25",
+  "bundle": "assets/index-pAm6jCMo.js",
   "stylesheet": "assets/index-oqdhIMe6.css",
   "built_with": "npm run build:demo"
 }
