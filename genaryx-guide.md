@@ -64,6 +64,8 @@ Kills, budget changes, approval grants, closing a retained reservation, revoking
 
 **What the console signs, and what it writes down.** The console mints a challenge bound to that exact command and its exact arguments, verifies the ES256 assertion server-side, and journals which enrolled credential confirmed it, next to the typed break-glass reason. A signature over a different command, or over the same command with different arguments, does not verify.
 
+**Reading a held call before granting it.** Since Wardryx v2.7.0 the approvals inbox can show the call's arguments, sealed to the console's key, with secrets and personal data hidden by fixed rules. A grant needs them opened first, a denial does not, and a grant of a call with nothing to show is recorded as unseen.
+
 No passkey enrolled yet? The action is refused until you enroll one. Only an operator who sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY gets the software-signed fallback, labeled honestly, never dressed up as hardware.
 
 Since 2026-10-19 the passkey is required by default: GENARYX_WEB_REQUIRE_PASSKEY is no longer read for its setting, and a stack that still sets it gets the same required mode. stack-up starts no console.

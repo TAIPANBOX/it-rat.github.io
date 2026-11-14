@@ -2891,6 +2891,8 @@ Kills, budget changes, approval grants, closing a retained reservation, revoking
 
 **What the console signs, and what it writes down.** The console mints a challenge bound to that exact command and its exact arguments, verifies the ES256 assertion server-side, and journals which enrolled credential confirmed it, next to the typed break-glass reason. A signature over a different command, or over the same command with different arguments, does not verify.
 
+**Reading a held call before granting it.** Since Wardryx v2.7.0 the approvals inbox can show the call's arguments, sealed to the console's key, with secrets and personal data hidden by fixed rules. A grant needs them opened first, a denial does not, and a grant of a call with nothing to show is recorded as unseen.
+
 No passkey enrolled yet? The action is refused until you enroll one. Only an operator who sets GENARYX_WEB_ALLOW_SOFTWARE_CEREMONY gets the software-signed fallback, labeled honestly, never dressed up as hardware.
 
 Since 2026-10-19 the passkey is required by default: GENARYX_WEB_REQUIRE_PASSKEY is no longer read for its setting, and a stack that still sets it gets the same required mode. stack-up starts no console.
@@ -3456,7 +3458,7 @@ go install github.com/TAIPANBOX/costcrew/cmd/costcrew@latest
 
 ### A measured run
 
-Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.10.1, and it reads the AWS and GCP billing exports.
+Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.10.2, and it reads the AWS and GCP billing exports.
 
 ### The supervisor settles what it may
 
@@ -3685,7 +3687,7 @@ The [Wardryx room](https://it-rat.com/services/wardryx.html) keeps the simulatio
 
 - **Deterministic allow, deny or hold, with a human on the expensive actions.**
 
-- **Status:** v2.5.1, surface frozen at 1.0 · main is supported.
+- **Status:** v2.7.0, surface frozen at 1.0 · main is supported.
 
 - **Core:** Go 1.27 · deterministic PDP. **API:** POST /v1/decide on :8090.
 
@@ -3724,6 +3726,8 @@ The agent asks, Wardryx answers `hold` with an approval id, and the call ends th
 The token is bound to what was actually approved. Its claims name the agent, the run and the exact sorted set of tools, and carry an expiry, ten minutes by default; verification checks the signature over the still-encoded payload before reading any claim, then checks that what is being asked matches what was granted. A token for one run does not quietly authorise another.
 
 Since v1.2.0 an approval is also bound to the tool call a person read, when the held request carried one. The person is shown the tool and its target, and the token carries a digest of the name, the target and the exact arguments, so it is refused for any other call, the same JSON re-spaced included. A call whose arguments were too large to send binds only its name and target.
+
+Since v2.7.0 the person deciding a hold can also read the call's arguments first. Wardryx builds the preview from the exact bytes the token's digest covers, hides credentials and personal data by fixed rules, and seals it to the console's key, keeping only the ciphertext until the hold is decided or 24 hours pass. The record says whether the approver saw it or granted unseen. It does nothing until a preview key is set; stack-single 1.10.0 and stack-k8s 1.13.0 set one.
 
 The signing is fail-closed. The token is signed by Keyryx custody (ES256) when WARDRYX_APPROVAL_SIGNER=keyryx, which the stack-single and stack-up launchers set (and stack-k8s sets it by default from 1.6.0, tagged 2026-10-19, unless it is deployed with --without-keyryx), and with an HMAC secret otherwise. With neither a signer nor the secret, Wardryx refuses to mint or verify rather than accepting anything, because there is no such thing as an unsigned or always-valid approval. Since 1.0 a token works once by default: the first redemption is recorded atomically, so presenting the same token twice falls back to a fresh hold instead of silently allowing the action again. Setting `WARDRYX_APPROVAL_SINGLE_USE=false` makes it reusable within its window. With no shared database that single-use guarantee is per process, and the server says so at startup rather than letting you assume otherwise.
 
@@ -3821,6 +3825,7 @@ The whole stack's fortnight, Wardryx among it, is in [the October changelog](htt
 | v2.5.0 | With a database set, the record of accepted DPoP proofs is shared by every instance and survives a restart: a proof is accepted once, and a record that cannot be asked refuses the decide with a 503. |
 | v2.5.0 | A spent error budget can put an agent's tool calls to a person: with WARDRYX_SIGNAL_EVENTS set, a hold_if_signal rule on slo_burn holds the call. |
 | v2.5.1 | The policy archive is created with directory mode 0750 and file mode 0640, so the account that runs wardryx replay can read it from the group of the account that writes it. An archive written before keeps its modes until an operator widens it. |
+| v2.7.0 | The person who decides a held call can read its arguments first, sealed to the console's key, with secrets and personal data hidden by fixed rules. Nothing changes until a preview key is set. |
 
 ## What is open by default, and what is not proven yet.
 
@@ -4065,7 +4070,7 @@ The [Scopyx room](https://it-rat.com/services/scopyx.html) keeps the request in 
 
 ## Scopyx at a glance.
 
-- **Shipped:** v1.3.0, two images (default and -chromium).
+- **Shipped:** v1.3.1, two images (default and -chromium).
 
 - **Core:** Go 1.27 · one direct dependency.
 
@@ -4507,7 +4512,7 @@ qryx scan .
 qryx tls api.anthropic.com:443
 ```
 
-Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.3 toolchain downloads itself on the first build.
+Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.4 toolchain downloads itself on the first build.
 
 ### Download, any platform
 

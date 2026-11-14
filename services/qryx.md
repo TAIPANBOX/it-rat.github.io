@@ -38,7 +38,7 @@ Qryx can write its agent-passport findings, drift, policy violations and signed-
 
 ## One binary, any platform.
 
-Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.3 toolchain downloads itself on the first build.
+Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.4 toolchain downloads itself on the first build.
 
 ## What it leaves out, on purpose.
 
