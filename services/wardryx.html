@@ -88,7 +88,7 @@
         </div>
       </div>
       <div class="hero-side rv d2">
-        <div class="row"><span class="k">status</span><span class="v">v2.5.1, surface frozen at 1.0 &#183; main is supported</span></div>
+        <div class="row"><span class="k">status</span><span class="v">v2.7.0, surface frozen at 1.0 &#183; main is supported</span></div>
         <div class="row"><span class="k">core</span><span class="v">Go 1.27 &#183; deterministic PDP</span></div>
         <div class="row"><span class="k">API</span><span class="v">POST /v1/decide on :8090</span></div>
         <div class="row"><span class="k">rules</span><span class="v" style="text-align:right">deny_tool &#183; allow_tool &#183; allow_models &#183; allow_domains &#183; max_steps &#183; deny_if_unattested &#183; require_identity_source &#183; max_chain_depth &#183; require_root_principal &#183; deny_if_chain_unproven &#183; deny_above_usd &#183; require_human_above_usd &#183; hold_if_signal</span></div>
@@ -201,7 +201,7 @@
     </div>
     <div class="bento">
       <div class="card hover feature b-6 rv"><h3>Three verdicts, zero improvisation</h3><p>Every answer is allow, deny or hold. A decision you can replay in a test is a decision you can defend in an audit.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>Hold means a human</h3><p>A big spend becomes a hold, not a guess. A human grants it out of band and the agent resubmits with a signed token.</p></div>
+      <div class="card hover feature b-6 rv d1"><h3>Hold means a human</h3><p>A big spend becomes a hold, not a guess. A human grants it out of band and the agent resubmits with a signed token. Since v2.7.0 the approver can read the call's arguments before granting, sealed to the console's key, with secrets and personal data hidden by fixed rules. stack-single 1.10.0 and stack-k8s 1.13.0 turn it on.</p></div>
       <div class="card hover feature b-6 rv"><h3>A hard ceiling that outranks approvals</h3><p>deny_above_usd is the rule no token can talk past. It is checked before the hold logic ever runs, so even a granted approval cannot authorize a spend over the ceiling.</p></div>
       <div class="card hover feature b-6 rv d1"><h3>Attestation as a first-class gate</h3><p>deny_if_unattested demands a live attestation before an agent touches the sensitive rules.</p></div>
       <div class="card hover feature b-6 rv"><h3>A spent error budget puts the agent to a person</h3><p>The quality plane writes an slo_burn event when an agent's error budget is exhausted or burning fast. A hold_if_signal rule on it holds that agent's calls for a person, model calls included, and a granted approval lets one call through. Both launchers set this up, so a spent budget waits for a person out of the box. On its own, wardryx stays off until WARDRYX_SIGNAL_EVENTS names the event file.</p></div>

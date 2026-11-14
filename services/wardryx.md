@@ -22,7 +22,7 @@ Every answer is allow, deny or hold. A decision you can replay in a test is a de
 
 ### Hold means a human
 
-A big spend becomes a hold, not a guess. A human grants it out of band and the agent resubmits with a signed token.
+A big spend becomes a hold, not a guess. A human grants it out of band and the agent resubmits with a signed token. Since v2.7.0 the approver can read the call's arguments before granting, sealed to the console's key, with secrets and personal data hidden by fixed rules. stack-single 1.10.0 and stack-k8s 1.13.0 turn it on.
 
 ### A hard ceiling that outranks approvals
 

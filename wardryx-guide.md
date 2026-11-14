@@ -24,7 +24,7 @@ The [Wardryx room](https://it-rat.com/services/wardryx.html) keeps the simulatio
 
 - **Deterministic allow, deny or hold, with a human on the expensive actions.**
 
-- **Status:** v2.5.1, surface frozen at 1.0 · main is supported.
+- **Status:** v2.7.0, surface frozen at 1.0 · main is supported.
 
 - **Core:** Go 1.27 · deterministic PDP. **API:** POST /v1/decide on :8090.
 
@@ -63,6 +63,8 @@ The agent asks, Wardryx answers `hold` with an approval id, and the call ends th
 The token is bound to what was actually approved. Its claims name the agent, the run and the exact sorted set of tools, and carry an expiry, ten minutes by default; verification checks the signature over the still-encoded payload before reading any claim, then checks that what is being asked matches what was granted. A token for one run does not quietly authorise another.
 
 Since v1.2.0 an approval is also bound to the tool call a person read, when the held request carried one. The person is shown the tool and its target, and the token carries a digest of the name, the target and the exact arguments, so it is refused for any other call, the same JSON re-spaced included. A call whose arguments were too large to send binds only its name and target.
+
+Since v2.7.0 the person deciding a hold can also read the call's arguments first. Wardryx builds the preview from the exact bytes the token's digest covers, hides credentials and personal data by fixed rules, and seals it to the console's key, keeping only the ciphertext until the hold is decided or 24 hours pass. The record says whether the approver saw it or granted unseen. It does nothing until a preview key is set; stack-single 1.10.0 and stack-k8s 1.13.0 set one.
 
 The signing is fail-closed. The token is signed by Keyryx custody (ES256) when WARDRYX_APPROVAL_SIGNER=keyryx, which the stack-single and stack-up launchers set (and stack-k8s sets it by default from 1.6.0, tagged 2026-10-19, unless it is deployed with --without-keyryx), and with an HMAC secret otherwise. With neither a signer nor the secret, Wardryx refuses to mint or verify rather than accepting anything, because there is no such thing as an unsigned or always-valid approval. Since 1.0 a token works once by default: the first redemption is recorded atomically, so presenting the same token twice falls back to a fresh hold instead of silently allowing the action again. Setting `WARDRYX_APPROVAL_SINGLE_USE=false` makes it reusable within its window. With no shared database that single-use guarantee is per process, and the server says so at startup rather than letting you assume otherwise.
 
@@ -160,6 +162,7 @@ The whole stack's fortnight, Wardryx among it, is in [the October changelog](htt
 | v2.5.0 | With a database set, the record of accepted DPoP proofs is shared by every instance and survives a restart: a proof is accepted once, and a record that cannot be asked refuses the decide with a 503. |
 | v2.5.0 | A spent error budget can put an agent's tool calls to a person: with WARDRYX_SIGNAL_EVENTS set, a hold_if_signal rule on slo_burn holds the call. |
 | v2.5.1 | The policy archive is created with directory mode 0750 and file mode 0640, so the account that runs wardryx replay can read it from the group of the account that writes it. An archive written before keeps its modes until an operator widens it. |
+| v2.7.0 | The person who decides a held call can read its arguments first, sealed to the console's key, with secrets and personal data hidden by fixed rules. Nothing changes until a preview key is set. |
 
 ## What is open by default, and what is not proven yet.
 
