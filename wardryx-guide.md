@@ -24,7 +24,7 @@ The [Wardryx room](https://it-rat.com/services/wardryx.html) keeps the simulatio
 
 - **Deterministic allow, deny or hold, with a human on the expensive actions.**
 
-- **Status:** v2.7.0, surface frozen at 1.0 · main is supported.
+- **Status:** v2.8.0, surface frozen at 1.0 · main is supported.
 
 - **Core:** Go 1.27 · deterministic PDP. **API:** POST /v1/decide on :8090.
 
@@ -137,7 +137,7 @@ This plane answers about an action. What it cannot answer is whether the caller 
 make serve
 ```
 
-Boots on `127.0.0.1:8090` with an in-memory store. `serve` refuses to start without `WARDRYX_KEYS`, so `make serve` opts in to the dev key on loopback only: allow-all until you load a policy, and it logs that choice. Then dry-run a policy offline against a directory of Agent Passports:
+`make serve` boots it on `127.0.0.1:8090` with an in-memory store; `wardryx serve` with no address listens on `:8090`, every interface. `serve` refuses to start without `WARDRYX_KEYS`, so `make serve` opts in to the dev key on loopback only: allow-all until you load a policy, and it logs that choice. Then dry-run a policy offline against a directory of Agent Passports:
 
 ```
 ./bin/wardryx check ./passports ./policies/finance.yaml
@@ -163,6 +163,7 @@ The whole stack's fortnight, Wardryx among it, is in [the October changelog](htt
 | v2.5.0 | A spent error budget can put an agent's tool calls to a person: with WARDRYX_SIGNAL_EVENTS set, a hold_if_signal rule on slo_burn holds the call. |
 | v2.5.1 | The policy archive is created with directory mode 0750 and file mode 0640, so the account that runs wardryx replay can read it from the group of the account that writes it. An archive written before keeps its modes until an operator widens it. |
 | v2.7.0 | The person who decides a held call can read its arguments first, sealed to the console's key, with secrets and personal data hidden by fixed rules. Nothing changes until a preview key is set. |
+| v2.8.0 | Every hold has an end: a person decides it, wardryx closes it as expired once it has waited WARDRYX_HOLD_TTL (24 hours unless set, from 1 to 168 hours), or the held agent withdraws it. Neither closure mints a token, so the held call stays refused. An admin key cancels nothing. |
 
 ## What is open by default, and what is not proven yet.
 

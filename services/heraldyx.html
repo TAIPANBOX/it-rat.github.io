@@ -207,76 +207,88 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
-      <h2>Four checks, in this order, and the order is the point.</h2>
+      <h2>Five steps, in this order, and the order is the point.</h2>
       <p class="lede">The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. A provider outage is one mail per window and not one per failed call: a dependency_failed repeats on the dependency, not on the run.</p>
     </div>
 
     <div class="diagram rv">
-      <svg viewBox="0 0 960 300" role="img" aria-label="One event passes four checks in order: a severity this build knows, at or above the floor, not already said within ten minutes, and under the hourly ceiling. Anything that fails goes to the digest, is dropped as a repeat, or is held back with a summary every ten minutes while anything is held; a critical is never held.">
+      <svg viewBox="0 0 960 300" role="img" aria-label="One event passes five steps in order: a severity this build knows, at or above the floor, not already said within ten minutes, not acknowledged and not inside a maintenance window or quiet hours, and under the hourly ceiling. Anything that fails goes to the digest, is dropped as a repeat, or is held back and counted; an acknowledgement or a window holds only alerts below critical, and a critical always passes the ceiling.">
         <defs><marker id="hxa" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker></defs>
         <g font-family="ui-monospace,Menlo" text-anchor="middle">
-          <rect x="8" y="30" width="168" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
-          <text x="92" y="52" fill="#E9EFF6" font-size="11" font-weight="700">a severity this</text>
-          <text x="92" y="66" fill="#E9EFF6" font-size="11" font-weight="700">build knows?</text>
-          <text x="92" y="80" fill="#8A97A6" font-size="10">five levels, nothing else</text>
+          <rect x="8" y="30" width="136" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="76" y="52" fill="#E9EFF6" font-size="11" font-weight="700">a severity this</text>
+          <text x="76" y="66" fill="#E9EFF6" font-size="11" font-weight="700">build knows?</text>
+          <text x="76" y="80" fill="#8A97A6" font-size="10">five levels only</text>
 
-          <rect x="206" y="30" width="168" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
-          <text x="290" y="52" fill="#E9EFF6" font-size="11" font-weight="700">at or above</text>
-          <text x="290" y="66" fill="#E9EFF6" font-size="11" font-weight="700">the floor?</text>
-          <text x="290" y="80" fill="#8A97A6" font-size="10">high, by default</text>
+          <rect x="166" y="30" width="136" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="234" y="52" fill="#E9EFF6" font-size="11" font-weight="700">at or above</text>
+          <text x="234" y="66" fill="#E9EFF6" font-size="11" font-weight="700">the floor?</text>
+          <text x="234" y="80" fill="#8A97A6" font-size="10">high, by default</text>
 
-          <rect x="404" y="30" width="168" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
-          <text x="488" y="52" fill="#E9EFF6" font-size="11" font-weight="700">said already,</text>
-          <text x="488" y="66" fill="#E9EFF6" font-size="11" font-weight="700">within 10 min?</text>
-          <text x="488" y="80" fill="#8A97A6" font-size="10">one condition, one mail</text>
+          <rect x="324" y="30" width="136" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="392" y="52" fill="#E9EFF6" font-size="11" font-weight="700">said already,</text>
+          <text x="392" y="66" fill="#E9EFF6" font-size="11" font-weight="700">within 10 min?</text>
+          <text x="392" y="80" fill="#8A97A6" font-size="10">once per condition</text>
 
-          <rect x="602" y="30" width="168" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
-          <text x="686" y="52" fill="#E9EFF6" font-size="11" font-weight="700">20 already sent</text>
-          <text x="686" y="66" fill="#E9EFF6" font-size="11" font-weight="700">this hour?</text>
-          <text x="686" y="80" fill="#8A97A6" font-size="10">0 turns the ceiling off</text>
+          <rect x="482" y="30" width="136" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="550" y="52" fill="#E9EFF6" font-size="11" font-weight="700">acknowledged, or</text>
+          <text x="550" y="66" fill="#E9EFF6" font-size="11" font-weight="700">in a window?</text>
+          <text x="550" y="80" fill="#8A97A6" font-size="10">below critical only</text>
 
-          <rect x="800" y="30" width="152" height="56" rx="10" fill="#141C27" stroke="#34D399" stroke-width="1.3"/>
-          <text x="876" y="54" fill="#34D399" font-size="12" font-weight="700">NOTIFY</text>
-          <text x="876" y="72" fill="#8A97A6" font-size="10">one mail, one record</text>
+          <rect x="640" y="30" width="136" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="708" y="52" fill="#E9EFF6" font-size="11" font-weight="700">20 already sent</text>
+          <text x="708" y="66" fill="#E9EFF6" font-size="11" font-weight="700">this hour?</text>
+          <text x="708" y="80" fill="#8A97A6" font-size="10">0 turns it off</text>
 
-          <path d="M180 58 L200 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
-          <path d="M378 58 L398 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
-          <path d="M576 58 L596 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
-          <path d="M774 58 L794 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
+          <rect x="798" y="30" width="154" height="56" rx="10" fill="#141C27" stroke="#34D399" stroke-width="1.3"/>
+          <text x="875" y="54" fill="#34D399" font-size="12" font-weight="700">NOTIFY</text>
+          <text x="875" y="72" fill="#8A97A6" font-size="10">one mail, one record</text>
 
-          <path d="M92 92 L92 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
-          <path d="M290 92 L290 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
-          <path d="M488 92 L488 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
-          <path d="M686 92 L686 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
+          <path d="M148 58 L162 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
+          <path d="M306 58 L320 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
+          <path d="M464 58 L478 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
+          <path d="M622 58 L636 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
+          <path d="M780 58 L794 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
 
-          <rect x="8" y="136" width="168" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
-          <text x="92" y="158" fill="#F4B23E" font-size="11" font-weight="700">DIGEST</text>
-          <text x="92" y="175" fill="#8A97A6" font-size="10">not escalated and not</text>
-          <text x="92" y="187" fill="#8A97A6" font-size="10">silently dropped either</text>
+          <path d="M76 92 L76 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
+          <path d="M234 92 L234 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
+          <path d="M392 92 L392 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
+          <path d="M550 92 L550 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
+          <path d="M708 92 L708 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
 
-          <rect x="206" y="136" width="168" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
-          <text x="290" y="158" fill="#F4B23E" font-size="11" font-weight="700">DIGEST</text>
-          <text x="290" y="175" fill="#8A97A6" font-size="10">real signal, but not</text>
-          <text x="290" y="187" fill="#8A97A6" font-size="10">worth waking anyone</text>
+          <rect x="8" y="136" width="136" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
+          <text x="76" y="158" fill="#F4B23E" font-size="11" font-weight="700">DIGEST</text>
+          <text x="76" y="175" fill="#8A97A6" font-size="10">not escalated, and</text>
+          <text x="76" y="187" fill="#8A97A6" font-size="10">not dropped either</text>
 
-          <rect x="404" y="136" width="168" height="58" rx="10" fill="#141C27" stroke="#5A6675"/>
-          <text x="488" y="158" fill="#9AA7B8" font-size="11" font-weight="700">DROP</text>
-          <text x="488" y="175" fill="#8A97A6" font-size="10">the event stays in the</text>
-          <text x="488" y="187" fill="#8A97A6" font-size="10">log. Only mail is spared</text>
+          <rect x="166" y="136" width="136" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
+          <text x="234" y="158" fill="#F4B23E" font-size="11" font-weight="700">DIGEST</text>
+          <text x="234" y="175" fill="#8A97A6" font-size="10">real signal, not</text>
+          <text x="234" y="187" fill="#8A97A6" font-size="10">worth waking anyone</text>
 
-          <rect x="602" y="136" width="168" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
-          <text x="686" y="158" fill="#F4B23E" font-size="11" font-weight="700">HELD</text>
-          <text x="686" y="175" fill="#8A97A6" font-size="10">summarised every 10 min,</text>
-          <text x="686" y="187" fill="#8A97A6" font-size="10">a critical is never held</text>
+          <rect x="324" y="136" width="136" height="58" rx="10" fill="#141C27" stroke="#5A6675"/>
+          <text x="392" y="158" fill="#9AA7B8" font-size="11" font-weight="700">DROP</text>
+          <text x="392" y="175" fill="#8A97A6" font-size="10">the event stays in</text>
+          <text x="392" y="187" fill="#8A97A6" font-size="10">the log; mail spared</text>
 
-          <rect x="8" y="216" width="762" height="46" rx="9" fill="#10161F" stroke="#2a3547"/>
-          <text x="389" y="236" fill="#E9EFF6" font-size="11" font-weight="700">dedup runs BEFORE the ceiling, on purpose</text>
-          <text x="389" y="252" fill="#8A97A6" font-size="10">a condition that trips two hundred times must not eat an operator's whole hourly budget</text>
+          <rect x="482" y="136" width="136" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
+          <text x="550" y="158" fill="#F4B23E" font-size="11" font-weight="700">HELD</text>
+          <text x="550" y="175" fill="#8A97A6" font-size="10">counted, reported</text>
+          <text x="550" y="187" fill="#8A97A6" font-size="10">when it ends</text>
 
-          <rect x="800" y="216" width="152" height="46" rx="9" fill="#10161F" stroke="#2a3547"/>
-          <text x="876" y="234" fill="#8A97A6" font-size="10">every limit is a limit</text>
-          <text x="876" y="247" fill="#8A97A6" font-size="10">on messages, never</text>
-          <text x="876" y="259" fill="#5BC8F5" font-size="10" font-weight="700">on evidence</text>
+          <rect x="640" y="136" width="136" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
+          <text x="708" y="158" fill="#F4B23E" font-size="11" font-weight="700">HELD</text>
+          <text x="708" y="175" fill="#8A97A6" font-size="10">counted, summarised</text>
+          <text x="708" y="187" fill="#8A97A6" font-size="10">every 10 min</text>
+
+          <rect x="8" y="216" width="768" height="46" rx="9" fill="#10161F" stroke="#2a3547"/>
+          <text x="392" y="236" fill="#E9EFF6" font-size="11" font-weight="700">dedup runs BEFORE the ceiling, on purpose</text>
+          <text x="392" y="252" fill="#8A97A6" font-size="10">a condition that trips two hundred times must not eat an operator's whole hourly budget</text>
+
+          <rect x="798" y="216" width="154" height="46" rx="9" fill="#10161F" stroke="#2a3547"/>
+          <text x="875" y="234" fill="#8A97A6" font-size="10">every limit is a limit</text>
+          <text x="875" y="247" fill="#8A97A6" font-size="10">on messages, never</text>
+          <text x="875" y="259" fill="#5BC8F5" font-size="10" font-weight="700">on evidence</text>
         </g>
       </svg>
     </div>

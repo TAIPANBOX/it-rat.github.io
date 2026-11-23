@@ -10,13 +10,13 @@
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/heraldyx-guide.html">
 <meta property="og:title" content="Heraldyx guide: how it works, running it, what changed · IT-RAT">
-<meta property="og:description" content="Everything the Heraldyx room leaves out: why the four checks run in that order, what a mail may carry and who it names, what the dispatch record does and does not prove, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.">
+<meta property="og:description" content="Everything the Heraldyx room leaves out: why the five steps run in that order, what a mail may carry and who it names, what the dispatch record does and does not prove, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.">
 <meta property="og:image" content="https://it-rat.com/assets/og/heraldyx.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Heraldyx guide: how it works, running it, what changed · IT-RAT">
-<meta name="twitter:description" content="Everything the Heraldyx room leaves out: why the four checks run in that order, what a mail may carry and who it names, what the dispatch record does and does not prove, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.">
+<meta name="twitter:description" content="Everything the Heraldyx room leaves out: why the five steps run in that order, what a mail may carry and who it names, what the dispatch record does and does not prove, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/heraldyx.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -74,7 +74,7 @@
   <div class="wrap">
     <div class="kicker rv">a guide &#183; heraldyx</div>
     <h1 class="rv d1">How Heraldyx works, how to run it, what changed.</h1>
-    <p class="lede rv d2">The <a href="services/heraldyx.html">Heraldyx room</a> keeps the burst replay, the drawing of the four checks, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.</p>
+    <p class="lede rv d2">The <a href="services/heraldyx.html">Heraldyx room</a> keeps the burst replay, the drawing of the five steps, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.</p>
     <div class="back rv d3"><a class="btn" href="services/heraldyx.html"><span class="mono">&#8592;</span> Back to the Heraldyx room</a></div>
   </div>
 </section>
@@ -106,7 +106,7 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
-      <h2>Four checks, in this order, and the order is the point.</h2>
+      <h2>Five steps, in this order, and the order is the point.</h2>
     </div>
     <div class="prose rv">
       <p>The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. The last cell of the room's drawing was redrawn after a run on 2026-09-17: the v0.2.3 image sent one notice at the ceiling and then nothing for 28 minutes of high and critical events. Since v0.2.4 a critical passes the ceiling and whatever is held is summarised every ten minutes until the hour turns; the launchers pin v0.8.2 on their main branches.</p>
@@ -275,7 +275,7 @@
     <div class="sec-head rv">
       <div class="kicker">next</div>
       <h2>Back to the room.</h2>
-      <p class="lede">The <a href="services/heraldyx.html">Heraldyx room</a> has the burst replay, the drawing of the four checks and the sample mail, and <a href="guides.html">the guides index</a> has the field itself.</p>
+      <p class="lede">The <a href="services/heraldyx.html">Heraldyx room</a> has the burst replay, the drawing of the five steps and the sample mail, and <a href="guides.html">the guides index</a> has the field itself.</p>
     </div>
     <div class="back rv"><a class="btn" href="services/heraldyx.html"><span class="mono">&#8592;</span> Back to the Heraldyx room</a></div>
   </div>

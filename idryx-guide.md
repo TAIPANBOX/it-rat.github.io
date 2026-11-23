@@ -141,7 +141,7 @@ idryx detect events.ndjson
 idryx serve events.ndjson
 ```
 
-Download [the latest release binary](https://github.com/TAIPANBOX/idryx/releases) (SHA256SUMS ships next to it), run detect against a log, then serve for the read-only dashboard on `:8080`.
+Download [the latest release binary](https://github.com/TAIPANBOX/idryx/releases) (SHA256SUMS ships next to it), run detect against a log, then serve for the read-only dashboard on `127.0.0.1:8080`, loopback only by default.
 
 ### idryx, every platform
 

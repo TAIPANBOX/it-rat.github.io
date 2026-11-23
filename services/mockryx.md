@@ -34,7 +34,7 @@ A guardrail that is off looks exactly like one that is broken. The runner insist
 
 ### Drills for a failing provider
 
-Three drills rehearse a provider that is up but failing: a 5xx, a rate limit and a timeout. Each checks the chain in order. The call comes back with the provider's own status, the gateway puts a dependency_failed for the run on the bus, and the run reaches a person. A local stub plays the provider.
+Four game-day drills rehearse a failing provider: three for one that is up but failing (a 5xx, a rate limit and a timeout), and a fourth for one that refuses the connection. Each checks the chain in order. The call comes back with the provider's own status, the gateway puts a dependency_failed for the run on the bus, and the run reaches a person. A local stub plays the provider.
 
 ## It picks fights with the rest of the stack. On purpose, in pre-prod.
 

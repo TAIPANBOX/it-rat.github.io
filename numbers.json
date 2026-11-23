@@ -551,7 +551,7 @@
       "command": "the 2026-07 validation campaign and the five-node cluster runs; the full ledger is each repository's VALIDATION.md",
       "status": "measured",
       "measured_on": "2026-07-20",
-      "note": "Policy, throughput. Decisions one pod makes each second on dedicated cores, with no cliff out to 256 concurrent callers. Added 2026-08-29. The hero carried a ticker of four figures nothing here owned, one of which (176 'real Claude calls') contradicted this same page. It was removed and the proof section moved up into its place, so the site states these once and explains them where it states them. This entry does NOT gate the hero by itself: the FIGURE sweep reads services/* only, so what holds here is the claim-and-count check above. Count 2026-10-16: the proof sheet left the home page for stack-guide.html; the tile stays."
+      "note": "Policy, throughput. Decisions one pod makes each second on dedicated cores, with no cliff out to 256 concurrent callers. Added 2026-08-29. The hero carried a ticker of four figures nothing here owned, one of which (176 'real Claude calls') contradicted this same page. It was removed and the proof section moved up into its place, so the site states these once and explains them where it states them. This entry does NOT gate the hero by itself: the FIGURE sweep reads services/* only, so what holds here is the claim-and-count check above. Count 2026-10-16: the proof sheet left the home page for stack-guide.html; the tile stays. Re-read 2026-11-23: 2,449 is the AWS c6a.2xlarge column of wardryx VALIDATION.md line 72, and the tile now says so."
     },
     {
       "page": "stack-guide.html",
@@ -582,6 +582,56 @@
       "status": "measured",
       "measured_on": "2026-07-20",
       "note": "Evidence, per decision. Bytes of hash-linked audit written for every decision rather than a sample, which is the line that turns provability into a capacity plan. Added 2026-08-29. The hero carried a ticker of four figures nothing here owned, one of which (176 'real Claude calls') contradicted this same page. It was removed and the proof section moved up into its place, so the site states these once and explains them where it states them. This entry does NOT gate the hero by itself: the FIGURE sweep reads services/* only, so what holds here is the claim-and-count check above. Count 2026-10-16: the proof sheet left the home page for stack-guide.html; the tile stays."
+    },
+    {
+      "page": "index.html",
+      "status": "measured",
+      "measured_on": "2026-11-23",
+      "claim": "data-count=\"34\">34</span>",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/wardryx, tokenfuse",
+      "command": "gh api repos/TAIPANBOX/wardryx/contents/VALIDATION.md -q .content | base64 -d | grep -n '34-request concurrent burst'; the same burst is tokenfuse VALIDATION.md 'Concurrency, 34 requests fired at once'",
+      "note": "Policy, under concurrency. Added 2026-11-23: the hero tile had no entry. wardryx VALIDATION.md line 15 records the 34-request concurrent burst (different agents, credentials and policies fired at once) from the 2026-07 validation campaign; tokenfuse VALIDATION.md line 68 records the same burst against the gateway. The claim is spelled with its markup because a bare 34 occurs four times on the page. Re-read against both files on 2026-11-23; the run itself was not repeated."
+    },
+    {
+      "page": "index.html",
+      "status": "measured",
+      "measured_on": "2026-11-23",
+      "claim": "12</span><span class=\"unit\">/12",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/tokenfuse",
+      "command": "gh api repos/TAIPANBOX/tokenfuse/contents/VALIDATION.md -q .content | base64 -d | grep -n '12 of 12 deliberate budget overruns blocked'",
+      "note": "Portability. Added 2026-11-23: the hero tile had no entry. tokenfuse VALIDATION.md line 99: the breaker fired identically on Hetzner, AWS and GCP, 12 of 12 deliberate budget overruns blocked. Re-read on 2026-11-23; the three-cloud run was not repeated."
+    },
+    {
+      "page": "index.html",
+      "status": "measured",
+      "measured_on": "2026-11-23",
+      "claim": "25,586",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/qryx",
+      "command": "gh api repos/TAIPANBOX/qryx/contents/VALIDATION.md -q .content | base64 -d | grep -n '25,586'",
+      "note": "Crypto inventory. Added 2026-11-23: the hero tile had no entry. qryx VALIDATION.md line 9: no crash across 25,586 real Linux ELF files, from the live run on disposable Hetzner infrastructure. Re-read on 2026-11-23; the scan was not repeated."
+    },
+    {
+      "page": "index.html",
+      "status": "measured",
+      "measured_on": "2026-11-23",
+      "claim": "data-count=\"0\">0</span>",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/mockryx",
+      "command": "gh api repos/TAIPANBOX/mockryx/contents/VALIDATION.md -q .content | base64 -d | grep -n '0 gaps'",
+      "note": "Rehearsal. Added 2026-11-23: the hero tile had no entry. mockryx VALIDATION.md lines 9-10: three guardrail drills (dlp-secret-leak, runaway-budget, wardryx-denied-tool) fired at a real gateway in two separate campaigns, 0 gaps and $0 real spend both times. The claim is spelled with its markup because a bare 0 occurs everywhere. Re-read on 2026-11-23; the drills were not fired again."
+    },
+    {
+      "page": "index.html",
+      "status": "measured",
+      "measured_on": "2026-11-23",
+      "claim": "c6a.2xlarge",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/wardryx",
+      "command": "gh api repos/TAIPANBOX/wardryx/contents/VALIDATION.md -q .content | base64 -d | grep -n 'peak decisions/s'",
+      "note": "Added 2026-11-23: the 2,449 tile now names the machine it was measured on. wardryx VALIDATION.md line 72: peak decisions per second for one pod are 2,344 on Hetzner CPX42 (shared cores), 2,449 on AWS c6a.2xlarge and 2,479 on GCP c2d-highcpu-8, all AMD EPYC Milan, 8 vCPU / 16 GiB."
     },
     {
       "page": "stack-guide.html",
@@ -1791,28 +1841,28 @@
     },
     {
       "page": "services/costcrew.html",
-      "claim": "v0.10.1",
+      "claim": "v0.10.2",
       "occurrences": 1,
       "repo": "TAIPANBOX/costcrew",
-      "command": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.10.1 --jq .tag_name; cited as history, not as the current release",
+      "command": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name; and gh run list -R TAIPANBOX/costcrew --commit $(git rev-list -n1 v0.10.2) shows ci green",
       "status": "measured",
-      "measured_on": "2026-11-14",
-      "note": "Re-pointed 2026-11-14: the limit names the release the gates ran through; v0.10.2 is a Go 1.27.4 rebuild and was not part of those runs. Moved 2026-11-05 to v0.10.1; moved 2026-11-04: the room names the release the gates ran through; costcrew v0.10.1 is the newest release. Previously v0.6.0. Added 2026-10-16: the room's limits name the release whose runs all used the generated estate. A named release, checked by its own tag so it does not drift when a newer tag lands. On 2026-10-16 releases/latest was still v0.6.0.",
+      "measured_on": "2026-11-23",
+      "note": "Re-pointed 2026-11-23: costcrew's ci workflow (tests, the race detector and every teeth shard, all on the generated estate and fixtures) ran green on the v0.10.2 commit, so the gates ran through v0.10.2, the newest release. Re-pointed 2026-11-14: the limit names the release the gates ran through; v0.10.2 is a Go 1.27.4 rebuild and was not part of those runs. Moved 2026-11-05 to v0.10.1; moved 2026-11-04: the room names the release the gates ran through; costcrew v0.10.1 is the newest release. Previously v0.6.0. Added 2026-10-16: the room's limits name the release whose runs all used the generated estate. A named release, checked by its own tag so it does not drift when a newer tag lands. On 2026-10-16 releases/latest was still v0.6.0.",
       "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.10.1 --jq .tag_name",
+      "check": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name",
       "slow": false
     },
     {
       "page": "services/costcrew.md",
-      "claim": "v0.10.1",
+      "claim": "v0.10.2",
       "occurrences": 1,
       "repo": "TAIPANBOX/costcrew",
-      "command": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.10.1 --jq .tag_name; cited as history, not as the current release",
+      "command": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name; and gh run list -R TAIPANBOX/costcrew --commit $(git rev-list -n1 v0.10.2) shows ci green",
       "status": "measured",
-      "measured_on": "2026-11-14",
-      "note": "Re-pointed 2026-11-14: the limit names the release the gates ran through; v0.10.2 is a Go 1.27.4 rebuild and was not part of those runs. Moved 2026-11-05 to v0.10.1; moved 2026-11-04 with the room. Previously v0.6.0. Added 2026-10-13: v0.6.0 is the latest costcrew release and the current image.",
+      "measured_on": "2026-11-23",
+      "note": "Re-pointed 2026-11-23: costcrew's ci workflow (tests, the race detector and every teeth shard, all on the generated estate and fixtures) ran green on the v0.10.2 commit, so the gates ran through v0.10.2, the newest release. Re-pointed 2026-11-14: the limit names the release the gates ran through; v0.10.2 is a Go 1.27.4 rebuild and was not part of those runs. Moved 2026-11-05 to v0.10.1; moved 2026-11-04 with the room. Previously v0.6.0. Added 2026-10-13: v0.6.0 is the latest costcrew release and the current image.",
       "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.10.1 --jq .tag_name",
+      "check": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name",
       "slow": false
     },
     {
@@ -2285,15 +2335,28 @@
     },
     {
       "page": "services/wardryx.html",
-      "claim": "v2.7.0",
-      "occurrences": 2,
+      "claim": "v2.8.0",
+      "occurrences": 1,
       "repo": "TAIPANBOX/wardryx",
       "command": "gh api repos/TAIPANBOX/wardryx/releases/latest --jq .tag_name",
       "status": "measured",
-      "measured_on": "2026-11-14",
-      "note": "Moved 2026-11-14: wardryx v2.7.0 published 2026-11-12 (the argument preview). Previously v2.5.1. The room names it twice: the status line and the sentence on the approvals card about the argument preview. Moved 2026-11-04: wardryx v2.5.1 published 2026-11-04. Previously v2.4.0. Updated 2026-10-19: v2.4.0 is the newest release (commit 811da4a, released 20:37 BST), and the room's status row names it. Replaces the status row's v1.3.2 (measured 2026-10-13), which stays owned where it names the typed hold signal.",
+      "measured_on": "2026-11-23",
+      "note": "Moved 2026-11-23: wardryx v2.8.0 published 2026-11-14 (a hold expires after WARDRYX_HOLD_TTL and its agent may withdraw it). Previously v2.7.0, which stays on the page as history. Moved 2026-11-14: wardryx v2.7.0 published 2026-11-12 (the argument preview). Previously v2.5.1. The room names it twice: the status line and the sentence on the approvals card about the argument preview. Moved 2026-11-04: wardryx v2.5.1 published 2026-11-04. Previously v2.4.0. Updated 2026-10-19: v2.4.0 is the newest release (commit 811da4a, released 20:37 BST), and the room's status row names it. Replaces the status row's v1.3.2 (measured 2026-10-13), which stays owned where it names the typed hold signal.",
       "repo_dir": "wardryx",
       "check": "gh api repos/TAIPANBOX/wardryx/releases/latest --jq .tag_name",
+      "slow": false
+    },
+    {
+      "page": "services/wardryx.html",
+      "claim": "v2.7.0",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/wardryx",
+      "command": "gh api repos/TAIPANBOX/wardryx/releases/tags/v2.7.0 --jq .tag_name; cited as history, the release that added the argument preview",
+      "status": "measured",
+      "measured_on": "2026-11-23",
+      "note": "Split out 2026-11-23: v2.7.0 is named as the release that added the argument preview, no longer the current one.",
+      "repo_dir": "wardryx",
+      "check": "gh api repos/TAIPANBOX/wardryx/releases/tags/v2.7.0 --jq .tag_name",
       "slow": false
     },
     {
@@ -2301,10 +2364,23 @@
       "claim": "v2.7.0",
       "occurrences": 1,
       "repo": "TAIPANBOX/wardryx",
+      "command": "gh api repos/TAIPANBOX/wardryx/releases/tags/v2.7.0 --jq .tag_name; cited as history, the release that added the argument preview",
+      "status": "measured",
+      "measured_on": "2026-11-23",
+      "note": "Re-pointed 2026-11-23: the twin carries no status line, only the sentence naming v2.7.0 as the release that added the argument preview, which is history now that v2.8.0 is out. Added 2026-11-14: the markdown twin of the room states the same status line.",
+      "repo_dir": "wardryx",
+      "check": "gh api repos/TAIPANBOX/wardryx/releases/tags/v2.7.0 --jq .tag_name",
+      "slow": false
+    },
+    {
+      "page": "wardryx-guide.html",
+      "claim": "v2.8.0",
+      "occurrences": 2,
+      "repo": "TAIPANBOX/wardryx",
       "command": "gh api repos/TAIPANBOX/wardryx/releases/latest --jq .tag_name",
       "status": "measured",
-      "measured_on": "2026-11-14",
-      "note": "Added 2026-11-14: the markdown twin of the room states the same status line.",
+      "measured_on": "2026-11-23",
+      "note": "Moved 2026-11-23: wardryx v2.8.0 published 2026-11-14 (a hold expires after WARDRYX_HOLD_TTL and its agent may withdraw it). Previously v2.7.0, which stays on the page as history. Moved 2026-11-14: wardryx v2.7.0 published 2026-11-12 (the argument preview). Previously v2.5.1. The page names it three times: the status line, the paragraph on the argument preview and the row that says what it shipped; the last two are history, so they will need re-pointing when the next release lands. Moved 2026-11-04: wardryx v2.5.1 published 2026-11-04. Previously v2.4.0. Updated 2026-10-19: the guide's status line names the newest release, v2.4.0.",
       "repo_dir": "wardryx",
       "check": "gh api repos/TAIPANBOX/wardryx/releases/latest --jq .tag_name",
       "slow": false
@@ -2312,14 +2388,14 @@
     {
       "page": "wardryx-guide.html",
       "claim": "v2.7.0",
-      "occurrences": 3,
+      "occurrences": 2,
       "repo": "TAIPANBOX/wardryx",
-      "command": "gh api repos/TAIPANBOX/wardryx/releases/latest --jq .tag_name",
+      "command": "gh api repos/TAIPANBOX/wardryx/releases/tags/v2.7.0 --jq .tag_name; cited as history, the release that added the argument preview",
       "status": "measured",
-      "measured_on": "2026-11-14",
-      "note": "Moved 2026-11-14: wardryx v2.7.0 published 2026-11-12 (the argument preview). Previously v2.5.1. The page names it three times: the status line, the paragraph on the argument preview and the row that says what it shipped; the last two are history, so they will need re-pointing when the next release lands. Moved 2026-11-04: wardryx v2.5.1 published 2026-11-04. Previously v2.4.0. Updated 2026-10-19: the guide's status line names the newest release, v2.4.0.",
+      "measured_on": "2026-11-23",
+      "note": "Split out 2026-11-23: v2.7.0 is named as the release that added the argument preview, no longer the current one.",
       "repo_dir": "wardryx",
-      "check": "gh api repos/TAIPANBOX/wardryx/releases/latest --jq .tag_name",
+      "check": "gh api repos/TAIPANBOX/wardryx/releases/tags/v2.7.0 --jq .tag_name",
       "slow": false
     },
     {
@@ -2363,15 +2439,28 @@
     },
     {
       "page": "wardryx-guide.md",
-      "claim": "v2.7.0",
-      "occurrences": 3,
+      "claim": "v2.8.0",
+      "occurrences": 2,
       "repo": "TAIPANBOX/wardryx",
       "command": "gh api repos/TAIPANBOX/wardryx/releases/latest --jq .tag_name",
       "status": "measured",
-      "measured_on": "2026-11-14",
-      "note": "Moved 2026-11-14: wardryx v2.7.0 published 2026-11-12 (the argument preview). Previously v2.5.1. The page names it three times: the status line, the paragraph on the argument preview and the row that says what it shipped; the last two are history, so they will need re-pointing when the next release lands. Moved 2026-11-04: wardryx v2.5.1 published 2026-11-04. Previously v2.4.0. Updated 2026-10-19: the guide's status line names the newest release, v2.4.0.",
+      "measured_on": "2026-11-23",
+      "note": "Moved 2026-11-23: wardryx v2.8.0 published 2026-11-14 (a hold expires after WARDRYX_HOLD_TTL and its agent may withdraw it). Previously v2.7.0, which stays on the page as history. Moved 2026-11-14: wardryx v2.7.0 published 2026-11-12 (the argument preview). Previously v2.5.1. The page names it three times: the status line, the paragraph on the argument preview and the row that says what it shipped; the last two are history, so they will need re-pointing when the next release lands. Moved 2026-11-04: wardryx v2.5.1 published 2026-11-04. Previously v2.4.0. Updated 2026-10-19: the guide's status line names the newest release, v2.4.0.",
       "repo_dir": "wardryx",
       "check": "gh api repos/TAIPANBOX/wardryx/releases/latest --jq .tag_name",
+      "slow": false
+    },
+    {
+      "page": "wardryx-guide.md",
+      "claim": "v2.7.0",
+      "occurrences": 2,
+      "repo": "TAIPANBOX/wardryx",
+      "command": "gh api repos/TAIPANBOX/wardryx/releases/tags/v2.7.0 --jq .tag_name; cited as history, the release that added the argument preview",
+      "status": "measured",
+      "measured_on": "2026-11-23",
+      "note": "Split out 2026-11-23: v2.7.0 is named as the release that added the argument preview, no longer the current one.",
+      "repo_dir": "wardryx",
+      "check": "gh api repos/TAIPANBOX/wardryx/releases/tags/v2.7.0 --jq .tag_name",
       "slow": false
     },
     {
@@ -2455,28 +2544,15 @@
     {
       "page": "costcrew-guide.html",
       "claim": "v0.10.2",
-      "occurrences": 1,
+      "occurrences": 2,
       "repo": "TAIPANBOX/costcrew",
       "command": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name",
       "status": "measured",
-      "measured_on": "2026-11-14",
+      "measured_on": "2026-11-23",
       "repo_dir": "costcrew",
       "check": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name",
       "slow": false,
-      "note": "Moved 2026-11-14: costcrew v0.10.2 published 2026-11-12 (Go 1.27.4). Previously v0.10.1. The guide names v0.10.1 once more, in the limit about the release gates."
-    },
-    {
-      "page": "costcrew-guide.html",
-      "claim": "v0.10.1",
-      "occurrences": 1,
-      "repo": "TAIPANBOX/costcrew",
-      "command": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.10.1 --jq .tag_name; cited as history, the release the gates ran through",
-      "status": "measured",
-      "measured_on": "2026-11-14",
-      "repo_dir": "costcrew",
-      "check": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.10.1 --jq .tag_name",
-      "slow": false,
-      "note": "Split out 2026-11-14: the limit names the release the gates ran through, no longer the current one."
+      "note": "Re-pointed 2026-11-23: costcrew's ci workflow (tests, the race detector and every teeth shard, all on the generated estate and fixtures) ran green on the v0.10.2 commit, so the gates ran through v0.10.2, the newest release. The guide now names v0.10.2 twice: the status line and the limit about the release gates. Moved 2026-11-14: costcrew v0.10.2 published 2026-11-12 (Go 1.27.4). Previously v0.10.1. The guide names v0.10.1 once more, in the limit about the release gates."
     },
     {
       "page": "costcrew-guide.html",

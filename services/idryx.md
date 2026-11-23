@@ -40,7 +40,7 @@ idryx ai-inventory now says, for each agent or service, what was declared, what 
 
 Idryx consumes the same envelope [TokenFuse](https://it-rat.com/services/tokenfuse.html), [Wardryx](https://it-rat.com/services/wardryx.html), [Mockryx](https://it-rat.com/services/mockryx.html), [Verdryx](https://it-rat.com/services/verdryx.html) and [Scopyx](https://it-rat.com/services/scopyx.html) write: the agent-event. It validates Agent Passports against the [platform contract](https://it-rat.com/services/platform.html).
 
-Download [the latest release binary](https://github.com/TAIPANBOX/idryx/releases) (SHA256SUMS ships next to it), run detect against a log, then serve for the read-only dashboard on `:8080`.
+Download [the latest release binary](https://github.com/TAIPANBOX/idryx/releases) (SHA256SUMS ships next to it), run detect against a log, then serve for the read-only dashboard on `127.0.0.1:8080`, loopback only by default.
 
 ## It records who acts for whom. It does not prove it.
 

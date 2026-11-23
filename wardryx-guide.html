@@ -90,7 +90,7 @@
     <div class="prose rv">
       <ul>
         <li><span><b>Deterministic allow, deny or hold, with a human on the expensive actions.</b></span></li>
-        <li><span><b>Status:</b> v2.7.0, surface frozen at 1.0 &#183; main is supported.</span></li>
+        <li><span><b>Status:</b> v2.8.0, surface frozen at 1.0 &#183; main is supported.</span></li>
         <li><span><b>Core:</b> Go 1.27 &#183; deterministic PDP. <b>API:</b> POST /v1/decide on :8090.</span></li>
         <li><span><b>Rules:</b> deny_tool &#183; allow_tool &#183; allow_models &#183; allow_domains &#183; max_steps &#183; deny_if_unattested &#183; require_identity_source &#183; max_chain_depth &#183; require_root_principal &#183; deny_if_chain_unproven &#183; deny_above_usd &#183; require_human_above_usd &#183; hold_if_signal.</span></li>
         <li><span><b>Lineage:</b> PDP/PEP &#183; XACML's good ideas.</span></li>
@@ -245,7 +245,7 @@
     </div>
     <div class="prose rv">
       <div class="cmd">make serve</div>
-      <p>Boots on <span class="mono">127.0.0.1:8090</span> with an in-memory store. <span class="mono">serve</span> refuses to start without <span class="mono">WARDRYX_KEYS</span>, so <span class="mono">make serve</span> opts in to the dev key on loopback only: allow-all until you load a policy, and it logs that choice. Then dry-run a policy offline against a directory of Agent Passports:</p>
+      <p><span class="mono">make serve</span> boots it on <span class="mono">127.0.0.1:8090</span> with an in-memory store; <span class="mono">wardryx serve</span> with no address listens on <span class="mono">:8090</span>, every interface. <span class="mono">serve</span> refuses to start without <span class="mono">WARDRYX_KEYS</span>, so <span class="mono">make serve</span> opts in to the dev key on loopback only: allow-all until you load a policy, and it logs that choice. Then dry-run a policy offline against a directory of Agent Passports:</p>
       <div class="cmd">./bin/wardryx check ./passports ./policies/finance.yaml</div>
     </div>
   </div>
@@ -287,6 +287,7 @@
           <tr><td>v2.5.0</td><td>A spent error budget can put an agent's tool calls to a person: with WARDRYX_SIGNAL_EVENTS set, a hold_if_signal rule on slo_burn holds the call.</td></tr>
           <tr><td>v2.5.1</td><td>The policy archive is created with directory mode 0750 and file mode 0640, so the account that runs wardryx replay can read it from the group of the account that writes it. An archive written before keeps its modes until an operator widens it.</td></tr>
           <tr><td>v2.7.0</td><td>The person who decides a held call can read its arguments first, sealed to the console's key, with secrets and personal data hidden by fixed rules. Nothing changes until a preview key is set.</td></tr>
+          <tr><td>v2.8.0</td><td>Every hold has an end: a person decides it, wardryx closes it as expired once it has waited WARDRYX_HOLD_TTL (24 hours unless set, from 1 to 168 hours), or the held agent withdraws it. Neither closure mints a token, so the held call stays refused. An admin key cancels nothing.</td></tr>
         </tbody>
       </table>
     </div>

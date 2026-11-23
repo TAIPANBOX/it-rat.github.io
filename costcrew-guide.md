@@ -48,7 +48,7 @@ Every anomaly carries the rule that judged it, the baseline it was judged agains
 
 ### The task carries a guard
 
-An analyst gets the task with a mandate, the rights that come with its skills and a spend guard on the row. What it may read follows from what it was hired to do, not from what is convenient.
+An analyst gets the task with a mandate, the rights that come with its skills and a spend guard on the row. The guard reports an overrun and does not block it: stopping the spend is the gateway's job. What it may read follows from what it was hired to do, not from what is convenient.
 
 ### Only a person publishes
 
@@ -183,7 +183,7 @@ The repository gates more than its suite: every scenario written in the language
 
 - The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
 
-- Release gates through v0.10.1 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
+- Release gates through v0.10.2 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
 
 - The FOCUS 1.1 file of agent spend (costcrew-cloudability, in the image since v0.7.0) has not been accepted by a live tenant yet.
 

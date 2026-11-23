@@ -52,11 +52,11 @@ Verifiers read the published key sets and never call custody for each request. I
 
 - Wardryx signs its approval tokens through Keyryx, so the approval key is held by custody.
 
-- Vouchryx still signs its tokens with its own key file. The Keyryx signer for it is optional, and the launcher does not set it.
+- Vouchryx signs with a working key Keyryx certifies, checked against a root the box pins: the default since stack-single 1.6.0.
 
-- The witness reads the event bus. The launcher sets no Trailryx record folder and no checkpoint folder, so the witness reads no Trailryx pack and no checkpoint yet.
+- The witness reads the event bus and, since 1.6.0, the Trailryx records. No producer writes a checkpoint yet.
 
-- Trailryx packs are unsigned by default. The Keyryx root signer is opt-in, and the launcher leaves it off.
+- Since 1.6.0 the record seal signs each sealed root through custody and attaches the witness's attestations.
 
 - Its findings go to keyryx.ndjson on a volume of their own, which Heraldyx and the console mount read only. Heraldyx mails the high ones (the medium ones go in the digest), and the console shows them as incidents. An operator can also check the witness log with keyryx verify.
 
