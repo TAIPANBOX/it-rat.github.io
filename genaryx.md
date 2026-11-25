@@ -14,7 +14,7 @@ Genaryx is Apache-2.0, like everything under it. It is the room built on top of 
 
 Genaryx exists for the moment the fleet stops being a side project: when the person on call is not the person who built it, when an auditor asks for proof, when 2am happens.
 
-## One Rust core. Fifteen frames you can open yourself.
+## One Rust core. Eighteen frames you can open yourself.
 
 Every frame below is the demo above, which is the console itself on simulated data. What this console did on a real box against a live plane, where it killed a runaway on live traffic, is written up in [what is proven](https://it-rat.com/what-is-proven.html).
 

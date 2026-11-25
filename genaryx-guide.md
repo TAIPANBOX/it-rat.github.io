@@ -4,7 +4,7 @@
 
 > How the Genaryx console works, how Felyx is held, what every frame shows, how to take it, and what is not yet in the record, in full.
 
-The [Genaryx room](https://it-rat.com/genaryx.html) keeps the fifteen frames, the live demo, the drawing of the plane and the common questions. This guide keeps the rest of what the room used to say: the core, the passkey ceremony and the tunnel in detail, how Felyx is held, what each frame shows, the console beside the stack by hand, taking it, and what is reported but not yet in the record.
+The [Genaryx room](https://it-rat.com/genaryx.html) keeps the eighteen frames, the live demo, the drawing of the plane and the common questions. This guide keeps the rest of what the room used to say: the core, the passkey ceremony and the tunnel in detail, how Felyx is held, what each frame shows, the console beside the stack by hand, taking it, and what is reported but not yet in the record.
 
 - [At a glance](https://it-rat.com/genaryx-guide.html#overview)
 
@@ -172,25 +172,25 @@ Text inside an event stays inside a fact's row, marked as data. It never becomes
 
 A money, identity or posture incident, or an unknown row, is refused by name and never given an empty case. Reading a case is a viewer read with no ceremony. The demo assembles a case on invented rows, with one plane that did not answer. Felyx can read the case and explain it; see [Felyx](https://it-rat.com/genaryx-guide.html#felyx).
 
-## What each of the fifteen frames shows.
+## What each of the eighteen frames shows.
 
-Every frame in the room's gallery is [the demo](https://it-rat.com/demo/), which is the console itself on simulated data: $35,818 of AI spend in the rolling window across 42 agents and 4,466,489 model calls, one runaway already killed by hand and its cap proposed by the copilot. Nothing here is a mock-up and nothing leaves your browser, so you can open the demo, click the same tabs and land on the same screens. The view groups nav in a left rail, keeps a right dock of whatever you pinned to watch, and drills any agent into a single 360 drawer. What this console did on a real box against a live plane, where it killed a runaway on live traffic, is written up in [what is proven](https://it-rat.com/what-is-proven.html).
+Every frame in the room's gallery is [the demo](https://it-rat.com/demo/), which is the console itself on simulated data: $24,668 of AI spend in the rolling window across 42 agents and 4,466,804 model calls, one runaway already killed by hand and a cap proposed by the copilot. The frames were taken on 25 November 2026 from the demo built from Genaryx v0.1.0. Nothing here is a mock-up and nothing leaves your browser, so you can open the demo, click the same tabs and land on the same screens, with the live figures a few ticks further on. The view groups nav in a left rail, keeps a right dock of whatever you pinned to watch, and drills any agent into a single 360 drawer. What this console did on a real box against a live plane, where it killed a runaway on live traffic, is written up in [what is proven](https://it-rat.com/what-is-proven.html).
 
-The room's gallery holds fifteen frames from the demo, and any still opens full screen; the demo is the whole console, every tab, live, with one Rust core behind every screen. [Open the live demo](https://it-rat.com/demo/) to click through the real console yourself: simulated data, nothing leaves your browser.
+The room's gallery holds eighteen frames from the demo, and any still opens full screen; the demo is the whole console, every tab, live, with one Rust core behind every screen. [Open the live demo](https://it-rat.com/demo/) to click through the real console yourself: simulated data, nothing leaves your browser.
 
-- **Overview.** $35,818 of AI spend in the rolling window, $3,755 of it recovered by governance, 46 runs live across 4,466,489 model calls, and an incident centre naming every open one.
+- **Overview.** $24,668 of AI spend in the rolling window, $3,755 of it recovered by governance, 48 runs live across 4,466,804 model calls, and an incident centre naming every open one.
 
 - **Incidents.** One stream for every plane: idryx shadow tools and an unsanctioned MCP server beside wardryx policy holds and a tokenfuse taint, filtered by source, by severity or by text.
 
 - **Money.** Every run against its cap, with Replay, Cap and Kill on the row, and the governed savings split into blocked runaways, semantic cache and model router.
 
-- **Agent 360.** One agent in one drawer: who delegated to it and whom it delegates to, 140,148 events, its rhythm against a 52 day median, and 31 stops of which none named a person.
+- **Agent 360.** One agent in one drawer: who delegated to it and whom it delegates to, 140,178 events, its rhythm against a 52 day median, and 31 stops of which none named a person.
 
-- **Statistics.** 42 agents attributed: spend, calls, what was blocked, what an operator stopped by hand, odd behaviour and the worst breach, out as CSV or JSON.
+- **Statistics.** 43 agents attributed: spend, calls, what was blocked, what an operator stopped by hand, odd behaviour and the worst breach, out as CSV or JSON.
 
-- **Policy.** Six approvals waiting on a human, and a live decision stream where every hold carries its reason: cost approaching the per-run ceiling, or past the human-approval threshold.
+- **Policy.** Seven approvals waiting on a human, and a live decision stream where every hold carries its reason: cost approaching the per-run ceiling, or past the human-approval threshold.
 
-- **Identity.** 45 identities off the idryx snapshot, 14 of them privileged, 5 alerts, one attestation gap, and a line saying which button re-reads and which one runs a fresh detect pass.
+- **Identity.** 45 identities off the idryx snapshot, 14 of them privileged, 7 alerts, one attestation gap, and a line saying which button re-reads and which one runs a fresh detect pass.
 
 - **Graph.** 42 agents, 20 users, 61 links, node size following event volume, and the runaway sitting red in the middle of its own delegation chain.
 
@@ -198,13 +198,19 @@ The room's gallery holds fifteen frames from the demo, and any still opens full 
 
 - **Web Egress.** Ten fetches: eight through, two refused by policy and by address range, and a note saying a quarter of them were governed at navigation only rather than per request.
 
-- **Quality.** Six eval runs read from verdryx, the latest scoring 0.950 over 30 cases for 36 cents, held against three saved baselines.
+- **Quality.** Six eval runs read from verdryx, the latest scoring 0.950 over 30 cases for 48 cents, held against three saved baselines.
 
-- **Copilot.** Felyx on a local model, asked which agent was the runaway: it names it, prices it at $3,828.51, and proposes a cap that a person still has to approve.
+- **Copilot.** Felyx on a local model, asked which agent was the runaway: it names it and its all-time spend of $3,062.81, and proposes a cap on the top legitimate spender that a person still has to approve.
 
 - **Memory.** The engram store as the console sees it: 52 memories, 21 facts active, 31 episodic, and a procedural store this version says plainly it does not implement.
 
-- **Posture.** Zonds over the whole stack: governance fail-open with zero policies, idryx reachable off the box, attestation coverage flagged medium, each with the fix written under it.
+- **Posture.** The switches the gateway has in force, from the taint firewall to the policy hook failing closed, then zonds over the whole stack: a devkey in use, governance fail-open with zero policies, and whether each plane is reachable.
+
+- **Notifications.** What heraldyx recorded sending, read from its own journal: five messages, a pulse, a digest and three alerts, four accepted by the mail server and one refused, with the chain verifying. Nothing on the tab sends mail.
+
+- **Keys.** What Keyryx custody holds, read-only: three key names with their algorithm, active and next key and last rotation, the inventory by state, and the witness's last signed head. Rotating or revoking a key stays on custody's command line.
+
+- **Record.** The last Trailryx seal, 412 segments and 98,213 records, its root carrying a Keyryx signature, and Verify run on request: it packs the record and runs trailryx-verify, and writes nothing to it.
 
 - **Remote.** It reaches a stack you already run, on Hetzner, AWS, Azure, Google Cloud and eight more or bare metal, over your own WireGuard tunnel plus SSH.
 
@@ -214,7 +220,7 @@ You can stand up the open stack's live services yourself in one command, and ple
 
 |  | The open stack, by hand | Genaryx |
 |---|---|---|
-| One place to look | Per-service dashboards, curl, logs | One console, twenty tabs over one Rust core |
+| One place to look | Per-service dashboards, curl, logs | One console, twenty-three tabs over one Rust core |
 | Killing a runaway | A curl with an admin key | A break-glass ceremony over a device signature the plane already verifies: a passkey, a typed reason journaled beside it |
 | Reaching a private plane | SSH tunnels you babysit | Your box issues each device its own peer config, lists what holds access, and revokes one in a click; the console answers only inside that tunnel |
 | On call at 2am | Laptop, VPN, luck | Your console from any browser over your own tunnel, incidents sorted worst-first, and the destructive step re-signed by the passkey in your hand |
@@ -284,4 +290,4 @@ The practice this console is built for is written up separately: [AI agent gover
 
 ## Back to the room.
 
-The [Genaryx room](https://it-rat.com/genaryx.html) has the fifteen frames, the live demo, the drawing and the common questions, and [the guides index](https://it-rat.com/guides.html) has the field itself.
+The [Genaryx room](https://it-rat.com/genaryx.html) has the eighteen frames, the live demo, the drawing and the common questions, and [the guides index](https://it-rat.com/guides.html) has the field itself.

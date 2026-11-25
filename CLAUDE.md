@@ -164,6 +164,14 @@ true.
    in the one direction nobody looks. It is refreshed with
    `scripts/refresh-demo.sh`, never by hand, because two flags in genaryx's
    build command are load-bearing and neither is guessable.
+
+   `@decided 2026-11-25`: the console frames on `genaryx.html` follow the
+   demo. When a Genaryx change is visible in the console, the demo is rebuilt
+   and the frames are re-shot from it with `tools/genaryx-shots.mjs`, and the
+   captions and the guide's frame list are rewritten from what the new frames
+   show. A frame of a console that no longer exists reads as a claim.
+   *(not enforced: nothing compares a frame with the bundle it came from)*
+
    *(gate: `scripts/demo-bundle-current.sh`, in the Pages workflow before the
    upload AND on a daily schedule of its own
    (`.github/workflows/demo-freshness.yml`), which is the half that took two
