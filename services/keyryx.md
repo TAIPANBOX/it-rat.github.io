@@ -38,29 +38,11 @@ Verifiers read the published key sets and never call custody for each request. I
 
 ## What it refuses, where it runs, what it leaves open.
 
-### On no request path
+Keyryx is on no request path and decides nothing: verifiers check a cached key set, and custody signs only what a granted consumer asks. [In the guide](https://it-rat.com/keyryx-guide.html#refuses)
 
-Agents and enforcement points never wait on it. Verifiers keep verifying from a cached key set when custody is down.
+In stack-single custody and the witness are two containers under their own uids, and the witness, with no network, writes its findings to a file that Heraldyx mails and the console shows. [In the guide](https://it-rat.com/keyryx-guide.html#stack-single)
 
-### It decides nothing
-
-It signs what a granted consumer asks and judges no tool call. It issues no agent identity and never holds a delegated private half.
-
-### Two containers in stack-single
-
-Custody and the witness run under their own uids, and the witness has no network. Wardryx approvals, the Vouchryx working key and the record seal are signed through custody.
-
-### Findings reach a person
-
-They land in keyryx.ndjson on a volume of their own. Heraldyx mails the high ones and the console shows them as incidents.
-
-### Rotation stays shut
-
-No launcher sets an admin key, so custody answers 403 to every rotation and revocation until an operator sets one.
-
-### One host, one root file
-
-Custody and the witness share a host, so they are not separate trust domains, and the root key is a file. An off-host anchor is the operator's to add.
+In the current stacks no admin key is set, so rotation answers 403, and both roles share one host and one root key file until an operator adds an off-host anchor. [In the guide](https://it-rat.com/keyryx-guide.html#limits)
 
 ### Build the binary and read its version.
 

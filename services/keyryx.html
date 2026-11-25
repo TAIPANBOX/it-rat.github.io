@@ -48,6 +48,36 @@
   /* commands are code, so a reader and a word count both see them as code */
   .install code{font:inherit}
   .deeper .cta-row{margin-top:16px}
+  /* the .flight widget (as on scopyx and typryx): an svg, tabs that drive it,
+     and one sentence per tab */
+  .flight{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);overflow:hidden}
+  .fl-head{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--line);
+    font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .fl-head .n{margin-left:auto;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .fl-head .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);flex:0 0 auto}
+  .flight svg{display:block;width:100%;height:auto}
+  .fl-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 15px;border-top:1px solid var(--line)}
+  .fl-tab{font-family:var(--font-m);font-size:11.5px;color:var(--dim);cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;
+    transition:color .15s,border-color .15s,background .15s}
+  .fl-tab:hover{color:var(--fg);border-color:color-mix(in srgb, var(--accent) 55%, var(--line-2))}
+  .fl-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fl-tab[aria-pressed="true"]{color:#0A1420;background:var(--accent);border-color:var(--accent)}
+  .fl-why{margin:0;padding:13px 15px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;line-height:1.65}
+  .fl-why a{color:var(--accent)}
+  .fl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  @media(max-width:760px){.fl-scroll svg{min-width:720px}}
+  /* the tab lights its part of the picture and dims the rest */
+  #kr-svg [data-p]{transition:opacity .35s}
+  #kr-svg[data-show] [data-p]{opacity:.3}
+  #kr-svg[data-show="refuses"] [data-p~="refuses"],
+  #kr-svg[data-show="runs"] [data-p~="runs"],
+  #kr-svg[data-show="open"] [data-p~="open"]{opacity:1}
+  #kr-svg[data-show="open"] .kr-host{stroke:#FF574B}
+  @media (prefers-reduced-motion: reduce){
+    #kr-svg [data-p]{transition:none}
+    #kr-svg .kr-anim{display:none}
+  }
 </style>
 <!-- seo:auto -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Keyryx","url":"https://it-rat.com/services/keyryx.html","description":"Key custody and a separate witness for the agent-governance record. Custody signs for granted consumers; the witness reads the record without writing to it.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/keyryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Keyryx","item":"https://it-rat.com/services/keyryx.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is Keyryx a cloud key vault?","acceptedAnswer":{"@type":"Answer","text":"No. It is a process you run beside the stack, with a wrapped key store on disk under a root key that is a file. It has no cloud key management. None is built: a cloud key adapter would be a metered dependency, which is an operator's decision and never a default."}},{"@type":"Question","name":"Does a request wait on Keyryx?","acceptedAnswer":{"@type":"Answer","text":"No. Verifiers cache the key sets it publishes and keep verifying when it is down. The synchronous calls are rare by design: an approval being granted, a seal, and the renewal of a delegated key."}},{"@type":"Question","name":"Can the witness stop a bad write?","acceptedAnswer":{"@type":"Answer","text":"No. It reads the record, reports what it finds and countersigns what it sees. Whatever follows from a finding is the operator's decision, and the finding stays in its own log either way."}}]}]}</script>
@@ -299,13 +329,19 @@
       <div class="kicker">in short</div>
       <h2>What it refuses, where it runs, what it leaves open.</h2>
     </div>
-    <div class="bento">
-      <div class="card hover feature b-4 rv"><h3>On no request path</h3><p>Agents and enforcement points never wait on it. Verifiers keep verifying from a cached key set when custody is down.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>It decides nothing</h3><p>It signs what a granted consumer asks and judges no tool call. It issues no agent identity and never holds a delegated private half.</p></div>
-      <div class="card hover feature b-4 rv d2"><h3>Two containers in stack-single</h3><p>Custody and the witness run under their own uids, and the witness has no network. Wardryx approvals, the Vouchryx working key and the record seal are signed through custody.</p></div>
-      <div class="card hover feature b-4 rv"><h3>Findings reach a person</h3><p>They land in keyryx.ndjson on a volume of their own. Heraldyx mails the high ones and the console shows them as incidents.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>Rotation stays shut</h3><p>No launcher sets an admin key, so custody answers 403 to every rotation and revocation until an operator sets one.</p></div>
-      <div class="card hover feature b-4 rv d2"><h3>One host, one root file</h3><p>Custody and the witness share a host, so they are not separate trust domains, and the root key is a file. An off-host anchor is the operator's to add.</p></div>
+    <div class="flight rv">
+      <div class="fl-head"><span class="dot"></span>one stack-single host<span class="n" id="kr-n">refuses</span></div>
+      <div class="fl-scroll"><svg id="kr-svg" data-show="refuses" viewBox="0 0 960 400" role="img" aria-labelledby="kr-svg-t"><title id="kr-svg-t">One stack-single host: the request path runs agent, Wardryx and tool with no call to Keyryx; custody and the witness run as two containers under their own uids; the witness reads the event bus and writes findings to keyryx.ndjson, which Heraldyx and the console read; the root key is a file and rotation answers 403 in the current stacks.</title><defs><marker id="kr-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="open"><rect class="kr-host" x="6" y="6" width="948" height="388" rx="16" fill="none" stroke="#5A6675" stroke-width="1.3" stroke-dasharray="6 5"/><text x="24" y="28" fill="#8A97A6" font-size="10.5" text-anchor="start">one host: stack-single</text></g><g data-p="refuses"><text x="24" y="56" fill="#5A6675" font-size="10.5" text-anchor="start">request path</text></g><g data-p="refuses"><rect x="24" y="66" width="150" height="46" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="99.0" y="86" fill="#93A8C4" font-size="12" font-weight="700">agent</text><text x="99.0" y="103" fill="#8A97A6" font-size="10.5">asks for a tool</text></g><g data-p="refuses"><path d="M174 89 L232 89" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#kr-a)"/></g><g data-p="refuses runs"><rect x="234" y="66" width="214" height="46" rx="10" fill="#141C27" stroke="#2DD4BF" stroke-width="1.2"/><text x="341.0" y="86" fill="#2DD4BF" font-size="12" font-weight="700">wardryx</text><text x="341.0" y="103" fill="#8A97A6" font-size="10.5">verifies a cached key set</text></g><g data-p="refuses"><path d="M448 89 L506 89" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#kr-a)"/></g><g data-p="refuses"><rect x="508" y="66" width="150" height="46" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="583.0" y="86" fill="#93A8C4" font-size="12" font-weight="700">tool</text><text x="583.0" y="103" fill="#8A97A6" font-size="10.5">runs or is held</text></g><g data-p="refuses"><rect x="694" y="66" width="236" height="46" rx="10" fill="none" stroke="#FDE68A" stroke-width="1.2" stroke-dasharray="4 4"/><text x="812" y="86" fill="#FDE68A" font-size="12" font-weight="700">no keyryx here</text><text x="812" y="103" fill="#8A97A6" font-size="10.5">no call per request, up or down</text></g><g data-p="runs"><path d="M200 158 L300 114" stroke="#2DD4BF" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#kr-a)"/></g><g data-p="runs"><text x="178" y="140" fill="#8A97A6" font-size="10" text-anchor="end">approvals, at grant</text></g><g data-p="refuses runs open"><rect x="24" y="160" width="340" height="132" rx="12" fill="#161F2C" stroke="#FDE68A" stroke-width="1.4"/><text x="194" y="182" fill="#FDE68A" font-size="13" font-weight="700">keyryx custody</text></g><g data-p="runs"><text x="194" y="202" fill="#8A97A6" font-size="10" text-anchor="middle">container, its own uid</text></g><g data-p="refuses"><text x="194" y="220" fill="#E9EFF6" font-size="10" text-anchor="middle">signs what a granted consumer asks</text></g><g data-p="refuses"><text x="194" y="237" fill="#8A97A6" font-size="10" text-anchor="middle">judges no tool call, issues no identity</text></g><g data-p="open"><rect x="40" y="250" width="148" height="30" rx="7" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="114" y="269" fill="#FF574B" font-size="10.5" font-weight="700">root key: a file</text><rect x="200" y="250" width="148" height="30" rx="7" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="274" y="269" fill="#FF574B" font-size="10.5" font-weight="700">rotate, revoke: 403</text></g><g data-p="runs"><rect x="420" y="160" width="250" height="100" rx="12" fill="#161F2C" stroke="#FDE68A" stroke-width="1.4"/><text x="545" y="182" fill="#FDE68A" font-size="13" font-weight="700">keyryx witness</text><text x="545" y="202" fill="#8A97A6" font-size="10.5">container, its own uid</text><text x="545" y="219" fill="#E9EFF6" font-size="10.5">no network</text><text x="545" y="236" fill="#8A97A6" font-size="10.5">reads the bus, never writes it</text></g><g data-p="runs"><text x="392" y="214" fill="#5A6675" font-size="10" text-anchor="middle">apart</text></g><g data-p="runs"><rect x="420" y="316" width="250" height="50" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="545.0" y="336" fill="#93A8C4" font-size="12" font-weight="700">event bus</text><text x="545.0" y="353" fill="#8A97A6" font-size="10.5">events/*.ndjson, read only</text></g><g data-p="runs"><path d="M545 316 L545 262" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#kr-a)"/></g><g data-p="runs"><rect x="718" y="160" width="212" height="50" rx="10" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="824.0" y="180" fill="#FF574B" font-size="12" font-weight="700">keyryx.ndjson</text><text x="824.0" y="197" fill="#8A97A6" font-size="10.5">findings, on its own volume</text></g><g data-p="runs"><path d="M670 185 L716 185" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#kr-a)"/></g><g data-p="runs"><rect x="718" y="240" width="100" height="50" rx="10" fill="#141C27" stroke="#5BC8F5" stroke-width="1.2"/><text x="768.0" y="260" fill="#5BC8F5" font-size="12" font-weight="700">heraldyx</text><text x="768.0" y="277" fill="#8A97A6" font-size="10.5">mails high</text></g><g data-p="runs"><rect x="830" y="240" width="100" height="50" rx="10" fill="#141C27" stroke="#B48CFF" stroke-width="1.2"/><text x="880.0" y="260" fill="#B48CFF" font-size="12" font-weight="700">console</text><text x="880.0" y="277" fill="#8A97A6" font-size="10.5">incidents</text></g><g data-p="runs"><path d="M790 210 L770 238" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#kr-a)"/></g><g data-p="runs"><path d="M858 210 L878 238" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#kr-a)"/></g><g data-p="open"><rect x="718" y="316" width="212" height="50" rx="10" fill="none" stroke="#5A6675" stroke-width="1.2" stroke-dasharray="4 4"/><text x="824" y="336" fill="#93A8C4" font-size="12" font-weight="700">off-host anchor</text><text x="824" y="353" fill="#8A97A6" font-size="10.5">the operator adds it</text></g><g data-p="open"><text x="194" y="330" fill="#8A97A6" font-size="10" text-anchor="middle">custody and witness share this host</text></g><g data-p="open"><text x="194" y="347" fill="#8A97A6" font-size="10" text-anchor="middle">so they are not separate trust domains</text></g><g class="kr-anim"><g data-p="refuses"><circle r="3.6" fill="#93A8C4"><animateMotion path="M174 89 L232 89" dur="3.0s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="refuses"><circle r="3.6" fill="#2DD4BF"><animateMotion path="M448 89 L506 89" dur="3.0s" begin="-1.4s" repeatCount="indefinite"/></circle></g><g data-p="runs"><circle r="3.6" fill="#93A8C4"><animateMotion path="M545 316 L545 262" dur="2.6s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="runs"><circle r="3.6" fill="#FF574B"><animateMotion path="M670 185 L716 185" dur="2.6s" begin="-1.0s" repeatCount="indefinite"/></circle></g><g data-p="runs"><circle r="3.6" fill="#5BC8F5"><animateMotion path="M790 210 L770 238" dur="2.6s" begin="-1.8s" repeatCount="indefinite"/></circle></g><g data-p="runs"><circle r="3.6" fill="#B48CFF"><animateMotion path="M858 210 L878 238" dur="2.6s" begin="-2.1s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="kr-svg" data-k="refuses">Refuses</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="kr-svg" data-k="runs">Runs</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="kr-svg" data-k="open">Leaves open</button>
+      </div>
+      <div aria-live="polite">
+      <p class="fl-why" data-for="refuses">Keyryx is on no request path and decides nothing: verifiers check a cached key set, and custody signs only what a granted consumer asks. <a href="../keyryx-guide.html#refuses">In the guide</a></p>
+      <p class="fl-why" data-for="runs" hidden>In stack-single custody and the witness are two containers under their own uids, and the witness, with no network, writes its findings to a file that Heraldyx mails and the console shows. <a href="../keyryx-guide.html#stack-single">In the guide</a></p>
+      <p class="fl-why" data-for="open" hidden>In the current stacks no admin key is set, so rotation answers 403, and both roles share one host and one root key file until an operator adds an off-host anchor. <a href="../keyryx-guide.html#limits">In the guide</a></p>
+      </div>
     </div>
     <div class="cta-row rv">
       <a class="btn" href="../keyryx-guide.html#refuses">What it refuses, in full</a>
@@ -413,6 +449,22 @@
   </div>
 </footer>
 
+<script>
+/* in short: three tabs light their part of the stack-single picture */
+(function(){
+  const svg=document.getElementById("kr-svg"); if(!svg) return;
+  const tabs=[...document.querySelectorAll('#short .fl-tab')];
+  const whys=[...document.querySelectorAll('#short .fl-why')];
+  const n=document.getElementById("kr-n");
+  function show(k){
+    svg.setAttribute("data-show",k);
+    tabs.forEach(t=>t.setAttribute("aria-pressed",String(t.dataset.k===k)));
+    whys.forEach(p=>{p.hidden=p.dataset.for!==k;});
+    const t=tabs.find(t=>t.dataset.k===k); if(n&&t) n.textContent=t.textContent.toLowerCase();
+  }
+  tabs.forEach(t=>t.addEventListener("click",()=>show(t.dataset.k)));
+})();
+</script>
 <script src="../assets/site.js?v=e13"></script>
 <script src="../assets/sheet.js?v=e06"></script>
 <script src="../assets/diagram.js"></script>

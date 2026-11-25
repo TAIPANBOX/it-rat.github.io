@@ -226,7 +226,7 @@
         <li>The witness reads the event bus and, since 1.6.0, the Trailryx records. No producer writes a checkpoint yet.</li>
         <li>Since 1.6.0 the record seal signs each sealed root through custody and attaches the witness's attestations.</li>
         <li>Its findings go to keyryx.ndjson on a volume of their own, which Heraldyx and the console mount read only. Heraldyx mails the high ones (the medium ones go in the digest), and the console shows them as incidents. An operator can also check the witness log with keyryx verify.</li>
-        <li>No admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one.</li>
+        <li>In the current stacks no admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one. They pin keyryx v0.1.5; v0.2.0 moves rotation and revocation to an admin socket of their own, and no stack runs it yet.</li>
       </ul>
     </div>
   </div>
@@ -284,7 +284,7 @@ keyryx verify streams --events events/ --checkpoints checkpoints/ \
     <div class="prose rv">
       <ul>
         <li>The cosign signatures of v0.1.1, v0.1.2 and v0.1.3 have not been verified. The build-provenance attestation of each release has (gh attestation verify, 2026-10-19 for v0.1.0 to v0.1.2, 2026-10-26 for v0.1.3).</li>
-        <li>No admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one.</li>
+        <li>In the current stacks no admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one. They pin keyryx v0.1.5; v0.2.0 moves rotation and revocation to an admin socket of their own, and no stack runs it yet.</li>
         <li>Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19, stack-k8s since v1.6.1, tagged on 2026-10-20, and stack-single since v1.6.0, tagged on 2026-11-05. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single, stack-up and stack-k8s now pin v0.1.3; stack-k8s and stack-single run the witness in the record plane's group. On a stack-single box on 2026-11-05, a pack of 1024 records verified with the root signature and the witness on it.</li>
         <li>The store root is rebuilt by hand in the tests from trailryx's construction. It is checked against trailryx's source, not against a store that trailryx itself sealed in this repository.</li>
         <li>No public time-stamping authority has been asked. The client is tested against an authority the tests build.</li>
