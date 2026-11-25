@@ -48,11 +48,15 @@ Measured (undated, see the typryx README): a five-field state carrying `user_ema
 
 ## The one-token shortcut is not always faster.
 
-Same 60 items, seed 1, timed end to end from the caller, one run each, so read the medians as indicative rather than final.
+Same 60 items, timed end to end from the caller, one run each. The OpenAI rows are from 2026-09-25 and kept as history.
+
+Haiku 5.5 has no typed row: measured 2026-11-25, its endpoint refuses temperature and returns no logprobs without it.
 
 ## Stated confidence and actual accuracy are not the same number.
 
-Eight groups, 480 judgements, never pooled. Every group was 96% to 100% confident on average and right 50% to 73% of the time.
+OpenAI's current models, 60 items a run, never pooled. The luna models were 96% to 98% confident and right 60% to 73% of the time; the sol models got all 60 right.
+
+gpt-6-luna passed 16 or 17 of the 30 wrong answers. The 2026-09-25 table of the models it replaces is [in the guide](https://it-rat.com/typryx-guide.html#measured).
 
 ## What each part of the stack would get.
 
@@ -78,7 +82,7 @@ An outcome posted later is scored against the exact template version an answer w
 
 - Not yet: a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers.
 
-- OpenAI's current models, gpt-5.x and gpt-6, refuse token probabilities outright, so the openai-logprobs backend reaches only earlier hosted models and open models.
+- OpenAI's current models refuse the default request; since v0.6.0 three more variables reach them.
 
 ## Optional, and it changes nothing when it is absent.
 

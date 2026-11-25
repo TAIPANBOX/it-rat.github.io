@@ -4,7 +4,7 @@
 
 > How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed from v0.7.0 to v0.9.0, and its boundaries.
 
-The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst replay, the drawing of the four checks, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.
+The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst replay, the drawing of the five steps, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.
 
 - [At a glance](https://it-rat.com/heraldyx-guide.html#overview)
 
@@ -42,7 +42,7 @@ The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst r
 
 Every other plane in the stack records what happened. None of them wakes anybody. Heraldyx reads the shared event log the others already write, decides which of those events a human should hear about tonight rather than tomorrow, and sends one mail. It comes from your own box, and it carries links into your own console. It reads a file and sends mail: that narrowness is the design, because this is the one component of the box allowed to open a connection to anything outside it.
 
-## Four checks, in this order, and the order is the point.
+## Five steps, in this order, and the order is the point.
 
 The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. The last cell of the room's drawing was redrawn after a run on 2026-09-17: the v0.2.3 image sent one notice at the ceiling and then nothing for 28 minutes of high and critical events. Since v0.2.4 a critical passes the ceiling and whatever is held is summarised every ten minutes until the hour turns; the launchers pin v0.8.2 on their main branches.
 
@@ -163,4 +163,4 @@ A first run starts at the end of the log. A month of old incidents arriving at o
 
 ## Back to the room.
 
-The [Heraldyx room](https://it-rat.com/services/heraldyx.html) has the burst replay, the drawing of the four checks and the sample mail, and [the guides index](https://it-rat.com/guides.html) has the field itself.
+The [Heraldyx room](https://it-rat.com/services/heraldyx.html) has the burst replay, the drawing of the five steps and the sample mail, and [the guides index](https://it-rat.com/guides.html) has the field itself.

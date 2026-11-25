@@ -206,7 +206,7 @@
       <h3>Every real judgement from one run, replayed in the same order.</h3>
       <p>Not an illustration: the room's replay plays the 60 real arithmetic judgements from the calibration table below, qwen2.5:7b run locally on Ollama, wording v2, in the order they were asked (the real run took 9.44 seconds; this replay plays it about 2&#215; slower). Watch the resolved probability, the verdict, and how often "confident" and "right" turn out to be different things.</p>
       <h3>The one-token shortcut is not always faster.</h3>
-      <p>Decision speed, measured 2026-09-25. Same 60 items, seed 1, timed end to end from the caller (<span class="mono" style="font-size:12.5px">go run ./examples/speed</span>, typryx f4045e0, one run each, so read the medians as indicative rather than final).</p>
+      <p>Decision speed, measured 2026-09-25, historical: kept as measured, since gpt-4.1-mini retires on 2027-01-14 (OpenAI names gpt-6-luna as its replacement) and gpt-5.4-mini is still current. Same 60 items, seed 1, timed end to end from the caller (<span class="mono" style="font-size:12.5px">go run ./examples/speed</span>, typryx f4045e0, one run each, so read the medians as indicative rather than final).</p>
     </div>
     <div class="tbl-scroll rv" style="margin-top:16px">
       <table class="tbl">
@@ -221,10 +221,27 @@
       </table>
     </div>
     <div class="prose rv">
+      <h3>Claude Haiku 5.5, measured 2026-11-25.</h3>
+      <p>The same 60 items and judge prompt, sent to <span class="mono" style="font-size:12.5px">claude-haiku-5-5</span> through Anthropic's OpenAI-compatible endpoint, timed end to end from a 4-core machine on a home connection in the UK, one run each:</p>
+    </div>
+    <div class="tbl-scroll rv" style="margin-top:16px">
+      <table class="tbl">
+        <thead><tr><th>way of deciding</th><th>model</th><th>median</th><th>p95</th><th>accuracy</th></tr></thead>
+        <tbody>
+          <tr><td>text judge, short verdict (no temperature)</td><td>claude-haiku-5-5</td><td>629 ms</td><td>1,129 ms</td><td>100%</td></tr>
+          <tr><td>reasoning judge</td><td>claude-haiku-5-5</td><td>635 ms</td><td>981 ms</td><td>100%</td></tr>
+          <tr><td>typed, one token, through typryx</td><td>claude-haiku-5-5</td><td>no answer</td><td>no answer</td><td>0 of 60 answered</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose rv">
+      <p>Haiku 5.5 got all 60 right either way in about 0.63 seconds. It cannot be a typed judge through this backend: typryx sends <span class="mono" style="font-size:12.5px">temperature: 0</span> in every request, the endpoint refused all 60 asks with 400 <span class="mono" style="font-size:12.5px">invalid_request_error</span>, and asked without <span class="mono" style="font-size:12.5px">temperature</span> it answers the letter with <span class="mono" style="font-size:12.5px">logprobs: null</span> (measured 2026-11-25, typryx VALIDATION.md). With no probability there is no calibration row for it.</p>
+    </div>
+    <div class="prose rv">
       <p>Against a hosted API the network dominates: on gpt-4.1-mini the shortcut was about 1.3&#215; faster than a short text verdict and gave up 28 points of accuracy (71.7% against 100%), and gpt-5.4-mini, a current small reasoning model, was right on all 60 in about the same time as the shortcut. Locally, on qwen2.5:7b, the shortcut is about 10&#215; faster. A typed decision earns its place by the probability it carries and where it runs, not by speed; vendor speed claims are not on this page. Jev is not on this chart: it was measured on a different set of questions, the 434 in <a href="https://it-rat.com/services/typryx.html#modes">Three modes</a>, and the two sets are never mixed.</p>
       <h3>Stated confidence and actual accuracy are not the same number.</h3>
-      <p>Calibration, measured 2026-09-25. Eight groups, 480 judgements, never pooled: <span class="mono" style="font-size:12.5px">typryx calibration --min-n 30 --json</span> over durable ledgers, 60 arithmetic judgements per group, seed 1, template <span class="mono" style="font-size:12.5px">eval.outcome_met</span>, backend openai-logprobs, half the items right and half wrong. Five models: three OpenAI models of the previous generation over the hosted API (gpt-4.1-mini, gpt-4o-mini, gpt-4.1-nano, each with two template wordings) and two open-weight Qwen 2.5 models run locally on Ollama (3B and 7B). Every group was 96% to 100% confident on average and right 50% to 73% of the time.</p>
-      <p>Every group was 96% to 100% confident on average, right 50% to 73% of the time, and the errors do not lean one way: three groups (gpt-4.1-nano in both wordings, and qwen2.5:3b) said "correct" to every one of 60 items, right exactly half the time, the base rate. gpt-4.1-mini passed half of the wrong answers as right (15 of 30 in each wording); gpt-4o-mini erred both ways; qwen2.5:7b never passed a wrong answer but failed two-thirds of the right ones (20 of 30). Rewording (v1 to v2) barely moved accuracy, because a one-token judge has no room to work anything out before answering: it suits classification, not verification. OpenAI's current models, gpt-5.x and gpt-6, refuse token probabilities outright (the typryx README records this probe: "'logprobs' is not supported with this model"), so this backend reaches only earlier hosted models and open models.</p>
+      <p>Calibration, measured 2026-09-25, historical: gpt-4.1-nano was shut down on 2026-10-23, and gpt-4o-mini and gpt-4.1-mini retire on 2027-01-14 (OpenAI's deprecations page, read 2026-11-25). OpenAI names gpt-6-luna as the replacement for the last two and gpt-5.6-luna for gpt-4.1-nano; both are measured below. Eight groups, 480 judgements, never pooled: <span class="mono" style="font-size:12.5px">typryx calibration --min-n 30 --json</span> over durable ledgers, 60 arithmetic judgements per group, seed 1, template <span class="mono" style="font-size:12.5px">eval.outcome_met</span>, backend openai-logprobs, half the items right and half wrong. Five models: three OpenAI models of the previous generation over the hosted API (gpt-4.1-mini, gpt-4o-mini, gpt-4.1-nano, each with two template wordings) and two open-weight Qwen 2.5 models run locally on Ollama (3B and 7B). Every group was 96% to 100% confident on average and right 50% to 73% of the time.</p>
+      <p>Every group was 96% to 100% confident on average, right 50% to 73% of the time, and the errors do not lean one way: three groups (gpt-4.1-nano in both wordings, and qwen2.5:3b) said "correct" to every one of 60 items, right exactly half the time, the base rate. gpt-4.1-mini passed half of the wrong answers as right (15 of 30 in each wording); gpt-4o-mini erred both ways; qwen2.5:7b never passed a wrong answer but failed two-thirds of the right ones (20 of 30). Rewording (v1 to v2) barely moved accuracy, because a one-token judge has no room to work anything out before answering: it suits classification, not verification.</p>
     </div>
     <div class="tbl-scroll rv" style="margin-top:20px">
       <table class="tbl">
@@ -243,6 +260,28 @@
     </div>
     <div class="prose rv">
       <p>Exact models: gpt-4.1-mini, gpt-4o-mini and gpt-4.1-nano over OpenAI's API; qwen2.5:3b and qwen2.5:7b on Ollama on a development Mac. Wording v1 is the example template (<span class="mono" style="font-size:12.5px">2d3ecbdc</span>), v2 asks plainly whether the answer is exactly correct (<span class="mono" style="font-size:12.5px">781efaaf</span>); the local models ran v2 only. Every figure here is one run of 60 items, reproducible with <span class="mono" style="font-size:12.5px">examples/calibration</span> in the repository.</p>
+    </div>
+    <div class="prose rv">
+      <h3>OpenAI's current models, measured 2026-11-06.</h3>
+      <p>The same 60 items (seed 1) and template v1, through openai-logprobs with the three variables the current models need (since v0.6.0), nothing in between. Every run answered 60 of 60.</p>
+    </div>
+    <div class="tbl-scroll rv" style="margin-top:16px">
+      <table class="tbl">
+        <thead><tr><th>model</th><th>run</th><th>accuracy</th><th>stated</th><th>overconfidence</th><th>Brier</th><th>ECE</th></tr></thead>
+        <tbody>
+          <tr><td>gpt-6-luna</td><td>1</td><td>0.717</td><td>0.960</td><td>0.243</td><td>0.498</td><td>0.256</td></tr>
+          <tr><td>gpt-6-luna</td><td>2</td><td>0.733</td><td>0.976</td><td>0.242</td><td>0.507</td><td>0.268</td></tr>
+          <tr><td>gpt-6-luna</td><td>3</td><td>0.717</td><td>0.978</td><td>0.262</td><td>0.526</td><td>0.274</td></tr>
+          <tr><td>gpt-5.6-luna</td><td>1</td><td>0.650</td><td>0.967</td><td>0.317</td><td>0.682</td><td>0.329</td></tr>
+          <tr><td>gpt-5.6-luna</td><td>2</td><td>0.617</td><td>0.980</td><td>0.363</td><td>0.758</td><td>0.380</td></tr>
+          <tr><td>gpt-5.6-luna</td><td>3</td><td>0.600</td><td>0.984</td><td>0.384</td><td>0.779</td><td>0.393</td></tr>
+          <tr><td>gpt-6-sol</td><td>1</td><td>1.000</td><td>1.000</td><td>0.000</td><td>0.000</td><td>0.000</td></tr>
+          <tr><td>gpt-5.6-sol</td><td>1</td><td>1.000</td><td>1.000</td><td>0.000</td><td>0.000</td><td>0.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose rv">
+      <p>The luna models fail the way the models they replace fail: gpt-6-luna passed 16 or 17 of the 30 wrong answers and failed none of the right ones, gpt-5.6-luna passed 19 or 20 and failed 2 to 4, at a mean confidence of 0.96 and above. The sol models got all 60 right in one letter, so the reading above, that one token leaves no room to work something out, holds for the models it was measured on and not for every model. Three runs of one model differ by a few items, so a difference that size says nothing. Source: the typryx README, "Current OpenAI models, measured 2026-11-06".</p>
     </div>
     <dl class="defs rv" style="margin-top:20px">
       <dt>stated confidence</dt><dd>The probability the model's own answer carried when it was given, averaged over the group.</dd>
@@ -333,7 +372,7 @@
         <li><span>CostCrew's suggested class is built and released in costcrew v0.4.0 and not run live; the TokenFuse router, Genaryx and Engram readers are planned.</span></li>
         <li><span>In the loop from a question to a tuned model, steps 1 to 5 are built, tested and run on the stub backend; steps 6 to 9 are not run end to end, and no tuned model is measured yet.</span></li>
         <li><span>The own model measured is a small 7B model on a machine with no GPU. A model you have tuned, or a machine with a GPU, is not measured.</span></li>
-        <li><span>OpenAI's current models, gpt-5.x and gpt-6, refuse token probabilities outright, so the openai-logprobs backend reaches only earlier hosted models and open models.</span></li>
+        <li><span>OpenAI's current models refuse the default request, and since v0.6.0 three variables reach them (five top logprobs, sixteen completion tokens, no reasoning). Claude Haiku 5.5 cannot be a typed judge: measured 2026-11-25, Anthropic's OpenAI-compatible endpoint refuses temperature, which typryx always sends, and without it returns no logprobs.</span></li>
         <li><span>A freeform question sends the whole state when TYPRYX_ALLOW_FREEFORM=1 is set (off by default).</span></li>
         <li><span>What typryx cannot see is how a person reached a truth. A label copied from a model's answer would get through.</span></li>
         <li><span>The speed figures are one run each, so read the medians as indicative rather than final.</span></li>

@@ -89,7 +89,7 @@ ROOMS = {
 # different questions, so lifting would replace an architecture diagram with a
 # flow one and lose exactly what the README needs.
 HAND_DRAWN = {
-    "heraldyx": "the page draws the four checks one event passes; the README draws "
+    "heraldyx": "the page draws the five steps one event passes; the README draws "
                 "the census of which planes write the log and which read it",
     "trailryx": "the page draws a predicate becoming an authenticated index range; "
                 "the README draws the transports, the plane boundary and the chain",

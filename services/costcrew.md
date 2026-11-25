@@ -18,7 +18,7 @@ The detector is two-sided and ranks by money. Every anomaly carries the rule tha
 
 ### The task carries a guard
 
-An analyst gets the task with a mandate and a spend guard on the row.
+An analyst gets the task with a mandate and a spend guard on the row. The guard reports an overrun; stopping the spend is the gateway's job.
 
 ### Only a person publishes
 
@@ -42,7 +42,7 @@ First account created at /signup becomes the admin of that installation, so make
 
 ## What is not proven yet.
 
-- Release gates through v0.10.1 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
+- Release gates through v0.10.2 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
 
 - The AWS reader was proven on a real export, the GCP one only against a hand-written file.
 

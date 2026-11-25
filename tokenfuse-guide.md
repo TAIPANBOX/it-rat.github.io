@@ -88,7 +88,7 @@ That was tested rather than assumed. A four-node cluster across two datacenters 
 
 ### FOCUS export
 
-Agent spend lands in the same FinOps Foundation format as the rest of your cloud bill, so showback and chargeback reuse the pipes and dashboards finance already trusts.
+`tokenfuse focus-export` writes the call trace as a FOCUS 1.2-style CSV, one row per call, with agent and run columns beside the FOCUS ones, so showback and chargeback can reuse the pipes and dashboards finance already trusts.
 
 ### A label comes from the act, not from a name
 

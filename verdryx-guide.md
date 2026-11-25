@@ -60,7 +60,7 @@ Resolved, abandoned, escalated: real outcome tags straight off the TokenFuse gat
 
 ### Drift with statistics
 
-A flat threshold catches the obvious drop. A two-sample significance check beside it, Welch's t plus a bootstrap interval, catches the small, consistent regression a threshold tuned for noise would miss. Point it at a baseline whose source run is gone and it fails loudly, not silently.
+A flat threshold catches the obvious drop. Beside it, a bootstrap interval on the difference catches the small, consistent regression a threshold tuned for noise would miss. Welch's t is reported next to the verdict and does not decide it. Point it at a baseline whose source run is gone and it fails loudly, not silently.
 
 ### The LLM judge is metered
 

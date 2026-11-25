@@ -16,6 +16,10 @@ The [Keyryx room](https://it-rat.com/services/keyryx.html) keeps the picture of 
 
 - [The witness](https://it-rat.com/keyryx-guide.html#witness)
 
+- [What it does not do](https://it-rat.com/keyryx-guide.html#refuses)
+
+- [In stack-single](https://it-rat.com/keyryx-guide.html#stack-single)
+
 - [Running and verifying it](https://it-rat.com/keyryx-guide.html#run)
 
 - [Releases](https://it-rat.com/keyryx-guide.html#changes)
@@ -104,6 +108,34 @@ Every finding is an agent-event in the alert file (by default `keyryx.ndjson` in
 
 The witness pins the delegation root the first time it reads it, unless an operator sets `KEYRYX_WITNESS_DELEGATION_ROOT_PIN` beforehand. A different set served later is a high-severity finding and is not used until an operator pins it.
 
+## Stated rather than discovered later.
+
+- It is on no request path. Enforcement points and agents never wait on it, and verifiers keep verifying from the key sets they cached when it is down.
+
+- It makes no decision. It signs what a granted consumer asks, and it judges no tool call and refuses nothing for money.
+
+- It issues no agent identity and holds no provider key.
+
+- It never holds a delegated private key. That half stays with its consumer.
+
+- It calls no paid service. A time-stamping authority is called only when an operator names one.
+
+## Running in stack-single today.
+
+- Custody and the witness run as separate containers in the stack-single Compose file, each under its own uid, and the witness container has no network.
+
+- Wardryx signs its approval tokens through Keyryx, over a unix socket of its own, so the approval key is held by custody.
+
+- Vouchryx signs with a working key Keyryx certifies, checked against a root the box pins: the default since stack-single 1.6.0.
+
+- The witness reads the event bus and, since 1.6.0, the Trailryx records. No producer writes a checkpoint yet.
+
+- Since 1.6.0 the record seal signs each sealed root through custody and attaches the witness's attestations.
+
+- Its findings go to keyryx.ndjson on a volume of their own, which Heraldyx and the console mount read only. Heraldyx mails the high ones (the medium ones go in the digest), and the console shows them as incidents. An operator can also check the witness log with keyryx verify.
+
+- In the current stacks no admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one. They pin keyryx v0.1.5; v0.2.0 moves rotation and revocation to an admin socket of their own, and no stack runs it yet.
+
 ## Build, run, and check the outputs offline.
 
 Build with `go build -o keyryx ./cmd/keyryx`, then start custody and the witness with their own variables, each as its own process and under its own account:
@@ -128,7 +160,7 @@ keyryx verify streams --events events/ --checkpoints checkpoints/ \
 
 Each check prints ok, weak or broken for each item and ends with VERIFIED (exit 0) or NOT VERIFIED (exit 1). A directory with nothing in it is reported as measured nothing, never as verified.
 
-The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/arm64, with no moving tag. The stack-single Compose file pins v0.1.3 by digest.
+The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/arm64, with no moving tag. The stack-single Compose file pins v0.1.5 by digest.
 
 ## What each release is.
 
@@ -146,7 +178,7 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - The cosign signatures of v0.1.1, v0.1.2 and v0.1.3 have not been verified. The build-provenance attestation of each release has (gh attestation verify, 2026-10-19 for v0.1.0 to v0.1.2, 2026-10-26 for v0.1.3).
 
-- No admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one.
+- In the current stacks no admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one. They pin keyryx v0.1.5; v0.2.0 moves rotation and revocation to an admin socket of their own, and no stack runs it yet.
 
 - Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19, stack-k8s since v1.6.1, tagged on 2026-10-20, and stack-single since v1.6.0, tagged on 2026-11-05. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single, stack-up and stack-k8s now pin v0.1.3; stack-k8s and stack-single run the witness in the record plane's group. On a stack-single box on 2026-11-05, a pack of 1024 records verified with the root signature and the witness on it.
 
@@ -161,6 +193,8 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 - Vouchryx consumes key statements from 0.5.0 and, from 0.6.0, checks each one against a pinned root, and stack-single switches that on by default from v1.6.0. TokenFuse consumes them for its checkpoint key from 1.18.0, which is opt-in: no launcher switches it on, and no producer in a launcher writes signed checkpoints yet.
 
 - The state MAC proves custody wrote a state, not that it is the latest. Whoever can write the data directory can restore an earlier copy of a record whose MAC still holds.
+
+- Custody's use log is protected against edits in its middle, not against a rewrite from its first line, and the witness does not read it.
 
 - Challenges live in memory, so a restart drops the outstanding ones.
 

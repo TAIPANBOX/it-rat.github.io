@@ -8,7 +8,7 @@ TokenFuse is a drop-in gateway that gives every run a budget, watches its burn i
 
 ## Watch the breaker do its job.
 
-This is a simulation, but not a fantasy: it replays the exact shape of the live validation runs. An agent enters a retry loop against a $0.006 budget.
+A replay of the exact shape of the live validation runs: an agent enters a retry loop against a $0.006 budget.
 
 ## One gateway in the path. One ledger everyone trusts.
 
@@ -16,29 +16,19 @@ Your agent's SDK points at TokenFuse instead of the provider. In the hot path: b
 
 ## Not a dashboard. A set of hands on the wheel.
 
-### Per-run budgets
+The run is the unit that pays: a sub-agent's run rolls up into its parent, so its spend must fit inside every ancestor's budget. [In the guide](https://it-rat.com/tokenfuse-guide.html#how-it-works)
 
-The run is the unit that pays. A sub-agent's run rolls up into its parent run, so its spend has to fit inside every ancestor's budget.
+A sustained loop trips the breaker, and a fan-out explosion opens an incident in the Cloud, before either becomes a four-digit night. [In the guide](https://it-rat.com/tokenfuse-guide.html#how-it-works)
 
-### Loop detection
+Reserve-then-settle accounting prices each call before it is sent, with an estimate that is honest about being one. [In the guide](https://it-rat.com/tokenfuse-guide.html#how-it-works)
 
-A retrying agent looks exactly like a compromised one from the budget's side. A sustained loop trips the breaker, and a fan-out explosion opens an incident in the Cloud, before either becomes a four-digit night.
+tokenfuse focus-export writes the call trace as a FOCUS-style CSV, one row per call with agent and run columns, for the dashboards finance already trusts. [In the guide](https://it-rat.com/tokenfuse-guide.html#how-it-works)
 
-### Burn forecast
+A run's taint follows what an enforcement point saw happen, such as the MCP server that answered, not the tool name the agent reported. [In the guide](https://it-rat.com/tokenfuse-guide.html#how-it-works)
 
-Reserve-then-settle accounting prices each call before it happens. The estimate is fast and honest about being an estimate.
+A provider that keeps failing is one incident in the Cloud console and API, while each per-call event stays on the bus. [In the guide](https://it-rat.com/tokenfuse-guide.html#how-it-works)
 
-### FOCUS export
-
-Agent spend lands in the same FinOps Foundation format as the rest of your cloud bill, so showback and chargeback reuse the pipes and dashboards finance already trusts.
-
-### A label from the act
-
-A run's taint follows what an enforcement point saw happen, not the tool name the agent reported. The MCP broker labels a call by the server that answered, and a search the provider ran itself labels the run too.
-
-### One incident per failing provider
-
-A provider that keeps failing is one incident in the Cloud console and API, not one per call. The per-call event stays on the bus.
+By default one gateway runs with its ledger in memory, a fleet counts its own calls rather than sharing a cap, and the router and cache start off. [In the guide](https://it-rat.com/tokenfuse-guide.html#limits)
 
 ### The loud neighbor everyone listens to.
 
@@ -50,15 +40,7 @@ Then point `ANTHROPIC_BASE_URL` at `localhost:4100` and give your next run a run
 
 ## It stops the spend. Two neighbours stop other things.
 
-A breaker is the right answer to a runaway and the wrong one to a compromised delegation: [Vouchryx](https://it-rat.com/services/vouchryx.html) ends that authority at every enforcement point at once. And a ceiling in the request path says nothing about the invoice that arrives a month later: [CostCrew](https://it-rat.com/services/costcrew.html) is where a bill gets taken apart, allocated and closed.
-
-## What the default install does not do.
-
-- The raft cluster build is optional and ships as its own image tag (tokenfuse:<tag>-cluster); the default image and the launchers run one gateway with its ledger in memory.
-
-- A business unit's monthly cap is not yet shared across a fleet of gateways: each gateway counts its own calls on top of a tally it reads from the Cloud when it starts.
-
-- The model router and the cache ship switched off: the router is off by default, and the cache is off in the gateway and in the launchers.
+A breaker answers a runaway. A stolen delegation is [Vouchryx](https://it-rat.com/services/vouchryx.html)'s, and next month's invoice is [CostCrew](https://it-rat.com/services/costcrew.html)'s.
 
 ### The TokenFuse guide
 

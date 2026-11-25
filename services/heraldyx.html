@@ -50,10 +50,6 @@
   .install .note{color:var(--faint);font-size:11.5px;margin-left:auto}
   /* commands are code, so a reader and a word count both see them as code */
   .install code{font:inherit}
-  /* what is not proven stays on the page (invariant 5); the full list is in the guide */
-  .limits ul{margin:0;padding-left:18px;color:var(--dim);font-size:14.5px;line-height:1.65;max-width:80ch}
-  .limits li+li{margin-top:9px}
-  .limits li::marker{color:var(--accent)}
   .deeper .cta-row{margin-top:16px}
   /* A mail client, not a code block. The point of this section is what an
      operator actually receives, and a wall of monospace does not read like a
@@ -144,6 +140,36 @@
      zero and read as a stray line. Widened only for the panel that holds a
      mailbox, so every other sheet on the site keeps its own width. */
   .sh-ov:has(.mailbox) .sh-box{width:min(1140px,100%)}
+  /* tabbed pictures (the .flight widget of scopyx and typryx): a drawing,
+     tabs that light their part of it, and one sentence per tab */
+  .flight{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);overflow:hidden}
+  .fl-head{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--line);
+    font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .fl-head .n{margin-left:auto;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .fl-head .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);flex:0 0 auto}
+  .flight svg{display:block;width:100%;height:auto}
+  .fl-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 15px;border-top:1px solid var(--line)}
+  .fl-tab{font-family:var(--font-m);font-size:11.5px;color:var(--dim);cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;
+    transition:color .15s,border-color .15s,background .15s}
+  .fl-tab:hover{color:var(--fg);border-color:color-mix(in srgb, var(--accent) 55%, var(--line-2))}
+  .fl-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fl-tab[aria-pressed="true"]{color:#0A1420;background:var(--accent);border-color:var(--accent)}
+  .fl-why{margin:0;padding:13px 15px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;line-height:1.65}
+  .fl-why a{color:var(--accent)}
+  .fl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  @media(max-width:760px){.fl-scroll svg{min-width:720px}}
+  .tp svg [data-p]{transition:opacity .35s}
+  .tp svg[data-show] [data-p]{opacity:.3}
+  @media (prefers-reduced-motion: reduce){
+    .tp svg [data-p]{transition:none}
+    .tp svg .tp-anim{display:none}
+  }
+  /* tp:hx */
+  #hx-svg[data-show="queue"] [data-p~="queue"],
+  #hx-svg[data-show="deleg"] [data-p~="deleg"],
+  #hx-svg[data-show="edge"] [data-p~="edge"]{opacity:1}
+  /* /tp */
 </style>
 <!-- seo:auto -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Heraldyx","url":"https://it-rat.com/services/heraldyx.html","description":"The part of the agent stack that writes to you: it reads the event log, decides what is worth a human tonight, and mails it with links into your console.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/heraldyx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Heraldyx","item":"https://it-rat.com/services/heraldyx.html"}]}]}</script>
@@ -196,7 +222,7 @@
     <div class="sec-head rv">
       <div class="kicker">one burst, scripted</div>
       <h2>A hundred and twenty events arrive. Twenty-one messages leave.</h2>
-      <p class="lede">This is a scripted scenario: <span class="mono">scripts/burst-demo.sh</span> in the repository feeds 120 events to the real binary with the default limits and counts what comes out. Watch where the other hundred stop.</p>
+      <p class="lede">A scripted run of scripts/burst-demo.sh: 120 events into the real binary with the default limits. Watch where the other hundred stop.</p>
     </div>
     <div class="rv" id="hx-sim"></div>
   </div>
@@ -207,76 +233,88 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
-      <h2>Four checks, in this order, and the order is the point.</h2>
+      <h2>Five steps, in this order, and the order is the point.</h2>
       <p class="lede">The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. A provider outage is one mail per window and not one per failed call: a dependency_failed repeats on the dependency, not on the run.</p>
     </div>
 
     <div class="diagram rv">
-      <svg viewBox="0 0 960 300" role="img" aria-label="One event passes four checks in order: a severity this build knows, at or above the floor, not already said within ten minutes, and under the hourly ceiling. Anything that fails goes to the digest, is dropped as a repeat, or is held back with a summary every ten minutes while anything is held; a critical is never held.">
+      <svg viewBox="0 0 960 300" role="img" aria-label="One event passes five steps in order: a severity this build knows, at or above the floor, not already said within ten minutes, not acknowledged and not inside a maintenance window or quiet hours, and under the hourly ceiling. Anything that fails goes to the digest, is dropped as a repeat, or is held back and counted; an acknowledgement or a window holds only alerts below critical, and a critical always passes the ceiling.">
         <defs><marker id="hxa" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker></defs>
         <g font-family="ui-monospace,Menlo" text-anchor="middle">
-          <rect x="8" y="30" width="168" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
-          <text x="92" y="52" fill="#E9EFF6" font-size="11" font-weight="700">a severity this</text>
-          <text x="92" y="66" fill="#E9EFF6" font-size="11" font-weight="700">build knows?</text>
-          <text x="92" y="80" fill="#8A97A6" font-size="10">five levels, nothing else</text>
+          <rect x="8" y="30" width="136" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="76" y="52" fill="#E9EFF6" font-size="11" font-weight="700">a severity this</text>
+          <text x="76" y="66" fill="#E9EFF6" font-size="11" font-weight="700">build knows?</text>
+          <text x="76" y="80" fill="#8A97A6" font-size="10">five levels only</text>
 
-          <rect x="206" y="30" width="168" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
-          <text x="290" y="52" fill="#E9EFF6" font-size="11" font-weight="700">at or above</text>
-          <text x="290" y="66" fill="#E9EFF6" font-size="11" font-weight="700">the floor?</text>
-          <text x="290" y="80" fill="#8A97A6" font-size="10">high, by default</text>
+          <rect x="166" y="30" width="136" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="234" y="52" fill="#E9EFF6" font-size="11" font-weight="700">at or above</text>
+          <text x="234" y="66" fill="#E9EFF6" font-size="11" font-weight="700">the floor?</text>
+          <text x="234" y="80" fill="#8A97A6" font-size="10">high, by default</text>
 
-          <rect x="404" y="30" width="168" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
-          <text x="488" y="52" fill="#E9EFF6" font-size="11" font-weight="700">said already,</text>
-          <text x="488" y="66" fill="#E9EFF6" font-size="11" font-weight="700">within 10 min?</text>
-          <text x="488" y="80" fill="#8A97A6" font-size="10">one condition, one mail</text>
+          <rect x="324" y="30" width="136" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="392" y="52" fill="#E9EFF6" font-size="11" font-weight="700">said already,</text>
+          <text x="392" y="66" fill="#E9EFF6" font-size="11" font-weight="700">within 10 min?</text>
+          <text x="392" y="80" fill="#8A97A6" font-size="10">once per condition</text>
 
-          <rect x="602" y="30" width="168" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
-          <text x="686" y="52" fill="#E9EFF6" font-size="11" font-weight="700">20 already sent</text>
-          <text x="686" y="66" fill="#E9EFF6" font-size="11" font-weight="700">this hour?</text>
-          <text x="686" y="80" fill="#8A97A6" font-size="10">0 turns the ceiling off</text>
+          <rect x="482" y="30" width="136" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="550" y="52" fill="#E9EFF6" font-size="11" font-weight="700">acknowledged, or</text>
+          <text x="550" y="66" fill="#E9EFF6" font-size="11" font-weight="700">in a window?</text>
+          <text x="550" y="80" fill="#8A97A6" font-size="10">below critical only</text>
 
-          <rect x="800" y="30" width="152" height="56" rx="10" fill="#141C27" stroke="#34D399" stroke-width="1.3"/>
-          <text x="876" y="54" fill="#34D399" font-size="12" font-weight="700">NOTIFY</text>
-          <text x="876" y="72" fill="#8A97A6" font-size="10">one mail, one record</text>
+          <rect x="640" y="30" width="136" height="56" rx="10" fill="#141C27" stroke="#2a3547"/>
+          <text x="708" y="52" fill="#E9EFF6" font-size="11" font-weight="700">20 already sent</text>
+          <text x="708" y="66" fill="#E9EFF6" font-size="11" font-weight="700">this hour?</text>
+          <text x="708" y="80" fill="#8A97A6" font-size="10">0 turns it off</text>
 
-          <path d="M180 58 L200 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
-          <path d="M378 58 L398 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
-          <path d="M576 58 L596 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
-          <path d="M774 58 L794 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
+          <rect x="798" y="30" width="154" height="56" rx="10" fill="#141C27" stroke="#34D399" stroke-width="1.3"/>
+          <text x="875" y="54" fill="#34D399" font-size="12" font-weight="700">NOTIFY</text>
+          <text x="875" y="72" fill="#8A97A6" font-size="10">one mail, one record</text>
 
-          <path d="M92 92 L92 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
-          <path d="M290 92 L290 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
-          <path d="M488 92 L488 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
-          <path d="M686 92 L686 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
+          <path d="M148 58 L162 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
+          <path d="M306 58 L320 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
+          <path d="M464 58 L478 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
+          <path d="M622 58 L636 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
+          <path d="M780 58 L794 58" stroke="#5BC8F5" stroke-width="1.3" marker-end="url(#hxa)" fill="none"/>
 
-          <rect x="8" y="136" width="168" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
-          <text x="92" y="158" fill="#F4B23E" font-size="11" font-weight="700">DIGEST</text>
-          <text x="92" y="175" fill="#8A97A6" font-size="10">not escalated and not</text>
-          <text x="92" y="187" fill="#8A97A6" font-size="10">silently dropped either</text>
+          <path d="M76 92 L76 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
+          <path d="M234 92 L234 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
+          <path d="M392 92 L392 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
+          <path d="M550 92 L550 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
+          <path d="M708 92 L708 132" stroke="#5A6675" stroke-width="1.2" marker-end="url(#hxa)" fill="none"/>
 
-          <rect x="206" y="136" width="168" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
-          <text x="290" y="158" fill="#F4B23E" font-size="11" font-weight="700">DIGEST</text>
-          <text x="290" y="175" fill="#8A97A6" font-size="10">real signal, but not</text>
-          <text x="290" y="187" fill="#8A97A6" font-size="10">worth waking anyone</text>
+          <rect x="8" y="136" width="136" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
+          <text x="76" y="158" fill="#F4B23E" font-size="11" font-weight="700">DIGEST</text>
+          <text x="76" y="175" fill="#8A97A6" font-size="10">not escalated, and</text>
+          <text x="76" y="187" fill="#8A97A6" font-size="10">not dropped either</text>
 
-          <rect x="404" y="136" width="168" height="58" rx="10" fill="#141C27" stroke="#5A6675"/>
-          <text x="488" y="158" fill="#9AA7B8" font-size="11" font-weight="700">DROP</text>
-          <text x="488" y="175" fill="#8A97A6" font-size="10">the event stays in the</text>
-          <text x="488" y="187" fill="#8A97A6" font-size="10">log. Only mail is spared</text>
+          <rect x="166" y="136" width="136" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
+          <text x="234" y="158" fill="#F4B23E" font-size="11" font-weight="700">DIGEST</text>
+          <text x="234" y="175" fill="#8A97A6" font-size="10">real signal, not</text>
+          <text x="234" y="187" fill="#8A97A6" font-size="10">worth waking anyone</text>
 
-          <rect x="602" y="136" width="168" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
-          <text x="686" y="158" fill="#F4B23E" font-size="11" font-weight="700">HELD</text>
-          <text x="686" y="175" fill="#8A97A6" font-size="10">summarised every 10 min,</text>
-          <text x="686" y="187" fill="#8A97A6" font-size="10">a critical is never held</text>
+          <rect x="324" y="136" width="136" height="58" rx="10" fill="#141C27" stroke="#5A6675"/>
+          <text x="392" y="158" fill="#9AA7B8" font-size="11" font-weight="700">DROP</text>
+          <text x="392" y="175" fill="#8A97A6" font-size="10">the event stays in</text>
+          <text x="392" y="187" fill="#8A97A6" font-size="10">the log; mail spared</text>
 
-          <rect x="8" y="216" width="762" height="46" rx="9" fill="#10161F" stroke="#2a3547"/>
-          <text x="389" y="236" fill="#E9EFF6" font-size="11" font-weight="700">dedup runs BEFORE the ceiling, on purpose</text>
-          <text x="389" y="252" fill="#8A97A6" font-size="10">a condition that trips two hundred times must not eat an operator's whole hourly budget</text>
+          <rect x="482" y="136" width="136" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
+          <text x="550" y="158" fill="#F4B23E" font-size="11" font-weight="700">HELD</text>
+          <text x="550" y="175" fill="#8A97A6" font-size="10">counted, reported</text>
+          <text x="550" y="187" fill="#8A97A6" font-size="10">when it ends</text>
 
-          <rect x="800" y="216" width="152" height="46" rx="9" fill="#10161F" stroke="#2a3547"/>
-          <text x="876" y="234" fill="#8A97A6" font-size="10">every limit is a limit</text>
-          <text x="876" y="247" fill="#8A97A6" font-size="10">on messages, never</text>
-          <text x="876" y="259" fill="#5BC8F5" font-size="10" font-weight="700">on evidence</text>
+          <rect x="640" y="136" width="136" height="58" rx="10" fill="#141C27" stroke="#F4B23E"/>
+          <text x="708" y="158" fill="#F4B23E" font-size="11" font-weight="700">HELD</text>
+          <text x="708" y="175" fill="#8A97A6" font-size="10">counted, summarised</text>
+          <text x="708" y="187" fill="#8A97A6" font-size="10">every 10 min</text>
+
+          <rect x="8" y="216" width="768" height="46" rx="9" fill="#10161F" stroke="#2a3547"/>
+          <text x="392" y="236" fill="#E9EFF6" font-size="11" font-weight="700">dedup runs BEFORE the ceiling, on purpose</text>
+          <text x="392" y="252" fill="#8A97A6" font-size="10">a condition that trips two hundred times must not eat an operator's whole hourly budget</text>
+
+          <rect x="798" y="216" width="154" height="46" rx="9" fill="#10161F" stroke="#2a3547"/>
+          <text x="875" y="234" fill="#8A97A6" font-size="10">every limit is a limit</text>
+          <text x="875" y="247" fill="#8A97A6" font-size="10">on messages, never</text>
+          <text x="875" y="259" fill="#5BC8F5" font-size="10" font-weight="700">on evidence</text>
         </g>
       </svg>
     </div>
@@ -369,7 +407,7 @@
     <div class="sec-head rv">
       <div class="kicker">afterwards</div>
       <h2>Every message it sent, sealed, on a volume the planes cannot reach.</h2>
-      <p class="lede">"We wrote to you at 03:14, and your mail server took it at 03:14:02" is a claim somebody eventually has to prove, in an argument they did not choose. So every message leaves one hash-chained record behind it, in the same envelope the rest of the stack speaks.</p>
+      <p class="lede">Every message leaves one hash-chained record behind it, in the envelope the rest of the stack speaks, so when it was sent can be proved.</p>
     </div>
     <div class="rv" style="margin-top:22px">
       <div class="install" id="run"><code class="cmd">heraldyx <b>--journal</b></code><span class="note">the image is distroless: there is no shell in it to read the file with</span></div>
@@ -380,19 +418,29 @@
   </div>
 </section>
 
-<!-- ================= BOUNDARIES ================= -->
+<!-- ================= LIMITS ================= -->
 <section class="sec" id="limits" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">what it does not do</div>
       <h2>The boundaries, stated rather than discovered at three in the morning.</h2>
     </div>
-    <div class="card limits rv">
-      <ul>
-        <li>It does not queue: a message that cannot be delivered is logged, written into the dispatch record as a refusal, and dropped. Quiet hours and maintenance windows are holds, not a queue: they hold alerts below critical and, when the hours or the window end, send one mail saying how many were held. A critical is never held.</li>
-        <li>Vouchryx's delegation events have no sentences yet, so a mail about one says the box has no description for the event until one is written.</li>
-        <li>The source check does not stop a process that creates a plane's file before that plane does, or a writer forging its own stream. The checkpoint gate, from v0.8.0, narrows that for streams a producer signs: with HERALDYX_CHECKPOINT_GATE=on, a stream is read only while a checkpoint signed by a pinned key covers it. It is off by default, it trusts a pinned key until an operator removes it, and it holds only if each producer alone can write its stream and checkpoints. No launcher has a producer writing signed checkpoints yet.</li>
-      </ul>
+    <div class="flight tp rv">
+      <div class="fl-head"><span class="dot"></span>what the mail leaves open<span class="n">it does not queue</span></div>
+      <div class="fl-scroll"><svg id="hx-svg" data-show="queue" viewBox="0 0 960 270" role="img" aria-labelledby="hx-svg-t"><title id="hx-svg-t">Heraldyx reads the bus planes through a source check and mails your inbox; an undeliverable message is logged, recorded and dropped, quiet hours hold what is below critical, a delegation event has no sentence yet, and a forging writer can pass the check.</title><defs><marker id="hx-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="queue deleg edge"><rect x="20" y="24" width="180" height="80" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="110.0" y="44" fill="#93A8C4" font-size="12" font-weight="700">bus planes</text></g><g data-p="queue deleg edge"><text x="110.0" y="61" fill="#8A97A6" font-size="10.5">one file</text></g><g data-p="queue deleg edge"><text x="110.0" y="76" fill="#8A97A6" font-size="10.5">per plane</text></g><g data-p="queue deleg edge"><path d="M200 64 L248 64" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#hx-a)"/></g><g data-p="edge"><rect x="20" y="150" width="180" height="64" rx="10" fill="#141C27" stroke="#FF574B" stroke-width="1.2" stroke-dasharray="4 4"/><text x="110.0" y="170" fill="#FF574B" font-size="12" font-weight="700">a forging writer</text></g><g data-p="edge"><text x="110.0" y="187" fill="#8A97A6" font-size="10.5">or a file made first</text></g><g data-p="edge"><path d="M200 176 L300 106" stroke="#FF574B" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#hx-a)"/></g><g data-p="queue deleg edge"><rect x="250" y="24" width="170" height="80" rx="10" fill="#141C27" stroke="#5BC8F5" stroke-width="1.2"/><text x="335.0" y="44" fill="#5BC8F5" font-size="12" font-weight="700">source check</text></g><g data-p="edge"><text x="335.0" y="61" fill="#8A97A6" font-size="10.5">the plane's own writer?</text></g><g data-p="edge"><text x="335.0" y="76" fill="#FF574B" font-size="10.5">checkpoint gate: off</text></g><g data-p="queue deleg"><path d="M420 64 L468 64" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#hx-a)"/></g><g data-p="queue deleg edge"><rect x="470" y="24" width="210" height="130" rx="10" fill="#161F2C" stroke="#5BC8F5" stroke-width="1.2"/><text x="575.0" y="44" fill="#5BC8F5" font-size="12" font-weight="700">heraldyx</text></g><g data-p="queue"><text x="575.0" y="61" fill="#8A97A6" font-size="10.5">quiet hours hold</text></g><g data-p="queue"><text x="575.0" y="76" fill="#8A97A6" font-size="10.5">what is below critical</text></g><g data-p="queue"><text x="575.0" y="91" fill="#E9EFF6" font-size="10.5">a critical: never held</text></g><text x="575.0" y="106" fill="#8A97A6" font-size="10.5"></text><g data-p="deleg"><text x="575.0" y="121" fill="#8A97A6" font-size="10.5">delegation event:</text></g><g data-p="deleg"><text x="575.0" y="136" fill="#E9EFF6" font-size="10.5">no sentence yet</text></g><g data-p="queue deleg"><path d="M680 54 L728 54" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#hx-a)"/></g><g data-p="queue deleg"><rect x="730" y="24" width="210" height="64" rx="10" fill="#141C27" stroke="#5BC8F5" stroke-width="1.2"/><text x="835.0" y="44" fill="#5BC8F5" font-size="12" font-weight="700">your inbox</text></g><g data-p="queue deleg"><text x="835.0" y="61" fill="#8A97A6" font-size="10.5">a link, never a button</text></g><g data-p="queue"><path d="M680 128 L728 128" stroke="#FF574B" stroke-width="1.2" fill="none" marker-end="url(#hx-a)"/></g><g data-p="queue"><rect x="730" y="104" width="210" height="92" rx="10" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="835.0" y="124" fill="#FF574B" font-size="12" font-weight="700">undeliverable</text></g><g data-p="queue"><text x="835.0" y="141" fill="#8A97A6" font-size="10.5">logged</text></g><g data-p="queue"><text x="835.0" y="156" fill="#8A97A6" font-size="10.5">recorded as a refusal</text></g><g data-p="queue"><text x="835.0" y="171" fill="#E9EFF6" font-size="10.5">dropped: no queue</text></g><g data-p="deleg"><path d="M575 196 L575 156" stroke="#8B9DFF" stroke-width="1.2" fill="none" marker-end="url(#hx-a)"/></g><g data-p="deleg"><rect x="470" y="198" width="210" height="58" rx="10" fill="#141C27" stroke="#8B9DFF" stroke-width="1.2"/><text x="575.0" y="218" fill="#8B9DFF" font-size="12" font-weight="700">vouchryx</text></g><g data-p="deleg"><text x="575.0" y="235" fill="#8A97A6" font-size="10.5">a delegation event</text></g><g class="tp-anim"><g data-p="queue deleg edge"><circle r="3.6" fill="#93A8C4"><animateMotion path="M200 64 L248 64" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="edge"><circle r="3.6" fill="#FF574B"><animateMotion path="M200 176 L300 106" dur="2.8s" begin="-0.8s" repeatCount="indefinite"/></circle></g><g data-p="queue deleg"><circle r="3.6" fill="#5BC8F5"><animateMotion path="M420 64 L468 64" dur="2.8s" begin="-0.6s" repeatCount="indefinite"/></circle></g><g data-p="queue deleg"><circle r="3.6" fill="#5BC8F5"><animateMotion path="M680 54 L728 54" dur="2.8s" begin="-1.2s" repeatCount="indefinite"/></circle></g><g data-p="queue"><circle r="3.6" fill="#FF574B"><animateMotion path="M680 128 L728 128" dur="2.8s" begin="-1.8s" repeatCount="indefinite"/></circle></g><g data-p="deleg"><circle r="3.6" fill="#8B9DFF"><animateMotion path="M575 196 L575 156" dur="2.8s" begin="-0.4s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="hx-svg" data-k="queue">It does not queue</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="hx-svg" data-k="deleg">Delegations</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="hx-svg" data-k="edge">Source check</button>
+      </div>
+      <div aria-live="polite">
+        <p class="fl-why" data-for="queue">A message that cannot be delivered is logged, recorded as a refusal and dropped, and quiet hours hold alerts below critical but never a critical. <a href="../heraldyx-guide.html#limits">In the guide</a></p>
+        <p class="fl-why" data-for="deleg" hidden>A mail about a Vouchryx delegation event says the box has no description for it yet. <a href="../heraldyx-guide.html#limits">In the guide</a></p>
+        <p class="fl-why" data-for="edge" hidden>A process that creates a plane's file first, or a writer forging its own stream, gets past the source check, and the checkpoint gate that narrows this is off by default. <a href="../heraldyx-guide.html#limits">In the guide</a></p>
+      </div>
+    </div>
+    <div class="cta-row rv">
+      <a class="btn" href="../heraldyx-guide.html#limits">Every limit, in the guide</a>
     </div>
   </div>
 </section>
@@ -403,7 +451,10 @@
     <div class="sec-head rv">
       <div class="kicker">who else writes to the log it reads</div>
       <h2>Twelve planes write the log it reads.</h2>
-      <p class="lede">This plane mails about what other planes wrote, so its reach grows when theirs does. Twelve planes write the shared log, and the Keyryx witness's findings file is read beside it. <a href="vouchryx.html">Vouchryx</a> reports a delegation issued, denied or revoked, and <a href="costcrew.html">CostCrew</a> reports spend spikes, budget thresholds and every move its crew makes on a finding.</p>
+      <p class="lede">It mails about what other planes wrote, so its reach grows with theirs.</p>
+    </div>
+    <div class="diagram rv">
+      <svg viewBox="0 0 960 202" role="img" aria-label="Twelve planes write the shared log and the Keyryx witness writes its findings file; Heraldyx reads both and writes to a person"><defs><marker id="hf-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker><style>.hf-t{font-family:ui-monospace,Menlo,monospace}.hf-still{display:none}@media (prefers-reduced-motion: reduce){.hf-anim{display:none}.hf-still{display:inline}}</style></defs><g class="hf-t" text-anchor="middle"><rect x="20" y="20.0" width="230" height="60" rx="11" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="135.0" y="45.0" fill="#93A8C4" font-size="12" font-weight="700">the shared log</text><text x="135.0" y="63.0" fill="#8A97A6" font-size="10">twelve planes write it</text><rect x="20" y="98.0" width="230" height="60" rx="11" fill="#141C27" stroke="#FDE68A" stroke-width="1.2"/><text x="135.0" y="123.0" fill="#FDE68A" font-size="12" font-weight="700">keyryx findings</text><text x="135.0" y="141.0" fill="#8A97A6" font-size="10">the witness's file, read beside it</text><rect x="320" y="59.0" width="220" height="60" rx="11" fill="#161F2C" stroke="#5BC8F5" stroke-width="1.4"/><text x="430.0" y="84.0" fill="#5BC8F5" font-size="12" font-weight="700">heraldyx</text><text x="430.0" y="102.0" fill="#8A97A6" font-size="10">reads, never writes back</text><rect x="700" y="59.0" width="240" height="60" rx="11" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="820.0" y="84.0" fill="#93A8C4" font-size="12" font-weight="700">one mail</text><text x="820.0" y="102.0" fill="#8A97A6" font-size="10">for a person to read</text><path d="M250 50 L320 89" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#hf-a)"/><path d="M250 128 L320 89" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#hf-a)"/><path d="M540 89 L700 89" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#hf-a)"/><rect x="576.2" y="79" width="87.6" height="18" rx="4" fill="#10161F"/><text x="620.0" y="91.5" fill="#8A97A6" font-size="9.5">what matters</text><text x="20" y="190" fill="#8A97A6" font-size="10.5" text-anchor="start">Vouchryx reports delegations; CostCrew reports spend spikes, thresholds and its crew's moves.</text><g class="hf-anim"><circle r="3.5" fill="#5BC8F5"><animateMotion path="M250 50 L320 89" dur="2.6s" repeatCount="indefinite"/></circle><circle r="3.5" fill="#5BC8F5"><animateMotion path="M250 128 L320 89" dur="3s" repeatCount="indefinite"/></circle><circle r="3.5" fill="#5BC8F5"><animateMotion path="M540 89 L700 89" dur="3.4s" repeatCount="indefinite"/></circle></g></g></svg>
     </div>
     <div data-edge-nav></div>
   </div>
@@ -460,6 +511,19 @@
   </div>
 </footer>
 
+<script>
+/* tabbed pictures: a tab lights its part of the drawing and shows its sentence */
+document.querySelectorAll(".tp").forEach(w=>{
+  const svg=w.querySelector("svg[data-show]"); if(!svg) return;
+  const tabs=[...w.querySelectorAll(".fl-tab")], whys=[...w.querySelectorAll(".fl-why")], n=w.querySelector(".fl-head .n");
+  tabs.forEach(t=>t.addEventListener("click",()=>{
+    svg.setAttribute("data-show",t.dataset.k);
+    tabs.forEach(b=>b.setAttribute("aria-pressed",String(b===t)));
+    whys.forEach(p=>{p.hidden=p.dataset.for!==t.dataset.k;});
+    if(n) n.textContent=t.textContent.toLowerCase();
+  }));
+});
+</script>
 <script src="../assets/site.js?v=e13"></script>
 <script src="../assets/sheet.js?v=e06"></script>
 <script src="../assets/sim.js?v=e13"></script>

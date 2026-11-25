@@ -22,7 +22,7 @@ Resolved, abandoned, escalated: real outcome tags straight off the TokenFuse gat
 
 ### Drift with statistics
 
-A flat threshold catches the obvious drop. A two-sample significance check beside it, Welch's t plus a bootstrap interval, catches the small, consistent regression a threshold tuned for noise would miss.
+A flat threshold catches the obvious drop. Beside it, a bootstrap interval on the difference catches the small, consistent regression a threshold tuned for noise would miss. Welch's t is reported next to the verdict and does not decide it.
 
 ### The LLM judge is metered
 
@@ -70,7 +70,7 @@ There is no PyPI package, so the version you run is the commit you can read.
 Tag outcomes in production, then read them back off the gateway's own trace: resolved, escalated, abandoned. Verdryx turns that into a dollar figure per case, including the untagged intermediate calls a run made. A call the breaker blocked is counted but adds nothing to the figure, because the cost recorded for it is an estimate of what was avoided, not a charge that settled.
 
 **Q: How do I know when quality has actually dropped?**
-A flat threshold catches the obvious fall. Beside it, a two-sample significance check, Welch's t with a bootstrap interval, catches the small consistent regression a threshold tuned for noise would miss. Point it at a baseline whose source run is gone and it fails loudly rather than silently.
+A flat threshold catches the obvious fall. Beside it, a bootstrap interval on the difference catches the small consistent regression a threshold tuned for noise would miss; Welch's t is reported next to the verdict and does not decide it. Point it at a baseline whose source run is gone and it fails loudly rather than silently.
 
 **Q: Do I need an LLM judge to use it?**
 No. Four of the six graders are deterministic and free: exact, regex, outcome tag and tool trace. The judge is there for the cases a rubric can score and a pattern cannot, and when you use it, its own cost is priced against the same book the money plane uses rather than reported as zero. The sixth, the typed grader, asks a separate Typryx service and runs only when a run is given its address.

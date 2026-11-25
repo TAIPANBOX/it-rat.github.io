@@ -55,6 +55,38 @@
   .limits li+li{margin-top:9px}
   .limits li::marker{color:var(--accent)}
   .deeper .cta-row{margin-top:16px}
+  /* tabbed pictures (the .flight widget of scopyx and typryx): a drawing,
+     tabs that light their part of it, and one sentence per tab */
+  .flight{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);overflow:hidden}
+  .fl-head{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--line);
+    font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .fl-head .n{margin-left:auto;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .fl-head .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);flex:0 0 auto}
+  .flight svg{display:block;width:100%;height:auto}
+  .fl-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 15px;border-top:1px solid var(--line)}
+  .fl-tab{font-family:var(--font-m);font-size:11.5px;color:var(--dim);cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;
+    transition:color .15s,border-color .15s,background .15s}
+  .fl-tab:hover{color:var(--fg);border-color:color-mix(in srgb, var(--accent) 55%, var(--line-2))}
+  .fl-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fl-tab[aria-pressed="true"]{color:#0A1420;background:var(--accent);border-color:var(--accent)}
+  .fl-why{margin:0;padding:13px 15px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;line-height:1.65}
+  .fl-why a{color:var(--accent)}
+  .fl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  @media(max-width:760px){.fl-scroll svg{min-width:720px}}
+  .tp svg [data-p]{transition:opacity .35s}
+  .tp svg[data-show] [data-p]{opacity:.3}
+  @media (prefers-reduced-motion: reduce){
+    .tp svg [data-p]{transition:none}
+    .tp svg .tp-anim{display:none}
+  }
+  /* tp:qx */
+  #qx-svg[data-show="cbom"] [data-p~="cbom"],
+  #qx-svg[data-show="hndl"] [data-p~="hndl"],
+  #qx-svg[data-show="pq"] [data-p~="pq"],
+  #qx-svg[data-show="gate"] [data-p~="gate"],
+  #qx-svg[data-show="open"] [data-p~="open"]{opacity:1}
+  /* /tp */
 </style>
 <!-- seo:auto -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Qryx","url":"https://it-rat.com/services/qryx.html","description":"Inventory every key, certificate and algorithm you actually run, grade the post-quantum risk against the NCSC 2028, 2031 and 2035 dates, sign the evidence.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/qryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Qryx","item":"https://it-rat.com/services/qryx.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I start a post-quantum migration?","acceptedAnswer":{"@type":"Answer","text":"With an inventory, because you cannot migrate what you have not found. Qryx scans binaries, containers, live TLS endpoints, certificates, dependencies and cloud KMS, and returns a cryptographic asset graph graded against the NCSC milestones: discovery by 2028, the highest-priority systems by 2031, everything by 2035."}},{"@type":"Question","name":"What is a CBOM?","acceptedAnswer":{"@type":"Answer","text":"A cryptographic bill of materials in CycloneDX 1.6: one component per unique asset and risk class, with every occurrence attached. It lives in the same supply-chain tooling as your SBOMs, so cryptography stops having its own isolated report nobody reads."}},{"@type":"Question","name":"Can it fail a build when someone ships a weak key?","acceptedAnswer":{"@type":"Answer","text":"Yes. Snapshot the graph as a baseline, and a new weak or quantum-vulnerable asset fails the build with exit code 2. The policy engine (a standards violation) and a regressed compliance trend both exit 3, so CI can tell a new weak asset from the other two. That is the day it matters, not the next audit cycle."}},{"@type":"Question","name":"Does it find hardcoded keys?","acceptedAnswer":{"@type":"Answer","text":"It does, and it counts them honestly: cryptography that exists only in test fixtures is scanned, reported and kept out of the production inventory, with one line saying how much was set aside. Counting fixtures inflates the number you are trying to drive to zero."}}]}]}</script>
@@ -107,7 +139,7 @@
     <div class="sec-head rv">
       <div class="kicker">sixty seconds, one estate</div>
       <h2>Watch it find every key in the building.</h2>
-      <p class="lede">This is a simulation, but the shape is real: it replays a live run against 25,586 ELF binaries, a container image and a live TLS endpoint. The evidence at the end is signed with a post-quantum algorithm, not a promise.</p>
+      <p class="lede">A simulation of a live run against 25,586 ELF binaries, a container image and a live TLS endpoint. The evidence at the end is signed with a post-quantum algorithm.</p>
     </div>
     <div class="rv" id="qx-sim"></div>
   </div>
@@ -189,18 +221,34 @@
   </div>
 </section>
 
-<!-- ================= HOW IT WORKS ================= -->
-<section class="sec" id="how" style="padding-top:18px">
+<!-- ================= WHAT IT HOLDS ================= -->
+<section class="sec" id="holds" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">what it holds</div>
       <h2>A graph that grades itself.</h2>
     </div>
-    <div class="bento">
-      <div class="card hover feature b-6 rv"><h3>CBOM</h3><p>CycloneDX 1.6, one component per unique asset and risk class, every occurrence attached. It plugs into the same supply-chain tooling that already tracks your SBOMs.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>Harvest now, decrypt later</h3><p>Data encrypted with a quantum-vulnerable algorithm today can be captured now and decrypted once a cryptographically relevant quantum computer exists. The migration clock is already running.</p></div>
-      <div class="card hover feature b-6 rv"><h3>Post-quantum signing</h3><p>Evidence attestations sign with ML-DSA (FIPS 204) straight from Go's stdlib, crypto/mldsa, no cosign dependency.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>CI drift gate</h3><p>Snapshot the graph, then fail the build the moment a new weak or quantum-vulnerable asset appears: a baseline diff exits 2 on new high-risk findings.</p></div>
+    <div class="flight tp rv">
+      <div class="fl-head"><span class="dot"></span>one scan, one graph<span class="n">cbom</span></div>
+      <div class="fl-scroll"><svg id="qx-svg" data-show="cbom" viewBox="0 0 960 352" role="img" aria-labelledby="qx-svg-t"><title id="qx-svg-t">Qryx scans code, configs and certificates into a crypto graph that grades each asset, writes a CycloneDX CBOM, signs attestations with ML-DSA and fails CI on new high-risk assets; data encrypted with RSA today can be captured now and decrypted later.</title><defs><marker id="qx-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="cbom hndl pq gate open"><rect x="20" y="40" width="180" height="80" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="110.0" y="60" fill="#93A8C4" font-size="12" font-weight="700">your code</text></g><g data-p="cbom hndl pq gate"><text x="110.0" y="77" fill="#8A97A6" font-size="10.5">repos, configs, certs</text></g><g data-p="open"><text x="110.0" y="92" fill="#B48CFF" font-size="10.5">test code: counted apart</text></g><g data-p="cbom hndl pq gate"><path d="M200 80 L248 80" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#qx-a)"/></g><g data-p="cbom hndl pq gate"><rect x="250" y="40" width="170" height="80" rx="10" fill="#141C27" stroke="#B48CFF" stroke-width="1.2"/><text x="335.0" y="60" fill="#B48CFF" font-size="12" font-weight="700">qryx scan</text></g><g data-p="cbom hndl pq gate"><text x="335.0" y="77" fill="#8A97A6" font-size="10.5">every cipher, key</text></g><g data-p="cbom hndl pq gate"><text x="335.0" y="92" fill="#8A97A6" font-size="10.5">and certificate</text></g><g data-p="cbom hndl pq gate"><path d="M420 80 L468 80" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#qx-a)"/></g><g data-p="cbom hndl pq gate open"><rect x="470" y="24" width="230" height="190" rx="10" fill="#161F2C" stroke="#B48CFF" stroke-width="1.2"/><text x="585.0" y="44" fill="#B48CFF" font-size="12" font-weight="700">crypto graph</text></g><g data-p="cbom hndl pq gate"><text x="585.0" y="61" fill="#8A97A6" font-size="10.5">one node per asset,</text></g><g data-p="cbom hndl pq gate"><text x="585.0" y="76" fill="#8A97A6" font-size="10.5">each one graded</text></g><g data-p="cbom hndl gate"><rect x="486" y="98" width="98" height="22" rx="6" fill="#161F2C" stroke="#FF574B" stroke-width="1.1"/><text x="535.0" y="112.6" fill="#FF574B" font-size="10.5" font-weight="700">RSA-2048</text></g><g data-p="cbom gate"><rect x="592" y="98" width="92" height="22" rx="6" fill="#161F2C" stroke="#F4B23E" stroke-width="1.1"/><text x="638.0" y="112.6" fill="#F4B23E" font-size="10.5" font-weight="700">MD5</text></g><g data-p="cbom hndl gate"><rect x="486" y="130" width="98" height="22" rx="6" fill="#161F2C" stroke="#FF574B" stroke-width="1.1"/><text x="535.0" y="144.6" fill="#FF574B" font-size="10.5" font-weight="700">ECDSA P-256</text></g><g data-p="cbom"><rect x="592" y="130" width="92" height="22" rx="6" fill="#161F2C" stroke="#34D399" stroke-width="1.1"/><text x="638.0" y="144.6" fill="#34D399" font-size="10.5" font-weight="700">AES-256</text></g><g data-p="cbom hndl pq gate"><text x="585" y="172" fill="#8A97A6" font-size="10.5" text-anchor="middle">red: quantum-vulnerable</text></g><g data-p="open"><text x="585" y="198" fill="#B48CFF" font-size="10.5" text-anchor="middle">no identities: Idryx's job</text></g><g data-p="cbom"><rect x="750" y="24" width="190" height="62" rx="10" fill="#141C27" stroke="#B48CFF" stroke-width="1.2"/><text x="845.0" y="44" fill="#B48CFF" font-size="12" font-weight="700">CBOM</text></g><g data-p="cbom"><text x="845.0" y="61" fill="#8A97A6" font-size="10.5">CycloneDX 1.6</text></g><g data-p="cbom"><text x="845.0" y="76" fill="#8A97A6" font-size="10.5">beside your SBOMs</text></g><g data-p="cbom"><path d="M700 55 L748 55" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#qx-a)"/></g><g data-p="pq"><rect x="750" y="100" width="190" height="62" rx="10" fill="#141C27" stroke="#B48CFF" stroke-width="1.2"/><text x="845.0" y="120" fill="#B48CFF" font-size="12" font-weight="700">attestation</text></g><g data-p="pq"><text x="845.0" y="137" fill="#8A97A6" font-size="10.5">signed with ML-DSA</text></g><g data-p="pq"><text x="845.0" y="152" fill="#8A97A6" font-size="10.5">Go crypto/mldsa</text></g><g data-p="pq"><path d="M700 131 L748 131" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#qx-a)"/></g><g data-p="gate"><rect x="750" y="176" width="190" height="62" rx="10" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="845.0" y="196" fill="#FF574B" font-size="12" font-weight="700">baseline diff</text></g><g data-p="gate"><text x="845.0" y="213" fill="#8A97A6" font-size="10.5">new high risk:</text></g><g data-p="gate"><text x="845.0" y="228" fill="#8A97A6" font-size="10.5">CI exits 2</text></g><g data-p="gate"><path d="M700 207 L748 207" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#qx-a)"/></g><g data-p="hndl"><text x="140" y="266" fill="#FF574B" font-size="11" text-anchor="start" font-weight="700">harvest now, decrypt later</text></g><g data-p="hndl"><path d="M535 214 L535 244 L120 244 L120 278" stroke="#FF574B" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#qx-a)"/></g><g data-p="hndl"><rect x="20" y="280" width="200" height="56" rx="10" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="120.0" y="300" fill="#FF574B" font-size="12" font-weight="700">RSA-2048 session</text></g><g data-p="hndl"><text x="120.0" y="317" fill="#8A97A6" font-size="10.5">encrypted today</text></g><g data-p="hndl"><path d="M220 308 L298 308" stroke="#FF574B" stroke-width="1.2" fill="none" marker-end="url(#qx-a)"/></g><g data-p="hndl"><rect x="300" y="280" width="200" height="56" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="400.0" y="300" fill="#93A8C4" font-size="12" font-weight="700">captured, stored</text></g><g data-p="hndl"><text x="400.0" y="317" fill="#8A97A6" font-size="10.5">by someone, now</text></g><g data-p="hndl"><path d="M500 308 L578 308" stroke="#FF574B" stroke-width="1.2" fill="none" marker-end="url(#qx-a)"/></g><g data-p="hndl"><rect x="580" y="280" width="200" height="56" rx="10" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="680.0" y="300" fill="#FF574B" font-size="12" font-weight="700">decrypted later</text></g><g data-p="hndl"><text x="680.0" y="317" fill="#8A97A6" font-size="10.5">once a quantum computer can</text></g><g data-p="hndl"><text x="860" y="304" fill="#8A97A6" font-size="10.5" text-anchor="middle">the clock</text></g><g data-p="hndl"><text x="860" y="320" fill="#8A97A6" font-size="10.5" text-anchor="middle">runs already</text></g><g class="tp-anim"><g data-p="cbom hndl pq gate"><circle r="3.6" fill="#93A8C4"><animateMotion path="M200 80 L248 80" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="cbom hndl pq gate"><circle r="3.6" fill="#B48CFF"><animateMotion path="M420 80 L468 80" dur="2.8s" begin="-1.0s" repeatCount="indefinite"/></circle></g><g data-p="cbom"><circle r="3.6" fill="#B48CFF"><animateMotion path="M700 55 L748 55" dur="2.8s" begin="-0.4s" repeatCount="indefinite"/></circle></g><g data-p="pq"><circle r="3.6" fill="#B48CFF"><animateMotion path="M700 131 L748 131" dur="2.8s" begin="-1.2s" repeatCount="indefinite"/></circle></g><g data-p="gate"><circle r="3.6" fill="#FF574B"><animateMotion path="M700 207 L748 207" dur="2.8s" begin="-2.0s" repeatCount="indefinite"/></circle></g><g data-p="hndl"><circle r="3.6" fill="#FF574B"><animateMotion path="M220 308 L298 308" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="hndl"><circle r="3.6" fill="#FF574B"><animateMotion path="M500 308 L578 308" dur="2.8s" begin="-1.4s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="qx-svg" data-k="cbom">CBOM</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="qx-svg" data-k="hndl">Harvest now</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="qx-svg" data-k="pq">Post-quantum signing</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="qx-svg" data-k="gate">CI drift gate</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="qx-svg" data-k="open">Leaves out</button>
+      </div>
+      <div aria-live="polite">
+        <p class="fl-why" data-for="cbom">Qryx writes a CycloneDX 1.6 CBOM with one component per asset and risk class, so the tooling that tracks your SBOMs reads it too. <a href="../qryx-guide.html#holds">In the guide</a></p>
+        <p class="fl-why" data-for="hndl" hidden>Data sealed today with a quantum-vulnerable algorithm can be captured now and opened later, which is why the graph grades it already. <a href="../qryx-guide.html#holds">In the guide</a></p>
+        <p class="fl-why" data-for="pq" hidden>Evidence attestations are signed with ML-DSA (FIPS 204) from Go's own crypto/mldsa, with no cosign dependency. <a href="../qryx-guide.html#holds">In the guide</a></p>
+        <p class="fl-why" data-for="gate" hidden>Against a snapshot of the graph, a baseline diff exits 2 the moment a new weak or quantum-vulnerable asset appears. <a href="../qryx-guide.html#holds">In the guide</a></p>
+        <p class="fl-why" data-for="open" hidden>It stays on the crypto axis and leaves identity to Idryx, and it counts cryptography in test code apart from the production inventory. <a href="../qryx-guide.html#limits">In the guide</a></p>
+      </div>
+    </div>
+    <div class="cta-row rv">
+      <a class="btn" href="../qryx-guide.html#holds">What it holds, in full</a>
+      <a class="btn" href="../qryx-guide.html#limits">Every limit</a>
     </div>
   </div>
 </section>
@@ -211,7 +259,10 @@
     <div class="sec-head rv">
       <div class="kicker">in the stack</div>
       <h2>The inventory the rest of the stack borrows from.</h2>
-      <p class="lede">Qryx can write its agent-passport findings, drift, policy violations and signed-evidence records as agent-events onto the shared bus that <a href="platform.html" data-dir="fwd" style="color:var(--steel)">Platform</a> defines and every service writes to (opt-in, with --events). Only a finding that names a real agent emits an event, which today means the findings of qryx agents; scans of code, binaries, TLS and cloud KMS carry no agent and emit none. Crypto posture is one plane of a wider practice: <a href="../ai-agent-governance.html" style="color:var(--accent)">AI agent governance</a>, and the defensive picture in <a href="../ai-agent-security.html" style="color:var(--accent)">AI agent security</a>.</p>
+      <p class="lede">Opt-in, and only for findings that name an agent. Crypto posture is one plane of <a href="../ai-agent-governance.html" style="color:var(--accent)">AI agent governance</a>; the defensive picture is in <a href="../ai-agent-security.html" style="color:var(--accent)">AI agent security</a>.</p>
+    </div>
+    <div class="diagram rv">
+      <svg viewBox="0 0 960 202" role="img" aria-label="Qryx writes agent-events to the shared bus, opt-in, only for findings that name an agent; scans with no agent emit none"><defs><marker id="qf-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker><style>.qf-t{font-family:ui-monospace,Menlo,monospace}.qf-still{display:none}@media (prefers-reduced-motion: reduce){.qf-anim{display:none}.qf-still{display:inline}}</style></defs><g class="qf-t" text-anchor="middle"><rect x="20" y="20.0" width="230" height="60" rx="11" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="135.0" y="45.0" fill="#93A8C4" font-size="12" font-weight="700">the agents connector</text><text x="135.0" y="63.0" fill="#8A97A6" font-size="10">findings name a real agent</text><rect x="20" y="98.0" width="230" height="60" rx="11" fill="#141C27" stroke="#8A97A6" stroke-width="1.2"/><text x="135.0" y="123.0" fill="#8A97A6" font-size="12" font-weight="700">code, binaries, TLS, KMS</text><text x="135.0" y="141.0" fill="#8A97A6" font-size="10">scans that name no agent</text><rect x="320" y="59.0" width="220" height="60" rx="11" fill="#161F2C" stroke="#B48CFF" stroke-width="1.4"/><text x="430.0" y="84.0" fill="#B48CFF" font-size="12" font-weight="700">qryx</text><text x="430.0" y="102.0" fill="#8A97A6" font-size="10">with --events, opt-in</text><rect x="700" y="20.0" width="240" height="60" rx="11" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="820.0" y="45.0" fill="#93A8C4" font-size="12" font-weight="700">the shared bus</text><text x="820.0" y="63.0" fill="#8A97A6" font-size="10">findings, drift, violations, evidence</text><rect x="700" y="98.0" width="240" height="60" rx="11" fill="#141C27" stroke="#5A6675" stroke-width="1.2"/><text x="820.0" y="123.0" fill="#5A6675" font-size="12" font-weight="700">no event</text><text x="820.0" y="141.0" fill="#8A97A6" font-size="10">stays in qryx's own reports</text><path d="M250 50 L320 89" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#qf-a)"/><path d="M250 128 L320 89" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#qf-a)"/><path d="M540 89 L700 50" stroke="#B48CFF" stroke-width="1.2" fill="none" marker-end="url(#qf-a)"/><path d="M540 89 L700 128" stroke="#5A6675" stroke-width="1.2" fill="none" marker-end="url(#qf-a)" stroke-dasharray="4 4"/><rect x="570.4" y="59.5" width="99.2" height="18" rx="4" fill="#10161F"/><text x="620.0" y="72.0" fill="#B48CFF" font-size="9.5">agent findings</text><rect x="570.4" y="98.5" width="99.2" height="18" rx="4" fill="#10161F"/><text x="620.0" y="111.0" fill="#5A6675" font-size="9.5">no agent named</text><text x="20" y="190" fill="#8A97A6" font-size="10.5" text-anchor="start">The bus is the agent-event envelope Platform defines, the one every service writes to.</text><g class="qf-anim"><circle r="3.5" fill="#B48CFF"><animateMotion path="M250 50 L320 89" dur="2.6s" repeatCount="indefinite"/></circle><circle r="3.5" fill="#B48CFF"><animateMotion path="M250 128 L320 89" dur="3s" repeatCount="indefinite"/></circle><circle r="3.5" fill="#B48CFF"><animateMotion path="M540 89 L700 50" dur="3.4s" repeatCount="indefinite"/></circle></g></g></svg>
     </div>
   </div>
 </section>
@@ -232,22 +283,6 @@
     </div>
     <div class="cta-row rv d2" style="margin-top:18px">
       <a class="btn" href="../qryx-guide.html#run">Full install and configuration in the guide <span class="mono">&#8594;</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- ================= LIMITS ================= -->
-<section class="sec" id="limits" style="padding-top:14px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="kicker">limits</div>
-      <h2>What it leaves out, on purpose.</h2>
-    </div>
-    <div class="card limits rv">
-      <ul>
-        <li>Identity stays Idryx's job; the agents connector stays strictly on the crypto axis.</li>
-        <li>Cryptography in test code is scanned and counted, then kept out of the production inventory; a flag counts it as production if that is what you want.</li>
-      </ul>
     </div>
   </div>
 </section>
@@ -340,6 +375,19 @@
   </div>
 </footer>
 
+<script>
+/* tabbed pictures: a tab lights its part of the drawing and shows its sentence */
+document.querySelectorAll(".tp").forEach(w=>{
+  const svg=w.querySelector("svg[data-show]"); if(!svg) return;
+  const tabs=[...w.querySelectorAll(".fl-tab")], whys=[...w.querySelectorAll(".fl-why")], n=w.querySelector(".fl-head .n");
+  tabs.forEach(t=>t.addEventListener("click",()=>{
+    svg.setAttribute("data-show",t.dataset.k);
+    tabs.forEach(b=>b.setAttribute("aria-pressed",String(b===t)));
+    whys.forEach(p=>{p.hidden=p.dataset.for!==t.dataset.k;});
+    if(n) n.textContent=t.textContent.toLowerCase();
+  }));
+});
+</script>
 <script src="../assets/site.js?v=e13"></script>
 <script src="../assets/sheet.js?v=e06"></script>
 <script src="../assets/sim.js?v=e14"></script>

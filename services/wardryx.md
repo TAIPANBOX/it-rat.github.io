@@ -44,7 +44,7 @@ With WARDRYX_DB set, the record of accepted proofs is shared by every instance o
 
 [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s PEP hook asks Wardryx on every request and stamps the verdict on the response. Each decision lands on the bus as a source: wardryx event, which [Idryx](https://it-rat.com/services/idryx.html) correlates into the identity graph.
 
-Boots on `127.0.0.1:8090` with an in-memory store. `serve` refuses to start without `WARDRYX_KEYS`, so `make serve` opts in to the dev key on loopback only: allow-all until you load a policy, and it logs that choice. Then dry-run a policy offline against a directory of Agent Passports:
+`make serve` boots it on `127.0.0.1:8090` with an in-memory store; `wardryx serve` with no address listens on `:8090`, every interface. `serve` refuses to start without `WARDRYX_KEYS`, so `make serve` opts in to the dev key on loopback only: allow-all until you load a policy, and it logs that choice. Then dry-run a policy offline against a directory of Agent Passports:
 
 ## A decision is only as good as the identity under it.
 

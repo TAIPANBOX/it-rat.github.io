@@ -3206,7 +3206,7 @@ That was tested rather than assumed. A four-node cluster across two datacenters 
 
 ### FOCUS export
 
-Agent spend lands in the same FinOps Foundation format as the rest of your cloud bill, so showback and chargeback reuse the pipes and dashboards finance already trusts.
+`tokenfuse focus-export` writes the call trace as a FOCUS 1.2-style CSV, one row per call, with agent and run columns beside the FOCUS ones, so showback and chargeback can reuse the pipes and dashboards finance already trusts.
 
 ### A label comes from the act, not from a name
 
@@ -3362,7 +3362,7 @@ Every anomaly carries the rule that judged it, the baseline it was judged agains
 
 ### The task carries a guard
 
-An analyst gets the task with a mandate, the rights that come with its skills and a spend guard on the row. What it may read follows from what it was hired to do, not from what is convenient.
+An analyst gets the task with a mandate, the rights that come with its skills and a spend guard on the row. The guard reports an overrun and does not block it: stopping the spend is the gateway's job. What it may read follows from what it was hired to do, not from what is convenient.
 
 ### Only a person publishes
 
@@ -3497,7 +3497,7 @@ The repository gates more than its suite: every scenario written in the language
 
 - The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
 
-- Release gates through v0.10.1 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
+- Release gates through v0.10.2 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
 
 - The FOCUS 1.1 file of agent spend (costcrew-cloudability, in the image since v0.7.0) has not been accepted by a live tenant yet.
 
@@ -3687,7 +3687,7 @@ The [Wardryx room](https://it-rat.com/services/wardryx.html) keeps the simulatio
 
 - **Deterministic allow, deny or hold, with a human on the expensive actions.**
 
-- **Status:** v2.7.0, surface frozen at 1.0 · main is supported.
+- **Status:** v2.8.0, surface frozen at 1.0 · main is supported.
 
 - **Core:** Go 1.27 · deterministic PDP. **API:** POST /v1/decide on :8090.
 
@@ -3800,7 +3800,7 @@ This plane answers about an action. What it cannot answer is whether the caller 
 make serve
 ```
 
-Boots on `127.0.0.1:8090` with an in-memory store. `serve` refuses to start without `WARDRYX_KEYS`, so `make serve` opts in to the dev key on loopback only: allow-all until you load a policy, and it logs that choice. Then dry-run a policy offline against a directory of Agent Passports:
+`make serve` boots it on `127.0.0.1:8090` with an in-memory store; `wardryx serve` with no address listens on `:8090`, every interface. `serve` refuses to start without `WARDRYX_KEYS`, so `make serve` opts in to the dev key on loopback only: allow-all until you load a policy, and it logs that choice. Then dry-run a policy offline against a directory of Agent Passports:
 
 ```
 ./bin/wardryx check ./passports ./policies/finance.yaml
@@ -3826,6 +3826,7 @@ The whole stack's fortnight, Wardryx among it, is in [the October changelog](htt
 | v2.5.0 | A spent error budget can put an agent's tool calls to a person: with WARDRYX_SIGNAL_EVENTS set, a hold_if_signal rule on slo_burn holds the call. |
 | v2.5.1 | The policy archive is created with directory mode 0750 and file mode 0640, so the account that runs wardryx replay can read it from the group of the account that writes it. An archive written before keeps its modes until an operator widens it. |
 | v2.7.0 | The person who decides a held call can read its arguments first, sealed to the console's key, with secrets and personal data hidden by fixed rules. Nothing changes until a preview key is set. |
+| v2.8.0 | Every hold has an end: a person decides it, wardryx closes it as expired once it has waited WARDRYX_HOLD_TTL (24 hours unless set, from 1 to 168 hours), or the held agent withdraws it. Neither closure mints a token, so the held call stays refused. An admin key cancels nothing. |
 
 ## What is open by default, and what is not proven yet.
 
@@ -3995,7 +3996,7 @@ idryx detect events.ndjson
 idryx serve events.ndjson
 ```
 
-Download [the latest release binary](https://github.com/TAIPANBOX/idryx/releases) (SHA256SUMS ships next to it), run detect against a log, then serve for the read-only dashboard on `:8080`.
+Download [the latest release binary](https://github.com/TAIPANBOX/idryx/releases) (SHA256SUMS ships next to it), run detect against a log, then serve for the read-only dashboard on `127.0.0.1:8080`, loopback only by default.
 
 ### idryx, every platform
 
@@ -4100,9 +4101,9 @@ The third row is the one worth reading twice. The fixture policy said **allow**,
 
 An allowed host answering 302 to a denied one is the oldest allowlist bypass there is, and it is invisible to any check that reads only the URL the caller passed. The same argument applies one layer down, to the name itself.
 
-### It refuses to follow
+### Every hop is decided again
 
-The fetcher it ships with returns the redirect instead of following it. Following inside the fetcher would be a second request that no decision preceded, which is exactly the bypass. Most HTTP clients follow redirects by default, which is why this is written down rather than assumed.
+The fetcher it ships with hands a redirect back instead of following it, and Scopyx follows it one hop at a time, with all five gates run again on the new destination. Following inside the fetcher would be a second request that no decision preceded, which is exactly the bypass. Most HTTP clients follow redirects by default, which is why this is written down rather than assumed.
 
 ### Every hop is resolved again
 
@@ -4152,7 +4153,7 @@ It is an error. For a person, degrading to a blank frame is right. For an agent 
 
 ## A URL is personal data, and the record is built around that.
 
-`https://crm.example/customers/12345?email=jane@example.com` is an address and also a name, an identifier and a contact detail. The path and the query string, which is exactly where an identifier or a session token lives, are never assembled into the event at all. What is kept is the origin and a SHA-384, so two records can be compared without either holding the address.
+`https://crm.example/customers/12345?email=jane@example.com` is an address and also a name, an identifier and a contact detail. With `SCOPYX_RETAIN` unset, the default, the path and the query string, which is exactly where an identifier or a session token lives, are never assembled into the event at all. What is kept is the origin and a SHA-384, so two records can be compared without either holding the address. Setting `SCOPYX_RETAIN=payload` writes the full URL into `url_unprotected`.
 
 ### Its own journal, its own volume
 
@@ -4557,6 +4558,10 @@ The [Keyryx room](https://it-rat.com/services/keyryx.html) keeps the picture of 
 
 - [The witness](https://it-rat.com/keyryx-guide.html#witness)
 
+- [What it does not do](https://it-rat.com/keyryx-guide.html#refuses)
+
+- [In stack-single](https://it-rat.com/keyryx-guide.html#stack-single)
+
 - [Running and verifying it](https://it-rat.com/keyryx-guide.html#run)
 
 - [Releases](https://it-rat.com/keyryx-guide.html#changes)
@@ -4645,6 +4650,34 @@ Every finding is an agent-event in the alert file (by default `keyryx.ndjson` in
 
 The witness pins the delegation root the first time it reads it, unless an operator sets `KEYRYX_WITNESS_DELEGATION_ROOT_PIN` beforehand. A different set served later is a high-severity finding and is not used until an operator pins it.
 
+## Stated rather than discovered later.
+
+- It is on no request path. Enforcement points and agents never wait on it, and verifiers keep verifying from the key sets they cached when it is down.
+
+- It makes no decision. It signs what a granted consumer asks, and it judges no tool call and refuses nothing for money.
+
+- It issues no agent identity and holds no provider key.
+
+- It never holds a delegated private key. That half stays with its consumer.
+
+- It calls no paid service. A time-stamping authority is called only when an operator names one.
+
+## Running in stack-single today.
+
+- Custody and the witness run as separate containers in the stack-single Compose file, each under its own uid, and the witness container has no network.
+
+- Wardryx signs its approval tokens through Keyryx, over a unix socket of its own, so the approval key is held by custody.
+
+- Vouchryx signs with a working key Keyryx certifies, checked against a root the box pins: the default since stack-single 1.6.0.
+
+- The witness reads the event bus and, since 1.6.0, the Trailryx records. No producer writes a checkpoint yet.
+
+- Since 1.6.0 the record seal signs each sealed root through custody and attaches the witness's attestations.
+
+- Its findings go to keyryx.ndjson on a volume of their own, which Heraldyx and the console mount read only. Heraldyx mails the high ones (the medium ones go in the digest), and the console shows them as incidents. An operator can also check the witness log with keyryx verify.
+
+- In the current stacks no admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one. They pin keyryx v0.1.5; v0.2.0 moves rotation and revocation to an admin socket of their own, and no stack runs it yet.
+
 ## Build, run, and check the outputs offline.
 
 Build with `go build -o keyryx ./cmd/keyryx`, then start custody and the witness with their own variables, each as its own process and under its own account:
@@ -4669,7 +4702,7 @@ keyryx verify streams --events events/ --checkpoints checkpoints/ \
 
 Each check prints ok, weak or broken for each item and ends with VERIFIED (exit 0) or NOT VERIFIED (exit 1). A directory with nothing in it is reported as measured nothing, never as verified.
 
-The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/arm64, with no moving tag. The stack-single Compose file pins v0.1.3 by digest.
+The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/arm64, with no moving tag. The stack-single Compose file pins v0.1.5 by digest.
 
 ## What each release is.
 
@@ -4687,7 +4720,7 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - The cosign signatures of v0.1.1, v0.1.2 and v0.1.3 have not been verified. The build-provenance attestation of each release has (gh attestation verify, 2026-10-19 for v0.1.0 to v0.1.2, 2026-10-26 for v0.1.3).
 
-- No admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one.
+- In the current stacks no admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one. They pin keyryx v0.1.5; v0.2.0 moves rotation and revocation to an admin socket of their own, and no stack runs it yet.
 
 - Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19, stack-k8s since v1.6.1, tagged on 2026-10-20, and stack-single since v1.6.0, tagged on 2026-11-05. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single, stack-up and stack-k8s now pin v0.1.3; stack-k8s and stack-single run the witness in the record plane's group. On a stack-single box on 2026-11-05, a pack of 1024 records verified with the root signature and the witness on it.
 
@@ -4702,6 +4735,8 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 - Vouchryx consumes key statements from 0.5.0 and, from 0.6.0, checks each one against a pinned root, and stack-single switches that on by default from v1.6.0. TokenFuse consumes them for its checkpoint key from 1.18.0, which is opt-in: no launcher switches it on, and no producer in a launcher writes signed checkpoints yet.
 
 - The state MAC proves custody wrote a state, not that it is the latest. Whoever can write the data directory can restore an earlier copy of a record whose MAC still holds.
+
+- Custody's use log is protected against edits in its middle, not against a rewrite from its first line, and the witness does not read it.
 
 - Challenges live in memory, so a restart drops the outstanding ones.
 
@@ -4782,7 +4817,7 @@ Resolved, abandoned, escalated: real outcome tags straight off the TokenFuse gat
 
 ### Drift with statistics
 
-A flat threshold catches the obvious drop. A two-sample significance check beside it, Welch's t plus a bootstrap interval, catches the small, consistent regression a threshold tuned for noise would miss. Point it at a baseline whose source run is gone and it fails loudly, not silently.
+A flat threshold catches the obvious drop. Beside it, a bootstrap interval on the difference catches the small, consistent regression a threshold tuned for noise would miss. Welch's t is reported next to the verdict and does not decide it. Point it at a baseline whose source run is gone and it fails loudly, not silently.
 
 ### The LLM judge is metered
 
@@ -5046,7 +5081,7 @@ Not an illustration: the room's replay plays the 60 real arithmetic judgements f
 
 ### The one-token shortcut is not always faster.
 
-Decision speed, measured 2026-09-25. Same 60 items, seed 1, timed end to end from the caller (`go run ./examples/speed`, typryx f4045e0, one run each, so read the medians as indicative rather than final).
+Decision speed, measured 2026-09-25, historical: kept as measured, since gpt-4.1-mini retires on 2027-01-14 (OpenAI names gpt-6-luna as its replacement) and gpt-5.4-mini is still current. Same 60 items, seed 1, timed end to end from the caller (`go run ./examples/speed`, typryx f4045e0, one run each, so read the medians as indicative rather than final).
 
 | way of deciding | model | median | p95 | accuracy |
 |---|---|---|---|---|
@@ -5056,13 +5091,25 @@ Decision speed, measured 2026-09-25. Same 60 items, seed 1, timed end to end fro
 | typed, one token, through typryx | qwen2.5:7b | 148 ms | 159 ms | 66.7% (3 of 60 unparsed, counted wrong) |
 | text judge, short verdict | qwen2.5:7b | 1,509 ms | 2,103 ms | 100% |
 
+### Claude Haiku 5.5, measured 2026-11-25.
+
+The same 60 items and judge prompt, sent to `claude-haiku-5-5` through Anthropic's OpenAI-compatible endpoint, timed end to end from a 4-core machine on a home connection in the UK, one run each:
+
+| way of deciding | model | median | p95 | accuracy |
+|---|---|---|---|---|
+| text judge, short verdict (no temperature) | claude-haiku-5-5 | 629 ms | 1,129 ms | 100% |
+| reasoning judge | claude-haiku-5-5 | 635 ms | 981 ms | 100% |
+| typed, one token, through typryx | claude-haiku-5-5 | no answer | no answer | 0 of 60 answered |
+
+Haiku 5.5 got all 60 right either way in about 0.63 seconds. It cannot be a typed judge through this backend: typryx sends `temperature: 0` in every request, the endpoint refused all 60 asks with 400 `invalid_request_error`, and asked without `temperature` it answers the letter with `logprobs: null` (measured 2026-11-25, typryx VALIDATION.md). With no probability there is no calibration row for it.
+
 Against a hosted API the network dominates: on gpt-4.1-mini the shortcut was about 1.3× faster than a short text verdict and gave up 28 points of accuracy (71.7% against 100%), and gpt-5.4-mini, a current small reasoning model, was right on all 60 in about the same time as the shortcut. Locally, on qwen2.5:7b, the shortcut is about 10× faster. A typed decision earns its place by the probability it carries and where it runs, not by speed; vendor speed claims are not on this page. Jev is not on this chart: it was measured on a different set of questions, the 434 in [Three modes](https://it-rat.com/services/typryx.html#modes), and the two sets are never mixed.
 
 ### Stated confidence and actual accuracy are not the same number.
 
-Calibration, measured 2026-09-25. Eight groups, 480 judgements, never pooled: `typryx calibration --min-n 30 --json` over durable ledgers, 60 arithmetic judgements per group, seed 1, template `eval.outcome_met`, backend openai-logprobs, half the items right and half wrong. Five models: three OpenAI models of the previous generation over the hosted API (gpt-4.1-mini, gpt-4o-mini, gpt-4.1-nano, each with two template wordings) and two open-weight Qwen 2.5 models run locally on Ollama (3B and 7B). Every group was 96% to 100% confident on average and right 50% to 73% of the time.
+Calibration, measured 2026-09-25, historical: gpt-4.1-nano was shut down on 2026-10-23, and gpt-4o-mini and gpt-4.1-mini retire on 2027-01-14 (OpenAI's deprecations page, read 2026-11-25). OpenAI names gpt-6-luna as the replacement for the last two and gpt-5.6-luna for gpt-4.1-nano; both are measured below. Eight groups, 480 judgements, never pooled: `typryx calibration --min-n 30 --json` over durable ledgers, 60 arithmetic judgements per group, seed 1, template `eval.outcome_met`, backend openai-logprobs, half the items right and half wrong. Five models: three OpenAI models of the previous generation over the hosted API (gpt-4.1-mini, gpt-4o-mini, gpt-4.1-nano, each with two template wordings) and two open-weight Qwen 2.5 models run locally on Ollama (3B and 7B). Every group was 96% to 100% confident on average and right 50% to 73% of the time.
 
-Every group was 96% to 100% confident on average, right 50% to 73% of the time, and the errors do not lean one way: three groups (gpt-4.1-nano in both wordings, and qwen2.5:3b) said "correct" to every one of 60 items, right exactly half the time, the base rate. gpt-4.1-mini passed half of the wrong answers as right (15 of 30 in each wording); gpt-4o-mini erred both ways; qwen2.5:7b never passed a wrong answer but failed two-thirds of the right ones (20 of 30). Rewording (v1 to v2) barely moved accuracy, because a one-token judge has no room to work anything out before answering: it suits classification, not verification. OpenAI's current models, gpt-5.x and gpt-6, refuse token probabilities outright (the typryx README records this probe: "'logprobs' is not supported with this model"), so this backend reaches only earlier hosted models and open models.
+Every group was 96% to 100% confident on average, right 50% to 73% of the time, and the errors do not lean one way: three groups (gpt-4.1-nano in both wordings, and qwen2.5:3b) said "correct" to every one of 60 items, right exactly half the time, the base rate. gpt-4.1-mini passed half of the wrong answers as right (15 of 30 in each wording); gpt-4o-mini erred both ways; qwen2.5:7b never passed a wrong answer but failed two-thirds of the right ones (20 of 30). Rewording (v1 to v2) barely moved accuracy, because a one-token judge has no room to work anything out before answering: it suits classification, not verification.
 
 | model | wording | n | stated | accuracy | ECE | Brier | right | lenient | strict |
 |---|---|---|---|---|---|---|---|---|---|
@@ -5076,6 +5123,23 @@ Every group was 96% to 100% confident on average, right 50% to 73% of the time, 
 | qwen2.5:7b | v2 | 60 | 0.965 | 0.667 | 0.298 | 0.597 | 40 | 0 | 20 |
 
 Exact models: gpt-4.1-mini, gpt-4o-mini and gpt-4.1-nano over OpenAI's API; qwen2.5:3b and qwen2.5:7b on Ollama on a development Mac. Wording v1 is the example template (`2d3ecbdc`), v2 asks plainly whether the answer is exactly correct (`781efaaf`); the local models ran v2 only. Every figure here is one run of 60 items, reproducible with `examples/calibration` in the repository.
+
+### OpenAI's current models, measured 2026-11-06.
+
+The same 60 items (seed 1) and template v1, through openai-logprobs with the three variables the current models need (since v0.6.0), nothing in between. Every run answered 60 of 60.
+
+| model | run | accuracy | stated | overconfidence | Brier | ECE |
+|---|---|---|---|---|---|---|
+| gpt-6-luna | 1 | 0.717 | 0.960 | 0.243 | 0.498 | 0.256 |
+| gpt-6-luna | 2 | 0.733 | 0.976 | 0.242 | 0.507 | 0.268 |
+| gpt-6-luna | 3 | 0.717 | 0.978 | 0.262 | 0.526 | 0.274 |
+| gpt-5.6-luna | 1 | 0.650 | 0.967 | 0.317 | 0.682 | 0.329 |
+| gpt-5.6-luna | 2 | 0.617 | 0.980 | 0.363 | 0.758 | 0.380 |
+| gpt-5.6-luna | 3 | 0.600 | 0.984 | 0.384 | 0.779 | 0.393 |
+| gpt-6-sol | 1 | 1.000 | 1.000 | 0.000 | 0.000 | 0.000 |
+| gpt-5.6-sol | 1 | 1.000 | 1.000 | 0.000 | 0.000 | 0.000 |
+
+The luna models fail the way the models they replace fail: gpt-6-luna passed 16 or 17 of the 30 wrong answers and failed none of the right ones, gpt-5.6-luna passed 19 or 20 and failed 2 to 4, at a mean confidence of 0.96 and above. The sol models got all 60 right in one letter, so the reading above, that one token leaves no room to work something out, holds for the models it was measured on and not for every model. Three runs of one model differ by a few items, so a difference that size says nothing. Source: the typryx README, "Current OpenAI models, measured 2026-11-06".
 
 **stated confidence**
 The probability the model's own answer carried when it was given, averaged over the group.
@@ -5139,7 +5203,7 @@ The releases from 1 to 15 October 2026, with what each one shipped, are in [the 
 
 - The own model measured is a small 7B model on a machine with no GPU. A model you have tuned, or a machine with a GPU, is not measured.
 
-- OpenAI's current models, gpt-5.x and gpt-6, refuse token probabilities outright, so the openai-logprobs backend reaches only earlier hosted models and open models.
+- OpenAI's current models refuse the default request, and since v0.6.0 three variables reach them (five top logprobs, sixteen completion tokens, no reasoning). Claude Haiku 5.5 cannot be a typed judge: measured 2026-11-25, Anthropic's OpenAI-compatible endpoint refuses temperature, which typryx always sends, and without it returns no logprobs.
 
 - A freeform question sends the whole state when TYPRYX_ALLOW_FREEFORM=1 is set (off by default).
 
@@ -5432,7 +5496,7 @@ The [Trailryx room](https://it-rat.com/services/trailryx.html) has the replay, t
 
 > How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed from v0.7.0 to v0.9.0, and its boundaries.
 
-The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst replay, the drawing of the four checks, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.
+The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst replay, the drawing of the five steps, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.
 
 - [At a glance](https://it-rat.com/heraldyx-guide.html#overview)
 
@@ -5470,7 +5534,7 @@ The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst r
 
 Every other plane in the stack records what happened. None of them wakes anybody. Heraldyx reads the shared event log the others already write, decides which of those events a human should hear about tonight rather than tomorrow, and sends one mail. It comes from your own box, and it carries links into your own console. It reads a file and sends mail: that narrowness is the design, because this is the one component of the box allowed to open a connection to anything outside it.
 
-## Four checks, in this order, and the order is the point.
+## Five steps, in this order, and the order is the point.
 
 The decision layer is a pure function over an event and a few counters. It performs no I/O at all, which is what makes the awkward cases (a burst, a restart, a clock that moved) testable without a mail server. The last cell of the room's drawing was redrawn after a run on 2026-09-17: the v0.2.3 image sent one notice at the ceiling and then nothing for 28 minutes of high and critical events. Since v0.2.4 a critical passes the ceiling and whatever is held is summarised every ten minutes until the hour turns; the launchers pin v0.8.2 on their main branches.
 
@@ -5591,7 +5655,7 @@ A first run starts at the end of the log. A month of old incidents arriving at o
 
 ## Back to the room.
 
-The [Heraldyx room](https://it-rat.com/services/heraldyx.html) has the burst replay, the drawing of the four checks and the sample mail, and [the guides index](https://it-rat.com/guides.html) has the field itself.
+The [Heraldyx room](https://it-rat.com/services/heraldyx.html) has the burst replay, the drawing of the five steps and the sample mail, and [the guides index](https://it-rat.com/guides.html) has the field itself.
 
 
 ---
@@ -5847,7 +5911,7 @@ The room's simulation is labeled as one: a replay of the envelope's normal day. 
 
 ### Everything meets at the envelope.
 
-Fifteen registered sources write one shape: twelve onto one NDJSON bus, and heraldyx, scopyx and the keyryx witness into files of their own (dashed). Five required fields, six optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also one of the fifteen sources; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. The keyryx witness also reads every stream; its findings go to a file of their own, off the bus, which Heraldyx mails and the Genaryx console shows as incidents through a read-only mount. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.
+Fifteen registered sources write one shape: twelve onto one NDJSON bus, and heraldyx, scopyx and the keyryx witness into files of their own (dashed). agent-conform counts among the twelve: it writes only its own stream, in the bus directory. Five required fields, six optional ones. Five consumers read it back: the agent-conform CLI validates against embedded copies of the canonical JSON Schemas and, on the box, re-checks every stream's hash chain and writes what it finds to a stream of its own, which is how it is also one of the fifteen sources; Idryx folds events into the identity graph, TokenFuse Cloud files them into evidence packs, Heraldyx mails the operator about the few worth interrupting them for, and Trailryx seals the stream into a hash-chained record. The keyryx witness also reads every stream; its findings go to a file of their own, off the bus, which Heraldyx mails and the Genaryx console shows as incidents through a read-only mount. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.
 
 ### The passport
 

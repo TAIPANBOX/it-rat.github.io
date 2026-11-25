@@ -62,9 +62,9 @@ The third row is the one worth reading twice. The fixture policy said **allow**,
 
 An allowed host answering 302 to a denied one is the oldest allowlist bypass there is, and it is invisible to any check that reads only the URL the caller passed. The same argument applies one layer down, to the name itself.
 
-### It refuses to follow
+### Every hop is decided again
 
-The fetcher it ships with returns the redirect instead of following it. Following inside the fetcher would be a second request that no decision preceded, which is exactly the bypass. Most HTTP clients follow redirects by default, which is why this is written down rather than assumed.
+The fetcher it ships with hands a redirect back instead of following it, and Scopyx follows it one hop at a time, with all five gates run again on the new destination. Following inside the fetcher would be a second request that no decision preceded, which is exactly the bypass. Most HTTP clients follow redirects by default, which is why this is written down rather than assumed.
 
 ### Every hop is resolved again
 
@@ -114,7 +114,7 @@ It is an error. For a person, degrading to a blank frame is right. For an agent 
 
 ## A URL is personal data, and the record is built around that.
 
-`https://crm.example/customers/12345?email=jane@example.com` is an address and also a name, an identifier and a contact detail. The path and the query string, which is exactly where an identifier or a session token lives, are never assembled into the event at all. What is kept is the origin and a SHA-384, so two records can be compared without either holding the address.
+`https://crm.example/customers/12345?email=jane@example.com` is an address and also a name, an identifier and a contact detail. With `SCOPYX_RETAIN` unset, the default, the path and the query string, which is exactly where an identifier or a session token lives, are never assembled into the event at all. What is kept is the origin and a SHA-384, so two records can be compared without either holding the address. Setting `SCOPYX_RETAIN=payload` writes the full URL into `url_unprotected`.
 
 ### Its own journal, its own volume
 

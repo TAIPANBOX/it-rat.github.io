@@ -18,9 +18,9 @@ The name is resolved and your policy plane is asked before any verdict, so the c
 
 The checked addresses are pinned and the transport refuses to dial a host no decision covered, which makes it the floor under everything above it.
 
-### It refuses to follow
+### Every hop is decided again
 
-The fetcher it ships with returns the redirect instead of following it. The target's name is looked up at the moment of the hop, never from anything remembered.
+The fetcher it ships with hands a redirect back instead of following it, and Scopyx follows it one hop at a time, with all five gates run again on the new destination. The target's name is looked up at the moment of the hop, never from anything remembered.
 
 ### Governed at the navigation is not governed per request
 

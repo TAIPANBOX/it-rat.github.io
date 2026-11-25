@@ -170,8 +170,8 @@
     </div>
     <div class="prose rv">
       <p>An allowed host answering 302 to a denied one is the oldest allowlist bypass there is, and it is invisible to any check that reads only the URL the caller passed. The same argument applies one layer down, to the name itself.</p>
-      <h3>It refuses to follow</h3>
-      <p>The fetcher it ships with returns the redirect instead of following it. Following inside the fetcher would be a second request that no decision preceded, which is exactly the bypass. Most HTTP clients follow redirects by default, which is why this is written down rather than assumed.</p>
+      <h3>Every hop is decided again</h3>
+      <p>The fetcher it ships with hands a redirect back instead of following it, and Scopyx follows it one hop at a time, with all five gates run again on the new destination. Following inside the fetcher would be a second request that no decision preceded, which is exactly the bypass. Most HTTP clients follow redirects by default, which is why this is written down rather than assumed.</p>
       <h3>Every hop is resolved again</h3>
       <p>The target's name is looked up at the moment of the hop, never from anything remembered. An address resolved a minute ago would satisfy the check while the fetch reached something else.</p>
       <h3>And the socket goes where the decision looked</h3>
@@ -247,7 +247,7 @@
       <h2>A URL is personal data, and the record is built around that.</h2>
     </div>
     <div class="prose rv">
-      <p><span class="mono">https://crm.example/customers/12345?email=jane@example.com</span> is an address and also a name, an identifier and a contact detail. The path and the query string, which is exactly where an identifier or a session token lives, are never assembled into the event at all. What is kept is the origin and a SHA-384, so two records can be compared without either holding the address.</p>
+      <p><span class="mono">https://crm.example/customers/12345?email=jane@example.com</span> is an address and also a name, an identifier and a contact detail. With <span class="mono">SCOPYX_RETAIN</span> unset, the default, the path and the query string, which is exactly where an identifier or a session token lives, are never assembled into the event at all. What is kept is the origin and a SHA-384, so two records can be compared without either holding the address. Setting <span class="mono">SCOPYX_RETAIN=payload</span> writes the full URL into <span class="mono">url_unprotected</span>.</p>
       <h3>Its own journal, its own volume</h3>
       <p>A component that can write the shared log can, once compromised, corrupt the trail it was adding to. This is the one part of the box that reaches the public internet on purpose, which makes it the last one that should be able to rewrite anybody else's record.</p>
       <h3>Chained, so a deletion shows</h3>
