@@ -429,6 +429,16 @@ true.
    block on the room. `@decided 2026-10-16`: service pages stay short and
    visual, and everything deeper moves to one guide per service.
 
+   `@decided 2026-11-24`: within that budget a room is drawn, not written. It
+   carries schematics, SVG animations that show its processes, and short
+   information blocks of one or two sentences; a list or a paragraph that
+   explains moves to the guide, and the room links to the section that holds
+   it. Applied the next day to keyryx, trailryx, qryx, mockryx, idryx,
+   tokenfuse and heraldyx: each limits list became three short blocks with a
+   link to the guide's `#limits`, and each paragraph about a room's neighbours
+   became a small flow schematic. The word ceiling below holds the size; the
+   shape of each block is held by this file and a reader.
+
    Rooms grew by accretion and nothing measured it. Each release added a
    paragraph, the first half of October added a dated "what changed" block to
    four rooms, and `services/typryx.html` reached 1,540 lines. Measured with
