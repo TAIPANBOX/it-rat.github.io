@@ -8,7 +8,7 @@ Heraldyx reads the shared event log the others already write, decides which of t
 
 ## A hundred and twenty events arrive. Twenty-one messages leave.
 
-This is a scripted scenario: `scripts/burst-demo.sh` in the repository feeds 120 events to the real binary with the default limits and counts what comes out. Watch where the other hundred stop.
+A scripted run of scripts/burst-demo.sh: 120 events into the real binary with the default limits. Watch where the other hundred stop.
 
 ## Five steps, in this order, and the order is the point.
 
@@ -41,18 +41,24 @@ Not from the event, which carries the agent and who it acted for, and neither of
 
 ## Every message it sent, sealed, on a volume the planes cannot reach.
 
-"We wrote to you at 03:14, and your mail server took it at 03:14:02" is a claim somebody eventually has to prove, in an argument they did not choose. So every message leaves one hash-chained record behind it, in the same envelope the rest of the stack speaks.
+Every message leaves one hash-chained record behind it, in the envelope the rest of the stack speaks, so when it was sent can be proved.
 
 ## The boundaries, stated rather than discovered at three in the morning.
 
-- It does not queue: a message that cannot be delivered is logged, written into the dispatch record as a refusal, and dropped. Quiet hours and maintenance windows are holds, not a queue: they hold alerts below critical and, when the hours or the window end, send one mail saying how many were held. A critical is never held.
+### It does not queue
 
-- Vouchryx's delegation events have no sentences yet, so a mail about one says the box has no description for the event until one is written.
+A message that cannot be delivered is logged, recorded as a refusal and dropped. Quiet hours hold alerts below critical, and a critical is never held.
 
-- The source check does not stop a process that creates a plane's file before that plane does, or a writer forging its own stream. The checkpoint gate, from v0.8.0, narrows that for streams a producer signs: with HERALDYX_CHECKPOINT_GATE=on, a stream is read only while a checkpoint signed by a pinned key covers it. It is off by default, it trusts a pinned key until an operator removes it, and it holds only if each producer alone can write its stream and checkpoints. No launcher has a producer writing signed checkpoints yet.
+### Delegations have no sentences yet
+
+A mail about a Vouchryx delegation event says the box has no description for it yet.
+
+### The source check has an edge
+
+A process that creates a plane's file first, or a writer forging its own stream, gets past it. The checkpoint gate narrows that, and it is off by default.
 
 ## Twelve planes write the log it reads.
 
-This plane mails about what other planes wrote, so its reach grows when theirs does. Twelve planes write the shared log, and the Keyryx witness's findings file is read beside it. [Vouchryx](https://it-rat.com/services/vouchryx.html) reports a delegation issued, denied or revoked, and [CostCrew](https://it-rat.com/services/costcrew.html) reports spend spikes, budget thresholds and every move its crew makes on a finding.
+It mails about what other planes wrote, so its reach grows with theirs.
 
 ### The Heraldyx guide

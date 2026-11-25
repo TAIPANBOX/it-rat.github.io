@@ -2217,19 +2217,6 @@
       "slow": false
     },
     {
-      "page": "services/heraldyx.html",
-      "claim": "v0.8.0",
-      "occurrences": 1,
-      "status": "measured",
-      "repo": "TAIPANBOX/heraldyx",
-      "command": "gh api repos/TAIPANBOX/heraldyx/releases/tags/v0.8.0 --jq .tag_name; cited as history, the release that introduced what the sentence describes, not as the current one",
-      "measured_on": "2026-11-04",
-      "note": "Updated 2026-10-19: the newest tag is v0.8.0 (released 2026-10-19, pinned by stack-single and stack-k8s). The room names it twice: the shipped line and the checkpoint gate. Previously v0.7.0, measured 2026-10-15.",
-      "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/heraldyx/releases/tags/v0.8.0 --jq .tag_name",
-      "slow": false
-    },
-    {
       "page": "heraldyx-guide.html",
       "claim": "v0.7.0",
       "occurrences": 11,
@@ -2305,19 +2292,6 @@
       "note": "Split out 2026-11-06: an earlier release the page names as history, no longer the current one.",
       "repo_dir": null,
       "check": "gh api repos/TAIPANBOX/typryx/releases/tags/v0.5.1 --jq .tag_name",
-      "slow": false
-    },
-    {
-      "page": "services/heraldyx.md",
-      "claim": "v0.8.0",
-      "occurrences": 1,
-      "repo": "TAIPANBOX/heraldyx",
-      "command": "gh api repos/TAIPANBOX/heraldyx/releases/tags/v0.8.0 --jq .tag_name; cited as history, the release that introduced what the sentence describes, not as the current one",
-      "status": "measured",
-      "measured_on": "2026-11-04",
-      "note": "The markdown twin of services/heraldyx.html, generated from it by tools/llms.py.",
-      "repo_dir": "heraldyx",
-      "check": "gh api repos/TAIPANBOX/heraldyx/releases/tags/v0.8.0 --jq .tag_name",
       "slow": false
     },
     {

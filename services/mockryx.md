@@ -8,7 +8,7 @@ A guardrail nobody has ever fired is a guess. Mockryx replays hostile scenarios 
 
 ## Watch every guardrail answer for itself.
 
-This is a simulation replaying five of the drills, and the shape is the real record: three of those five ran live against a real gateway on disposable boxes, twice, and held both times, 0 gaps, $0 real spend. The other two are the Wardryx scenarios that ship in the same set.
+A replay of five drills. Three of them ran live against a real gateway on disposable boxes, twice, and held: 0 gaps, $0 real spend.
 
 ## One target URL. One report. Three exit codes.
 
@@ -38,7 +38,7 @@ Four game-day drills rehearse a failing provider: three for one that is up but f
 
 ## It picks fights with the rest of the stack. On purpose, in pre-prod.
 
-In the request path, Mockryx rehearses [TokenFuse](https://it-rat.com/services/tokenfuse.html): the breaker's 402 and the DLP's 403, provoked deliberately and expected to answer. It does the same to [Wardryx](https://it-rat.com/services/wardryx.html), asserting that deny and hold verdicts land in the x-fuse-wardryx header.
+In the request path it rehearses TokenFuse and Wardryx, and expects each of them to answer.
 
 ## Point it at pre-prod, never at prod.
 
@@ -46,7 +46,17 @@ The URLs you pass are the only places it will ever send traffic.
 
 ## What it does not do.
 
-- The game-day drills (scenarios/game-day/) and the MCP broker drills (scenarios/mcp/) are not loaded by a plain mockryx run ./scenarios, on purpose: a failing provider sends no x-fuse-* header, so a routine CI run would show a false gap, and a broker drill needs --mcp-broker.
+### Pre-prod, never prod
+
+It talks only to the URLs you hand it: your gateway and, for the broker drills, your MCP broker.
+
+### Some drills wait to be asked
+
+A plain run leaves out the game-day and MCP broker drills, so a routine CI run shows no false gap.
+
+### A response speaks for the path
+
+A gateway answer covers the guardrails in the request path. Off-path services are proven by their own events.
 
 ### The Mockryx guide
 

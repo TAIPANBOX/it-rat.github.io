@@ -8,7 +8,7 @@ Idryx reads what Okta, Entra, AWS, GCP and Azure already log, adds the agent-eve
 
 ## Watch the graph catch a runaway.
 
-This is a simulation, but it replays the shape of the live validation run: TokenFuse agent-event NDJSON and Agent Passports land in a Postgres-backed graph, the detectors read the state back, and findings fire.
+A replay of the live validation run: TokenFuse agent-events and Agent Passports land in the graph, the detectors read it back, and findings fire.
 
 ## Sources in. Findings out. Nothing written back.
 
@@ -44,15 +44,21 @@ Download [the latest release binary](https://github.com/TAIPANBOX/idryx/releases
 
 ## It records who acts for whom. It does not prove it.
 
-The delegation chain here is a record: each identity lists the on_behalf_of chain it acts under, root first, and the graph walks that chain to show what the identity can reach. [Vouchryx](https://it-rat.com/services/vouchryx.html) is the other half, proof of possession per request and a revocation an incident can actually use.
+The delegation chain here is a record. Vouchryx is the other half: proof of possession per request and a revocation an incident can use.
 
-## What it does not do, and what is not proven yet.
+## What it does not do, in short.
 
-- A baseline engine learns what is normal per identity and stays quiet during its learning period.
+### Quiet while it learns
 
-- Least privilege fires only where usage data exists, so a source with no observed-usage signal produces no recommendations.
+A baseline engine learns what is normal per identity and stays quiet during its learning period.
 
-- The eBPF network sensor is Linux-only. It has attached and captured live flows on two kernels: a Docker Desktop Linux VM on a Mac (2026-09-08, arm64 kernel 7.0.12; a 12-second capture in a container, not against an agent: 3 flows on the fixed build, after 16 of the first run's 21 flows turned out to be the sensor's own traffic) and one x86_64 lab node (2026-09-27, one agent turn, 349 flows in 70 seconds). It has not yet run on a fleet or a cloud host.
+### No usage, no advice
+
+Least privilege fires only where usage data exists, so a source with no usage signal gets no recommendation.
+
+### The eBPF sensor is Linux-only
+
+It has captured live flows on two kernels: a Docker VM on a Mac and an x86_64 lab node.
 
 ### The Idryx guide
 

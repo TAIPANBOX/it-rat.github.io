@@ -8,7 +8,7 @@ Qryx tells you what is actually running: it scans binaries, containers, live TLS
 
 ## Watch it find every key in the building.
 
-This is a simulation, but the shape is real: it replays a live run against 25,586 ELF binaries, a container image and a live TLS endpoint. The evidence at the end is signed with a post-quantum algorithm, not a promise.
+A simulation of a live run against 25,586 ELF binaries, a container image and a live TLS endpoint. The evidence at the end is signed with a post-quantum algorithm.
 
 ## One graph. Every report reads the same one.
 
@@ -34,7 +34,7 @@ Snapshot the graph, then fail the build the moment a new weak or quantum-vulnera
 
 ## The inventory the rest of the stack borrows from.
 
-Qryx can write its agent-passport findings, drift, policy violations and signed-evidence records as agent-events onto the shared bus that [Platform](https://it-rat.com/services/platform.html) defines and every service writes to (opt-in, with --events). Only a finding that names a real agent emits an event, which today means the findings of qryx agents; scans of code, binaries, TLS and cloud KMS carry no agent and emit none. Crypto posture is one plane of a wider practice: [AI agent governance](https://it-rat.com/ai-agent-governance.html), and the defensive picture in [AI agent security](https://it-rat.com/ai-agent-security.html).
+Opt-in, and only for findings that name an agent. Crypto posture is one plane of [AI agent governance](https://it-rat.com/ai-agent-governance.html); the defensive picture is in [AI agent security](https://it-rat.com/ai-agent-security.html).
 
 ## One binary, any platform.
 

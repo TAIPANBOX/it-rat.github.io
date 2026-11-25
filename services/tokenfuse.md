@@ -8,7 +8,7 @@ TokenFuse is a drop-in gateway that gives every run a budget, watches its burn i
 
 ## Watch the breaker do its job.
 
-This is a simulation, but not a fantasy: it replays the exact shape of the live validation runs. An agent enters a retry loop against a $0.006 budget.
+A replay of the exact shape of the live validation runs: an agent enters a retry loop against a $0.006 budget.
 
 ## One gateway in the path. One ledger everyone trusts.
 
@@ -50,15 +50,21 @@ Then point `ANTHROPIC_BASE_URL` at `localhost:4100` and give your next run a run
 
 ## It stops the spend. Two neighbours stop other things.
 
-A breaker is the right answer to a runaway and the wrong one to a compromised delegation: [Vouchryx](https://it-rat.com/services/vouchryx.html) ends that authority at every enforcement point at once. And a ceiling in the request path says nothing about the invoice that arrives a month later: [CostCrew](https://it-rat.com/services/costcrew.html) is where a bill gets taken apart, allocated and closed.
+A breaker answers a runaway. A stolen delegation is [Vouchryx](https://it-rat.com/services/vouchryx.html)'s, and next month's invoice is [CostCrew](https://it-rat.com/services/costcrew.html)'s.
 
 ## What the default install does not do.
 
-- The raft cluster build is optional and ships as its own image tag (tokenfuse:<tag>-cluster); the default image and the launchers run one gateway with its ledger in memory.
+### One gateway by default
 
-- A business unit's monthly cap is not yet shared across a fleet of gateways: each gateway counts its own calls on top of a tally it reads from the Cloud when it starts.
+The default image runs one gateway with its ledger in memory. The raft cluster build ships as its own image tag.
 
-- The model router and the cache ship switched off: the router is off by default, and the cache is off in the gateway and in the launchers.
+### A fleet does not share a cap
+
+Each gateway counts its own calls on top of a tally it reads from the Cloud when it starts.
+
+### Router and cache start off
+
+Both ship switched off, in the gateway and in the launchers.
 
 ### The TokenFuse guide
 

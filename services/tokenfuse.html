@@ -48,10 +48,6 @@
   .install .cmd{color:var(--fg)}
   .install .cmd b{color:var(--accent);font-weight:600}
   .install .note{color:var(--faint);font-size:11.5px;margin-left:auto}
-  /* what is not proven stays on the page (invariant 5); the full list is in the guide */
-  .limits ul{margin:0;padding-left:18px;color:var(--dim);font-size:14.5px;line-height:1.65;max-width:80ch}
-  .limits li+li{margin-top:9px}
-  .limits li::marker{color:var(--accent)}
   .deeper .cta-row{margin-top:16px}
 </style>
 <!-- seo:auto -->
@@ -105,7 +101,7 @@
     <div class="sec-head rv">
       <div class="kicker">sixty seconds, one runaway</div>
       <h2>Watch the breaker do its job.</h2>
-      <p class="lede">This is a simulation, but not a fantasy: it replays the exact shape of the live validation runs. An agent enters a retry loop against a $0.006 budget.</p>
+      <p class="lede">A replay of the exact shape of the live validation runs: an agent enters a retry loop against a $0.006 budget.</p>
     </div>
     <div class="rv" id="tf-sim"></div>
   </div>
@@ -214,7 +210,10 @@
     <div class="sec-head rv">
       <div class="kicker">the two planes either side of this one</div>
       <h2>It stops the spend. Two neighbours stop other things.</h2>
-      <p class="lede">A breaker is the right answer to a runaway and the wrong one to a compromised delegation: <a href="vouchryx.html">Vouchryx</a> ends that authority at every enforcement point at once. And a ceiling in the request path says nothing about the invoice that arrives a month later: <a href="costcrew.html">CostCrew</a> is where a bill gets taken apart, allocated and closed.</p>
+      <p class="lede">A breaker answers a runaway. A stolen delegation is <a href="vouchryx.html">Vouchryx</a>'s, and next month's invoice is <a href="costcrew.html">CostCrew</a>'s.</p>
+    </div>
+    <div class="diagram rv">
+      <svg viewBox="0 0 960 178" role="img" aria-label="TokenFuse stops a runaway's spend; Vouchryx ends a compromised delegation and CostCrew closes the month's bill"><defs><marker id="tf-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker><style>.tf-t{font-family:ui-monospace,Menlo,monospace}.tf-still{display:none}@media (prefers-reduced-motion: reduce){.tf-anim{display:none}.tf-still{display:inline}}</style></defs><g class="tf-t" text-anchor="middle"><rect x="20" y="59.0" width="230" height="60" rx="11" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="135.0" y="84.0" fill="#FF574B" font-size="12" font-weight="700">a runaway</text><text x="135.0" y="102.0" fill="#8A97A6" font-size="10">retries against its budget</text><rect x="320" y="59.0" width="220" height="60" rx="11" fill="#161F2C" stroke="#F4B23E" stroke-width="1.4"/><text x="430.0" y="84.0" fill="#F4B23E" font-size="12" font-weight="700">TokenFuse</text><text x="430.0" y="102.0" fill="#8A97A6" font-size="10">stops the spend, in the path</text><rect x="700" y="20.0" width="240" height="60" rx="11" fill="#141C27" stroke="#8B9DFF" stroke-width="1.2"/><text x="820.0" y="45.0" fill="#8B9DFF" font-size="12" font-weight="700">Vouchryx</text><text x="820.0" y="63.0" fill="#8A97A6" font-size="10">ends the authority everywhere</text><rect x="700" y="98.0" width="240" height="60" rx="11" fill="#141C27" stroke="#7DD3A0" stroke-width="1.2"/><text x="820.0" y="123.0" fill="#7DD3A0" font-size="12" font-weight="700">CostCrew</text><text x="820.0" y="141.0" fill="#8A97A6" font-size="10">allocates and closes the bill</text><path d="M250 89 L320 89" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#tf-a)"/><path d="M540 89 L700 50" stroke="#8B9DFF" stroke-width="1.2" fill="none" marker-end="url(#tf-a)" stroke-dasharray="4 4"/><path d="M540 89 L700 128" stroke="#7DD3A0" stroke-width="1.2" fill="none" marker-end="url(#tf-a)" stroke-dasharray="4 4"/><rect x="555.9" y="59.5" width="128.2" height="18" rx="4" fill="#10161F"/><text x="620.0" y="72.0" fill="#8B9DFF" font-size="9.5">a stolen delegation</text><rect x="544.3" y="98.5" width="151.4" height="18" rx="4" fill="#10161F"/><text x="620.0" y="111.0" fill="#7DD3A0" font-size="9.5">the invoice, a month on</text><g class="tf-anim"><circle r="3.5" fill="#F4B23E"><animateMotion path="M250 89 L320 89" dur="2.6s" repeatCount="indefinite"/></circle></g></g></svg>
     </div>
   </div>
 </section>
@@ -226,13 +225,15 @@
       <div class="kicker">limits</div>
       <h2>What the default install does not do.</h2>
     </div>
-    <div class="card limits rv">
-      <ul>
-        <li>The raft cluster build is optional and ships as its own image tag (tokenfuse:&lt;tag&gt;-cluster); the default image and the launchers run one gateway with its ledger in memory.</li>
-        <li>A business unit's monthly cap is not yet shared across a fleet of gateways: each gateway counts its own calls on top of a tally it reads from the Cloud when it starts.</li>
-        <li>The model router and the cache ship switched off: the router is off by default, and the cache is off in the gateway and in the launchers.</li>
-      </ul>
+        <div class="bento">
+      <div class="card hover feature b-4 rv"><h3>One gateway by default</h3><p>The default image runs one gateway with its ledger in memory. The raft cluster build ships as its own image tag.</p></div>
+      <div class="card hover feature b-4 rv d1"><h3>A fleet does not share a cap</h3><p>Each gateway counts its own calls on top of a tally it reads from the Cloud when it starts.</p></div>
+      <div class="card hover feature b-4 rv d2"><h3>Router and cache start off</h3><p>Both ship switched off, in the gateway and in the launchers.</p></div>
     </div>
+    <div class="cta-row rv">
+      <a class="btn" href="../tokenfuse-guide.html#limits">Every limit, in the guide</a>
+    </div>
+
   </div>
 </section>
 
