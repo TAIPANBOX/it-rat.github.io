@@ -12,19 +12,19 @@ The witness is there to disagree with custody if custody is ever compromised, so
 
 ### Keys that stay in the store
 
-Keys of three algorithms, each wrapped under AES-256-GCM with a key derived from the root key and bound to its name and id. A private half is never written in the clear, and a record that is moved or edited refuses to start.
+Each private half is wrapped under AES-256-GCM with a key derived from the root key, and is never written in the clear.
 
 ### Consumers get what they were granted
 
-A consumer authenticates one way: its own socket, a bearer key compared by digest, or a Kubernetes token. It signs only with the keys its policy grants. A refusal answers a status and nothing else, and the reason goes to the operator's log.
+A consumer authenticates one way and signs only with the keys its policy grants. A refusal answers a status and nothing else.
 
 ### Delegated keys, proven first
 
-A high-rate signer generates its own key and proves it holds it. Custody certifies the key for a bounded life and publishes it with an overlap, so a verifier that caches the set keeps verifying through a rotation.
+A high-rate signer proves it holds its own key, and custody certifies it for a bounded life with an overlap, so a rotation is never an outage.
 
 ### A witness that remembers what it saw
 
-The witness records how many bytes of each stream it has read and their SHA-256, and hashes the stream again from byte zero each interval (hourly for a stream over 256 MiB). It keeps no copy, so it can tell that a byte changed, never what it was. A changed byte is reported as a rewrite, a shorter stream as a truncation, and a new chain in the middle as a restart. Its own log is an RFC 9162 tree, and each head is signed with ECDSA P-384 and ML-DSA-65 side by side.
+It keeps a count and a hash of every stream, never a copy, and reports a rewrite, a truncation or a restarted chain.
 
 ### A check you can run without the service
 
@@ -34,47 +34,33 @@ The witness records how many bytes of each stream it has read and their SHA-256,
 
 Verifiers read the published key sets and never call custody for each request. In stack-single the witness reads the event bus and writes its findings to a volume of its own; by default the binary writes them to keyryx.ndjson on the bus.
 
-## Stated rather than discovered later.
+## A signature waits for its log line. A missing byte gets noticed.
 
-- It is on no request path. Enforcement points and agents never wait on it, and verifiers keep verifying when it is down.
+## What it refuses, where it runs, what it leaves open.
 
-- It makes no decision. It signs what a granted consumer asks, and it judges no tool call and refuses nothing for money.
+### On no request path
 
-- It issues no agent identity and holds no provider key.
+Agents and enforcement points never wait on it. Verifiers keep verifying from a cached key set when custody is down.
 
-- It never holds a delegated private key. That half stays with its consumer.
+### It decides nothing
 
-- It calls no paid service. A time-stamping authority is called only when an operator names one.
+It signs what a granted consumer asks and judges no tool call. It issues no agent identity and never holds a delegated private half.
 
-## Running in stack-single today.
+### Two containers in stack-single
 
-- Custody and the witness run as separate containers in the stack-single Compose file, each under its own uid.
+Custody and the witness run under their own uids, and the witness has no network. Wardryx approvals, the Vouchryx working key and the record seal are signed through custody.
 
-- Wardryx signs its approval tokens through Keyryx, so the approval key is held by custody.
+### Findings reach a person
 
-- Vouchryx signs with a working key Keyryx certifies, checked against a root the box pins: the default since stack-single 1.6.0.
+They land in keyryx.ndjson on a volume of their own. Heraldyx mails the high ones and the console shows them as incidents.
 
-- The witness reads the event bus and, since 1.6.0, the Trailryx records. No producer writes a checkpoint yet.
+### Rotation stays shut
 
-- Since 1.6.0 the record seal signs each sealed root through custody and attaches the witness's attestations.
+No launcher sets an admin key, so custody answers 403 to every rotation and revocation until an operator sets one.
 
-- Its findings go to keyryx.ndjson on a volume of their own, which Heraldyx and the console mount read only. Heraldyx mails the high ones (the medium ones go in the digest), and the console shows them as incidents. An operator can also check the witness log with keyryx verify.
+### One host, one root file
 
-- No admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one.
-
-## What is not proven yet.
-
-- Two released consumers can ask for and renew a delegated key, each opt-in: Vouchryx from 0.5.0 (its token key) and TokenFuse from 1.18.0 (its checkpoint key). No launcher turns either on, and only Vouchryx's round trip has run against a real keyryx binary, once.
-
-- The witness and custody share a host. In stack-single they are separate users, volumes and keys; in stack-up they share the user that started them. Either way they are not separate trust domains. An anchor off the host is the operator's to add, and no public time-stamping authority has been asked.
-
-- The first witness read pins the delegation root that custody serves, unless an operator sets the pin before it starts.
-
-- No consumer has yet authenticated with a projected service-account token on a real cluster; that path is tested against tokens the repository mints. On a kind cluster custody has served a bearer-key consumer and refused a wrong key (stack-k8s, 2026-10-18).
-
-- Custody's use log is protected against edits in its middle, not against a rewrite from its first line, and the witness does not read it.
-
-- The root key is a file. No cloud key management is wired in.
+Custody and the witness share a host, so they are not separate trust domains, and the root key is a file. An off-host anchor is the operator's to add.
 
 ### Build the binary and read its version.
 
