@@ -32,16 +32,10 @@ A sweep that reports zero only means something if the same harness fails on a di
 
 ## Limits, in short.
 
-### Read with the CLI
+The console has no panel for the record plane yet, so what is sealed is read on the command line. [In the guide](https://it-rat.com/trailryx-guide.html#limits)
 
-The console has no panel for the record plane yet, so what is sealed is read on the command line.
+Erasure is a library: the shipped node has no erase command and keeps no payload plane, so one subject cannot yet be erased through it. [In the guide](https://it-rat.com/trailryx-guide.html#limits)
 
-### Erasure is a library
-
-The shipped node has no erase command and keeps no payload plane, so one subject cannot yet be erased through it.
-
-### The witness shares the box
-
-Every launcher signs sealed roots through Keyryx and attaches the witness, which runs on the same machine. A date an outside party vouches for takes an anchor off it.
+Every launcher signs sealed roots through Keyryx and attaches the witness, which runs on the same machine, so a date an outside party vouches for needs an anchor off it. [In the guide](https://it-rat.com/trailryx-guide.html#limits)
 
 ### The Trailryx guide

@@ -140,6 +140,36 @@
      zero and read as a stray line. Widened only for the panel that holds a
      mailbox, so every other sheet on the site keeps its own width. */
   .sh-ov:has(.mailbox) .sh-box{width:min(1140px,100%)}
+  /* tabbed pictures (the .flight widget of scopyx and typryx): a drawing,
+     tabs that light their part of it, and one sentence per tab */
+  .flight{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);overflow:hidden}
+  .fl-head{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--line);
+    font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .fl-head .n{margin-left:auto;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .fl-head .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);flex:0 0 auto}
+  .flight svg{display:block;width:100%;height:auto}
+  .fl-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 15px;border-top:1px solid var(--line)}
+  .fl-tab{font-family:var(--font-m);font-size:11.5px;color:var(--dim);cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;
+    transition:color .15s,border-color .15s,background .15s}
+  .fl-tab:hover{color:var(--fg);border-color:color-mix(in srgb, var(--accent) 55%, var(--line-2))}
+  .fl-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fl-tab[aria-pressed="true"]{color:#0A1420;background:var(--accent);border-color:var(--accent)}
+  .fl-why{margin:0;padding:13px 15px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;line-height:1.65}
+  .fl-why a{color:var(--accent)}
+  .fl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  @media(max-width:760px){.fl-scroll svg{min-width:720px}}
+  .tp svg [data-p]{transition:opacity .35s}
+  .tp svg[data-show] [data-p]{opacity:.3}
+  @media (prefers-reduced-motion: reduce){
+    .tp svg [data-p]{transition:none}
+    .tp svg .tp-anim{display:none}
+  }
+  /* tp:hx */
+  #hx-svg[data-show="queue"] [data-p~="queue"],
+  #hx-svg[data-show="deleg"] [data-p~="deleg"],
+  #hx-svg[data-show="edge"] [data-p~="edge"]{opacity:1}
+  /* /tp */
 </style>
 <!-- seo:auto -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Heraldyx","url":"https://it-rat.com/services/heraldyx.html","description":"The part of the agent stack that writes to you: it reads the event log, decides what is worth a human tonight, and mails it with links into your console.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/heraldyx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Heraldyx","item":"https://it-rat.com/services/heraldyx.html"}]}]}</script>
@@ -388,22 +418,30 @@
   </div>
 </section>
 
-<!-- ================= BOUNDARIES ================= -->
+<!-- ================= LIMITS ================= -->
 <section class="sec" id="limits" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">what it does not do</div>
       <h2>The boundaries, stated rather than discovered at three in the morning.</h2>
     </div>
-        <div class="bento">
-      <div class="card hover feature b-4 rv"><h3>It does not queue</h3><p>A message that cannot be delivered is logged, recorded as a refusal and dropped. Quiet hours hold alerts below critical, and a critical is never held.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>Delegations have no sentences yet</h3><p>A mail about a Vouchryx delegation event says the box has no description for it yet.</p></div>
-      <div class="card hover feature b-4 rv d2"><h3>The source check has an edge</h3><p>A process that creates a plane's file first, or a writer forging its own stream, gets past it. The checkpoint gate narrows that, and it is off by default.</p></div>
+    <div class="flight tp rv">
+      <div class="fl-head"><span class="dot"></span>what the mail leaves open<span class="n">it does not queue</span></div>
+      <div class="fl-scroll"><svg id="hx-svg" data-show="queue" viewBox="0 0 960 270" role="img" aria-labelledby="hx-svg-t"><title id="hx-svg-t">Heraldyx reads the bus planes through a source check and mails your inbox; an undeliverable message is logged, recorded and dropped, quiet hours hold what is below critical, a delegation event has no sentence yet, and a forging writer can pass the check.</title><defs><marker id="hx-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="queue deleg edge"><rect x="20" y="24" width="180" height="80" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="110.0" y="44" fill="#93A8C4" font-size="12" font-weight="700">bus planes</text></g><g data-p="queue deleg edge"><text x="110.0" y="61" fill="#8A97A6" font-size="10.5">one file</text></g><g data-p="queue deleg edge"><text x="110.0" y="76" fill="#8A97A6" font-size="10.5">per plane</text></g><g data-p="queue deleg edge"><path d="M200 64 L248 64" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#hx-a)"/></g><g data-p="edge"><rect x="20" y="150" width="180" height="64" rx="10" fill="#141C27" stroke="#FF574B" stroke-width="1.2" stroke-dasharray="4 4"/><text x="110.0" y="170" fill="#FF574B" font-size="12" font-weight="700">a forging writer</text></g><g data-p="edge"><text x="110.0" y="187" fill="#8A97A6" font-size="10.5">or a file made first</text></g><g data-p="edge"><path d="M200 176 L300 106" stroke="#FF574B" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#hx-a)"/></g><g data-p="queue deleg edge"><rect x="250" y="24" width="170" height="80" rx="10" fill="#141C27" stroke="#5BC8F5" stroke-width="1.2"/><text x="335.0" y="44" fill="#5BC8F5" font-size="12" font-weight="700">source check</text></g><g data-p="edge"><text x="335.0" y="61" fill="#8A97A6" font-size="10.5">the plane's own writer?</text></g><g data-p="edge"><text x="335.0" y="76" fill="#FF574B" font-size="10.5">checkpoint gate: off</text></g><g data-p="queue deleg"><path d="M420 64 L468 64" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#hx-a)"/></g><g data-p="queue deleg edge"><rect x="470" y="24" width="210" height="130" rx="10" fill="#161F2C" stroke="#5BC8F5" stroke-width="1.2"/><text x="575.0" y="44" fill="#5BC8F5" font-size="12" font-weight="700">heraldyx</text></g><g data-p="queue"><text x="575.0" y="61" fill="#8A97A6" font-size="10.5">quiet hours hold</text></g><g data-p="queue"><text x="575.0" y="76" fill="#8A97A6" font-size="10.5">what is below critical</text></g><g data-p="queue"><text x="575.0" y="91" fill="#E9EFF6" font-size="10.5">a critical: never held</text></g><text x="575.0" y="106" fill="#8A97A6" font-size="10.5"></text><g data-p="deleg"><text x="575.0" y="121" fill="#8A97A6" font-size="10.5">delegation event:</text></g><g data-p="deleg"><text x="575.0" y="136" fill="#E9EFF6" font-size="10.5">no sentence yet</text></g><g data-p="queue deleg"><path d="M680 54 L728 54" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#hx-a)"/></g><g data-p="queue deleg"><rect x="730" y="24" width="210" height="64" rx="10" fill="#141C27" stroke="#5BC8F5" stroke-width="1.2"/><text x="835.0" y="44" fill="#5BC8F5" font-size="12" font-weight="700">your inbox</text></g><g data-p="queue deleg"><text x="835.0" y="61" fill="#8A97A6" font-size="10.5">a link, never a button</text></g><g data-p="queue"><path d="M680 128 L728 128" stroke="#FF574B" stroke-width="1.2" fill="none" marker-end="url(#hx-a)"/></g><g data-p="queue"><rect x="730" y="104" width="210" height="92" rx="10" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="835.0" y="124" fill="#FF574B" font-size="12" font-weight="700">undeliverable</text></g><g data-p="queue"><text x="835.0" y="141" fill="#8A97A6" font-size="10.5">logged</text></g><g data-p="queue"><text x="835.0" y="156" fill="#8A97A6" font-size="10.5">recorded as a refusal</text></g><g data-p="queue"><text x="835.0" y="171" fill="#E9EFF6" font-size="10.5">dropped: no queue</text></g><g data-p="deleg"><path d="M575 196 L575 156" stroke="#8B9DFF" stroke-width="1.2" fill="none" marker-end="url(#hx-a)"/></g><g data-p="deleg"><rect x="470" y="198" width="210" height="58" rx="10" fill="#141C27" stroke="#8B9DFF" stroke-width="1.2"/><text x="575.0" y="218" fill="#8B9DFF" font-size="12" font-weight="700">vouchryx</text></g><g data-p="deleg"><text x="575.0" y="235" fill="#8A97A6" font-size="10.5">a delegation event</text></g><g class="tp-anim"><g data-p="queue deleg edge"><circle r="3.6" fill="#93A8C4"><animateMotion path="M200 64 L248 64" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="edge"><circle r="3.6" fill="#FF574B"><animateMotion path="M200 176 L300 106" dur="2.8s" begin="-0.8s" repeatCount="indefinite"/></circle></g><g data-p="queue deleg"><circle r="3.6" fill="#5BC8F5"><animateMotion path="M420 64 L468 64" dur="2.8s" begin="-0.6s" repeatCount="indefinite"/></circle></g><g data-p="queue deleg"><circle r="3.6" fill="#5BC8F5"><animateMotion path="M680 54 L728 54" dur="2.8s" begin="-1.2s" repeatCount="indefinite"/></circle></g><g data-p="queue"><circle r="3.6" fill="#FF574B"><animateMotion path="M680 128 L728 128" dur="2.8s" begin="-1.8s" repeatCount="indefinite"/></circle></g><g data-p="deleg"><circle r="3.6" fill="#8B9DFF"><animateMotion path="M575 196 L575 156" dur="2.8s" begin="-0.4s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="hx-svg" data-k="queue">It does not queue</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="hx-svg" data-k="deleg">Delegations</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="hx-svg" data-k="edge">Source check</button>
+      </div>
+      <div aria-live="polite">
+        <p class="fl-why" data-for="queue">A message that cannot be delivered is logged, recorded as a refusal and dropped, and quiet hours hold alerts below critical but never a critical. <a href="../heraldyx-guide.html#limits">In the guide</a></p>
+        <p class="fl-why" data-for="deleg" hidden>A mail about a Vouchryx delegation event says the box has no description for it yet. <a href="../heraldyx-guide.html#limits">In the guide</a></p>
+        <p class="fl-why" data-for="edge" hidden>A process that creates a plane's file first, or a writer forging its own stream, gets past the source check, and the checkpoint gate that narrows this is off by default. <a href="../heraldyx-guide.html#limits">In the guide</a></p>
+      </div>
     </div>
     <div class="cta-row rv">
       <a class="btn" href="../heraldyx-guide.html#limits">Every limit, in the guide</a>
     </div>
-
   </div>
 </section>
 
@@ -473,6 +511,19 @@
   </div>
 </footer>
 
+<script>
+/* tabbed pictures: a tab lights its part of the drawing and shows its sentence */
+document.querySelectorAll(".tp").forEach(w=>{
+  const svg=w.querySelector("svg[data-show]"); if(!svg) return;
+  const tabs=[...w.querySelectorAll(".fl-tab")], whys=[...w.querySelectorAll(".fl-why")], n=w.querySelector(".fl-head .n");
+  tabs.forEach(t=>t.addEventListener("click",()=>{
+    svg.setAttribute("data-show",t.dataset.k);
+    tabs.forEach(b=>b.setAttribute("aria-pressed",String(b===t)));
+    whys.forEach(p=>{p.hidden=p.dataset.for!==t.dataset.k;});
+    if(n) n.textContent=t.textContent.toLowerCase();
+  }));
+});
+</script>
 <script src="../assets/site.js?v=e13"></script>
 <script src="../assets/sheet.js?v=e06"></script>
 <script src="../assets/sim.js?v=e13"></script>

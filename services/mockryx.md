@@ -16,25 +16,17 @@ The runner sends a scenario at your gateway's /v1/messages, reads the gateway's 
 
 ## Not a mock of your gateway. Your gateway.
 
-### Scenarios are YAML, not code
+One drill is one YAML file: the request to send, the status the guardrail must answer and the headers it must stamp. [In the guide](https://it-rat.com/mockryx-guide.html#what-it-proves)
 
-One drill is one file: the request to send, the status the guardrail must answer, the headers it must stamp.
+Assertions read the gateway's own answers on the real path: the breaker's 402, DLP's 403 and the Wardryx verdict in x-fuse-wardryx. [In the guide](https://it-rat.com/mockryx-guide.html#what-it-proves)
 
-### In-path checks, on the real path
+A drill can require the off-path services to react on the bus, not only the gateway to answer. [In the guide](https://it-rat.com/mockryx-guide.html#what-it-proves)
 
-Assertions read the gateway's own answers: the breaker's 402, DLP's 403, the deny or hold riding the x-fuse-wardryx header.
+A guardrail that is off looks like one that is broken, so the runner wants evidence before it calls a miss either one. [In the guide](https://it-rat.com/mockryx-guide.html#what-it-proves)
 
-### Async reaction checks
+Four game-day drills rehearse a failing provider, from a 5xx, a rate limit and a timeout to a refused connection, and check the chain in order. [In the guide](https://it-rat.com/mockryx-guide.html#what-it-proves)
 
-A drill can demand that the off-path services actually react, not only that the gateway answered.
-
-### A skip cannot hide a gap
-
-A guardrail that is off looks exactly like one that is broken. The runner insists on evidence before it calls a miss either one.
-
-### Drills for a failing provider
-
-Four game-day drills rehearse a failing provider: three for one that is up but failing (a 5xx, a rate limit and a timeout), and a fourth for one that refuses the connection. Each checks the chain in order. The call comes back with the provider's own status, the gateway puts a dependency_failed for the run on the bus, and the run reaches a person. A local stub plays the provider.
+It talks only to the pre-prod URLs you hand it, a plain run leaves the game-day and broker drills out, and off-path services are proven by their own events. [In the guide](https://it-rat.com/mockryx-guide.html#limits)
 
 ## It picks fights with the rest of the stack. On purpose, in pre-prod.
 
@@ -43,20 +35,6 @@ In the request path it rehearses TokenFuse and Wardryx, and expects each of them
 ## Point it at pre-prod, never at prod.
 
 The URLs you pass are the only places it will ever send traffic.
-
-## What it does not do.
-
-### Pre-prod, never prod
-
-It talks only to the URLs you hand it: your gateway and, for the broker drills, your MCP broker.
-
-### Some drills wait to be asked
-
-A plain run leaves out the game-day and MCP broker drills, so a routine CI run shows no false gap.
-
-### A response speaks for the path
-
-A gateway answer covers the guardrails in the request path. Off-path services are proven by their own events.
 
 ### The Mockryx guide
 

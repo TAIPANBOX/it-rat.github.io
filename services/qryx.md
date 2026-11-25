@@ -16,21 +16,15 @@ Five kinds of sources feed one scan engine: binaries, containers, live TLS, clou
 
 ## A graph that grades itself.
 
-### CBOM
+Qryx writes a CycloneDX 1.6 CBOM with one component per asset and risk class, so the tooling that tracks your SBOMs reads it too. [In the guide](https://it-rat.com/qryx-guide.html#holds)
 
-CycloneDX 1.6, one component per unique asset and risk class, every occurrence attached. It plugs into the same supply-chain tooling that already tracks your SBOMs.
+Data sealed today with a quantum-vulnerable algorithm can be captured now and opened later, which is why the graph grades it already. [In the guide](https://it-rat.com/qryx-guide.html#holds)
 
-### Harvest now, decrypt later
+Evidence attestations are signed with ML-DSA (FIPS 204) from Go's own crypto/mldsa, with no cosign dependency. [In the guide](https://it-rat.com/qryx-guide.html#holds)
 
-Data encrypted with a quantum-vulnerable algorithm today can be captured now and decrypted once a cryptographically relevant quantum computer exists. The migration clock is already running.
+Against a snapshot of the graph, a baseline diff exits 2 the moment a new weak or quantum-vulnerable asset appears. [In the guide](https://it-rat.com/qryx-guide.html#holds)
 
-### Post-quantum signing
-
-Evidence attestations sign with ML-DSA (FIPS 204) straight from Go's stdlib, crypto/mldsa, no cosign dependency.
-
-### CI drift gate
-
-Snapshot the graph, then fail the build the moment a new weak or quantum-vulnerable asset appears: a baseline diff exits 2 on new high-risk findings.
+It stays on the crypto axis and leaves identity to Idryx, and it counts cryptography in test code apart from the production inventory. [In the guide](https://it-rat.com/qryx-guide.html#limits)
 
 ## The inventory the rest of the stack borrows from.
 
@@ -39,12 +33,6 @@ Opt-in, and only for findings that name an agent. Crypto posture is one plane of
 ## One binary, any platform.
 
 Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qryx/releases) (Linux, macOS, Windows, SHA256SUMS included), or build from source with Go 1.27; the pinned go1.27.4 toolchain downloads itself on the first build.
-
-## What it leaves out, on purpose.
-
-- Identity stays Idryx's job; the agents connector stays strictly on the crypto axis.
-
-- Cryptography in test code is scanned and counted, then kept out of the production inventory; a flag counts it as production if that is what you want.
 
 ### The Qryx guide
 

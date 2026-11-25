@@ -16,25 +16,17 @@ Read-only connectors for Okta, Entra, AWS, GCP and Azure describe the humans, ke
 
 ## Five identity kinds. One set of answers.
 
-### One graph, every identity
+Humans, service accounts, keys, MCP servers and AI agents are five node kinds in one graph, not five tools. [In the guide](https://it-rat.com/idryx-guide.html#what-it-answers)
 
-Humans, service accounts, keys, MCP servers and AI agents: five node kinds in one graph, not five tools.
+on_behalf_of edges record who acts for whom, from agent to sub-agent to service account to human, and the walk is cycle-safe and resolves root-first. [In the guide](https://it-rat.com/idryx-guide.html#what-it-answers)
 
-### Delegation chains
+27 deterministic detectors in four families read the graph, and no LLM sits in the detection path, so every finding can be reproduced. [In the guide](https://it-rat.com/idryx-guide.html#what-it-answers)
 
-on_behalf_of edges record who acts for whom: agent to sub-agent to service account to human. The walk is cycle-safe and resolves root-first.
+For any identity Idryx computes the union of every permission reachable through its delegation chain. [In the guide](https://it-rat.com/idryx-guide.html#what-it-answers)
 
-### 27 deterministic detectors
+idryx ai-inventory sets what was declared, what was seen and what the code can reach side by side and names every disagreement, scoring none of it. [In the guide](https://it-rat.com/idryx-guide.html#what-it-answers)
 
-Statistics and rules over the graph, in four families. The LLM is never in the detection path, so every finding is reproducible and auditable.
-
-### Blast radius
-
-What does this key reach, transitively? Idryx computes the union of every permission reachable through an identity's delegation chain.
-
-### Declared, seen, in the code
-
-idryx ai-inventory now says, for each agent or service, what was declared, what was seen and what the code can reach, and it names every disagreement. It is a report: nothing in it is scored, ranked or a detector.
+The baseline stays quiet while it learns, least privilege speaks only where usage data exists, and the eBPF sensor runs on Linux only. [In the guide](https://it-rat.com/idryx-guide.html#limits)
 
 ### The one that reads everything and touches nothing.
 
@@ -45,20 +37,6 @@ Download [the latest release binary](https://github.com/TAIPANBOX/idryx/releases
 ## It records who acts for whom. It does not prove it.
 
 The delegation chain here is a record. Vouchryx is the other half: proof of possession per request and a revocation an incident can use.
-
-## What it does not do, in short.
-
-### Quiet while it learns
-
-A baseline engine learns what is normal per identity and stays quiet during its learning period.
-
-### No usage, no advice
-
-Least privilege fires only where usage data exists, so a source with no usage signal gets no recommendation.
-
-### The eBPF sensor is Linux-only
-
-It has captured live flows on two kernels: a Docker VM on a Mac and an x86_64 lab node.
 
 ### The Idryx guide
 

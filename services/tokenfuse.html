@@ -49,6 +49,40 @@
   .install .cmd b{color:var(--accent);font-weight:600}
   .install .note{color:var(--faint);font-size:11.5px;margin-left:auto}
   .deeper .cta-row{margin-top:16px}
+  /* tabbed pictures (the .flight widget of scopyx and typryx): a drawing,
+     tabs that light their part of it, and one sentence per tab */
+  .flight{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);overflow:hidden}
+  .fl-head{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--line);
+    font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .fl-head .n{margin-left:auto;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .fl-head .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);flex:0 0 auto}
+  .flight svg{display:block;width:100%;height:auto}
+  .fl-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 15px;border-top:1px solid var(--line)}
+  .fl-tab{font-family:var(--font-m);font-size:11.5px;color:var(--dim);cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;
+    transition:color .15s,border-color .15s,background .15s}
+  .fl-tab:hover{color:var(--fg);border-color:color-mix(in srgb, var(--accent) 55%, var(--line-2))}
+  .fl-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fl-tab[aria-pressed="true"]{color:#0A1420;background:var(--accent);border-color:var(--accent)}
+  .fl-why{margin:0;padding:13px 15px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;line-height:1.65}
+  .fl-why a{color:var(--accent)}
+  .fl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  @media(max-width:760px){.fl-scroll svg{min-width:720px}}
+  .tp svg [data-p]{transition:opacity .35s}
+  .tp svg[data-show] [data-p]{opacity:.3}
+  @media (prefers-reduced-motion: reduce){
+    .tp svg [data-p]{transition:none}
+    .tp svg .tp-anim{display:none}
+  }
+  /* tp:tf */
+  #tf-svg[data-show="budget"] [data-p~="budget"],
+  #tf-svg[data-show="loop"] [data-p~="loop"],
+  #tf-svg[data-show="forecast"] [data-p~="forecast"],
+  #tf-svg[data-show="focus"] [data-p~="focus"],
+  #tf-svg[data-show="label"] [data-p~="label"],
+  #tf-svg[data-show="incident"] [data-p~="incident"],
+  #tf-svg[data-show="open"] [data-p~="open"]{opacity:1}
+  /* /tp */
 </style>
 <!-- seo:auto -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"TokenFuse","url":"https://it-rat.com/services/tokenfuse.html","description":"A drop-in gateway that gives every agent run a budget and answers 402 when it is crossed. Anthropic and OpenAI wires, proven on three clouds and on premises.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/tokenfuse","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"TokenFuse","item":"https://it-rat.com/services/tokenfuse.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I cap what an AI agent can spend?","acceptedAnswer":{"@type":"Answer","text":"Give the run a budget. Every call is priced before it happens, the reserve is taken against that budget, and the call that would cross the cap is refused with an HTTP 402 before the provider ever sees it. Budgets nest along the run tree, so a sub-agent's run also has to fit inside every ancestor run's budget. A business unit can also have a monthly cap, which the gateway enforces in enforce mode."}},{"@type":"Question","name":"What happens to my agent when it hits the budget?","acceptedAnswer":{"@type":"Answer","text":"It gets a 402 with the reason, which is a status every framework already understands, and an incident is recorded against that run. Nothing else in the fleet is affected, and the spend that would have followed simply never happens."}},{"@type":"Question","name":"Do I have to rewrite my agent to use it?","acceptedAnswer":{"@type":"Answer","text":"No. It is a one-line base-URL change to a gateway that speaks the Anthropic Messages API and the OpenAI chat completions API. Set TOKENFUSE_MODE=shadow first and it prices and records everything while refusing nothing, so you can see what would have been blocked before anything is. Its own bookkeeping fails open, so a lost event or a failed telemetry push never refuses a call; the one exception is the start, when a gateway with a Cloud configured answers 503 seed_pending until it has read its money state. What happens when the policy plane is unreachable is the deployment's choice, and all three launchers ship it closed."}},{"@type":"Question","name":"Can it catch a retry loop before the bill does?","acceptedAnswer":{"@type":"Answer","text":"That is the case it was built for. A sustained loop trips the breaker, and a fan-out explosion opens an incident in the Cloud; either looks the same as a compromised agent from the budget's side. In the live campaign, the runaway that mattered was caught and killed on the day, not on the invoice."}},{"@type":"Question","name":"Does it still work with several gateways behind a load balancer?","acceptedAnswer":{"@type":"Answer","text":"In the cluster build, yes: the spend ledger is raft-replicated and the affordability check is linearized across the fleet, so four nodes on four machines admit exactly what one budget allows. The cluster record tests that with 30 concurrent reserves against a 5-unit budget, a kill of the leader and a real network partition. That build is optional and ships as its own image tag, not what the default image runs; the default profile is one gateway whose ledger lives in memory and is read back from the Cloud when it starts, each run's spend over the last 31 days, so a restart does not hand a run its budget again. That read-back does not let two gateways share one budget; only the cluster build does."}}]}]}</script>
@@ -164,20 +198,38 @@
   </div>
 </section>
 
-<!-- ================= FEATURES ================= -->
-<section class="sec" id="how" style="padding-top:18px">
+<!-- ================= WHAT IT HOLDS ================= -->
+<section class="sec" id="holds" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">what it holds</div>
       <h2>Not a dashboard. A set of hands on the wheel.</h2>
     </div>
-    <div class="bento">
-      <div class="card hover feature b-6 rv"><h3>Per-run budgets</h3><p>The run is the unit that pays. A sub-agent's run rolls up into its parent run, so its spend has to fit inside every ancestor's budget.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>Loop detection</h3><p>A retrying agent looks exactly like a compromised one from the budget's side. A sustained loop trips the breaker, and a fan-out explosion opens an incident in the Cloud, before either becomes a four-digit night.</p></div>
-      <div class="card hover feature b-6 rv"><h3>Burn forecast</h3><p>Reserve-then-settle accounting prices each call before it happens. The estimate is fast and honest about being an estimate.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>FOCUS export</h3><p><span class="mono">tokenfuse focus-export</span> writes the call trace as a FOCUS 1.2-style CSV, one row per call, with agent and run columns beside the FOCUS ones, so showback and chargeback can reuse the pipes and dashboards finance already trusts.</p></div>
-      <div class="card hover feature b-6 rv"><h3>A label from the act</h3><p>A run's taint follows what an enforcement point saw happen, not the tool name the agent reported. The MCP broker labels a call by the server that answered, and a search the provider ran itself labels the run too.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>One incident per failing provider</h3><p>A provider that keeps failing is one incident in the Cloud console and API, not one per call. The per-call event stays on the bus.</p></div>
+    <div class="flight tp rv">
+      <div class="fl-head"><span class="dot"></span>one call, through the gateway<span class="n">run budgets</span></div>
+      <div class="fl-scroll"><svg id="tf-svg" data-show="budget" viewBox="0 0 960 340" role="img" aria-labelledby="tf-svg-t"><title id="tf-svg-t">TokenFuse sits between the run tree and the provider: it prices each call before it is sent, rolls sub-run spend into every ancestor's budget, trips a breaker on loops, takes taint from what the MCP broker saw, opens one Cloud incident per failing provider and exports the call trace for finance.</title><defs><marker id="tf-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="budget loop label"><rect x="20" y="24" width="220" height="176" rx="10" fill="#161F2C" stroke="#93A8C4" stroke-width="1.2"/><text x="130.0" y="44" fill="#93A8C4" font-size="12" font-weight="700">the run tree</text></g><g data-p="budget"><rect x="40" y="60" width="180" height="38" rx="10" fill="#141C27" stroke="#F4B23E" stroke-width="1.2"/><text x="130.0" y="83.0" fill="#F4B23E" font-size="12" font-weight="700">parent run</text></g><g data-p="budget"><rect x="40" y="126" width="84" height="36" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="82.0" y="148.0" fill="#93A8C4" font-size="12" font-weight="700">sub-run</text></g><g data-p="budget"><rect x="136" y="126" width="84" height="36" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="178.0" y="148.0" fill="#93A8C4" font-size="12" font-weight="700">sub-run</text></g><g data-p="budget"><path d="M82 126 L110 100" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#tf-a)"/></g><g data-p="budget"><path d="M178 126 L150 100" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#tf-a)"/></g><g data-p="budget"><text x="130" y="186" fill="#F4B23E" font-size="10.5" text-anchor="middle">fits every ancestor</text></g><g data-p="forecast loop label"><path d="M240 112 L288 112" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#tf-a)"/></g><g data-p="budget loop forecast focus label incident open"><rect x="290" y="24" width="260" height="200" rx="10" fill="#161F2C" stroke="#F4B23E" stroke-width="1.2"/><text x="420.0" y="44" fill="#F4B23E" font-size="12" font-weight="700">tokenfuse gateway</text></g><g data-p="forecast"><text x="420.0" y="61" fill="#8A97A6" font-size="10.5">reserve, then settle</text></g><g data-p="forecast"><text x="420.0" y="76" fill="#8A97A6" font-size="10.5">priced before it is sent</text></g><g data-p="loop"><text x="420.0" y="91" fill="#E9EFF6" font-size="10.5">a loop trips the breaker</text></g><g data-p="label"><text x="420.0" y="106" fill="#8A97A6" font-size="10.5">taint from what it saw</text></g><g data-p="open"><text x="420.0" y="121" fill="#F4B23E" font-size="10.5">ledger in memory</text></g><g data-p="open"><text x="420.0" y="136" fill="#F4B23E" font-size="10.5">router, cache: off</text></g><g data-p="forecast incident"><path d="M550 60 L608 60" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#tf-a)"/></g><g data-p="forecast incident"><rect x="610" y="24" width="150" height="72" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="685.0" y="44" fill="#93A8C4" font-size="12" font-weight="700">provider</text></g><g data-p="incident"><text x="685.0" y="61" fill="#FF574B" font-size="10.5">keeps failing</text></g><g data-p="label"><rect x="610" y="112" width="150" height="72" rx="10" fill="#141C27" stroke="#8B9DFF" stroke-width="1.2"/><text x="685.0" y="132" fill="#8B9DFF" font-size="12" font-weight="700">MCP broker</text></g><g data-p="label"><text x="685.0" y="149" fill="#8A97A6" font-size="10.5">labels by the</text></g><g data-p="label"><text x="685.0" y="164" fill="#8A97A6" font-size="10.5">server that answered</text></g><g data-p="label"><path d="M608 148 L552 148" stroke="#8B9DFF" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#tf-a)"/></g><g data-p="loop incident open"><rect x="810" y="24" width="130" height="200" rx="10" fill="#141C27" stroke="#F4B23E" stroke-width="1.2"/><text x="875.0" y="44" fill="#F4B23E" font-size="12" font-weight="700">Cloud</text></g><g data-p="incident"><text x="875.0" y="61" fill="#8A97A6" font-size="10.5">one incident</text></g><g data-p="incident"><text x="875.0" y="76" fill="#8A97A6" font-size="10.5">per provider</text></g><text x="875.0" y="91" fill="#8A97A6" font-size="10.5"></text><g data-p="loop"><text x="875.0" y="106" fill="#8A97A6" font-size="10.5">fan-out:</text></g><g data-p="loop"><text x="875.0" y="121" fill="#8A97A6" font-size="10.5">an incident</text></g><text x="875.0" y="136" fill="#8A97A6" font-size="10.5"></text><g data-p="open"><text x="875.0" y="151" fill="#F4B23E" font-size="10.5">fleet: no</text></g><g data-p="open"><text x="875.0" y="166" fill="#F4B23E" font-size="10.5">shared cap</text></g><g data-p="incident"><path d="M760 60 L808 60" stroke="#FF574B" stroke-width="1.2" fill="none" marker-end="url(#tf-a)"/></g><g data-p="loop"><path d="M550 206 L785 206 L785 170 L808 170" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#tf-a)"/></g><g data-p="focus"><path d="M420 224 L420 262" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#tf-a)"/></g><g data-p="focus"><rect x="290" y="264" width="260" height="60" rx="10" fill="#141C27" stroke="#F4B23E" stroke-width="1.2"/><text x="420.0" y="284" fill="#F4B23E" font-size="12" font-weight="700">focus-export</text></g><g data-p="focus"><text x="420.0" y="301" fill="#8A97A6" font-size="10.5">one row per call</text></g><g data-p="focus"><text x="420.0" y="316" fill="#8A97A6" font-size="10.5">agent and run columns</text></g><g data-p="focus"><path d="M550 294 L608 294" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#tf-a)"/></g><g data-p="focus"><rect x="610" y="264" width="330" height="60" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="775.0" y="284" fill="#93A8C4" font-size="12" font-weight="700">finance's dashboards</text></g><g data-p="focus"><text x="775.0" y="301" fill="#8A97A6" font-size="10.5">showback and chargeback</text></g><g data-p="open"><rect x="20" y="236" width="220" height="88" rx="10" fill="#141C27" stroke="#5A6675" stroke-width="1.2" stroke-dasharray="4 4"/><text x="130.0" y="256" fill="#F4B23E" font-size="12" font-weight="700">left open</text></g><g data-p="open"><text x="130.0" y="273" fill="#8A97A6" font-size="10.5">one gateway by default</text></g><g data-p="open"><text x="130.0" y="288" fill="#8A97A6" font-size="10.5">its raft build: own tag</text></g><g class="tp-anim"><g data-p="budget"><circle r="3.6" fill="#F4B23E"><animateMotion path="M82 126 L110 100" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="budget"><circle r="3.6" fill="#F4B23E"><animateMotion path="M178 126 L150 100" dur="2.8s" begin="-1.2s" repeatCount="indefinite"/></circle></g><g data-p="forecast loop label"><circle r="3.6" fill="#93A8C4"><animateMotion path="M240 112 L288 112" dur="2.8s" begin="-0.4s" repeatCount="indefinite"/></circle></g><g data-p="forecast incident"><circle r="3.6" fill="#F4B23E"><animateMotion path="M550 60 L608 60" dur="2.8s" begin="-0.9s" repeatCount="indefinite"/></circle></g><g data-p="label"><circle r="3.6" fill="#8B9DFF"><animateMotion path="M608 148 L552 148" dur="2.8s" begin="-1.5s" repeatCount="indefinite"/></circle></g><g data-p="incident"><circle r="3.6" fill="#FF574B"><animateMotion path="M760 60 L808 60" dur="2.8s" begin="-0.2s" repeatCount="indefinite"/></circle></g><g data-p="loop"><circle r="3.6" fill="#F4B23E"><animateMotion path="M550 206 L785 206 L785 170 L808 170" dur="2.8s" begin="-2.0s" repeatCount="indefinite"/></circle></g><g data-p="focus"><circle r="3.6" fill="#F4B23E"><animateMotion path="M420 224 L420 262" dur="2.8s" begin="-0.6s" repeatCount="indefinite"/></circle></g><g data-p="focus"><circle r="3.6" fill="#F4B23E"><animateMotion path="M550 294 L608 294" dur="2.8s" begin="-1.4s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="tf-svg" data-k="budget">Run budgets</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="tf-svg" data-k="loop">Loops</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="tf-svg" data-k="forecast">Burn forecast</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="tf-svg" data-k="focus">FOCUS export</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="tf-svg" data-k="label">Taint</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="tf-svg" data-k="incident">Incidents</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="tf-svg" data-k="open">Leaves open</button>
+      </div>
+      <div aria-live="polite">
+        <p class="fl-why" data-for="budget">The run is the unit that pays: a sub-agent's run rolls up into its parent, so its spend must fit inside every ancestor's budget. <a href="../tokenfuse-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="loop" hidden>A sustained loop trips the breaker, and a fan-out explosion opens an incident in the Cloud, before either becomes a four-digit night. <a href="../tokenfuse-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="forecast" hidden>Reserve-then-settle accounting prices each call before it is sent, with an estimate that is honest about being one. <a href="../tokenfuse-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="focus" hidden>tokenfuse focus-export writes the call trace as a FOCUS-style CSV, one row per call with agent and run columns, for the dashboards finance already trusts. <a href="../tokenfuse-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="label" hidden>A run's taint follows what an enforcement point saw happen, such as the MCP server that answered, not the tool name the agent reported. <a href="../tokenfuse-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="incident" hidden>A provider that keeps failing is one incident in the Cloud console and API, while each per-call event stays on the bus. <a href="../tokenfuse-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="open" hidden>By default one gateway runs with its ledger in memory, a fleet counts its own calls rather than sharing a cap, and the router and cache start off. <a href="../tokenfuse-guide.html#limits">In the guide</a></p>
+      </div>
+    </div>
+    <div class="cta-row rv">
+      <a class="btn" href="../tokenfuse-guide.html#how-it-works">How it works, in full</a>
+      <a class="btn" href="../tokenfuse-guide.html#limits">Every limit</a>
     </div>
   </div>
 </section>
@@ -215,25 +267,6 @@
     <div class="diagram rv">
       <svg viewBox="0 0 960 178" role="img" aria-label="TokenFuse stops a runaway's spend; Vouchryx ends a compromised delegation and CostCrew closes the month's bill"><defs><marker id="tf-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker><style>.tf-t{font-family:ui-monospace,Menlo,monospace}.tf-still{display:none}@media (prefers-reduced-motion: reduce){.tf-anim{display:none}.tf-still{display:inline}}</style></defs><g class="tf-t" text-anchor="middle"><rect x="20" y="59.0" width="230" height="60" rx="11" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="135.0" y="84.0" fill="#FF574B" font-size="12" font-weight="700">a runaway</text><text x="135.0" y="102.0" fill="#8A97A6" font-size="10">retries against its budget</text><rect x="320" y="59.0" width="220" height="60" rx="11" fill="#161F2C" stroke="#F4B23E" stroke-width="1.4"/><text x="430.0" y="84.0" fill="#F4B23E" font-size="12" font-weight="700">TokenFuse</text><text x="430.0" y="102.0" fill="#8A97A6" font-size="10">stops the spend, in the path</text><rect x="700" y="20.0" width="240" height="60" rx="11" fill="#141C27" stroke="#8B9DFF" stroke-width="1.2"/><text x="820.0" y="45.0" fill="#8B9DFF" font-size="12" font-weight="700">Vouchryx</text><text x="820.0" y="63.0" fill="#8A97A6" font-size="10">ends the authority everywhere</text><rect x="700" y="98.0" width="240" height="60" rx="11" fill="#141C27" stroke="#7DD3A0" stroke-width="1.2"/><text x="820.0" y="123.0" fill="#7DD3A0" font-size="12" font-weight="700">CostCrew</text><text x="820.0" y="141.0" fill="#8A97A6" font-size="10">allocates and closes the bill</text><path d="M250 89 L320 89" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#tf-a)"/><path d="M540 89 L700 50" stroke="#8B9DFF" stroke-width="1.2" fill="none" marker-end="url(#tf-a)" stroke-dasharray="4 4"/><path d="M540 89 L700 128" stroke="#7DD3A0" stroke-width="1.2" fill="none" marker-end="url(#tf-a)" stroke-dasharray="4 4"/><rect x="555.9" y="59.5" width="128.2" height="18" rx="4" fill="#10161F"/><text x="620.0" y="72.0" fill="#8B9DFF" font-size="9.5">a stolen delegation</text><rect x="544.3" y="98.5" width="151.4" height="18" rx="4" fill="#10161F"/><text x="620.0" y="111.0" fill="#7DD3A0" font-size="9.5">the invoice, a month on</text><g class="tf-anim"><circle r="3.5" fill="#F4B23E"><animateMotion path="M250 89 L320 89" dur="2.6s" repeatCount="indefinite"/></circle></g></g></svg>
     </div>
-  </div>
-</section>
-
-<!-- ================= LIMITS ================= -->
-<section class="sec" id="limits" style="padding-top:14px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="kicker">limits</div>
-      <h2>What the default install does not do.</h2>
-    </div>
-        <div class="bento">
-      <div class="card hover feature b-4 rv"><h3>One gateway by default</h3><p>The default image runs one gateway with its ledger in memory. The raft cluster build ships as its own image tag.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>A fleet does not share a cap</h3><p>Each gateway counts its own calls on top of a tally it reads from the Cloud when it starts.</p></div>
-      <div class="card hover feature b-4 rv d2"><h3>Router and cache start off</h3><p>Both ship switched off, in the gateway and in the launchers.</p></div>
-    </div>
-    <div class="cta-row rv">
-      <a class="btn" href="../tokenfuse-guide.html#limits">Every limit, in the guide</a>
-    </div>
-
   </div>
 </section>
 
@@ -328,6 +361,19 @@
   </div>
 </footer>
 
+<script>
+/* tabbed pictures: a tab lights its part of the drawing and shows its sentence */
+document.querySelectorAll(".tp").forEach(w=>{
+  const svg=w.querySelector("svg[data-show]"); if(!svg) return;
+  const tabs=[...w.querySelectorAll(".fl-tab")], whys=[...w.querySelectorAll(".fl-why")], n=w.querySelector(".fl-head .n");
+  tabs.forEach(t=>t.addEventListener("click",()=>{
+    svg.setAttribute("data-show",t.dataset.k);
+    tabs.forEach(b=>b.setAttribute("aria-pressed",String(b===t)));
+    whys.forEach(p=>{p.hidden=p.dataset.for!==t.dataset.k;});
+    if(n) n.textContent=t.textContent.toLowerCase();
+  }));
+});
+</script>
 <script src="../assets/site.js?v=e13"></script>
 <script src="../assets/sheet.js?v=e06"></script>
 <script src="../assets/sim.js?v=e13"></script>

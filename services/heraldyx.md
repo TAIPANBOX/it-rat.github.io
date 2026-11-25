@@ -45,17 +45,11 @@ Every message leaves one hash-chained record behind it, in the envelope the rest
 
 ## The boundaries, stated rather than discovered at three in the morning.
 
-### It does not queue
+A message that cannot be delivered is logged, recorded as a refusal and dropped, and quiet hours hold alerts below critical but never a critical. [In the guide](https://it-rat.com/heraldyx-guide.html#limits)
 
-A message that cannot be delivered is logged, recorded as a refusal and dropped. Quiet hours hold alerts below critical, and a critical is never held.
+A mail about a Vouchryx delegation event says the box has no description for it yet. [In the guide](https://it-rat.com/heraldyx-guide.html#limits)
 
-### Delegations have no sentences yet
-
-A mail about a Vouchryx delegation event says the box has no description for it yet.
-
-### The source check has an edge
-
-A process that creates a plane's file first, or a writer forging its own stream, gets past it. The checkpoint gate narrows that, and it is off by default.
+A process that creates a plane's file first, or a writer forging its own stream, gets past the source check, and the checkpoint gate that narrows this is off by default. [In the guide](https://it-rat.com/heraldyx-guide.html#limits)
 
 ## Twelve planes write the log it reads.
 
