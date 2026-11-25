@@ -511,17 +511,19 @@
 <section class="sec" id="speed" style="padding-top:22px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">decision speed, measured 2026-09-25</div>
+      <div class="kicker">decision speed &#183; Haiku 5.5 measured 2026-11-25</div>
       <h2>The one-token shortcut is not always faster.</h2>
-      <p class="lede">Same 60 items, seed 1, timed end to end from the caller, one run each, so read the medians as indicative rather than final.</p>
+      <p class="lede">Same 60 items, timed end to end from the caller, one run each. The OpenAI rows are from 2026-09-25 and kept as history.</p>
     </div>
     <div class="flight rv" id="sp-box">
-      <div class="fl-head"><span class="dot"></span>median, with a p95 whisker <span class="n" id="sp-label">hosted API</span></div>
-      <div class="fl-scroll"><svg id="sp-svg" viewBox="0 0 960 220" role="img" aria-label="Horizontal bars comparing median decision time with a p95 whisker, accuracy chip at the bar end, for a typed one-token judge through typryx, a text judge and a reasoning judge, against gpt-4.1-mini and gpt-5.4-mini over the hosted API and qwen2.5:7b run locally"></svg></div>
+      <div class="fl-head"><span class="dot"></span>median, with a p95 whisker <span class="n" id="sp-label">Claude Haiku 5.5</span></div>
+      <div class="fl-scroll"><svg id="sp-svg" viewBox="0 0 960 220" role="img" aria-label="Horizontal bars comparing median decision time with a p95 whisker, accuracy chip at the bar end, for a typed one-token judge through typryx, a text judge and a reasoning judge: Claude Haiku 5.5 on 2026-11-25, which gives no typed answer, gpt-4.1-mini and gpt-5.4-mini over the hosted API on 2026-09-25, and qwen2.5:7b run locally"></svg></div>
       <div class="fl-tabs" role="group" aria-label="Choose a comparison">
-        <button class="fl-tab" type="button" aria-pressed="true" data-k="hosted">hosted API</button>
+        <button class="fl-tab" type="button" aria-pressed="true" data-k="haiku">Claude Haiku 5.5</button>
+        <button class="fl-tab" type="button" aria-pressed="false" data-k="hosted">OpenAI, 2026-09-25</button>
         <button class="fl-tab" type="button" aria-pressed="false" data-k="local">local qwen2.5:7b</button>
       </div>
+      <p class="fl-why">Haiku 5.5 has no typed row: measured 2026-11-25, its endpoint refuses temperature and returns no logprobs without it.</p>
     </div>
   </div>
 </section>
@@ -530,23 +532,23 @@
 <section class="sec" id="calibration" style="padding-top:22px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">calibration, measured 2026-09-25</div>
+      <div class="kicker">calibration &#183; OpenAI measured 2026-11-06</div>
       <h2>Stated confidence and actual accuracy are not the same number.</h2>
-      <p class="lede">Eight groups, 480 judgements, never pooled. Every group was 96% to 100% confident on average and right 50% to 73% of the time.</p>
+      <p class="lede">OpenAI's current models, 60 items a run, never pooled. The luna models were 96% to 98% confident and right 60% to 73% of the time; the sol models got all 60 right.</p>
     </div>
     <div class="flight rv" id="cl-box">
-      <div class="fl-head"><span class="dot"></span>reliability, 8 groups <span class="n" id="cl-label">all</span></div>
-      <div class="fl-scroll"><svg id="cl-svg" viewBox="0 0 960 400" role="img" aria-label="A reliability diagram: x axis is mean stated confidence from 0.5 to 1.0, y axis is accuracy from 0.4 to 1.0, a dashed diagonal marks stated equals actual, and eight dots, one per model and wording, sit at or below it. Switching to kind of wrong replaces the chart with eight stacked bars showing how many of 60 were right, called a wrong answer right, or called a right answer wrong."></svg></div>
+      <div class="fl-head"><span class="dot"></span>reliability, 10 runs <span class="n" id="cl-label">all</span></div>
+      <div class="fl-scroll"><svg id="cl-svg" viewBox="0 0 960 400" role="img" aria-label="A reliability diagram: x axis is mean stated confidence from 0.5 to 1.0, y axis is accuracy from 0.4 to 1.0, a dashed diagonal marks stated equals actual. Three runs of gpt-6-luna sit near 0.97 stated and 0.72 actual, three of gpt-5.6-luna near 0.98 stated and 0.62 actual, gpt-6-sol and gpt-5.6-sol on the diagonal at 1.0, and two local Qwen 2.5 models from 2026-09-25 below it"></svg></div>
       <div class="fl-tabs" role="group" aria-label="Choose a view">
         <button class="fl-tab" type="button" aria-pressed="true" data-k="all">all</button>
-        <button class="fl-tab" type="button" aria-pressed="false" data-k="v1">wording v1</button>
-        <button class="fl-tab" type="button" aria-pressed="false" data-k="v2">wording v2</button>
-        <button class="fl-tab" type="button" aria-pressed="false" data-k="wrong">kind of wrong</button>
+        <button class="fl-tab" type="button" aria-pressed="false" data-k="hosted">OpenAI, 2026-11-06</button>
+        <button class="fl-tab" type="button" aria-pressed="false" data-k="local">local, 2026-09-25</button>
       </div>
       <div class="fl-out">
         <span class="u" id="cl-name">pick a dot for its numbers</span>
         <span class="e" id="cl-detail"></span>
       </div>
+      <p class="fl-why">gpt-6-luna passed 16 or 17 of the 30 wrong answers. The 2026-09-25 table of the models it replaces is <a href="../typryx-guide.html#measured">in the guide</a>.</p>
     </div>
   </div>
 </section>
@@ -596,7 +598,7 @@
     <div class="card limits rv">
       <ul>
         <li>Not yet: a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers.</li>
-        <li>OpenAI's current models, gpt-5.x and gpt-6, refuse token probabilities outright, so the openai-logprobs backend reaches only earlier hosted models and open models.</li>
+        <li>OpenAI's current models refuse the default request; since v0.6.0 three more variables reach them.</li>
       </ul>
     </div>
   </div>
@@ -862,7 +864,7 @@ const CASES={
     ret:["label token probabilities","label_mass_too_low when too",
          "little lands on the labels"],
     chip:"measured on 5 models", chipCol:"#34D399",
-    why:"Reaches any OpenAI-compatible server, including a local Ollama or vLLM. OpenAI's current models, gpt-5.x and gpt-6, refuse logprobs outright (the typryx README records this probe), so this backend in practice reaches earlier hosted models and open models, five of which are the models in the calibration table below."},
+    why:"Reaches any OpenAI-compatible server, including a local Ollama or vLLM. OpenAI's current models take three more variables since v0.6.0, and the calibration chart below is four of them, measured 2026-11-06. Claude Haiku 5.5 does not fit: measured 2026-11-25, its endpoint refuses temperature and returns no logprobs."},
   jev:{name:"jev",
     sent:["POST {base}/systemone","{state, model,","questions:{q:{type,",
           "instructions, criteria}}}"],
@@ -927,6 +929,11 @@ const label=document.getElementById("sp-label");
 const tabs=[...box.querySelectorAll(".fl-tab")];
 
 const DATA={
+  haiku:[
+    {label:"text judge (claude-haiku-5-5)",median:629,p95:1129,acc:"100%",col:"#8A97A6"},
+    {label:"reasoning judge (claude-haiku-5-5)",median:635,p95:981,acc:"100%",col:"#34D399"},
+    {label:"typed, one token (claude-haiku-5-5)",median:null,note:"no answer: temperature refused, no logprobs",col:"#60A5FA"}
+  ],
   hosted:[
     {label:"typed, one token (gpt-4.1-mini)",median:538,p95:795,acc:"71.7%",col:"#60A5FA"},
     {label:"text judge (gpt-4.1-mini)",median:723,p95:1012,acc:"100%",col:"#8A97A6"},
@@ -941,7 +948,7 @@ const DATA={
 function el(name,attrs){const e=document.createElementNS(ns,name);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;}
 
 function render(k){
-  label.textContent = k==="hosted"?"hosted API":"local qwen2.5:7b";
+  label.textContent = {haiku:"Claude Haiku 5.5, 2026-11-25",hosted:"OpenAI, 2026-09-25, historical",local:"local qwen2.5:7b"}[k];
   const rows=DATA[k];
   const maxMs=Math.max(...rows.map(r=>r.p95||0),200)*1.6;
   /* narrow screens get their own layout, labels above the bars, instead of
@@ -960,6 +967,11 @@ function render(k){
     lbl.textContent=r.label; g.appendChild(lbl);
     const track=el("rect",{x:padL,y:y-9,width:w-padL-padR,height:18,rx:4,fill:"#141C27",stroke:"#2a3547"});
     g.appendChild(track);
+    if(r.median==null){
+      const nt=el("text",{x:padL+12,y:y+4,fill:"#FF574B","font-size":fsS});
+      nt.textContent=r.note; g.appendChild(nt);
+      return;
+    }
     const bw=(w-padL-padR)*(r.median/maxMs);
     const bar=el("rect",{x:padL,y:y-8,width:Math.max(3,bw),height:16,rx:3,fill:r.col,opacity:"0.55"});
     g.appendChild(bar);
@@ -976,10 +988,10 @@ tabs.forEach(b=>b.addEventListener("click",()=>{
   tabs.forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
   render(b.dataset.k);
 }));
-let cur="hosted";
+let cur="haiku";
 tabs.forEach(b=>b.addEventListener("click",()=>{cur=b.dataset.k;}));
 addEventListener("resize",()=>render(cur));
-render("hosted");
+render("haiku");
 })();
 </script>
 
@@ -995,14 +1007,16 @@ const nameEl=document.getElementById("cl-name"), detailEl=document.getElementByI
 const tabs=[...box.querySelectorAll(".fl-tab")];
 
 const GROUPS=[
-  {label:"gpt-4.1-mini",wording:"v1",n:60,stated:0.990,acc:0.733,ece:0.267,brier:0.525,right:44,lenient:15,strict:1,kind:"hosted"},
-  {label:"gpt-4.1-mini",wording:"v2",n:60,stated:0.958,acc:0.733,ece:0.243,brier:0.505,right:44,lenient:15,strict:1,kind:"hosted"},
-  {label:"gpt-4o-mini",wording:"v1",n:60,stated:0.987,acc:0.583,ece:0.414,brier:0.823,right:35,lenient:11,strict:14,kind:"hosted"},
-  {label:"gpt-4o-mini",wording:"v2",n:60,stated:0.983,acc:0.633,ece:0.358,brier:0.716,right:38,lenient:5,strict:17,kind:"hosted"},
-  {label:"gpt-4.1-nano",wording:"v1",n:60,stated:0.99999,acc:0.500,ece:0.500,brier:1.000,right:30,lenient:30,strict:0,kind:"hosted"},
-  {label:"gpt-4.1-nano",wording:"v2",n:60,stated:0.9995,acc:0.500,ece:0.500,brier:0.999,right:30,lenient:30,strict:0,kind:"hosted"},
-  {label:"qwen2.5:3b",wording:"v2",n:60,stated:0.998,acc:0.500,ece:0.498,brier:0.995,right:30,lenient:30,strict:0,kind:"local"},
-  {label:"qwen2.5:7b",wording:"v2",n:60,stated:0.965,acc:0.667,ece:0.298,brier:0.597,right:40,lenient:0,strict:20,kind:"local"}
+  {label:"gpt-6-luna",run:"run 1",n:60,stated:0.960,acc:0.717,ece:0.256,brier:0.498,kind:"hosted"},
+  {label:"gpt-6-luna",run:"run 2",n:60,stated:0.976,acc:0.733,ece:0.268,brier:0.507,kind:"hosted"},
+  {label:"gpt-6-luna",run:"run 3",n:60,stated:0.978,acc:0.717,ece:0.274,brier:0.526,kind:"hosted"},
+  {label:"gpt-5.6-luna",run:"run 1",n:60,stated:0.967,acc:0.650,ece:0.329,brier:0.682,kind:"hosted"},
+  {label:"gpt-5.6-luna",run:"run 2",n:60,stated:0.980,acc:0.617,ece:0.380,brier:0.758,kind:"hosted"},
+  {label:"gpt-5.6-luna",run:"run 3",n:60,stated:0.984,acc:0.600,ece:0.393,brier:0.779,kind:"hosted"},
+  {label:"gpt-6-sol",run:"run 1",n:60,stated:1.000,acc:1.000,ece:0.000,brier:0.000,kind:"hosted"},
+  {label:"gpt-5.6-sol",run:"run 1",n:60,stated:1.000,acc:1.000,ece:0.000,brier:0.000,kind:"hosted"},
+  {label:"qwen2.5:3b",run:"v2",n:60,stated:0.998,acc:0.500,ece:0.498,brier:0.995,kind:"local"},
+  {label:"qwen2.5:7b",run:"v2",n:60,stated:0.965,acc:0.667,ece:0.298,brier:0.597,kind:"local"}
 ];
 
 function el(name,attrs){const e=document.createElementNS(ns,name);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;}
@@ -1011,7 +1025,7 @@ function scatter(filterFn){
   /* narrow screens: the list goes under the chart instead of beside it */
   const narrow=svg.parentElement.clientWidth<600;
   const nList=GROUPS.filter(filterFn).length;
-  const w=narrow?480:960, plotH=narrow?340:400, h=narrow?plotH+30+nList*40:400;
+  const w=narrow?480:960, plotH=narrow?340:400, h=narrow?plotH+30+nList*40:Math.max(400,48+nList*38);
   svg.setAttribute("viewBox","0 0 "+w+" "+h);
   while(svg.firstChild) svg.removeChild(svg.firstChild);
   const padL=narrow?50:54,padR=narrow?16:380,padT=20,padB=narrow?h-plotH+40:40;
@@ -1043,26 +1057,27 @@ function scatter(filterFn){
   const byLabel={};
   GROUPS.forEach(gr=>{(byLabel[gr.label]=byLabel[gr.label]||[]).push(gr);});
   Object.values(byLabel).forEach(pair=>{
-    if(pair.length<2) return;
-    const a=pair[0],b=pair[1];
-    if(!filterFn(a)||!filterFn(b)) return;
-    g.appendChild(el("line",{x1:X(a.stated),y1:Y(a.acc),x2:X(b.stated),y2:Y(b.acc),stroke:"#5A6675","stroke-width":"1"}));
+    for(let j=1;j<pair.length;j++){
+      const a=pair[j-1],b=pair[j];
+      if(!filterFn(a)||!filterFn(b)) continue;
+      g.appendChild(el("line",{x1:X(a.stated),y1:Y(a.acc),x2:X(b.stated),y2:Y(b.acc),stroke:"#5A6675","stroke-width":"1"}));
+    }
   });
 
   GROUPS.forEach((gr,i)=>{
     if(!filterFn(gr)) return;
     const col=gr.kind==="hosted"?"#FF7AA2":"#6C7BFF";
     const c=el("circle",{cx:X(gr.stated),cy:Y(gr.acc),r:9,fill:col,opacity:"0.7",tabindex:"0",role:"button",
-      "aria-label":gr.label+" "+gr.wording+": stated "+gr.stated.toFixed(3)+", accuracy "+gr.acc.toFixed(3)});
+      "aria-label":gr.label+" "+gr.run+": stated "+gr.stated.toFixed(3)+", accuracy "+gr.acc.toFixed(3)});
     c.style.cursor="pointer";
     c.addEventListener("click",()=>pick(gr));
     c.addEventListener("focus",()=>pick(gr));
     g.appendChild(c);
   });
 
-  /* three groups land almost on one point (gpt-4.1-nano in both wordings
-     and qwen2.5:3b, all at 0.5 accuracy and ~1.0 stated), so a dot alone
-     cannot be picked; this list beside the chart reaches every group */
+  /* several runs land almost on one point (the two sol models at 1.0, the
+     luna runs near 0.97 stated), so a dot alone cannot be picked; this list
+     beside the chart reaches every run */
   const lx=narrow?padL-40:padL+(w-padL-padR)+44, ly=narrow?plotH+22:padT+10;
   const hd=el("text",{x:lx,y:ly,fill:"#8A97A6","font-size":fs});
   hd.textContent="group, stated -> actual"; g.appendChild(hd);
@@ -1070,59 +1085,26 @@ function scatter(filterFn){
     const ry=ly+14+i*(narrow?40:38);
     const col=gr.kind==="hosted"?"#FF7AA2":"#6C7BFF";
     const r=el("rect",{x:lx,y:ry,width:narrow?w-lx-10:300,height:narrow?32:30,rx:7,fill:"#141C27",stroke:"#2a3547",tabindex:"0",role:"button",
-      "aria-label":gr.label+" "+gr.wording+": stated "+gr.stated.toFixed(3)+", accuracy "+gr.acc.toFixed(3)});
+      "aria-label":gr.label+" "+gr.run+": stated "+gr.stated.toFixed(3)+", accuracy "+gr.acc.toFixed(3)});
     r.style.cursor="pointer";
     r.addEventListener("click",()=>pick(gr)); r.addEventListener("focus",()=>pick(gr));
     g.appendChild(r);
     g.appendChild(el("circle",{cx:lx+16,cy:ry+(narrow?16:15),r:5,fill:col,opacity:"0.8","pointer-events":"none"}));
     const t=el("text",{x:lx+30,y:ry+(narrow?20:19),fill:"#E9EFF6","font-size":fs,"pointer-events":"none"});
-    t.textContent=gr.label+" "+gr.wording+"   "+gr.stated.toFixed(3)+" -> "+gr.acc.toFixed(3);
+    t.textContent=gr.label+" "+gr.run+"   "+gr.stated.toFixed(3)+" -> "+gr.acc.toFixed(3);
     g.appendChild(t);
   });
 }
 
-function bars(){
-  const narrow=svg.parentElement.clientWidth<600;
-  const w=narrow?480:960;
-  svg.setAttribute("viewBox","0 0 "+w+" "+(narrow?420:400));
-  while(svg.firstChild) svg.removeChild(svg.firstChild);
-  const padL=narrow?140:190,padR=narrow?14:60,padT=narrow?50:20,rowH=44;
-  const g=el("g",{"font-family":"ui-monospace,Menlo"}); svg.appendChild(g);
-  GROUPS.forEach((gr,i)=>{
-    const y=padT+i*rowH+rowH/2, bw=w-padL-padR, n=gr.n;
-    const lbl=el("text",{x:padL-12,y:y+4,fill:"#E9EFF6","font-size":narrow?"12":"11","text-anchor":"end"});
-    lbl.textContent=gr.label+" "+gr.wording; g.appendChild(lbl);
-    let x=padL;
-    [["right",gr.right,"#34D399"],["lenient",gr.lenient,"#F4B23E"],["strict",gr.strict,"#FF574B"]].forEach(([k,v,col])=>{
-      const bwv=bw*(v/n);
-      if(v>0){
-        g.appendChild(el("rect",{x,y:y-11,width:bwv,height:22,fill:col,opacity:"0.55"}));
-        if(bwv>26){
-          const t=el("text",{x:x+bwv/2,y:y+4,fill:"#0A0E13","font-size":"10.5","text-anchor":"middle"});
-          t.textContent=v; g.appendChild(t);
-        }
-      }
-      x+=bwv;
-    });
-  });
-  const lines=narrow?["right (mint) · out of 60 each","lenient: passed a wrong answer (amber)","strict: failed a right answer (ember)"]
-    :["right (mint) · lenient: passed a wrong answer (amber) · strict: failed a right answer (ember) · out of 60"];
-  lines.forEach((tx,i)=>{
-    const legend=el("text",{x:narrow?12:padL,y:12+i*15,fill:"#8A97A6","font-size":narrow?"12":"10.5"});
-    legend.textContent=tx; g.appendChild(legend);
-  });
-}
-
 function pick(gr){
-  nameEl.textContent=gr.label+" · "+gr.wording;
+  nameEl.textContent=gr.label+" · "+gr.run;
   detailEl.textContent="n="+gr.n+"  stated "+gr.stated.toFixed(3)+"  actual "+gr.acc.toFixed(3)+
     "  ECE "+gr.ece.toFixed(3)+"  Brier "+gr.brier.toFixed(3);
 }
 
 function render(k){
   label.textContent=k;
-  if(k==="wrong"){ bars(); nameEl.textContent="stacked, out of 60 each"; detailEl.textContent=""; return; }
-  const filt = k==="all" ? ()=>true : gr=>gr.wording===k;
+  const filt = k==="all" ? ()=>true : gr=>gr.kind===k;
   scatter(filt);
   nameEl.textContent="pick a dot for its numbers"; detailEl.textContent="";
 }
