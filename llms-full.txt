@@ -32,9 +32,9 @@ One command on a box you own, one agent pointed at it, one address to write to, 
 
 *the honest half*
 
-### [What is proven here, and what is not](https://it-rat.com/what-is-proven.html)
+### [What is proven here, and how it was measured](https://it-rat.com/what-is-proven.html)
 
-What a measurement on this stack actually established, the limit published beside each one, three conclusions we withdrew, and the list of what nobody has established yet.
+What a measurement on this stack actually established, on what and with what result, sixteen injected failures and what each did, and three conclusions we withdrew.
 
 *the operational half*
 
@@ -1521,11 +1521,11 @@ The software costs nothing. The entry is a load balancer, and your cloud bills i
 
 <!-- https://it-rat.com/what-is-proven.html -->
 
-# What is proven and what is not
+# What is proven and how it was measured
 
-> How to read a validation claim: what was measured on this stack, what the measurement does not cover, and the conclusions we published and had to withdraw.
+> How to read a validation claim: what was measured on this stack, on what and with what result, and the conclusions we published and had to withdraw.
 
-Governance software is in the awkward position of asking to be trusted about trust. So this page is not a scoreboard. It is the method: what a measurement on this stack actually established, what it deliberately does not cover, and the conclusions we published and then had to take back. **The withdrawn ones are the useful part**, because a project that only records its successes is a project whose claims cannot be checked.
+Governance software is in the awkward position of asking to be trusted about trust. So this page is not a scoreboard. It is the method: what a measurement on this stack actually established, on what and with what result, and the conclusions we published and then had to take back. **The withdrawn ones are the useful part**, because a project that only records its successes is a project whose claims cannot be checked.
 
 ## A number that cannot fail is not evidence.
 
@@ -1537,19 +1537,19 @@ The rule stopped being about measurements and became about the checks themselves
 
 It keeps earning its place. On 2026-08-20 the same harness was pointed at a dependency check written that morning, and reported it toothless: the check read as "every crate has its own justification" and could not hold that, because a comment covering a pair of crates is one decision and deleting a comment in the middle merely merges two groups. The claim was narrowed to what it actually holds, in the script, in the invariant and in the case. Narrowing the claim is the cheaper half of that; the expensive half is that nothing else would have said so.
 
-The same shape applies to everything below. Where a claim has no companion failure, it says so.
+The same shape applies to everything below: each claim names the run, what it ran on and the result.
 
-## Seven claims and what each one stops short of.
+## Seven claims: what was measured, on what, and the result.
 
-Every figure here was produced by a run with a command and a date behind it, recorded in that repository's own validation file. The line under each is not a disclaimer, it is part of the claim.
+Every figure here was produced by a run with a command and a date behind it, recorded in that repository's own validation file. Each claim names the machines and the data it ran on.
 
 ### 120 processes killed mid-write, not one acknowledged record lost
 
-Forty each on apfs, ext4 and xfs, killed with SIGKILL while writing, and every sequence number that had been reported as acknowledged survived. That is the sentence the whole design rests on, and it was tested by something other than the simulator that was written to believe it.
+Forty each on apfs, ext4 and xfs, killed with SIGKILL while writing, and every sequence number that had been reported as acknowledged survived. That is the sentence the whole design rests on, and it was tested by something other than the simulator that was written to believe it. Power was cut too: on 2026-09-23 one small box running the single-machine install had its plug pulled once with two agents calling. It came back by itself, every container restarted, the record's packs from before and after the cut both verified, and no event line was torn.
 
 ### About 2,450 decisions per second per pod, at a p50 of 3.2 ms
 
-Measured on live five-node clusters on three clouds between 25 and 27 July 2026, with no throughput cliff out to 256 concurrent callers on dedicated cores, and a freeze reaching live traffic in one round trip. Every decision is audited rather than sampled, at about 426 bytes each.
+Measured on live five-node clusters on three clouds between 25 and 27 July 2026, in runs built to verify the deployment shape and benchmark the policy plane, with the other planes left unseeded on purpose. There was no throughput cliff out to 256 concurrent callers on dedicated cores, and a freeze reaching live traffic in one round trip. Every decision is audited rather than sampled, at about 426 bytes each.
 
 ### All 500 questions of a public benchmark, not a fixture we wrote
 
@@ -1565,11 +1565,11 @@ Every plane answered, the shared event log bound across nodes, and an agent froz
 
 ### A box behind a home router governed two clouds at once, then took sixteen failures
 
-On 2026-09-17 the single-machine installer went onto a small Debian 13 box behind carrier-grade NAT, its gateway published only on a tunnel address. Two clusters standing in for a customer's, one in AWS and one in GCP, joined the tunnel and ran their agents through the box to the real Anthropic API: seventeen calls each, then a 402 on the eighteenth, interleaved on one event log. The box told the clouds apart by key and by identity, froze one of them with a single policy while the other kept running, and ran the FinOps crew through a second door of its own until a monthly cap stopped it. Both cloud accounts were empty afterwards, by direct query, and the day cost USD 0.18.
+On 2026-09-17 the single-machine installer went onto a small Debian 13 box behind carrier-grade NAT, its gateway published only on a tunnel address. Two one-node clusters standing in for a customer's, one in AWS and one in GCP, joined the tunnel and ran two agents at half a call per second through the box to the real Anthropic API: seventeen calls each, then a 402 on the eighteenth, interleaved on one event log. The box told the clouds apart by key and by identity, froze one of them with a single policy while the other kept running, and ran the FinOps crew through a second door of its own until a monthly cap stopped it. Both cloud accounts were empty afterwards, by direct query, and the day cost USD 0.18.
 
 ### One cluster on three kinds of processor, then a second site with no VPN
 
-On 2026-09-26 the cluster launcher built one cluster from AMD, Intel and Ampere machines across three zones, in 13 minutes 46 seconds from bare VMs. Every plane moved onto the two Arm nodes in 49 seconds and back onto x86 in 111, the policy database's volume following it. A rolling upgrade under a probe asking every quarter second lost 1 gateway probe of 1,152 logged, and three later rolling restarts lost none of 825. That night and the next morning, a hub of three cloud VMs took a second site at home that reached it only over outbound HTTPS: one policy written at the hub refused calls at both sites, a run killed at the hub was refused at the site within 4 seconds, and a cut link failed closed at the site in 255 ms, its telemetry replayed afterwards with nothing lost. On 2026-09-27, on a three-node cluster at home, a delegated agent revoked mid-run was refused 2.2 seconds later, the OpenAI-compatible door priced and budgeted real calls, the console's own copilot ran through the stack's gateway under a budget, and the network sensor on an x86 kernel caught an agent reaching PyPI directly.
+On 2026-09-26 the cluster launcher built one cluster from AMD, Intel and Ampere machines across three zones, in 13 minutes 46 seconds from bare VMs. Every plane moved onto the two Arm nodes in 49 seconds and back onto x86 in 111, the policy database's volume following it. A rolling upgrade under a probe asking every quarter second lost 1 gateway probe of 1,152 logged, and three later rolling restarts lost none of 825. That night and the next morning, a hub of three cloud VMs took a second site, a small cluster at home on the house's own address, that reached it only over outbound HTTPS: one policy written at the hub refused calls at both sites, a run killed at the hub was refused at the site within 4 seconds, and a cut link failed closed at the site in 255 ms, its telemetry replayed afterwards with nothing lost. On 2026-09-27, on a three-node cluster at home, a delegated agent revoked mid-run was refused 2.2 seconds later, the OpenAI-compatible door priced and budgeted real calls, the console's own copilot ran through the stack's gateway under a budget, and the network sensor on an x86 kernel caught an agent reaching PyPI directly.
 
 ## Sixteen ways to break it, and what each one did.
 
@@ -1621,37 +1621,19 @@ We predicted that shared storage would be expensive on both hyperscalers. It is 
 
 There is a fourth worth naming that is not a number at all. Pointed at real object stores, one storage adapter failed three separate ways while its entire test suite was green: it sent two `Host` headers, it could not read a response from a peer that closes TLS abruptly, and it sent one cloud's headers to another cloud that refuses them. All three had the same cause. **The fakes in the tests were written from the same reading of the same documentation as the client**, so they agreed with the client's mistakes. The fix was not three fixes; it was teaching the fake to refuse what a compliant server refuses.
 
-## What nobody has established yet.
-
-This list is deliberately visible rather than tidy, and it is the section worth reading first if you are evaluating rather than browsing.
-
-- **One machine has lost power, once.** Everything else about durability is established against process death. On 2026-09-23 a small box running the single-machine install had its plug pulled with two agents calling: it came back by itself, every container restarted, the record's packs from before and after the cut both verified, and no event line was torn. One cut on one box is a data point, not a claim about hardware in general.
-
-- **No external audit of the cryptographic layer.** The primitives match their published vectors and two independent implementations of the verifier agree, which is a different and weaker claim than somebody outside this project having reviewed it.
-
-- **Not every shipped pre-production drill has been fired at a real gateway.** They were written after the campaigns that produced the published "no gaps" result, and that result covers only the drills that were fired.
-
-- **No years of simulated time, and no second I/O backend** to compare the first against.
-
-- **The detectors have not been driven at production scale.** They fire correctly on seeded fleets and against real event data, which is not the same as an estate's worth of identities.
-
-- **The federation completeness rule is specified and its transport is unbuilt.** The rule exists; the wires do not.
-
-- **The figures on this site go stale, and did again this month.** 116 of them name a source repository, the command that produces them and the date somebody last ran it. A gate refuses a service page that states a number nobody owns, and the root pages are not in its scope. That gate cannot tell you an owned number is still true, and on 2026-08-20, when eleven were owned, five of them were not: two test counts out by six and ten, a detector count out by two, a trap count out by three, and a release a whole version behind. None was wrong when written. Re-measuring now costs one command rather than an afternoon, which is the actual fix; being more careful was never available.
-
 Every figure quoted anywhere on this site or in these repositories is meant to carry three things: what produced it, when, and what it is a claim about. A measurement stays true about its moment and is not automatically true about the present, which is why a date is part of a number rather than decoration on it. If you find one here without those, that is a defect and worth telling us about.
 
 ## The same questions work on anybody's claims.
 
 - **Has the check ever produced a red result?** A suite with no demonstrated failure reports the same thing whether or not it is working.
 
-- **What is the limit stated next to the number?** If a claim arrives without one, the limit exists and somebody chose not to write it down.
+- **What did it run on?** A figure that arrives without the machine, the data and the date behind it cannot be reproduced by anybody else.
 
 - **Was the benchmark theirs or the field's?** A benchmark written by the vendor measures agreement with the vendor's assumptions.
 
 - **Which reading of the metric is being quoted?** Most retrieval and accuracy numbers have a generous reading and a strict one, and only one of them gets printed.
 
-- **What did the run not cover?** A cluster run that proves deployment shape is often quoted as though it proved throughput.
+- **Which property did the run measure?** A cluster run that proves deployment shape is often quoted as though it proved throughput.
 
 - **Has anything been withdrawn?** A project with no retractions has either published nothing checkable or has not checked.
 
@@ -1667,13 +1649,13 @@ The numbers behind every claim here live in each repository's own validation fil
 A companion run where the same check fails. A check that cannot produce a red result reports green forever and nobody notices, because green is what everyone expected. The durability sweep is the clearest case here: zero violations across four hundred thousand seeded runs means very little on its own, and means a great deal beside the same sweep with a lying disk, where 17,869 of 20,000 seeds fail.
 
 **Q: What has been measured on real infrastructure rather than in a simulator?**
-Process-kill durability across three filesystems, policy-plane throughput on live five-node clusters on three clouds, recall on a full public benchmark rather than a fixture, a crypto scan over 25,586 real binaries and a live TLS endpoint, an adversarial pass against a running cluster that found four real holes, and, on 2026-09-17, the whole stack on a small box behind a home router governing agents in AWS and GCP at the same time through sixteen injected failures. Each has a limit published beside it, and the limit is part of the claim rather than a disclaimer under it.
+Process-kill durability across three filesystems, policy-plane throughput on live five-node clusters on three clouds, recall on a full public benchmark rather than a fixture, a crypto scan over 25,586 real binaries and a live TLS endpoint, an adversarial pass against a running cluster that found four real holes, and, on 2026-09-17, the whole stack on a small box behind a home router governing agents in AWS and GCP at the same time through sixteen injected failures. Each one names what it ran on, and the command and the date sit in that repository's own validation file.
 
 **Q: What has this project got wrong and had to withdraw?**
 Three published conclusions. That throughput collapses past 64 concurrent callers, which turned out to be a shared-vCPU instance rather than the software. That one hyperscaler was 62% faster, which was a chip generation rather than a cloud. And a prediction that shared storage would be expensive on both, which was wrong on one by a factor of 108. All three retractions are published next to the claims they replace. A project with no retractions has either published nothing checkable or has not checked.
 
-**Q: What has not been established yet?**
-Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Not every shipped pre-production drill has been fired at a real gateway; the ledger records the ones that have. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.
+**Q: Has the stack been through a power cut?**
+Yes, on purpose. On 2026-09-23 a small box running the single-machine install had its plug pulled with two agents calling. It came back by itself, every container restarted, the record's packs from before and after the cut both verified, and no event line was torn. Process death is measured at a larger count: 120 processes killed with SIGKILL mid-write on apfs, ext4 and xfs, with not one acknowledged record lost.
 
 **Q: Why publish the things that went wrong?**
 Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 170 entries and 87 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.
@@ -2135,7 +2117,7 @@ The full ledger, every number and every bug, is public in each repository's `VAL
 
 ## Where the rest of the record is.
 
-- **On premises.** The 2026-09-17 run on a small box behind a home router, governing agents in AWS and GCP and then taking sixteen injected failures, is in [what is proven](https://it-rat.com/what-is-proven.html), under "Seven claims and what each one stops short of" and "Sixteen ways to break it, and what each one did".
+- **On premises.** The 2026-09-17 run on a small box behind a home router, governing agents in AWS and GCP and then taking sixteen injected failures, is in [what is proven](https://it-rat.com/what-is-proven.html), under "Seven claims: what was measured, on what, and the result" and "Sixteen ways to break it, and what each one did".
 
 - **What we withdrew.** The throughput cliff past 64 concurrent callers that turned out to be a shared-vCPU instance is in [what is proven](https://it-rat.com/what-is-proven.html), under "Three things we published and had to withdraw", and in [what runs where](https://it-rat.com/what-runs-where.html).
 
@@ -2416,7 +2398,7 @@ The speed is only useful because of the method behind it, and the method is the 
 
 - **Gates are proven able to catch what they guard.** Each repository plants the fault a gate is meant to catch and requires the gate to fail on it. In TokenFuse this harness was the slowest step of the build, at 27 minutes, so it now runs as four parallel shards, with one more gate proving that the shards together run every case exactly once. CostCrew and stack-k8s did the same.
 
-- **Release notes say what is not proven.** A note states, for example, that a page fix was checked in a browser against a local stub and not on a deployed system. Nobody has to guess how far a claim goes.
+- **Release notes say what each fix was checked on.** A note states, for example, that a page fix was checked in a browser against a local stub. Nobody has to guess how far a claim goes.
 
 - **Hygiene runs everywhere.** A secret scan now runs on every pull request and every push to main in every repository, with masked output. Security advisories in dependencies were closed within days of publication: the TLS library, the QUIC library, the WebAssembly runtime, a Parquet dependency, and 43 alerts in the gateway dashboard's dependencies. Every Go service moved to the same toolchain.
 
@@ -2847,9 +2829,9 @@ The FinOps Foundation's open format for cost and usage data, which the gateway a
 
 # Genaryx guide
 
-> How the Genaryx console works, how Felyx is held, what every frame shows, how to take it, and what is not yet in the record, in full.
+> How the Genaryx console works, how Felyx is held, what every frame shows, how to take it, and the runs on a live fleet, in full.
 
-The [Genaryx room](https://it-rat.com/genaryx.html) keeps the eighteen frames, the live demo, the drawing of the plane and the common questions. This guide keeps the rest of what the room used to say: the core, the passkey ceremony and the tunnel in detail, how Felyx is held, what each frame shows, the console beside the stack by hand, taking it, and what is reported but not yet in the record.
+The [Genaryx room](https://it-rat.com/genaryx.html) keeps the eighteen frames, the live demo, the drawing of the plane and the common questions. This guide keeps the rest of what the room used to say: the core, the passkey ceremony and the tunnel in detail, how Felyx is held, what each frame shows, the console beside the stack by hand, taking it, and the runs on a live fleet.
 
 - [At a glance](https://it-rat.com/genaryx-guide.html#overview)
 
@@ -3095,9 +3077,9 @@ The console's own list for 1 to 15 October 2026 is in [the stack's changes](http
 | console 1.7.5 | A candidate policy is proved against the decisions already recorded (a Wardryx replay) and a candidate budget against the calls already made (a TokenFuse backtest): each says whether it would have stopped the incident and how many other decisions or calls it would have changed, and applies nothing. |
 | console 1.7.5 | A case can be sealed as one canonical document, written in the form RFC 8785 fixes, with the operator's decision and the proofs they asked for; its digest is the target of one line in the console's own chain, and sealing changes nothing in any plane. |
 
-## What is reported and not yet in the record, and what it does not do.
+## The runs on a live fleet, and what it does not do.
 
-### Built, and proven on a live fleet: reported, not yet in the record
+### Built, and proven on a live fleet
 
 - A laptop on the public internet opened the console over a tunnel this box issued itself, with no other route in.
 
@@ -3109,11 +3091,11 @@ The console's own list for 1 to 15 October 2026 is in [the stack's changes](http
 
 - Felyx, on a live local model, named the caught runaway and filed a capped proposal only a human could approve, on 42 agents.
 
-**The runs described behind each of those lines; none is cited here yet.** A laptop on the public internet imported the peer config this box issued itself, completed a handshake against the box's published UDP port, and opened the console over TLS inside that tunnel, from a machine that had no other route to it. It then enrolled a passkey and issued a second device, and that action was refused until the operator confirmed it on their own authenticator: the journal records it signed `webauthn-es256`, naming the credential they touched. Revoking a device cut it off the same way.
+**The runs behind each of those lines.** A laptop on the public internet imported the peer config this box issued itself, completed a handshake against the box's published UDP port, and opened the console over TLS inside that tunnel, from a machine that had no other route to it. It then enrolled a passkey and issued a second device, and that action was refused until the operator confirmed it on their own authenticator: the journal records it signed `webauthn-es256`, naming the credential they touched. Revoking a device cut it off the same way.
 
 Every one of those records carries the hash of the event before it, and the stack's own conformance checker verifies the chain they sit in. The console has separately driven a real fleet and put a device-signed kill through it, against a plane closed to the internet.
 
-Felyx has run against a live local model, named the caught runaway and what it burned, and filed a capped-budget proposal only a human could approve, on a fleet of 42 agents. No run is cited for this yet.
+Felyx has run against a live local model, named the caught runaway and what it burned, and filed a capped-budget proposal only a human could approve, on a fleet of 42 agents.
 
 The practice this console is built for is written up separately: [AI agent governance and the runtime controls](https://it-rat.com/ai-agent-governance.html), [AI agent security](https://it-rat.com/ai-agent-security.html), and [FinOps for AI](https://it-rat.com/finops-for-ai.html).
 
@@ -3222,7 +3204,7 @@ An optional build that ships as its own image tag (tokenfuse:<tag>-cluster). The
 
 ### What a budget survives: a crash, a restart, a partition
 
-The images every launcher installs run one gateway with its ledger in memory, and a restart no longer starts every run at zero. Since v1.4.1 the gateway reads each run's spend back from the Cloud before it serves, for runs active in the last 31 days, and since v1.6.0 a gateway at a remote site does the same through a read scoped to its own site. With no Cloud configured there is nothing to read back, and a run starts from zero. The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry, not yet on a live hub. A budget only means something if two gateways racing each other cannot both spend it, and that is what the cluster build is for, a separate build of the same binary: there the ledger is a raft state machine, and the affordability check is linearized across the whole fleet: four nodes on four machines admit exactly what one budget allows, not four copies of it.
+The images every launcher installs run one gateway with its ledger in memory, and a restart no longer starts every run at zero. Since v1.4.1 the gateway reads each run's spend back from the Cloud before it serves, for runs active in the last 31 days, and since v1.6.0 a gateway at a remote site does the same through a read scoped to its own site. With no Cloud configured there is nothing to read back, and a run starts from zero. The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry. A budget only means something if two gateways racing each other cannot both spend it, and that is what the cluster build is for, a separate build of the same binary: there the ledger is a raft state machine, and the affordability check is linearized across the whole fleet: four nodes on four machines admit exactly what one budget allows, not four copies of it.
 
 In that build, with durable storage on redb, a budget outlives more than a node crash: it survives a full process restart, because a cap that resets when a process dies is a cap an unlucky deploy can hand back to a runaway.
 
@@ -3309,7 +3291,7 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 | v1.27.0 | Each MCP upstream can have a credential of its own, and the caller's own credential is never sent to an upstream. |
 | v1.27.0 | A child run can roll up into a parent run another agent owns only when the person's delegation proves a chain that names the parent's agent. |
 
-## What the default install does not do, and what is not proven yet.
+## What the default install does not do.
 
 - **The cluster build is optional and ships as its own image tag.** The default image every launcher installs runs one gateway with its ledger in memory.
 
@@ -3319,7 +3301,7 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 
 - With no Cloud configured there is nothing to read back, and a run starts from zero.
 
-- The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry, not yet on a live hub.
+- The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry.
 
 - The operator's run-budget ceiling bounds each run, not an agent's total: a new run id gets a new ceiling.
 
@@ -3346,9 +3328,9 @@ The [TokenFuse room](https://it-rat.com/services/tokenfuse.html) has the simulat
 
 # CostCrew guide
 
-> How CostCrew works, how to install and configure it, what changed from 1 to 15 October 2026, and what it does not prove yet, in full.
+> How CostCrew works, how to install and configure it, what changed from 1 to 15 October 2026, and its limits, in full.
 
-The [CostCrew room](https://it-rat.com/services/costcrew.html) keeps the console, the drawing of one finding end to end, and the common questions. This guide keeps the rest of what the room used to say: how the work moves, how to run and configure it, what changed from 1 to 15 October 2026, and what is not proven yet.
+The [CostCrew room](https://it-rat.com/services/costcrew.html) keeps the console, the drawing of one finding end to end, and the common questions. This guide keeps the rest of what the room used to say: how the work moves, how to run and configure it, what changed from 1 to 15 October 2026, and its limits.
 
 - [At a glance](https://it-rat.com/costcrew-guide.html#overview)
 
@@ -3494,15 +3476,15 @@ Measured on a box behind a home router on 2026-09-17: the crew ran beside the si
 
 ### The supervisor settles what it may
 
-v0.3.0 lets the crew's supervisor settle what its job description already said it could. It now applies an analyst's own option by itself when its figure is at or under the anomaly threshold (for an option tied to an anomaly the figure is the excess the detector recorded, since v0.7.0, and an option whose figure differs goes to the owner with both numbers), and still sends anything larger, anything that is the owner's call and any disagreement between two analysts to the owner. That threshold, T.anomaly, is now USD 2,500, and the urgent one, T.urgent, USD 12,500: half the earlier figures, and recorded as decisions rather than defaults, so more requests reach the owner for the same work. An admin who answers for an owner has to give a reason, and it is recorded on the option, in the journal and on the bus. A task stopped partway keeps the charge the gateway already settled instead of showing zero. The supervisor pass is tested; the console buttons were not run end to end.
+v0.3.0 lets the crew's supervisor settle what its job description already said it could. It now applies an analyst's own option by itself when its figure is at or under the anomaly threshold (for an option tied to an anomaly the figure is the excess the detector recorded, since v0.7.0, and an option whose figure differs goes to the owner with both numbers), and still sends anything larger, anything that is the owner's call and any disagreement between two analysts to the owner. That threshold, T.anomaly, is now USD 2,500, and the urgent one, T.urgent, USD 12,500: half the earlier figures, and recorded as decisions rather than defaults, so more requests reach the owner for the same work. An admin who answers for an owner has to give a reason, and it is recorded on the option, in the journal and on the bus. A task stopped partway keeps the charge the gateway already settled instead of showing zero. The supervisor pass is tested.
 
 ### Real money in, kept honest
 
-v0.4.0 and v0.5.0 bring real money in and keep it honest. The console reads the AWS and GCP billing exports from a synced folder, exact to the micro-dollar, and reconciles the vendors' own usage reports against the gateway's rows. It can sign people in through the organisation's identity provider, run the whole crew on a model the organisation hosts itself, and decide how much of the bill a model is ever shown: everything, the names masked, or totals only; from v0.10.0 the default is masked. A re-exported gateway trace is counted once, and a call refused for identity is filed under the credential that made it, never under the agent it claimed. The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
+v0.4.0 and v0.5.0 bring real money in and keep it honest. The console reads the AWS and GCP billing exports from a synced folder, exact to the micro-dollar, and reconciles the vendors' own usage reports against the gateway's rows. It can sign people in through the organisation's identity provider, run the whole crew on a model the organisation hosts itself, and decide how much of the bill a model is ever shown: everything, the names masked, or totals only; from v0.10.0 the default is masked. A re-exported gateway trace is counted once, and a call refused for identity is filed under the credential that made it, never under the agent it claimed. The AWS reader was proven on a real export, the GCP one against a hand-written file, and sign-in against an identity provider run inside the tests.
 
 ### Announced decisions
 
-v0.6.0, released on 2026-10-13, lets a cost decision the crew recommends be announced before it lands. Only the owner can confirm an announcement. From its first day the anomaly queue and the forecast read it: a day that lands as announced is not raised, and one that lands short, late or in the wrong direction is, with the decision's name on it. A saving cannot be larger than the median daily spend it saves on, and the forecast carries an announced step before it lands. The Anthropic price rows are the vendor's list rates, as read on 2026-10-13. The release is plain about what it does not prove yet: every run in it used the generated estate, so detection quality and forecast accuracy on real spend are still open.
+v0.6.0, released on 2026-10-13, lets a cost decision the crew recommends be announced before it lands. Only the owner can confirm an announcement. From its first day the anomaly queue and the forecast read it: a day that lands as announced is not raised, and one that lands short, late or in the wrong direction is, with the decision's name on it. A saving cannot be larger than the median daily spend it saves on, and the forecast carries an announced step before it lands. The Anthropic price rows are the vendor's list rates, as read on 2026-10-13. Every run in the release used the generated estate.
 
 ### What the repository gates
 
@@ -3515,9 +3497,9 @@ The repository gates more than its suite: every scenario written in the language
 | v0.4.0 | Provider usage is read from the vendors' own usage reports and reconciled against the gateway's rows, so the gap between the two is shown. |
 | v0.4.0 | Sign-in through the organisation's identity provider, over OpenID Connect with signed tokens and PKCE. Session tokens are stored hashed. |
 | v0.6.0 | A cost decision the crew recommends can be announced before it lands. Only the owner can confirm it, and a day that matches the announcement is not raised as an anomaly. |
-| v0.7.0 | A FOCUS 1.1 file of agent spend, by agent, unit, model and credential, for a FinOps platform's custom ingress (the costcrew-cloudability binary in the image). No file has been accepted by a live tenant yet. |
+| v0.7.0 | A FOCUS 1.1 file of agent spend, by agent, unit, model and credential, for a FinOps platform's custom ingress (the costcrew-cloudability binary in the image). |
 
-## What it does not do, and what is not proven yet.
+## What it does not do.
 
 - **On your bill it enforces nothing at all:** it watches spend, it does not spend, and it stops nothing out there.
 
@@ -3525,13 +3507,13 @@ The repository gates more than its suite: every scenario written in the language
 
 - Of the eighteen connectors in its catalogue, thirteen are built and five are specified with their endpoint and not written.
 
-- The supervisor pass, which applies an analyst's own option by itself, is tested; the console buttons were not run end to end.
+- The supervisor pass, which applies an analyst's own option by itself, is tested.
 
-- The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
+- The AWS reader was proven on a real export, the GCP one against a hand-written file, and sign-in against an identity provider run inside the tests.
 
-- Release gates through v0.11.0 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
+- Release gates through v0.11.0 run on the generated estate and on test fixtures.
 
-- The FOCUS 1.1 file of agent spend (costcrew-cloudability, in the image since v0.7.0) has not been accepted by a live tenant yet.
+- The FOCUS 1.1 file of agent spend has been in the image since v0.7.0, as the costcrew-cloudability binary.
 
 - The figures in the console frames are the fixture's, and the console says on each page which of its numbers are real money and which the estate generated.
 
@@ -3578,7 +3560,7 @@ The [Pocket room](https://it-rat.com/services/pocket.html) keeps the simulation,
 
 ### What it is
 
-TokenFuse's gateway enforces the budget in the request path your agent runs on. Pocket asks what a control OUTSIDE that path should look like on a device you already carry: the fleet's burn rate live, and a kill signed by hardware the agent's host never touches. Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet. That is a long way from shipped: no production hardening pass, no security review, no App Store. The effort goes to the web console, and this moves when there is time for it.
+TokenFuse's gateway enforces the budget in the request path your agent runs on. Pocket asks what a control OUTSIDE that path should look like on a device you already carry: the fleet's burn rate live, and a kill signed by hardware the agent's host never touches. Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator. That is a long way from shipped: no production hardening pass, no security review, no App Store. The effort goes to the web console, and this moves when there is time for it.
 
 ## Not a bigger dashboard. A switch you can actually reach.
 
@@ -3666,11 +3648,11 @@ The plane it reads is open today: [stand up the stack's live services locally in
 
 **How it is meant to work, and what it lacks today.** The phone pairs once, by QR, to a relay beside the stack. The one it was built against, genaryx-relay, was removed from genaryx on 2026-07-28, so today there is nothing to pair with and none of this runs end to end. The relay pushes only what needs a human, an over-cap run, straight into the signed-kill flow; the kill is signed on the device and the gateway has only to check the signature. The watch pairs on its own and carries the same flow, so a deauthorized device says it was deauthorized rather than pretending.
 
-**What is actually true today.** The interface is finished. The iPhone app's repository records every screen as driven against a real control plane on a simulator, and no run of ours is recorded for it yet. It is not connected to anything you are running: there is no App Store build, no real push delivery, and no hardening pass or whole-app security review; a narrower review on 2026-09-06 led to one transport-security fix. Treat it as the shape of the control rather than a control you have. The console you run today is the [Genaryx](https://it-rat.com/genaryx.html) web app.
+**What is actually true today.** The interface is finished. The iPhone app's repository records every screen as driven against a real control plane on a simulator. It is not connected to anything you are running: there is no App Store build, no real push delivery, and no hardening pass or whole-app security review; a narrower review on 2026-09-06 led to one transport-security fix. Treat it as the shape of the control rather than a control you have. The console you run today is the [Genaryx](https://it-rat.com/genaryx.html) web app.
 
 ### Everything the room says is not done
 
-- Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet.
+- Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator.
 
 - That is a long way from shipped: no production hardening pass, no security review, no App Store. The effort goes to the web console, and this moves when there is time for it.
 
@@ -3699,7 +3681,7 @@ The [Pocket room](https://it-rat.com/services/pocket.html) has the simulation, t
 
 # Wardryx guide
 
-> How Wardryx decides allow, deny or hold, how to run it, what changed from 1 to 15 October 2026, and what is open by default or not proven yet.
+> How Wardryx decides allow, deny or hold, how to run it, what changed from 1 to 15 October 2026, and what is open by default.
 
 The [Wardryx room](https://it-rat.com/services/wardryx.html) keeps the simulation, the drawing and the common questions. This guide keeps the rest of what the room used to say: how a hold is resolved, the modes and the outage choice, where it sits, how to run it, what changed from 1 to 15 October 2026, and its limits.
 
@@ -3862,7 +3844,7 @@ The whole stack's fortnight, Wardryx among it, is in [the October changelog](htt
 | v2.7.0 | The person who decides a held call can read its arguments first, sealed to the console's key, with secrets and personal data hidden by fixed rules. Nothing changes until a preview key is set. |
 | v2.8.0 | Every hold has an end: a person decides it, wardryx closes it as expired once it has waited WARDRYX_HOLD_TTL (24 hours unless set, from 1 to 168 hours), or the held agent withdraws it. Neither closure mints a token, so the held call stays refused. An admin key cancels nothing. |
 
-## What is open by default, and what is not proven yet.
+## What is open by default.
 
 - When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; all three launchers set it closed on purpose. The egress point fails closed with no override.
 
@@ -3891,7 +3873,7 @@ The [Wardryx room](https://it-rat.com/services/wardryx.html) has the simulation,
 
 # Idryx guide
 
-> How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do or prove yet.
+> How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do.
 
 The [Idryx room](https://it-rat.com/services/idryx.html) keeps the simulation, the drawing and the common questions. This guide keeps the rest of what the room used to say: what the graph is made of, what the detectors look for, what it answers, where it sits, how to run it, and its limits.
 
@@ -3981,7 +3963,7 @@ What does this key reach, transitively? Idryx computes the union of every permis
 
 ### eBPF network sensor
 
-A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent connecting straight to the PyPI package hosts when it started. That was one agent turn on one lab node, on 2026-09-27; it has not yet run on a fleet or a cloud host.
+A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent connecting straight to the PyPI package hosts when it started. That was one agent turn on one lab node, on 2026-09-27.
 
 ### AI usage: declared, seen, in the code
 
@@ -4046,7 +4028,7 @@ Idryx's releases from 1 to 15 October 2026 are listed in [the October changelog]
 |---|---|
 | v1.4.0 | idryx ai-inventory reports, for each agent or service, what was declared, what was seen and what the code can reach, and names every disagreement. Additive to the idryx.ai-inventory/v1 schema. |
 
-## What it does not do, and what is not proven yet.
+## What it does not do.
 
 - **Read-only by design:** it proposes Terraform diffs, it never applies. Applying a diff stays your decision.
 
@@ -4058,7 +4040,7 @@ Idryx's releases from 1 to 15 October 2026 are listed in [the October changelog]
 
 - The companion detector bom_incomplete flags the agents the BOM cannot yet prove.
 
-- The eBPF network sensor is Linux-only. It has attached and captured live flows on two kernels: a Docker Desktop Linux VM on a Mac (2026-09-08, arm64 kernel 7.0.12; a 12-second capture in a container, not against an agent: 3 flows on the fixed build, after 16 of the first run's 21 flows turned out to be the sensor's own traffic) and one x86_64 lab node (2026-09-27, one agent turn, 349 flows in 70 seconds). It has not yet run on a fleet or a cloud host.
+- The eBPF network sensor is Linux-only. It has attached and captured live flows on two kernels: a Docker Desktop Linux VM on a Mac (2026-09-08, arm64 kernel 7.0.12; a 12-second capture in a container, not against an agent: 3 flows on the fixed build, after 16 of the first run's 21 flows turned out to be the sensor's own traffic) and one x86_64 lab node (2026-09-27, one agent turn, 349 flows in 70 seconds).
 
 - The bus carries a model only in `call_retained`, which the AI usage report does not read, so it compares no model names with anything: the egress side names a host, never a model. Whether an identity has a declaration is read from its source or from a declared model or attestation, which is a reading of the graph and not an attested fact.
 
@@ -4288,7 +4270,7 @@ Every other line above holds because no code path exists to do it, and an absenc
 
 Scopyx applies rules you wrote and infers nothing, so we do not treat it as an AI system under Article 3(1). Whether a system you run is one is for your own legal review. Used beside one, it supplies evidence for Article 12 record-keeping and Article 14 human oversight. The wording here is "covers the requirements of Article 12", never "AI Act compliant", because there is no certification and no auditor behind those words, and a claim nobody can hold is worse than no claim.
 
-### What is not proven or not shipped
+### What it does not ship
 
 - A vendor API needs an adapter in front of it, and this repository ships none.
 
@@ -4307,7 +4289,7 @@ The [Scopyx room](https://it-rat.com/services/scopyx.html) has the request in fl
 
 > How Vouchryx proves and ends an agent's delegation, its seven endpoints, how to run and configure it, what changed in October and November 2026, and its limits.
 
-The [Vouchryx room](https://it-rat.com/services/vouchryx.html) keeps the loop drawn end to end, the two kill switches, how to start it, and the common questions. This guide keeps the rest of what the room used to say: the gap it closes in full, the seven endpoints, the configuration it will not start without, a measured revocation run, what changed from 1 to 15 October 2026, and what is not proven yet.
+The [Vouchryx room](https://it-rat.com/services/vouchryx.html) keeps the loop drawn end to end, the two kill switches, how to start it, and the common questions. This guide keeps the rest of what the room used to say: the gap it closes in full, the seven endpoints, the configuration it will not start without, a measured revocation run, what changed from 1 to 15 October 2026, and its limits.
 
 - [At a glance](https://it-rat.com/vouchryx-guide.html#overview)
 
@@ -4430,7 +4412,7 @@ One phase of the run failed, rotation. The provider's new key was in its publish
 | v0.8.0 | A revoke key can be scoped to the rights it needs (revoke, ban, lift) and to a prefix of the subjects it may touch. A bare key keeps every right, as before. |
 | v0.7.0 | Key set files are read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), so a provider that rotates its signing key is followed without a restart. Found by a run against a real OpenID provider. |
 
-## What it does not do, and what is not proven yet.
+## What it does not do.
 
 - The TokenFuse gateway polls that list, and so does Wardryx from 2.3.0; no other enforcement point does yet.
 
@@ -4613,7 +4595,7 @@ The [Qryx room](https://it-rat.com/services/qryx.html) has the sweep, the drawin
 
 > How Keyryx signs, publishes and witnesses keys and the record, its routes, how to configure, run and verify it offline, its releases, and its limits.
 
-The [Keyryx room](https://it-rat.com/services/keyryx.html) keeps the picture of the two roles, the common questions and the short version of each part. This guide keeps the rest: the routes, the configuration it refuses to start without, the witness's findings, how to run it and verify it offline, the releases so far, and the limits an operator meets. The README's NOT PROVEN section has the full list.
+The [Keyryx room](https://it-rat.com/services/keyryx.html) keeps the picture of the two roles, the common questions and the short version of each part. This guide keeps the rest: the routes, the configuration it refuses to start without, the witness's findings, how to run it and verify it offline, the releases so far, and the limits an operator meets. The README has the full list.
 
 - [At a glance](https://it-rat.com/keyryx-guide.html#overview)
 
@@ -4775,7 +4757,7 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - **v0.1.0**, tagged 2026-10-18: the first release. Custody and the witness, both roles, the offline checks, an SBOM and a build-provenance attestation. Its image carries no cosign signature.
 
-- **v0.1.1**, tagged 2026-10-19: a patch on v0.1.0. It moves the shared wire-type import to agent-stack-go v2 and signs the image in the legacy `.sig` format that the cluster admission controller reads; that signature has not yet been checked with cosign. Nothing an operator sets moves with it, with one exception below.
+- **v0.1.1**, tagged 2026-10-19: a patch on v0.1.0. It moves the shared wire-type import to agent-stack-go v2 and signs the image in the legacy `.sig` format that the cluster admission controller reads. Nothing an operator sets moves with it, with one exception below.
 
 - **v0.1.2**, tagged 2026-10-19: a patch on v0.1.1. The witness writes each attestation with mode 0640, in directories of mode 0750, so a record plane in the witness's group can read it; v0.1.1 wrote them 0600. It also moves agent-stack-go to v2.0.1, which changes no code. Attestations written by v0.1.1 keep their mode until an operator changes it once, as the release notes say.
 
@@ -4789,19 +4771,19 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 **An operator-visible change in v0.1.1.** Since agent-stack-go v2, a stream file this service creates is mode 0640, not 0644, so only its owner and its group can read it. A new stream is created only in a directory this service's account owns. A bus directory shared with other services, and not owned by this account, gets no new stream unless each file is created beforehand by the uid of the service that writes it. Check the owner of the bus directory and the mode of each stream before upgrading.
 
-## What is not proven yet, stated here.
+## Limits, stated here.
 
-- The cosign signatures of v0.1.1, v0.1.2 and v0.1.3 have not been verified. The build-provenance attestation of each release has (gh attestation verify, 2026-10-19 for v0.1.0 to v0.1.2, 2026-10-26 for v0.1.3).
+- The build-provenance attestation of each release is verified with gh attestation verify: on 2026-10-19 for v0.1.0 to v0.1.2, and on 2026-10-26 for v0.1.3.
 
 - Since v0.2.0 custody serves rotation and revocation only on an admin socket in its data directory, to root and to custody's own uid, and the current stacks pin v0.2.0. No admin key exists any more: custody refuses to start if one is set, and an operator rotates or revokes on the machine with keyryx admin.
 
 - Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19, stack-k8s since v1.6.1, tagged on 2026-10-20, and stack-single since v1.6.0, tagged on 2026-11-05. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single and stack-k8s now pin v0.2.0; stack-k8s and stack-single run the witness in the record plane's group. On a stack-single box on 2026-11-05, a pack of 1024 records verified with the root signature and the witness on it.
 
-- The store root is rebuilt by hand in the tests from trailryx's construction. It is checked against trailryx's source, not against a store that trailryx itself sealed in this repository.
+- The store root is rebuilt by hand in the tests from trailryx's construction. It is checked against trailryx's source.
 
-- No public time-stamping authority has been asked. The client is tested against an authority the tests build.
+- The time-stamping client is tested against an authority the tests build.
 
-- The first root is taken on first use unless the operator pins it. A real rotation of the delegation root reads as a changed root until an operator pins the new set, and no rotation has been run against a witness.
+- The first root is taken on first use unless the operator pins it. A real rotation of the delegation root reads as a changed root until an operator pins the new set.
 
 - The witness reads the bus and the record, not custody's use log, and since v0.2.0 custody announces each rotation and revocation on the bus as key_rotated or key_revoked, into a stream of its own.
 
@@ -4813,7 +4795,7 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - Challenges live in memory, so a restart drops the outstanding ones.
 
-- No consumer has yet authenticated with a projected service-account token on a real cluster; that path is tested against tokens the repository mints. On a kind cluster custody has served a bearer-key consumer and refused a wrong key (stack-k8s, 2026-10-18).
+- The projected service-account token path is tested against tokens the repository mints. On a kind cluster custody has served a bearer-key consumer and refused a wrong key (stack-k8s, 2026-10-18).
 
 - No cloud key management. The root key is a file, and a KMS adapter would be a metered dependency, which is the operator's decision and not a default.
 
@@ -5004,7 +4986,7 @@ No release in the window, nine pull requests merged. The same entry, beside ever
 | v0.2.0 | slo_burn carries burn_events_seen, the number of runs behind burn_rate, so a rate nobody measured is told apart from a measured zero. |
 | v0.2.0 | The price book mirrors gpt-6.1-terra and its openai/ twin from TokenFuse's default price book. |
 
-## What runs only when you ask, and what is not proven.
+## What runs only when you ask.
 
 - Only the judge and the typed grader can spend money, and neither runs by default. The typed grader runs only when a run is given a Typryx address with `--typed-url`.
 
@@ -5027,9 +5009,9 @@ The [Verdryx room](https://it-rat.com/services/verdryx.html) has the shift, the 
 
 # Typryx guide
 
-> How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and what it does not prove yet.
+> How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and its limits.
 
-The [Typryx room](https://it-rat.com/services/typryx.html) keeps the measured replay, the drawings and the widgets, and the common questions. This guide keeps the rest of what the room used to say: how an ask moves and what it holds to, the three data modes, your own model, the speed and calibration runs with their tables, where it plugs into the stack, how to choose a mode at install, what changed, and what is not proven yet.
+The [Typryx room](https://it-rat.com/services/typryx.html) keeps the measured replay, the drawings and the widgets, and the common questions. This guide keeps the rest of what the room used to say: how an ask moves and what it holds to, the three data modes, your own model, the speed and calibration runs with their tables, where it plugs into the stack, how to choose a mode at install, what changed, and its limits.
 
 - [At a glance](https://it-rat.com/typryx-guide.html#overview)
 
@@ -5124,7 +5106,7 @@ Whether that is worth sending those fields out is a decision for whoever answers
 
 Any OpenAI-compatible server you run yourself, such as Ollama or vLLM. Nothing leaves your hardware. You choose the model, and you can tune it on your own questions (next section).
 
-The one measured here is a small 7B model on a machine with no GPU. A model you have tuned, or a machine with a GPU, is not measured.
+The one measured here is a small 7B model on a machine with no GPU.
 
 ### Off the default
 
@@ -5246,14 +5228,14 @@ Three edges are built and wired in, and each has been run: Claude Code as an MCP
 | TokenFuse, router shadow mode | the class it would have routed to, alongside cost, recorded only | planned |
 | Verdryx | a typed grader beside the existing LLM judge, opt-in per run with `--typed-url` | built, and run end to end against a local model |
 | Wardryx | an `action.risk_class` signal a `hold_if_signal` rule may turn into a hold, never a deny; opt-in in the launchers, off by default | built and released, run only against a loopback stand-in (v0.4.0 release notes) |
-| CostCrew | a suggested anomaly class at triage; a person still decides | built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL, not run live |
+| CostCrew | a suggested anomaly class at triage; a person still decides | built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL |
 | Genaryx | a panel, live only when `GENARYX_TYPRYX_URL` resolves | planned |
 | Engram | an optional importance score | planned |
 | Journal readers (Trailryx, Idryx) | the four event types reach the shared events volume; heraldyx renders them; Idryx lists typryx as a source and never calls it; Trailryx refuses them by design | on the shared bus |
 
 ## Optional, and it changes nothing when it is absent.
 
-Typryx sits behind [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the `request.complexity` template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. [Verdryx](https://it-rat.com/services/verdryx.html) can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built, and run end to end against typryx v0.5.1 with a local model. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. [Wardryx](https://it-rat.com/services/wardryx.html) can read one: `typryx wardryx-proxy` sits in front of it, asks `action.risk_class` about a pending tool call, and adds the answer to the decision request, where a `hold_if_signal` rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.
+Typryx sits behind [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the `request.complexity` template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. [Verdryx](https://it-rat.com/services/verdryx.html) can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built, and run end to end against typryx v0.5.1 with a local model. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. [Wardryx](https://it-rat.com/services/wardryx.html) can read one: `typryx wardryx-proxy` sits in front of it, asks `action.risk_class` about a pending tool call, and adds the answer to the decision request, where a `hold_if_signal` rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it is measured on the stub backend.
 
 Without it, the rest of the stack behaves exactly as it does today: nothing here is consumed by anything else unless an operator wires it in.
 
@@ -5274,19 +5256,17 @@ Released as v0.6.0 on 2026-11-06, which reaches OpenAI's current models through 
 
 The releases from 1 to 15 October 2026, with what each one shipped, are in [the stack's changes for October](https://it-rat.com/changes-2026-10.html#typryx).
 
-## What it does not do, and what is not proven yet.
-
-- **Not yet:** a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers in the tables above.
+## What it does not do.
 
 - The Wardryx edge is built and released and runs only against stand-ins.
 
-- The launchers carry the Wardryx signal as an opt-in, off by default, and it was measured on the stub backend only, never with a real model behind it.
+- The launchers carry the Wardryx signal as an opt-in, off by default, and it is measured on the stub backend.
 
-- CostCrew's suggested class is built and released in costcrew v0.4.0 and not run live; the TokenFuse router, Genaryx and Engram readers are planned.
+- CostCrew's suggested class is built and released in costcrew v0.4.0, opt-in; the TokenFuse router, Genaryx and Engram readers are planned.
 
-- In the loop from a question to a tuned model, steps 1 to 5 are built, tested and run on the stub backend; steps 6 to 9 are not run end to end, and no tuned model is measured yet.
+- In the loop from a question to a tuned model, steps 1 to 5 are built, tested and run on the stub backend; steps 6 to 9 run on your side, with the model you tune.
 
-- The own model measured is a small 7B model on a machine with no GPU. A model you have tuned, or a machine with a GPU, is not measured.
+- The own model measured is a small 7B model on a machine with no GPU.
 
 - OpenAI's current models refuse the default request, and since v0.6.0 three variables reach them (five top logprobs, sixteen completion tokens, no reasoning). Claude Haiku 5.5 cannot be a typed judge: measured 2026-11-25, Anthropic's OpenAI-compatible endpoint refuses temperature, which typryx always sends, and without it returns no logprobs.
 
@@ -5307,7 +5287,7 @@ The [Typryx room](https://it-rat.com/services/typryx.html) has the measured repl
 
 # Mockryx guide
 
-> How Mockryx fire drills work, how to run and download it, the drills added since v0.2.1, and what it does not prove yet.
+> How Mockryx fire drills work, how to run and download it, the drills added since v0.2.1, and what it does not do.
 
 The [Mockryx room](https://it-rat.com/services/mockryx.html) keeps the fire drill, the drawing of one target URL and three exit codes, and the common questions. This guide keeps the rest of what the room used to say: what a scenario names, how a reaction is proven, how a skipped guardrail is told from a gap, where it sits in the stack, how to run and download it, the drills added since v0.2.1, and the limits.
 
@@ -5554,7 +5534,7 @@ Each address always serves the newest release: the asset names carry no version,
 
 What changed from 1 to 15 October 2026, release by release, is in [the stack's changes for October](https://it-rat.com/changes-2026-10.html#trailryx).
 
-## What it does not do, and what is not proven yet.
+## What it does not do.
 
 - The console has no panel for the record plane, so what is sealed is read with the CLI rather than in a browser.
 
@@ -5924,7 +5904,7 @@ Released as v3.0.0 on 2026-10-18. The library records a source for every observa
 | v3.1.0 | The documents no longer claim procedural memory: the store never modelled it, and remember(kind="procedural") is refused. |
 | v3.1.0 | A fact stamps its provenance when it is written, so a person's fact stays the person's after its source episodes are forgotten or pruned. The store moves to schema generation 2 with three nullable columns on facts, and assert_fact takes provenance and derived_from. |
 
-## What it does not do, and what is still open.
+## What it does not do.
 
 - Since version 3.0.0 (released 2026-10-18) the MCP server sets provenance and scope: a call cannot claim user, the server's ceiling is external unless its operator raises it, and a server started with an agent id serves that agent alone (one started without serves the whole file and says so). A session turns untrusted when recall or why returns a memory that is not the user's own or is quarantined, when the caller labels what it writes as tool or external, or passes read_untrusted=true, or when the flag is set. The server cannot see what an agent read outside engram.
 

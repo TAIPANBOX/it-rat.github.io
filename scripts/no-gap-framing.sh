@@ -22,6 +22,8 @@
 # WHAT IT DOES NOT CHECK. "Does not cover" alone is allowed on purpose: "the
 # licence covers the code, it does not cover the machines" is a fact about the
 # product, not a proof gap, and a gate that fired on it would be switched off.
+# A product identifier is not prose either: wardryx's rule is named
+# deny_if_chain_unproven, so "unproven" only counts as its own word.
 # It cannot judge whether a rewritten sentence is still true as worded; that
 # needs a reader.
 set -uo pipefail
@@ -31,7 +33,7 @@ python3 - <<'PY'
 import pathlib, re, sys
 
 PHRASES = re.compile(
-    r"not proven|not yet proven|unproven|not been proven|nobody has established"
+    r"not proven|not yet proven|(?<![\w])unproven|not been proven|nobody has established"
     r"|stops? short of|not been (?:run|tested|measured)"
     r"|measurement does not cover|what it does not cover",
     re.I,
