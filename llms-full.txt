@@ -1676,7 +1676,7 @@ Three published conclusions. That throughput collapses past 64 concurrent caller
 Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Not every shipped pre-production drill has been fired at a real gateway; the ledger records the ones that have. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.
 
 **Q: Why publish the things that went wrong?**
-Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 163 entries and 84 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.
+Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 170 entries and 87 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.
 
 
 ---
@@ -2267,7 +2267,7 @@ Nothing here has to be adopted whole. Each service is its own repository with it
 | service | how it ships | on its own | install |
 |---|---|---|---|
 | the control room |  |  |  |
-| Genaryx | The console of the one-box and cluster installs; built from source on its own. | Reads the stack it sits on. | [genaryx ↗](https://github.com/TAIPANBOX/genaryx#readme) |
+| Genaryx | The console of the one-box and cluster installs; a container image, or built from source on its own. | Reads the stack it sits on. | [genaryx ↗](https://github.com/TAIPANBOX/genaryx#readme) |
 | money |  |  |  |
 | TokenFuse | A container image: a proxy you start and point your agent at. | Yes, with a model provider behind it, or its stub for a dry run. | [tokenfuse ↗](https://github.com/TAIPANBOX/tokenfuse#readme) |
 | CostCrew | A Go binary, or the `finops` profile of the one-box install. | Yes. It listens on loopback and reads your bills. | [costcrew ↗](https://github.com/TAIPANBOX/costcrew#readme) |
@@ -3250,7 +3250,7 @@ Want more than the gateway? [Run the live services locally](https://it-rat.com/s
 
 ### TokenFuse ships as an image, and since v0.4.3 as binaries
 
-The current release is v1.25.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
+The current release is v1.27.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
 
 ## What the gateway gained from 1 to 15 October
 
@@ -3284,6 +3284,12 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 | v1.22.0 | The MCP broker follows no redirect, so the secrets it writes into a body cannot be carried to a host an upstream named, and a tool call in a stream's closing chunk is held like any other. |
 | v1.22.0 | A call that searched on the OpenAI door labels its run, so a shell the run asks for afterwards can be refused. |
 | v1.22.0 | A response that stopped short is charged the input as reported and the output at the request's cap, under the cost basis PartialUsage. |
+| v1.26.0 | Every door judges a tool call's own arguments: the check, the MCP broker and the streamed judge each read the arguments of the call they are deciding, never an argument carried from another call. |
+| v1.26.0 | The trace and the FOCUS export carry cache and reasoning tokens, and the FOCUS export can be written to specification 1.5. |
+| v1.27.0 | Per-key rate and concurrency limits, off until set. A call over a limit gets a 429 with Retry-After, and nothing is reserved for it. |
+| v1.27.0 | Two more agent-event types, rate_limited and price_fallback, and one incident per caller when a provider keeps refusing the gateway's credential. |
+| v1.27.0 | Each MCP upstream can have a credential of its own, and the caller's own credential is never sent to an upstream. |
+| v1.27.0 | A child run can roll up into a parent run another agent owns only when the person's delegation proves a chain that names the parent's agent. |
 
 ## What the default install does not do, and what is not proven yet.
 
@@ -3348,7 +3354,7 @@ The [CostCrew room](https://it-rat.com/services/costcrew.html) keeps the console
 
 - **Core:** one static binary. **Store:** SQLite, in a directory you name.
 
-- **Reads:** FOCUS from TokenFuse, AWS and GCP billing exports, seats, recommendations; the Azure billing export is specified, not read yet.
+- **Reads:** FOCUS from TokenFuse, AWS, Azure and GCP billing exports, seats, recommendations.
 
 - **Enforces:** nothing on your bill, by design. Every deliverable arrives as a draft.
 
@@ -3446,7 +3452,7 @@ The hire form collects what a Passport needs, so an analyst joins the crew and t
 
 ### It says what it cannot do
 
-Per-agent attribution of AI spend is not possible from an invoice: the charge carries a model and a workload, not an agent. It becomes possible when the calls go through TokenFuse, and until then the console does not pretend. It now reads a cloud bill too: of the eighteen connectors in its catalogue, twelve are built (the AWS and GCP billing exports as FOCUS folders, the TokenFuse FOCUS export, the Anthropic and OpenAI usage reports, SaaS seats, three rightsizing and three budget-recommendation readers) and six, the Azure billing export among them, are specified with their endpoint and not written. The catalogue says which is which, per entry, and so does this page.
+Per-agent attribution of AI spend is not possible from an invoice: the charge carries a model and a workload, not an agent. It becomes possible when the calls go through TokenFuse, and until then the console does not pretend. It now reads a cloud bill too: of the eighteen connectors in its catalogue, thirteen are built (the AWS, Azure and GCP billing exports as FOCUS folders, the TokenFuse FOCUS export, the Anthropic and OpenAI usage reports, SaaS seats, three rightsizing and three budget-recommendation readers) and five are specified with their endpoint and not written. The catalogue says which is which, per entry, and so does this page.
 
 ## One binary, one directory.
 
@@ -3464,7 +3470,7 @@ go install github.com/TAIPANBOX/costcrew/cmd/costcrew@latest
 
 ### A measured run
 
-Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.10.2, and it reads the AWS and GCP billing exports.
+Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.11.0, and it reads the AWS, Azure and GCP billing exports.
 
 ### The supervisor settles what it may
 
@@ -3497,7 +3503,7 @@ The repository gates more than its suite: every scenario written in the language
 
 - Per-agent attribution of AI spend is not possible from an invoice: the charge carries a model and a workload, not an agent. It becomes possible when the calls go through TokenFuse, and until then the console does not pretend.
 
-- Of the eighteen connectors in its catalogue, twelve are built and six, the Azure billing export among them, are specified with their endpoint and not written.
+- Of the eighteen connectors in its catalogue, thirteen are built and five are specified with their endpoint and not written.
 
 - The supervisor pass, which applies an analyst's own option by itself, is tested; the console buttons were not run end to end.
 
@@ -4347,7 +4353,7 @@ vouchryx-demo exchange -url http://127.0.0.1:4310 -idp-key idp.pem -kid idp-1 -i
 
 ### A measured run
 
-Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 359 tests, and the repository gates that number against its own suite.
+Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 478 tests, and the repository gates that number against its own suite.
 
 ### A run against a real provider
 
@@ -4367,6 +4373,9 @@ One phase of the run failed, rotation. The provider's new key was in its publish
 
 | shipped in | what it does |
 |---|---|
+| v0.9.0 | A first hop refuses an actor credential that is not bound to a key: a bearer provider token with no key binding is no longer exchanged for any key its holder proves. Bind the provider token with DPoP, or use the service's own client credentials agent credential, which is always bound. |
+| v0.9.0 | In file mode the next signing key can be published ahead of a rotation, through a key set file of at most four public keys, so a rotation no longer strands verifiers that have not refreshed yet. |
+| v0.8.0 | A revoke key can be scoped to the rights it needs (revoke, ban, lift) and to a prefix of the subjects it may touch. A bare key keeps every right, as before. |
 | v0.7.0 | Key set files are read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), so a provider that rotates its signing key is followed without a restart. Found by a run against a real OpenID provider. |
 
 ## What it does not do, and what is not proven yet.
@@ -4436,11 +4445,11 @@ The [Qryx room](https://it-rat.com/services/qryx.html) keeps the sixty-second sw
 
 ### What it is
 
-A crypto audit tells you what your architecture documents say you run. Qryx tells you what is actually running: it scans binaries, containers, live TLS, certificates, dependencies and cloud KMS, and comes back with a cryptographic asset graph instead of a slide deck. Every asset gets a post-quantum grade against the NCSC's 2028, 2031 and 2035 milestones, and CI fails the day a new weak key ships, not at the next audit cycle.
+A crypto audit tells you what your architecture documents say you run. Qryx tells you what is actually running: it scans binaries, containers, live TLS and SSH endpoints, certificates, dependencies and cloud KMS, and comes back with a cryptographic asset graph instead of a slide deck. Every asset gets a post-quantum grade against the NCSC's 2028, 2031 and 2035 milestones, and CI fails the day a new weak key ships, not at the next audit cycle.
 
 ## One graph. Every report reads the same one.
 
-Five kinds of sources feed one scan engine: binaries, containers, live TLS, cloud KMS, and source plus Terraform. Findings dedupe into an asset graph keyed on algorithm, key size and risk class, so a certificate that is both expired and quantum-vulnerable gets two nodes, not one silently overwriting the other. CBOM, the CNSA audit, the NCSC readiness report and the migration plan all read that same graph, so they cannot disagree with each other.
+Five kinds of sources feed one scan engine: binaries, containers, live TLS and SSH, cloud KMS, and source plus Terraform. Findings dedupe into an asset graph keyed on algorithm, key size and risk class, so a certificate that is both expired and quantum-vulnerable gets two nodes, not one silently overwriting the other. CBOM, the CNSA audit, the NCSC readiness report and the migration plan all read that same graph, so they cannot disagree with each other.
 
 The [room](https://it-rat.com/services/qryx.html#sim) replays a live run against 25,586 ELF binaries, a container image and a live TLS endpoint. A quantum-vulnerable cert turns up mid-sweep.
 
@@ -4501,7 +4510,7 @@ The classification is not merely path-based either: Rust's in-file test modules 
 
 ## You cannot migrate what you cannot see.
 
-Qryx reads binaries, container images, live TLS endpoints, certificates, dependencies, cloud KMS and source code, and puts them into one graph graded against the CNSA 2.0 and NCSC milestones.
+Qryx reads binaries, container images, live TLS and SSH endpoints, certificates, dependencies, cloud KMS and source code, and puts them into one graph graded against the CNSA 2.0 and NCSC milestones.
 
 ## The inventory the rest of the stack borrows from.
 
@@ -4617,10 +4626,10 @@ Each consumer in the policy authenticates exactly one way: a unix socket of its 
 | `GET /v1/statements/{kid}` | anyone, cacheable | the statement that certified a delegated key, and when it was revoked |
 | `POST /v1/keys/{name}/sign` | a consumer granted sign | signs a statement of at most 4 KiB |
 | `POST /v1/keys/{name}/challenge` and `/delegate` | a consumer granted delegate | the proof-of-possession steps for a delegated key |
-| `POST /v1/keys/{name}/rotate` | an admin key | creates the next key, published before it signs |
-| `POST /v1/kids/{kid}/revoke` | an admin key | takes a key id out of every key set at once |
+| `POST /v1/keys/{name}/rotate` | root or custody's user, on the admin socket | creates the next key, published before it signs |
+| `POST /v1/kids/{kid}/revoke` | root or custody's user, on the admin socket | takes a key id out of every key set at once |
 
-A refusal answers its status and a word, and the reason goes to the operator's log. Admin routes answer 403 when no admin key is configured and 401 for a wrong one.
+A refusal answers its status and a word, and the reason goes to the operator's log. The two admin routes are served on the admin socket alone, never on the network, and the kernel's record of who connected decides who is served.
 
 ### Witness
 
@@ -4682,7 +4691,7 @@ The witness pins the delegation root the first time it reads it, unless an opera
 
 - Its findings go to keyryx.ndjson on a volume of their own, which Heraldyx and the console mount read only. Heraldyx mails the high ones (the medium ones go in the digest), and the console shows them as incidents. An operator can also check the witness log with keyryx verify.
 
-- In the current stacks no admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one. They pin keyryx v0.1.5; v0.2.0 moves rotation and revocation to an admin socket of their own, and no stack runs it yet.
+- Since v0.2.0 custody serves rotation and revocation only on an admin socket in its data directory, to root and to custody's own uid, and the current stacks pin v0.2.0. No admin key exists any more: custody refuses to start if one is set, and an operator rotates or revokes on the machine with keyryx admin.
 
 ## Build, run, and check the outputs offline.
 
@@ -4708,7 +4717,7 @@ keyryx verify streams --events events/ --checkpoints checkpoints/ \
 
 Each check prints ok, weak or broken for each item and ends with VERIFIED (exit 0) or NOT VERIFIED (exit 1). A directory with nothing in it is reported as measured nothing, never as verified.
 
-The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/arm64, with no moving tag. The stack-single Compose file pins v0.1.5 by digest.
+The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/arm64, with no moving tag. The stack-single Compose file pins v0.2.0 by digest.
 
 ## What each release is.
 
@@ -4720,15 +4729,21 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - **v0.1.3**, tagged 2026-10-26: a patch on v0.1.2. The binary and the image are built with Go 1.27.3, which fixes GO-2026-6809 in crypto/x509 (reached through the time-stamping client, only when KEYRYX_WITNESS_TSA_URL is set). No key, statement, log, route or variable changes.
 
+- **v0.1.4**, tagged 2026-11-07: a patch on v0.1.3. At the bound on live keys of a delegated name, a new key of an owner retires that owner's oldest key instead of being refused, once the next key has been signing for the name's overlap. A retired key is not a revoked key.
+
+- **v0.1.5**, tagged 2026-11-12: a patch on v0.1.4. Built with Go 1.27.4, which fixes GO-2026-6859 in net/http. No key, statement, log, route or variable changes.
+
+- **v0.2.0**, tagged 2026-11-25: a minor release under 0.x, because the custody admin surface changes in a breaking way. Rotation and revocation are served only on an admin unix socket, to root and custody's own uid, with keyryx admin rotate and keyryx admin revoke as the commands; KEYRYX_ADMIN_KEYS is gone and the start refuses when it is set; custody announces each change on the bus, and KEYRYX_EVENTS is now required. It also bounds the witness's memory on reads, adds committed statement vectors that a second verifier is held to, and can keep public copies of the delegation root and every statement for a reader on the same machine.
+
 **An operator-visible change in v0.1.1.** Since agent-stack-go v2, a stream file this service creates is mode 0640, not 0644, so only its owner and its group can read it. A new stream is created only in a directory this service's account owns. A bus directory shared with other services, and not owned by this account, gets no new stream unless each file is created beforehand by the uid of the service that writes it. Check the owner of the bus directory and the mode of each stream before upgrading.
 
 ## What is not proven yet, stated here.
 
 - The cosign signatures of v0.1.1, v0.1.2 and v0.1.3 have not been verified. The build-provenance attestation of each release has (gh attestation verify, 2026-10-19 for v0.1.0 to v0.1.2, 2026-10-26 for v0.1.3).
 
-- In the current stacks no admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one. They pin keyryx v0.1.5; v0.2.0 moves rotation and revocation to an admin socket of their own, and no stack runs it yet.
+- Since v0.2.0 custody serves rotation and revocation only on an admin socket in its data directory, to root and to custody's own uid, and the current stacks pin v0.2.0. No admin key exists any more: custody refuses to start if one is set, and an operator rotates or revokes on the machine with keyryx admin.
 
-- Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19, stack-k8s since v1.6.1, tagged on 2026-10-20, and stack-single since v1.6.0, tagged on 2026-11-05. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single, stack-up and stack-k8s now pin v0.1.3; stack-k8s and stack-single run the witness in the record plane's group. On a stack-single box on 2026-11-05, a pack of 1024 records verified with the root signature and the witness on it.
+- Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19, stack-k8s since v1.6.1, tagged on 2026-10-20, and stack-single since v1.6.0, tagged on 2026-11-05. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single and stack-k8s now pin v0.2.0; stack-k8s and stack-single run the witness in the record plane's group. On a stack-single box on 2026-11-05, a pack of 1024 records verified with the root signature and the witness on it.
 
 - The store root is rebuilt by hand in the tests from trailryx's construction. It is checked against trailryx's source, not against a store that trailryx itself sealed in this repository.
 
@@ -4736,7 +4751,7 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - The first root is taken on first use unless the operator pins it. A real rotation of the delegation root reads as a changed root until an operator pins the new set, and no rotation has been run against a witness.
 
-- The witness reads the bus and the record, not custody's use log, and custody writes no key rotation or revocation event yet.
+- The witness reads the bus and the record, not custody's use log, and since v0.2.0 custody announces each rotation and revocation on the bus as key_rotated or key_revoked, into a stream of its own.
 
 - Vouchryx consumes key statements from 0.5.0 and, from 0.6.0, checks each one against a pinned root, and stack-single switches that on by default from v1.6.0. TokenFuse consumes them for its checkpoint key from 1.18.0, which is opt-in: no launcher switches it on, and no producer in a launcher writes signed checkpoints yet.
 
@@ -4915,6 +4930,8 @@ No release in the window, nine pull requests merged. The same entry, beside ever
 
 | shipped in | what it does |
 |---|---|
+| v0.4.0 | The LLM judge reads one exact line, SCORE with a number between zero and one, and refuses any other reply with a reason. A refused reply is counted as unanswered and nothing is clamped, so a reply such as "1 of 5 criteria met" can no longer become a score of 1.0. |
+| v0.4.0 | The price book mirrors TokenFuse's current book, with rows for Claude Fable 5.2 and for gpt-6.2-astra and gpt-6.2-sol. |
 | v0.3.0 | slo measures the window it names, so a run stops counting once the window has passed it. |
 | v0.3.0 | --holds-spend-no-budget keeps a Wardryx hold from spending the budget that caused it, so an agent on hold can earn its budget back. |
 | v0.2.0 | drift and slo failures are stored as findings, with their evidence and a suspect model or version. verdryx findings list and show read them. |
@@ -5500,9 +5517,9 @@ The [Trailryx room](https://it-rat.com/services/trailryx.html) has the replay, t
 
 # Heraldyx guide
 
-> How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed from v0.7.0 to v0.9.0, and its boundaries.
+> How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed from v0.7.0 to v0.10.0, and its boundaries.
 
-The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst replay, the drawing of the five steps, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.
+The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst replay, the drawing of the five steps, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped from v0.7.0 to v0.10.0, and the boundaries in full.
 
 - [At a glance](https://it-rat.com/heraldyx-guide.html#overview)
 
@@ -5608,6 +5625,9 @@ This plane mails about what other planes wrote, so its reach grows when theirs d
 |---|---|
 | v0.9.0 | A dependency_failed repeats on the dependency, so a provider storm is one mail per window instead of one per failed call. |
 | v0.9.0 | The key of a dependency_failed mail is now dependency_failed:dependency/provider/call-failed. An acknowledgement made against the old per-run key does not hold the new one, so acknowledge the new key. |
+| v0.10.0 | The checkpoint gate can take each checkpoint's key from the key statement Keyryx custody publishes, so a producer that renews its key needs no new pinned file. The pinned-key mode is unchanged and the gate stays off unless switched on. |
+| v0.10.0 | The file transport refuses the same header breaks as the mail path: a control character in the To or Subject value, or a Unicode line or paragraph separator. |
+| v0.10.0 | Vouchryx's delegation events and Keyryx custody's key_rotated and key_revoked have sentences of their own instead of the generic one. |
 
 ## What changed in v0.8.0
 
@@ -5653,7 +5673,7 @@ A first run starts at the end of the log. A month of old incidents arriving at o
 
 - Vouchryx's delegation events have no sentences yet, so a mail about one says the box has no description for the event until one is written.
 
-- The source check does not stop a process that creates a plane's file before that plane does, or a writer forging its own stream. The checkpoint gate, from v0.8.0, narrows that for streams a producer signs: with HERALDYX_CHECKPOINT_GATE=on, a stream is read only while a checkpoint signed by a pinned key covers it. It is off by default, it trusts a pinned key until an operator removes it, and it holds only if each producer alone can write its stream and checkpoints. No launcher has a producer writing signed checkpoints yet.
+- The source check does not stop a process that creates a plane's file before that plane does, or a writer forging its own stream. The checkpoint gate, from v0.8.0, narrows that for streams a producer signs: with HERALDYX_CHECKPOINT_GATE=on, a stream is read only while a checkpoint signed by a pinned key, or since v0.10.0 by a key Keyryx custody has certified, covers it. It is off by default, it trusts a pinned key until an operator removes it, and it holds only if each producer alone can write its stream and checkpoints. No launcher has a producer writing signed checkpoints yet.
 
 - The record says a mail server accepted a message, never that it was delivered, and the first record of a chain cannot be verified.
 
@@ -6028,7 +6048,7 @@ For teams whose answer to everything is a cluster. One script brings up k3s acro
 | proven on | Hetzner, AWS and GCP |
 | what it buys | high availability |
 | what it costs | a ReadWriteMany volume |
-| traps | 163 documented, with whose fault each was |
+| traps | 170 documented, with whose fault each was |
 
 **The commands, and the one thing a cluster costs you.**
 

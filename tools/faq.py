@@ -41,7 +41,7 @@ FAQ = {
  ("What has not been established yet?",
   "<p>Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Not every shipped pre-production drill has been fired at a real gateway; the ledger records the ones that have. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.</p>"),
  ("Why publish the things that went wrong?",
-  "<p>Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 163 entries and 84 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.</p>"),
+  "<p>Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 170 entries and 87 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.</p>"),
 ]),
 
 "first-alert.html": ("common questions", "What people ask before starting", [
@@ -127,7 +127,7 @@ FAQ = {
 
 "services/costcrew.html": ("common questions", "What a crew of agents can and cannot do to your bill", [
  ("Do the agents change anything in my cloud account?",
-  "<p>No. This console reads exports that land in a folder and, where a connector is built, a vendor's usage API. It writes its own database and, when wired into the stack, its own events file and passports. Twelve of its eighteen connectors read today, the AWS and GCP billing exports among them; the Azure billing export is specified and not yet written, and the catalogue says so per entry. By default it makes no outbound call while serving a page; the only exceptions are opt-in: the supervisor's planning call through a gateway you name, sign-in through your identity provider, and a typed hint from Typryx at start. It enforces nothing: every deliverable is a draft until a person stamps it.</p>"),
+  "<p>No. This console reads exports that land in a folder and, where a connector is built, a vendor's usage API. It writes its own database and, when wired into the stack, its own events file and passports. Thirteen of its eighteen connectors read today, the AWS, Azure and GCP billing exports among them; the other five are specified and not yet written, and the catalogue says so per entry. By default it makes no outbound call while serving a page; the only exceptions are opt-in: the supervisor's planning call through a gateway you name, sign-in through your identity provider, and a typed hint from Typryx at start. It enforces nothing: every deliverable is a draft until a person stamps it.</p>"),
  ("How is this different from the console that kills runs?",
   "<p>Different question, different clock. <a href=\"../genaryx.html\">Genaryx</a> and <a href=\"tokenfuse.html\">TokenFuse</a> work in micro-dollars while a run is happening and can stop it. CostCrew works in cents on last month's invoice and allocates it. The crew here are agents like any other, so Genaryx governs them too.</p>"),
  ("What does it do about anomalies nobody has time for?",
@@ -212,7 +212,7 @@ FAQ = {
 
 "services/qryx.html": ("common questions", "Where a post-quantum migration actually starts", [
  ("How do I start a post-quantum migration?",
-  "<p>With an inventory, because you cannot migrate what you have not found. Qryx scans binaries, containers, live TLS endpoints, certificates, dependencies and cloud KMS, and returns a cryptographic asset graph graded against the NCSC milestones: discovery by 2028, the highest-priority systems by 2031, everything by 2035.</p>"),
+  "<p>With an inventory, because you cannot migrate what you have not found. Qryx scans binaries, containers, live TLS and SSH endpoints, certificates, dependencies and cloud KMS, and returns a cryptographic asset graph graded against the NCSC milestones: discovery by 2028, the highest-priority systems by 2031, everything by 2035.</p>"),
  ("What is a CBOM?",
   "<p>A cryptographic bill of materials in CycloneDX 1.6: one component per unique asset and risk class, with every occurrence attached. It lives in the same supply-chain tooling as your SBOMs, so cryptography stops having its own isolated report nobody reads.</p>"),
  ("Can it fail a build when someone ships a weak key?",

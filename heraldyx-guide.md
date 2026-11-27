@@ -2,9 +2,9 @@
 
 # Heraldyx guide
 
-> How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed from v0.7.0 to v0.9.0, and its boundaries.
+> How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed from v0.7.0 to v0.10.0, and its boundaries.
 
-The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst replay, the drawing of the five steps, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped from v0.7.0 to v0.9.0, and the boundaries in full.
+The [Heraldyx room](https://it-rat.com/services/heraldyx.html) keeps the burst replay, the drawing of the five steps, the sample mail and the short version of each part. This guide keeps the rest of what the room used to say: why the checks run in that order and what changed in them, what a mail may carry and who it names, what the dispatch record proves, who else writes to the log it reads, what shipped from v0.7.0 to v0.10.0, and the boundaries in full.
 
 - [At a glance](https://it-rat.com/heraldyx-guide.html#overview)
 
@@ -110,6 +110,9 @@ This plane mails about what other planes wrote, so its reach grows when theirs d
 |---|---|
 | v0.9.0 | A dependency_failed repeats on the dependency, so a provider storm is one mail per window instead of one per failed call. |
 | v0.9.0 | The key of a dependency_failed mail is now dependency_failed:dependency/provider/call-failed. An acknowledgement made against the old per-run key does not hold the new one, so acknowledge the new key. |
+| v0.10.0 | The checkpoint gate can take each checkpoint's key from the key statement Keyryx custody publishes, so a producer that renews its key needs no new pinned file. The pinned-key mode is unchanged and the gate stays off unless switched on. |
+| v0.10.0 | The file transport refuses the same header breaks as the mail path: a control character in the To or Subject value, or a Unicode line or paragraph separator. |
+| v0.10.0 | Vouchryx's delegation events and Keyryx custody's key_rotated and key_revoked have sentences of their own instead of the generic one. |
 
 ## What changed in v0.8.0
 
@@ -155,7 +158,7 @@ A first run starts at the end of the log. A month of old incidents arriving at o
 
 - Vouchryx's delegation events have no sentences yet, so a mail about one says the box has no description for the event until one is written.
 
-- The source check does not stop a process that creates a plane's file before that plane does, or a writer forging its own stream. The checkpoint gate, from v0.8.0, narrows that for streams a producer signs: with HERALDYX_CHECKPOINT_GATE=on, a stream is read only while a checkpoint signed by a pinned key covers it. It is off by default, it trusts a pinned key until an operator removes it, and it holds only if each producer alone can write its stream and checkpoints. No launcher has a producer writing signed checkpoints yet.
+- The source check does not stop a process that creates a plane's file before that plane does, or a writer forging its own stream. The checkpoint gate, from v0.8.0, narrows that for streams a producer signs: with HERALDYX_CHECKPOINT_GATE=on, a stream is read only while a checkpoint signed by a pinned key, or since v0.10.0 by a key Keyryx custody has certified, covers it. It is off by default, it trusts a pinned key until an operator removes it, and it holds only if each producer alone can write its stream and checkpoints. No launcher has a producer writing signed checkpoints yet.
 
 - The record says a mail server accepted a message, never that it was delivered, and the first record of a chain cannot be verified.
 

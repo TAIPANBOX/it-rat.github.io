@@ -28,7 +28,7 @@ The [CostCrew room](https://it-rat.com/services/costcrew.html) keeps the console
 
 - **Core:** one static binary. **Store:** SQLite, in a directory you name.
 
-- **Reads:** FOCUS from TokenFuse, AWS and GCP billing exports, seats, recommendations; the Azure billing export is specified, not read yet.
+- **Reads:** FOCUS from TokenFuse, AWS, Azure and GCP billing exports, seats, recommendations.
 
 - **Enforces:** nothing on your bill, by design. Every deliverable arrives as a draft.
 
@@ -126,7 +126,7 @@ The hire form collects what a Passport needs, so an analyst joins the crew and t
 
 ### It says what it cannot do
 
-Per-agent attribution of AI spend is not possible from an invoice: the charge carries a model and a workload, not an agent. It becomes possible when the calls go through TokenFuse, and until then the console does not pretend. It now reads a cloud bill too: of the eighteen connectors in its catalogue, twelve are built (the AWS and GCP billing exports as FOCUS folders, the TokenFuse FOCUS export, the Anthropic and OpenAI usage reports, SaaS seats, three rightsizing and three budget-recommendation readers) and six, the Azure billing export among them, are specified with their endpoint and not written. The catalogue says which is which, per entry, and so does this page.
+Per-agent attribution of AI spend is not possible from an invoice: the charge carries a model and a workload, not an agent. It becomes possible when the calls go through TokenFuse, and until then the console does not pretend. It now reads a cloud bill too: of the eighteen connectors in its catalogue, thirteen are built (the AWS, Azure and GCP billing exports as FOCUS folders, the TokenFuse FOCUS export, the Anthropic and OpenAI usage reports, SaaS seats, three rightsizing and three budget-recommendation readers) and five are specified with their endpoint and not written. The catalogue says which is which, per entry, and so does this page.
 
 ## One binary, one directory.
 
@@ -144,7 +144,7 @@ go install github.com/TAIPANBOX/costcrew/cmd/costcrew@latest
 
 ### A measured run
 
-Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.10.2, and it reads the AWS and GCP billing exports.
+Measured on a box behind a home router on 2026-09-17: the crew ran beside the single-machine stack through a gateway door of its own, one real model call was settled at USD 0.05811 and the next was refused by a monthly cap set centrally, and the notifier mailed the crew's findings with the owner taken from a passport. The same run found the runner reporting its own estimate as spent, five times under the gateway's settlement, and an import of the box's real AI spend refused by an empty severity field; both were fixed in v0.2.1. No reader for a cloud bill existed then, so the crew worked the generated estate; the current release is v0.11.0, and it reads the AWS, Azure and GCP billing exports.
 
 ### The supervisor settles what it may
 
@@ -177,7 +177,7 @@ The repository gates more than its suite: every scenario written in the language
 
 - Per-agent attribution of AI spend is not possible from an invoice: the charge carries a model and a workload, not an agent. It becomes possible when the calls go through TokenFuse, and until then the console does not pretend.
 
-- Of the eighteen connectors in its catalogue, twelve are built and six, the Azure billing export among them, are specified with their endpoint and not written.
+- Of the eighteen connectors in its catalogue, thirteen are built and five are specified with their endpoint and not written.
 
 - The supervisor pass, which applies an analyst's own option by itself, is tested; the console buttons were not run end to end.
 

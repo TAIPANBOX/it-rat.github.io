@@ -182,7 +182,7 @@
       <div class="cmd"><span class="c"># the whole local stack with the delegation door open, from TAIPANBOX/stack-up</span><br>./up.sh --with-delegation</div>
       <div class="cmd"><span class="c"># prints the token, its nested act and the key thumbprint bound to it</span><br>vouchryx-demo exchange -url http://127.0.0.1:4310 -idp-key idp.pem -kid idp-1 -iss https://idp.local -aud http://127.0.0.1:4310 -subject user://acme/ada -actor agent://acme/triage -holder-key holder.pem</div>
       <h3>A measured run</h3>
-      <p>Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 359 tests, and the repository gates that number against its own suite.</p>
+      <p>Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 478 tests, and the repository gates that number against its own suite.</p>
       <h3>A run against a real provider</h3>
       <p>The loop was run against a real OpenID provider, in throwaway realms with generated credentials: the exchange, the DPoP binding, hostile tokens, revoke, ban and lift, agent credentials, the hand-off, and a workload token the provider issued. A provider's token was exchanged once the provider wrote a <span class="mono">user://</span> or <span class="mono">agent://</span> URI into <span class="mono">sub</span>, and a service account's token from the provider was presented as an RFC 7523 assertion.</p>
       <p>One phase of the run failed, rotation. The provider's new key was in its published set the second it was created, and a token signed by it was refused with <span class="mono">invalid_grant</span> (no key in the set has that kid) for the life of the process, because a key set file was read once, at start. Against the image published at the time the rotation phase failed; with the key set files followed while running, the whole run passes. The record and its commands are in <span class="mono">docs/live-oidc-run.md</span> in the repository.</p>
@@ -218,6 +218,9 @@
       <table class="tbl">
         <thead><tr><th>shipped in</th><th>what it does</th></tr></thead>
         <tbody>
+          <tr><td>v0.9.0</td><td>A first hop refuses an actor credential that is not bound to a key: a bearer provider token with no key binding is no longer exchanged for any key its holder proves. Bind the provider token with DPoP, or use the service's own client credentials agent credential, which is always bound.</td></tr>
+          <tr><td>v0.9.0</td><td>In file mode the next signing key can be published ahead of a rotation, through a key set file of at most four public keys, so a rotation no longer strands verifiers that have not refreshed yet.</td></tr>
+          <tr><td>v0.8.0</td><td>A revoke key can be scoped to the rights it needs (revoke, ban, lift) and to a prefix of the subjects it may touch. A bare key keeps every right, as before.</td></tr>
           <tr><td>v0.7.0</td><td>Key set files are read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), so a provider that rotates its signing key is followed without a restart. Found by a run against a real OpenID provider.</td></tr>
         </tbody>
       </table>

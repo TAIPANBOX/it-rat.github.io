@@ -119,7 +119,7 @@ Nothing here has to be adopted whole. Each service is its own repository with it
 | service | how it ships | on its own | install |
 |---|---|---|---|
 | the control room |  |  |  |
-| Genaryx | The console of the one-box and cluster installs; built from source on its own. | Reads the stack it sits on. | [genaryx ↗](https://github.com/TAIPANBOX/genaryx#readme) |
+| Genaryx | The console of the one-box and cluster installs; a container image, or built from source on its own. | Reads the stack it sits on. | [genaryx ↗](https://github.com/TAIPANBOX/genaryx#readme) |
 | money |  |  |  |
 | TokenFuse | A container image: a proxy you start and point your agent at. | Yes, with a model provider behind it, or its stub for a dry run. | [tokenfuse ↗](https://github.com/TAIPANBOX/tokenfuse#readme) |
 | CostCrew | A Go binary, or the `finops` profile of the one-box install. | Yes. It listens on loopback and reads your bills. | [costcrew ↗](https://github.com/TAIPANBOX/costcrew#readme) |

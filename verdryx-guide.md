@@ -152,6 +152,8 @@ No release in the window, nine pull requests merged. The same entry, beside ever
 
 | shipped in | what it does |
 |---|---|
+| v0.4.0 | The LLM judge reads one exact line, SCORE with a number between zero and one, and refuses any other reply with a reason. A refused reply is counted as unanswered and nothing is clamped, so a reply such as "1 of 5 criteria met" can no longer become a score of 1.0. |
+| v0.4.0 | The price book mirrors TokenFuse's current book, with rows for Claude Fable 5.2 and for gpt-6.2-astra and gpt-6.2-sol. |
 | v0.3.0 | slo measures the window it names, so a run stops counting once the window has passed it. |
 | v0.3.0 | --holds-spend-no-budget keeps a Wardryx hold from spending the budget that caused it, so an agent on hold can earn its budget back. |
 | v0.2.0 | drift and slo failures are stored as findings, with their evidence and a suspect model or version. verdryx findings list and show read them. |
