@@ -29,6 +29,7 @@ committed is published.
 ./scripts/list-items-are-one-block.sh  # invariant 13
 ./scripts/room-backdrop.sh        # invariant 14
 ./scripts/security-txt-current.sh  # invariant 15
+./scripts/no-gap-framing.sh       # invariant 16
 ./scripts/demo-bundle-current.sh
 ./scripts/deploy-target-current.sh  # invariant 9; needs network
 # demo-bundle-current.sh also runs daily on its own schedule; see invariant 7
@@ -205,8 +206,10 @@ true.
    now runs the gate on the UNMUTATED tree first and reports `UNJUDGEABLE`
    rather than a pass. Verified by writing exactly that case and watching it
    refuse.
-   *(gate: `scripts/gates-have-teeth.sh`, 55 cases, counted from the harness's
-   own "OK: 55 cases" in a local run on a clean tree on 2026-11-27, after two
+   *(gate: `scripts/gates-have-teeth.sh`, 58 cases, counted from the harness's
+   own "OK: 58 cases" in a local run on a clean tree on 2026-11-27, after
+   invariant 16's three cases were added. Before that it was 55, counted from
+   "OK: 55 cases" the same day, after two
    were added: a version written without its leading v in a hero fact row
    (verdryx said 0.2.0 against v0.4.0 and the gate printed OK), and a page
    under a dot directory, which is never published (a stray worktree under
@@ -536,6 +539,26 @@ true.
    check is green; the workflow removes the other hidden files first.
    *(gate: `scripts/security-txt-current.sh`, run in the Pages workflow, with
    cases in `scripts/gates-have-teeth.sh`)*
+
+16. **What was built, modelled or run is stated as done.** `@decided
+   2026-11-27`: no page frames the work as "not proven", "stops short of",
+   "what nobody has established" or "what the measurement does not cover",
+   and no section exists to list what was not proven. Three things still hold
+   and are the other half of the rule. A claim keeps exactly the scope of the
+   run behind it ("on one five-node cluster", "on a stub provider"), and is
+   never upgraded. A product limit stays as a fact about the product ("the
+   root key is a file", Pocket's "not wired in yet" marker of invariant 5).
+   A run that failed is an outcome and is reported as what happened, and so
+   is a conclusion that was withdrawn. On the day of the decision the framing
+   stood in 86 places across 26 pages, headings and drawing labels included,
+   and `what-is-proven.html` was built around it.
+   *(gate: `scripts/no-gap-framing.sh`, in the Pages workflow before the
+   upload. It reads every published page, the `.md` twins and both `llms`
+   files, outside `demo/` and dot directories, and fails on the phrases; it
+   says "measured nothing" when it finds no page. "Does not cover" alone is
+   allowed, because "the licence covers the code, not the machines" is a fact
+   about the product. Whether a rewritten sentence is still true as worded
+   needs a reader.)*
 
 ## Decisions that have no gate yet
 

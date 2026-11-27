@@ -457,9 +457,9 @@ subprocess.run(["git", "rm", "-q", "costcrew-guide.html"], check=True)')" \
 run_case "list-items: a list item in prose loses its one span" fail \
 	'./scripts/list-items-are-one-block.sh' \
 	"$(py 'import re
-p = "what-is-proven.html"
+p = "two-sites.html"
 s = open(p).read()
-s2, n = re.subn(r"<li><span>(<b>One machine has lost power, once\.</b>.*?)</span></li>", r"<li>\1</li>", s, count=1, flags=re.S)
+s2, n = re.subn(r"<li><span>(<b>One policy written once at the hub</b>.*?)</span></li>", r"<li>\1</li>", s, count=1, flags=re.S)
 assert n, p + " has no wrapped item to unwrap"
 open(p, "w").write(s2)')" \
 	"splits into columns"
@@ -470,11 +470,11 @@ open(p, "w").write(s2)')" \
 run_case "list-items: a split item after a stray end tag" fail \
 	'./scripts/list-items-are-one-block.sh' \
 	"$(py 'import re
-p = "what-is-proven.html"
+p = "two-sites.html"
 s = open(p).read()
-s2, n = re.subn(r"<li><span>(<b>One machine has lost power, once\.</b>.*?)</span></li>", r"<li>\1</li>", s, count=1, flags=re.S)
+s2, n = re.subn(r"<li><span>(<b>One policy written once at the hub</b>.*?)</span></li>", r"<li>\1</li>", s, count=1, flags=re.S)
 assert n, p + " has no wrapped item to unwrap"
-i = s2.index("<li><b>One machine has lost power, once.</b>")
+i = s2.index("<li><b>One policy written once at the hub</b>")
 open(p, "w").write(s2[:i] + "</em>" + s2[i:])')" \
 	"splits into columns"
 
@@ -483,9 +483,9 @@ open(p, "w").write(s2[:i] + "</em>" + s2[i:])')" \
 run_case "list-items: a split item on a page whose flex rule is a selector list" fail \
 	'./scripts/list-items-are-one-block.sh' \
 	"$(py 'import re
-p = "what-is-proven.html"
+p = "two-sites.html"
 s = open(p).read()
-s2, n = re.subn(r"<li><span>(<b>One machine has lost power, once\.</b>.*?)</span></li>", r"<li>\1</li>", s, count=1, flags=re.S)
+s2, n = re.subn(r"<li><span>(<b>One policy written once at the hub</b>.*?)</span></li>", r"<li>\1</li>", s, count=1, flags=re.S)
 assert n, p + " has no wrapped item to unwrap"
 assert ".prose li{display:flex" in s2, p + " writes its flex rule another way"
 open(p, "w").write(s2.replace(".prose li{display:flex", ".prose li,.prose ol li{display:flex", 1))')" \
@@ -578,8 +578,8 @@ run_case "room-budget: a short paragraph added to a room under budget" pass \
 # children of the <li>, not about how rich the sentence inside it is.
 run_case "list-items: one span holding bold, code and a link" pass \
 	'./scripts/list-items-are-one-block.sh' \
-	"$(py 'edit("what-is-proven.html", "<li><span><b>One machine has lost power, once.</b>",
-     "<li><span><b>A lead.</b> Text with <span class=\"mono\">code</span> and <a href=\"#\">a link</a>.</span></li>\n        <li><span><b>One machine has lost power, once.</b>")')"
+	"$(py 'edit("two-sites.html", "<li><span><b>One policy written once at the hub</b>",
+     "<li><span><b>A lead.</b> Text with <span class=\"mono\">code</span> and <a href=\"#\">a link</a>.</span></li>\n        <li><span><b>One policy written once at the hub</b>")')"
 
 # A cache-busting query on the script is how a release reaches browsers, and
 # the same file is still loaded. A gate that failed on it would be failing on
@@ -702,6 +702,26 @@ run_case "security-txt: a comment line is not a field (non-fault)" pass \
 run_case "security-txt: the file itself is gone" fail \
 	'./scripts/security-txt-current.sh' \
 	"$(py 'import os; os.remove(".well-known/security.txt")')" \
+	"measured nothing"
+
+# Invariant 16: what was built, modelled or run is stated as done. A limits
+# heading that frames the work as not proven is the shape it stood in on 2026-11-27.
+run_case "no-gap-framing: a limits heading that says not proven yet" fail \
+	'./scripts/no-gap-framing.sh' \
+	"$(py 'edit("services/qryx.html", "</body>", "<h2>What is not proven yet.</h2></body>")')" \
+	"frames work as not done"
+
+# A product-scope fact is not a proof gap, and a gate that fired on one would
+# be switched off within the week.
+run_case "no-gap-framing: the licence does not cover the machines (non-fault)" pass \
+	'./scripts/no-gap-framing.sh' \
+	"$(py 'edit("services/qryx.html", "</body>", "<p>The licence covers the code. It does not cover the machines the stack runs on.</p></body>")')"
+
+run_case "no-gap-framing: no published page left to read" fail \
+	'./scripts/no-gap-framing.sh' \
+	"$(py 'import pathlib
+for p in pathlib.Path(".").rglob("*.html"):
+    if not any(x.startswith(".") for x in p.parts): p.unlink()')" \
 	"measured nothing"
 
 echo

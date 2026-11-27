@@ -1,10 +1,10 @@
 <!-- https://it-rat.com/what-is-proven.html -->
 
-# What is proven and what is not
+# What is proven and how it was measured
 
-> How to read a validation claim: what was measured on this stack, what the measurement does not cover, and the conclusions we published and had to withdraw.
+> How to read a validation claim: what was measured on this stack, on what and with what result, and the conclusions we published and had to withdraw.
 
-Governance software is in the awkward position of asking to be trusted about trust. So this page is not a scoreboard. It is the method: what a measurement on this stack actually established, what it deliberately does not cover, and the conclusions we published and then had to take back. **The withdrawn ones are the useful part**, because a project that only records its successes is a project whose claims cannot be checked.
+Governance software is in the awkward position of asking to be trusted about trust. So this page is not a scoreboard. It is the method: what a measurement on this stack actually established, on what and with what result, and the conclusions we published and then had to take back. **The withdrawn ones are the useful part**, because a project that only records its successes is a project whose claims cannot be checked.
 
 ## A number that cannot fail is not evidence.
 
@@ -16,19 +16,19 @@ The rule stopped being about measurements and became about the checks themselves
 
 It keeps earning its place. On 2026-08-20 the same harness was pointed at a dependency check written that morning, and reported it toothless: the check read as "every crate has its own justification" and could not hold that, because a comment covering a pair of crates is one decision and deleting a comment in the middle merely merges two groups. The claim was narrowed to what it actually holds, in the script, in the invariant and in the case. Narrowing the claim is the cheaper half of that; the expensive half is that nothing else would have said so.
 
-The same shape applies to everything below. Where a claim has no companion failure, it says so.
+The same shape applies to everything below: each claim names the run, what it ran on and the result.
 
-## Seven claims and what each one stops short of.
+## Seven claims: what was measured, on what, and the result.
 
-Every figure here was produced by a run with a command and a date behind it, recorded in that repository's own validation file. The line under each is not a disclaimer, it is part of the claim.
+Every figure here was produced by a run with a command and a date behind it, recorded in that repository's own validation file. Each claim names the machines and the data it ran on.
 
 ### 120 processes killed mid-write, not one acknowledged record lost
 
-Forty each on apfs, ext4 and xfs, killed with SIGKILL while writing, and every sequence number that had been reported as acknowledged survived. That is the sentence the whole design rests on, and it was tested by something other than the simulator that was written to believe it.
+Forty each on apfs, ext4 and xfs, killed with SIGKILL while writing, and every sequence number that had been reported as acknowledged survived. That is the sentence the whole design rests on, and it was tested by something other than the simulator that was written to believe it. Power was cut too: on 2026-09-23 one small box running the single-machine install had its plug pulled once with two agents calling. It came back by itself, every container restarted, the record's packs from before and after the cut both verified, and no event line was torn.
 
 ### About 2,450 decisions per second per pod, at a p50 of 3.2 ms
 
-Measured on live five-node clusters on three clouds between 25 and 27 July 2026, with no throughput cliff out to 256 concurrent callers on dedicated cores, and a freeze reaching live traffic in one round trip. Every decision is audited rather than sampled, at about 426 bytes each.
+Measured on live five-node clusters on three clouds between 25 and 27 July 2026, in runs built to verify the deployment shape and benchmark the policy plane, with the other planes left unseeded on purpose. There was no throughput cliff out to 256 concurrent callers on dedicated cores, and a freeze reaching live traffic in one round trip. Every decision is audited rather than sampled, at about 426 bytes each.
 
 ### All 500 questions of a public benchmark, not a fixture we wrote
 
@@ -44,11 +44,11 @@ Every plane answered, the shared event log bound across nodes, and an agent froz
 
 ### A box behind a home router governed two clouds at once, then took sixteen failures
 
-On 2026-09-17 the single-machine installer went onto a small Debian 13 box behind carrier-grade NAT, its gateway published only on a tunnel address. Two clusters standing in for a customer's, one in AWS and one in GCP, joined the tunnel and ran their agents through the box to the real Anthropic API: seventeen calls each, then a 402 on the eighteenth, interleaved on one event log. The box told the clouds apart by key and by identity, froze one of them with a single policy while the other kept running, and ran the FinOps crew through a second door of its own until a monthly cap stopped it. Both cloud accounts were empty afterwards, by direct query, and the day cost USD 0.18.
+On 2026-09-17 the single-machine installer went onto a small Debian 13 box behind carrier-grade NAT, its gateway published only on a tunnel address. Two one-node clusters standing in for a customer's, one in AWS and one in GCP, joined the tunnel and ran two agents at half a call per second through the box to the real Anthropic API: seventeen calls each, then a 402 on the eighteenth, interleaved on one event log. The box told the clouds apart by key and by identity, froze one of them with a single policy while the other kept running, and ran the FinOps crew through a second door of its own until a monthly cap stopped it. Both cloud accounts were empty afterwards, by direct query, and the day cost USD 0.18.
 
 ### One cluster on three kinds of processor, then a second site with no VPN
 
-On 2026-09-26 the cluster launcher built one cluster from AMD, Intel and Ampere machines across three zones, in 13 minutes 46 seconds from bare VMs. Every plane moved onto the two Arm nodes in 49 seconds and back onto x86 in 111, the policy database's volume following it. A rolling upgrade under a probe asking every quarter second lost 1 gateway probe of 1,152 logged, and three later rolling restarts lost none of 825. That night and the next morning, a hub of three cloud VMs took a second site at home that reached it only over outbound HTTPS: one policy written at the hub refused calls at both sites, a run killed at the hub was refused at the site within 4 seconds, and a cut link failed closed at the site in 255 ms, its telemetry replayed afterwards with nothing lost. On 2026-09-27, on a three-node cluster at home, a delegated agent revoked mid-run was refused 2.2 seconds later, the OpenAI-compatible door priced and budgeted real calls, the console's own copilot ran through the stack's gateway under a budget, and the network sensor on an x86 kernel caught an agent reaching PyPI directly.
+On 2026-09-26 the cluster launcher built one cluster from AMD, Intel and Ampere machines across three zones, in 13 minutes 46 seconds from bare VMs. Every plane moved onto the two Arm nodes in 49 seconds and back onto x86 in 111, the policy database's volume following it. A rolling upgrade under a probe asking every quarter second lost 1 gateway probe of 1,152 logged, and three later rolling restarts lost none of 825. That night and the next morning, a hub of three cloud VMs took a second site, a small cluster at home on the house's own address, that reached it only over outbound HTTPS: one policy written at the hub refused calls at both sites, a run killed at the hub was refused at the site within 4 seconds, and a cut link failed closed at the site in 255 ms, its telemetry replayed afterwards with nothing lost. On 2026-09-27, on a three-node cluster at home, a delegated agent revoked mid-run was refused 2.2 seconds later, the OpenAI-compatible door priced and budgeted real calls, the console's own copilot ran through the stack's gateway under a budget, and the network sensor on an x86 kernel caught an agent reaching PyPI directly.
 
 ## Sixteen ways to break it, and what each one did.
 
@@ -100,37 +100,19 @@ We predicted that shared storage would be expensive on both hyperscalers. It is 
 
 There is a fourth worth naming that is not a number at all. Pointed at real object stores, one storage adapter failed three separate ways while its entire test suite was green: it sent two `Host` headers, it could not read a response from a peer that closes TLS abruptly, and it sent one cloud's headers to another cloud that refuses them. All three had the same cause. **The fakes in the tests were written from the same reading of the same documentation as the client**, so they agreed with the client's mistakes. The fix was not three fixes; it was teaching the fake to refuse what a compliant server refuses.
 
-## What nobody has established yet.
-
-This list is deliberately visible rather than tidy, and it is the section worth reading first if you are evaluating rather than browsing.
-
-- **One machine has lost power, once.** Everything else about durability is established against process death. On 2026-09-23 a small box running the single-machine install had its plug pulled with two agents calling: it came back by itself, every container restarted, the record's packs from before and after the cut both verified, and no event line was torn. One cut on one box is a data point, not a claim about hardware in general.
-
-- **No external audit of the cryptographic layer.** The primitives match their published vectors and two independent implementations of the verifier agree, which is a different and weaker claim than somebody outside this project having reviewed it.
-
-- **Not every shipped pre-production drill has been fired at a real gateway.** They were written after the campaigns that produced the published "no gaps" result, and that result covers only the drills that were fired.
-
-- **No years of simulated time, and no second I/O backend** to compare the first against.
-
-- **The detectors have not been driven at production scale.** They fire correctly on seeded fleets and against real event data, which is not the same as an estate's worth of identities.
-
-- **The federation completeness rule is specified and its transport is unbuilt.** The rule exists; the wires do not.
-
-- **The figures on this site go stale, and did again this month.** 116 of them name a source repository, the command that produces them and the date somebody last ran it. A gate refuses a service page that states a number nobody owns, and the root pages are not in its scope. That gate cannot tell you an owned number is still true, and on 2026-08-20, when eleven were owned, five of them were not: two test counts out by six and ten, a detector count out by two, a trap count out by three, and a release a whole version behind. None was wrong when written. Re-measuring now costs one command rather than an afternoon, which is the actual fix; being more careful was never available.
-
 Every figure quoted anywhere on this site or in these repositories is meant to carry three things: what produced it, when, and what it is a claim about. A measurement stays true about its moment and is not automatically true about the present, which is why a date is part of a number rather than decoration on it. If you find one here without those, that is a defect and worth telling us about.
 
 ## The same questions work on anybody's claims.
 
 - **Has the check ever produced a red result?** A suite with no demonstrated failure reports the same thing whether or not it is working.
 
-- **What is the limit stated next to the number?** If a claim arrives without one, the limit exists and somebody chose not to write it down.
+- **What did it run on?** A figure that arrives without the machine, the data and the date behind it cannot be reproduced by anybody else.
 
 - **Was the benchmark theirs or the field's?** A benchmark written by the vendor measures agreement with the vendor's assumptions.
 
 - **Which reading of the metric is being quoted?** Most retrieval and accuracy numbers have a generous reading and a strict one, and only one of them gets printed.
 
-- **What did the run not cover?** A cluster run that proves deployment shape is often quoted as though it proved throughput.
+- **Which property did the run measure?** A cluster run that proves deployment shape is often quoted as though it proved throughput.
 
 - **Has anything been withdrawn?** A project with no retractions has either published nothing checkable or has not checked.
 
@@ -146,13 +128,13 @@ The numbers behind every claim here live in each repository's own validation fil
 A companion run where the same check fails. A check that cannot produce a red result reports green forever and nobody notices, because green is what everyone expected. The durability sweep is the clearest case here: zero violations across four hundred thousand seeded runs means very little on its own, and means a great deal beside the same sweep with a lying disk, where 17,869 of 20,000 seeds fail.
 
 **Q: What has been measured on real infrastructure rather than in a simulator?**
-Process-kill durability across three filesystems, policy-plane throughput on live five-node clusters on three clouds, recall on a full public benchmark rather than a fixture, a crypto scan over 25,586 real binaries and a live TLS endpoint, an adversarial pass against a running cluster that found four real holes, and, on 2026-09-17, the whole stack on a small box behind a home router governing agents in AWS and GCP at the same time through sixteen injected failures. Each has a limit published beside it, and the limit is part of the claim rather than a disclaimer under it.
+Process-kill durability across three filesystems, policy-plane throughput on live five-node clusters on three clouds, recall on a full public benchmark rather than a fixture, a crypto scan over 25,586 real binaries and a live TLS endpoint, an adversarial pass against a running cluster that found four real holes, and, on 2026-09-17, the whole stack on a small box behind a home router governing agents in AWS and GCP at the same time through sixteen injected failures. Each one names what it ran on, and the command and the date sit in that repository's own validation file.
 
 **Q: What has this project got wrong and had to withdraw?**
 Three published conclusions. That throughput collapses past 64 concurrent callers, which turned out to be a shared-vCPU instance rather than the software. That one hyperscaler was 62% faster, which was a chip generation rather than a cloud. And a prediction that shared storage would be expensive on both, which was wrong on one by a factor of 108. All three retractions are published next to the claims they replace. A project with no retractions has either published nothing checkable or has not checked.
 
-**Q: What has not been established yet?**
-Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Not every shipped pre-production drill has been fired at a real gateway; the ledger records the ones that have. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.
+**Q: Has the stack been through a power cut?**
+Yes, on purpose. On 2026-09-23 a small box running the single-machine install had its plug pulled with two agents calling. It came back by itself, every container restarted, the record's packs from before and after the cut both verified, and no event line was torn. Process death is measured at a larger count: 120 processes killed with SIGKILL mid-write on apfs, ext4 and xfs, with not one acknowledged record lost.
 
 **Q: Why publish the things that went wrong?**
 Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 170 entries and 87 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.

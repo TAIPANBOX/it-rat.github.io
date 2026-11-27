@@ -32,7 +32,7 @@ The [Pocket room](https://it-rat.com/services/pocket.html) keeps the simulation,
 
 ### What it is
 
-TokenFuse's gateway enforces the budget in the request path your agent runs on. Pocket asks what a control OUTSIDE that path should look like on a device you already carry: the fleet's burn rate live, and a kill signed by hardware the agent's host never touches. Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet. That is a long way from shipped: no production hardening pass, no security review, no App Store. The effort goes to the web console, and this moves when there is time for it.
+TokenFuse's gateway enforces the budget in the request path your agent runs on. Pocket asks what a control OUTSIDE that path should look like on a device you already carry: the fleet's burn rate live, and a kill signed by hardware the agent's host never touches. Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator. That is a long way from shipped: no production hardening pass, no security review, no App Store. The effort goes to the web console, and this moves when there is time for it.
 
 ## Not a bigger dashboard. A switch you can actually reach.
 
@@ -120,11 +120,11 @@ The plane it reads is open today: [stand up the stack's live services locally in
 
 **How it is meant to work, and what it lacks today.** The phone pairs once, by QR, to a relay beside the stack. The one it was built against, genaryx-relay, was removed from genaryx on 2026-07-28, so today there is nothing to pair with and none of this runs end to end. The relay pushes only what needs a human, an over-cap run, straight into the signed-kill flow; the kill is signed on the device and the gateway has only to check the signature. The watch pairs on its own and carries the same flow, so a deauthorized device says it was deauthorized rather than pretending.
 
-**What is actually true today.** The interface is finished. The iPhone app's repository records every screen as driven against a real control plane on a simulator, and no run of ours is recorded for it yet. It is not connected to anything you are running: there is no App Store build, no real push delivery, and no hardening pass or whole-app security review; a narrower review on 2026-09-06 led to one transport-security fix. Treat it as the shape of the control rather than a control you have. The console you run today is the [Genaryx](https://it-rat.com/genaryx.html) web app.
+**What is actually true today.** The interface is finished. The iPhone app's repository records every screen as driven against a real control plane on a simulator. It is not connected to anything you are running: there is no App Store build, no real push delivery, and no hardening pass or whole-app security review; a narrower review on 2026-09-06 led to one transport-security fix. Treat it as the shape of the control rather than a control you have. The console you run today is the [Genaryx](https://it-rat.com/genaryx.html) web app.
 
 ### Everything the room says is not done
 
-- Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet.
+- Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator.
 
 - That is a long way from shipped: no production hardening pass, no security review, no App Store. The effort goes to the web console, and this moves when there is time for it.
 

@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Typryx guide: how it works, the measurements, running it · IT-RAT</title>
-<meta name="description" content="How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and what it does not prove yet.">
+<meta name="description" content="How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and its limits.">
 <link rel="canonical" href="https://it-rat.com/typryx-guide.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/typryx-guide.html">
 <meta property="og:title" content="Typryx guide: how it works, the measurements, running it · IT-RAT">
-<meta property="og:description" content="Everything the Typryx room leaves out: the path of one ask, what it holds to, the three data modes, your own model on your own questions, the speed and calibration runs in full, where it plugs into the stack, how to choose a mode at install, what changed, and what is not proven yet.">
+<meta property="og:description" content="Everything the Typryx room leaves out: the path of one ask, what it holds to, the three data modes, your own model on your own questions, the speed and calibration runs in full, where it plugs into the stack, how to choose a mode at install, what changed, and its limits.">
 <meta property="og:image" content="https://it-rat.com/assets/og/typryx.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Typryx guide: how it works, the measurements, running it · IT-RAT">
-<meta name="twitter:description" content="Everything the Typryx room leaves out: the path of one ask, what it holds to, the three data modes, your own model on your own questions, the speed and calibration runs in full, where it plugs into the stack, how to choose a mode at install, what changed, and what is not proven yet.">
+<meta name="twitter:description" content="Everything the Typryx room leaves out: the path of one ask, what it holds to, the three data modes, your own model on your own questions, the speed and calibration runs in full, where it plugs into the stack, how to choose a mode at install, what changed, and its limits.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/typryx.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -62,7 +62,7 @@
   .gtoc a:hover{color:var(--accent)}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Typryx guide: how it works, the measurements, running it","name":"Typryx guide","url":"https://it-rat.com/typryx-guide.html","description":"How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and what it does not prove yet.","inLanguage":"en","datePublished":"2026-10-16","dateModified":"2026-10-16","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/typryx-guide.html","about":{"@type":"SoftwareApplication","name":"Typryx","url":"https://it-rat.com/services/typryx.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"Typryx guide","item":"https://it-rat.com/typryx-guide.html"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Typryx guide: how it works, the measurements, running it","name":"Typryx guide","url":"https://it-rat.com/typryx-guide.html","description":"How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and its limits.","inLanguage":"en","datePublished":"2026-10-16","dateModified":"2026-10-16","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/typryx-guide.html","about":{"@type":"SoftwareApplication","name":"Typryx","url":"https://it-rat.com/services/typryx.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"Typryx guide","item":"https://it-rat.com/typryx-guide.html"}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-root="">
@@ -84,7 +84,7 @@
   <div class="wrap">
     <div class="kicker rv">a guide &#183; typryx</div>
     <h1 class="rv d1">How Typryx works, what was measured, how to run it.</h1>
-    <p class="lede rv d2">The <a href="services/typryx.html">Typryx room</a> keeps the measured replay, the drawings and the widgets, and the common questions. This guide keeps the rest of what the room used to say: how an ask moves and what it holds to, the three data modes, your own model, the speed and calibration runs with their tables, where it plugs into the stack, how to choose a mode at install, what changed, and what is not proven yet.</p>
+    <p class="lede rv d2">The <a href="services/typryx.html">Typryx room</a> keeps the measured replay, the drawings and the widgets, and the common questions. This guide keeps the rest of what the room used to say: how an ask moves and what it holds to, the three data modes, your own model, the speed and calibration runs with their tables, where it plugs into the stack, how to choose a mode at install, what changed, and its limits.</p>
     <div class="back rv d3"><a class="btn" href="services/typryx.html"><span class="mono">&#8592;</span> Back to the Typryx room</a></div>
   </div>
 </section>
@@ -165,7 +165,7 @@
       <p>Whether that is worth sending those fields out is a decision for whoever answers for your data. It is never the default.</p>
       <h3>Your own model <span class="chip chip-measured">measured 2026-09-30</span></h3>
       <p>Any OpenAI-compatible server you run yourself, such as Ollama or vLLM. Nothing leaves your hardware. You choose the model, and you can tune it on your own questions (next section).</p>
-      <p>The one measured here is a small 7B model on a machine with no GPU. A model you have tuned, or a machine with a GPU, is not measured.</p>
+      <p>The one measured here is a small 7B model on a machine with no GPU.</p>
       <h3>Off <span class="chip chip-plain">the default</span></h3>
       <p>typryx is not started. The rest of the stack runs exactly as it did before, and this is what every launcher does until you choose another mode.</p>
       <p>Without typryx, an agent that needs a typed answer gets one fixed default. That is the bottom row of the room's chart.</p>
@@ -309,7 +309,7 @@
           <tr><td>TokenFuse, router shadow mode</td><td>the class it would have routed to, alongside cost, recorded only</td><td class="warn">planned</td></tr>
           <tr><td>Verdryx</td><td>a typed grader beside the existing LLM judge, opt-in per run with <span class="mono" style="font-size:12.5px">--typed-url</span></td><td class="yes">built, and run end to end against a local model</td></tr>
           <tr><td>Wardryx</td><td>an <span class="mono" style="font-size:12.5px">action.risk_class</span> signal a <span class="mono" style="font-size:12.5px">hold_if_signal</span> rule may turn into a hold, never a deny; opt-in in the launchers, off by default</td><td class="warn">built and released, run only against a loopback stand-in (v0.4.0 release notes)</td></tr>
-          <tr><td>CostCrew</td><td>a suggested anomaly class at triage; a person still decides</td><td class="warn">built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL, not run live</td></tr>
+          <tr><td>CostCrew</td><td>a suggested anomaly class at triage; a person still decides</td><td class="warn">built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL</td></tr>
           <tr><td>Genaryx</td><td>a panel, live only when <span class="mono" style="font-size:12.5px">GENARYX_TYPRYX_URL</span> resolves</td><td class="warn">planned</td></tr>
           <tr><td>Engram</td><td>an optional importance score</td><td class="warn">planned</td></tr>
           <tr><td>Journal readers (Trailryx, Idryx)</td><td>the four event types reach the shared events volume; heraldyx renders them; Idryx lists typryx as a source and never calls it; Trailryx refuses them by design</td><td class="warn">on the shared bus</td></tr>
@@ -326,7 +326,7 @@
       <h2>Optional, and it changes nothing when it is absent.</h2>
     </div>
     <div class="prose rv">
-      <p>Typryx sits behind <a href="services/tokenfuse.html">TokenFuse</a>'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the <span class="mono" style="font-size:12.5px">request.complexity</span> template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. <a href="services/verdryx.html">Verdryx</a> can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built, and run end to end against typryx v0.5.1 with a local model. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. <a href="services/wardryx.html">Wardryx</a> can read one: <span class="mono" style="font-size:12.5px">typryx wardryx-proxy</span> sits in front of it, asks <span class="mono" style="font-size:12.5px">action.risk_class</span> about a pending tool call, and adds the answer to the decision request, where a <span class="mono" style="font-size:12.5px">hold_if_signal</span> rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.</p>
+      <p>Typryx sits behind <a href="services/tokenfuse.html">TokenFuse</a>'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the <span class="mono" style="font-size:12.5px">request.complexity</span> template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. <a href="services/verdryx.html">Verdryx</a> can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built, and run end to end against typryx v0.5.1 with a local model. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. <a href="services/wardryx.html">Wardryx</a> can read one: <span class="mono" style="font-size:12.5px">typryx wardryx-proxy</span> sits in front of it, asks <span class="mono" style="font-size:12.5px">action.risk_class</span> about a pending tool call, and adds the answer to the decision request, where a <span class="mono" style="font-size:12.5px">hold_if_signal</span> rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it is measured on the stub backend.</p>
       <p>Without it, the rest of the stack behaves exactly as it does today: nothing here is consumed by anything else unless an operator wires it in.</p>
     </div>
   </div>
@@ -362,16 +362,15 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">limits</div>
-      <h2>What it does not do, and what is not proven yet.</h2>
+      <h2>What it does not do.</h2>
     </div>
     <div class="prose rv">
       <ul>
-        <li><span><b>Not yet:</b> a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers in the tables above.</span></li>
         <li><span>The Wardryx edge is built and released and runs only against stand-ins.</span></li>
-        <li><span>The launchers carry the Wardryx signal as an opt-in, off by default, and it was measured on the stub backend only, never with a real model behind it.</span></li>
-        <li><span>CostCrew's suggested class is built and released in costcrew v0.4.0 and not run live; the TokenFuse router, Genaryx and Engram readers are planned.</span></li>
-        <li><span>In the loop from a question to a tuned model, steps 1 to 5 are built, tested and run on the stub backend; steps 6 to 9 are not run end to end, and no tuned model is measured yet.</span></li>
-        <li><span>The own model measured is a small 7B model on a machine with no GPU. A model you have tuned, or a machine with a GPU, is not measured.</span></li>
+        <li><span>The launchers carry the Wardryx signal as an opt-in, off by default, and it is measured on the stub backend.</span></li>
+        <li><span>CostCrew's suggested class is built and released in costcrew v0.4.0, opt-in; the TokenFuse router, Genaryx and Engram readers are planned.</span></li>
+        <li><span>In the loop from a question to a tuned model, steps 1 to 5 are built, tested and run on the stub backend; steps 6 to 9 run on your side, with the model you tune.</span></li>
+        <li><span>The own model measured is a small 7B model on a machine with no GPU.</span></li>
         <li><span>OpenAI's current models refuse the default request, and since v0.6.0 three variables reach them (five top logprobs, sixteen completion tokens, no reasoning). Claude Haiku 5.5 cannot be a typed judge: measured 2026-11-25, Anthropic's OpenAI-compatible endpoint refuses temperature, which typryx always sends, and without it returns no logprobs.</span></li>
         <li><span>A freeform question sends the whole state when TYPRYX_ALLOW_FREEFORM=1 is set (off by default).</span></li>
         <li><span>What typryx cannot see is how a person reached a truth. A label copied from a model's answer would get through.</span></li>

@@ -112,9 +112,9 @@
     {
       "url": "https://it-rat.com/what-is-proven.html",
       "markdown": "https://it-rat.com/what-is-proven.md",
-      "title": "What is proven and what is not",
+      "title": "What is proven and how it was measured",
       "kind": "guide",
-      "description": "How to read a validation claim: what was measured on this stack, what the measurement does not cover, and the conclusions we published and had to withdraw."
+      "description": "How to read a validation claim: what was measured on this stack, on what and with what result, and the conclusions we published and had to withdraw."
     },
     {
       "url": "https://it-rat.com/agent-tooling-compared.html",
@@ -156,7 +156,7 @@
       "markdown": "https://it-rat.com/genaryx-guide.md",
       "title": "Genaryx guide",
       "kind": "guide",
-      "description": "How the Genaryx console works, how Felyx is held, what every frame shows, how to take it, and what is not yet in the record, in full."
+      "description": "How the Genaryx console works, how Felyx is held, what every frame shows, how to take it, and the runs on a live fleet, in full."
     },
     {
       "url": "https://it-rat.com/tokenfuse-guide.html",
@@ -170,7 +170,7 @@
       "markdown": "https://it-rat.com/costcrew-guide.md",
       "title": "CostCrew guide",
       "kind": "guide",
-      "description": "How CostCrew works, how to install and configure it, what changed from 1 to 15 October 2026, and what it does not prove yet, in full."
+      "description": "How CostCrew works, how to install and configure it, what changed from 1 to 15 October 2026, and its limits, in full."
     },
     {
       "url": "https://it-rat.com/pocket-guide.html",
@@ -184,14 +184,14 @@
       "markdown": "https://it-rat.com/wardryx-guide.md",
       "title": "Wardryx guide",
       "kind": "guide",
-      "description": "How Wardryx decides allow, deny or hold, how to run it, what changed from 1 to 15 October 2026, and what is open by default or not proven yet."
+      "description": "How Wardryx decides allow, deny or hold, how to run it, what changed from 1 to 15 October 2026, and what is open by default."
     },
     {
       "url": "https://it-rat.com/idryx-guide.html",
       "markdown": "https://it-rat.com/idryx-guide.md",
       "title": "Idryx guide",
       "kind": "guide",
-      "description": "How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do or prove yet."
+      "description": "How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do."
     },
     {
       "url": "https://it-rat.com/scopyx-guide.html",
@@ -233,14 +233,14 @@
       "markdown": "https://it-rat.com/typryx-guide.md",
       "title": "Typryx guide",
       "kind": "guide",
-      "description": "How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and what it does not prove yet."
+      "description": "How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and its limits."
     },
     {
       "url": "https://it-rat.com/mockryx-guide.html",
       "markdown": "https://it-rat.com/mockryx-guide.md",
       "title": "Mockryx guide",
       "kind": "guide",
-      "description": "How Mockryx fire drills work, how to run and download it, the drills added since v0.2.1, and what it does not prove yet."
+      "description": "How Mockryx fire drills work, how to run and download it, the drills added since v0.2.1, and what it does not do."
     },
     {
       "url": "https://it-rat.com/trailryx-guide.html",

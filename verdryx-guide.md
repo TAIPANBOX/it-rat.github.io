@@ -174,7 +174,7 @@ No release in the window, nine pull requests merged. The same entry, beside ever
 | v0.2.0 | slo_burn carries burn_events_seen, the number of runs behind burn_rate, so a rate nobody measured is told apart from a measured zero. |
 | v0.2.0 | The price book mirrors gpt-6.1-terra and its openai/ twin from TokenFuse's default price book. |
 
-## What runs only when you ask, and what is not proven.
+## What runs only when you ask.
 
 - Only the judge and the typed grader can spend money, and neither runs by default. The typed grader runs only when a run is given a Typryx address with `--typed-url`.
 

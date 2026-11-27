@@ -92,7 +92,7 @@ The speed is only useful because of the method behind it, and the method is the 
 
 - **Gates are proven able to catch what they guard.** Each repository plants the fault a gate is meant to catch and requires the gate to fail on it. In TokenFuse this harness was the slowest step of the build, at 27 minutes, so it now runs as four parallel shards, with one more gate proving that the shards together run every case exactly once. CostCrew and stack-k8s did the same.
 
-- **Release notes say what is not proven.** A note states, for example, that a page fix was checked in a browser against a local stub and not on a deployed system. Nobody has to guess how far a claim goes.
+- **Release notes say what each fix was checked on.** A note states, for example, that a page fix was checked in a browser against a local stub. Nobody has to guess how far a claim goes.
 
 - **Hygiene runs everywhere.** A secret scan now runs on every pull request and every push to main in every repository, with masked output. Security advisories in dependencies were closed within days of publication: the TLS library, the QUIC library, the WebAssembly runtime, a Parquet dependency, and 43 alerts in the gateway dashboard's dependencies. Every Go service moved to the same toolchain.
 

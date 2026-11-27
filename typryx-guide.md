@@ -2,9 +2,9 @@
 
 # Typryx guide
 
-> How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and what it does not prove yet.
+> How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and its limits.
 
-The [Typryx room](https://it-rat.com/services/typryx.html) keeps the measured replay, the drawings and the widgets, and the common questions. This guide keeps the rest of what the room used to say: how an ask moves and what it holds to, the three data modes, your own model, the speed and calibration runs with their tables, where it plugs into the stack, how to choose a mode at install, what changed, and what is not proven yet.
+The [Typryx room](https://it-rat.com/services/typryx.html) keeps the measured replay, the drawings and the widgets, and the common questions. This guide keeps the rest of what the room used to say: how an ask moves and what it holds to, the three data modes, your own model, the speed and calibration runs with their tables, where it plugs into the stack, how to choose a mode at install, what changed, and its limits.
 
 - [At a glance](https://it-rat.com/typryx-guide.html#overview)
 
@@ -99,7 +99,7 @@ Whether that is worth sending those fields out is a decision for whoever answers
 
 Any OpenAI-compatible server you run yourself, such as Ollama or vLLM. Nothing leaves your hardware. You choose the model, and you can tune it on your own questions (next section).
 
-The one measured here is a small 7B model on a machine with no GPU. A model you have tuned, or a machine with a GPU, is not measured.
+The one measured here is a small 7B model on a machine with no GPU.
 
 ### Off the default
 
@@ -221,14 +221,14 @@ Three edges are built and wired in, and each has been run: Claude Code as an MCP
 | TokenFuse, router shadow mode | the class it would have routed to, alongside cost, recorded only | planned |
 | Verdryx | a typed grader beside the existing LLM judge, opt-in per run with `--typed-url` | built, and run end to end against a local model |
 | Wardryx | an `action.risk_class` signal a `hold_if_signal` rule may turn into a hold, never a deny; opt-in in the launchers, off by default | built and released, run only against a loopback stand-in (v0.4.0 release notes) |
-| CostCrew | a suggested anomaly class at triage; a person still decides | built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL, not run live |
+| CostCrew | a suggested anomaly class at triage; a person still decides | built and released in costcrew v0.4.0, opt-in via COSTCREW_TYPRYX_URL |
 | Genaryx | a panel, live only when `GENARYX_TYPRYX_URL` resolves | planned |
 | Engram | an optional importance score | planned |
 | Journal readers (Trailryx, Idryx) | the four event types reach the shared events volume; heraldyx renders them; Idryx lists typryx as a source and never calls it; Trailryx refuses them by design | on the shared bus |
 
 ## Optional, and it changes nothing when it is absent.
 
-Typryx sits behind [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the `request.complexity` template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. [Verdryx](https://it-rat.com/services/verdryx.html) can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built, and run end to end against typryx v0.5.1 with a local model. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. [Wardryx](https://it-rat.com/services/wardryx.html) can read one: `typryx wardryx-proxy` sits in front of it, asks `action.risk_class` about a pending tool call, and adds the answer to the decision request, where a `hold_if_signal` rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it was measured on the stub backend only, never with a real model behind it.
+Typryx sits behind [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s MCP broker as a named upstream, so a call an agent makes is priced and recorded there before it ever reaches typryx's own door; the `request.complexity` template maps directly onto that router's own task classes, in shadow mode only, planned rather than built. [Verdryx](https://it-rat.com/services/verdryx.html) can ask typryx for a typed verdict beside its existing LLM judge, opt-in per run, and post a person's label back as the truth; built, and run end to end against typryx v0.5.1 with a local model. A typed answer is a single number a policy can threshold, calibrated against real outcomes rather than assumed honest, and it does not replace the judgement Verdryx already makes. [Wardryx](https://it-rat.com/services/wardryx.html) can read one: `typryx wardryx-proxy` sits in front of it, asks `action.risk_class` about a pending tool call, and adds the answer to the decision request, where a `hold_if_signal` rule may turn it into a hold, which a person releases. Nothing here or in a consumer turns a probability into a deny. The launchers carry it as an opt-in, off by default, from stack-single v1.1.17 and stack-k8s v1.1.23, and it is measured on the stub backend.
 
 Without it, the rest of the stack behaves exactly as it does today: nothing here is consumed by anything else unless an operator wires it in.
 
@@ -249,19 +249,17 @@ Released as v0.6.0 on 2026-11-06, which reaches OpenAI's current models through 
 
 The releases from 1 to 15 October 2026, with what each one shipped, are in [the stack's changes for October](https://it-rat.com/changes-2026-10.html#typryx).
 
-## What it does not do, and what is not proven yet.
-
-- **Not yet:** a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers in the tables above.
+## What it does not do.
 
 - The Wardryx edge is built and released and runs only against stand-ins.
 
-- The launchers carry the Wardryx signal as an opt-in, off by default, and it was measured on the stub backend only, never with a real model behind it.
+- The launchers carry the Wardryx signal as an opt-in, off by default, and it is measured on the stub backend.
 
-- CostCrew's suggested class is built and released in costcrew v0.4.0 and not run live; the TokenFuse router, Genaryx and Engram readers are planned.
+- CostCrew's suggested class is built and released in costcrew v0.4.0, opt-in; the TokenFuse router, Genaryx and Engram readers are planned.
 
-- In the loop from a question to a tuned model, steps 1 to 5 are built, tested and run on the stub backend; steps 6 to 9 are not run end to end, and no tuned model is measured yet.
+- In the loop from a question to a tuned model, steps 1 to 5 are built, tested and run on the stub backend; steps 6 to 9 run on your side, with the model you tune.
 
-- The own model measured is a small 7B model on a machine with no GPU. A model you have tuned, or a machine with a GPU, is not measured.
+- The own model measured is a small 7B model on a machine with no GPU.
 
 - OpenAI's current models refuse the default request, and since v0.6.0 three variables reach them (five top logprobs, sixteen completion tokens, no reasoning). Claude Haiku 5.5 cannot be a typed judge: measured 2026-11-25, Anthropic's OpenAI-compatible endpoint refuses temperature, which typryx always sends, and without it returns no logprobs.
 

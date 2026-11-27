@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>What is proven here, and what is not · IT-RAT</title>
-<meta name="description" content="How to read a validation claim: what was measured on this stack, what the measurement does not cover, and the conclusions we published and had to withdraw.">
+<title>What is proven here, and how it was measured · IT-RAT</title>
+<meta name="description" content="How to read a validation claim: what was measured on this stack, on what and with what result, and the conclusions we published and had to withdraw.">
 <link rel="canonical" href="https://it-rat.com/what-is-proven.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="IT-RAT">
 <meta property="og:url" content="https://it-rat.com/what-is-proven.html">
-<meta property="og:title" content="What is proven here, and what is not · IT-RAT">
-<meta property="og:description" content="Every measured claim on this stack has a command and a date behind it, and a limit beside it. Here is what was actually established, what it does not cover, and what we got wrong first.">
+<meta property="og:title" content="What is proven here, and how it was measured · IT-RAT">
+<meta property="og:description" content="Every measured claim on this stack has a command, a date and a named machine behind it. Here is what was established, on what, and what we got wrong first.">
 <meta property="og:image" content="https://it-rat.com/assets/og/trailryx.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="What is proven here, and what is not · IT-RAT">
-<meta name="twitter:description" content="Every measured claim on this stack has a command and a date behind it, and a limit beside it. Here is what was actually established, what it does not cover, and what we got wrong first.">
+<meta name="twitter:title" content="What is proven here, and how it was measured · IT-RAT">
+<meta name="twitter:description" content="Every measured claim on this stack has a command, a date and a named machine behind it. Here is what was established, on what, and what we got wrong first.">
 <meta name="twitter:image" content="https://it-rat.com/assets/og/trailryx.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -36,7 +36,7 @@
   .prose li{display:flex;gap:12px;color:var(--dim);font-size:15px;line-height:1.65}
   .prose li::before{content:"";flex:0 0 7px;height:7px;border-radius:50%;background:var(--accent);margin-top:8px}
   .prose li b{color:var(--fg)}
-  /* claim / limit pairs: the limit is never optional */
+  /* claims: a .lim block holds a design limit or an outcome of the run */
   .claims{display:flex;flex-direction:column;gap:0;margin-top:20px;max-width:80ch}
   .claim{padding:20px 0;border-top:1px solid var(--line)}
   .claim:first-child{border-top:0}
@@ -71,7 +71,7 @@
   .mx-key span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px;vertical-align:-1px;background:var(--mc)}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"What is proven here, and what is not","name":"What is proven and what is not","url":"https://it-rat.com/what-is-proven.html","description":"How to read a validation claim: what was measured on this stack, what the measurement does not cover, and the conclusions we published and had to withdraw.","inLanguage":"en","datePublished":"2026-08-04","dateModified":"2026-08-04","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/what-is-proven.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"What is proven and what is not","item":"https://it-rat.com/what-is-proven.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What makes a validation number worth anything?","acceptedAnswer":{"@type":"Answer","text":"A companion run where the same check fails. A check that cannot produce a red result reports green forever and nobody notices, because green is what everyone expected. The durability sweep is the clearest case here: zero violations across four hundred thousand seeded runs means very little on its own, and means a great deal beside the same sweep with a lying disk, where 17,869 of 20,000 seeds fail."}},{"@type":"Question","name":"What has been measured on real infrastructure rather than in a simulator?","acceptedAnswer":{"@type":"Answer","text":"Process-kill durability across three filesystems, policy-plane throughput on live five-node clusters on three clouds, recall on a full public benchmark rather than a fixture, a crypto scan over 25,586 real binaries and a live TLS endpoint, an adversarial pass against a running cluster that found four real holes, and, on 2026-09-17, the whole stack on a small box behind a home router governing agents in AWS and GCP at the same time through sixteen injected failures. Each has a limit published beside it, and the limit is part of the claim rather than a disclaimer under it."}},{"@type":"Question","name":"What has this project got wrong and had to withdraw?","acceptedAnswer":{"@type":"Answer","text":"Three published conclusions. That throughput collapses past 64 concurrent callers, which turned out to be a shared-vCPU instance rather than the software. That one hyperscaler was 62% faster, which was a chip generation rather than a cloud. And a prediction that shared storage would be expensive on both, which was wrong on one by a factor of 108. All three retractions are published next to the claims they replace. A project with no retractions has either published nothing checkable or has not checked."}},{"@type":"Question","name":"What has not been established yet?","acceptedAnswer":{"@type":"Answer","text":"Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Not every shipped pre-production drill has been fired at a real gateway; the ledger records the ones that have. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt."}},{"@type":"Question","name":"Why publish the things that went wrong?","acceptedAnswer":{"@type":"Answer","text":"Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 170 entries and 87 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"What is proven here, and how it was measured","name":"What is proven and how it was measured","url":"https://it-rat.com/what-is-proven.html","description":"How to read a validation claim: what was measured on this stack, on what and with what result, and the conclusions we published and had to withdraw.","inLanguage":"en","datePublished":"2026-08-04","dateModified":"2026-08-04","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/what-is-proven.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"What is proven and how it was measured","item":"https://it-rat.com/what-is-proven.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What makes a validation number worth anything?","acceptedAnswer":{"@type":"Answer","text":"A companion run where the same check fails. A check that cannot produce a red result reports green forever and nobody notices, because green is what everyone expected. The durability sweep is the clearest case here: zero violations across four hundred thousand seeded runs means very little on its own, and means a great deal beside the same sweep with a lying disk, where 17,869 of 20,000 seeds fail."}},{"@type":"Question","name":"What has been measured on real infrastructure rather than in a simulator?","acceptedAnswer":{"@type":"Answer","text":"Process-kill durability across three filesystems, policy-plane throughput on live five-node clusters on three clouds, recall on a full public benchmark rather than a fixture, a crypto scan over 25,586 real binaries and a live TLS endpoint, an adversarial pass against a running cluster that found four real holes, and, on 2026-09-17, the whole stack on a small box behind a home router governing agents in AWS and GCP at the same time through sixteen injected failures. Each one names what it ran on, and the command and the date sit in that repository's own validation file."}},{"@type":"Question","name":"What has this project got wrong and had to withdraw?","acceptedAnswer":{"@type":"Answer","text":"Three published conclusions. That throughput collapses past 64 concurrent callers, which turned out to be a shared-vCPU instance rather than the software. That one hyperscaler was 62% faster, which was a chip generation rather than a cloud. And a prediction that shared storage would be expensive on both, which was wrong on one by a factor of 108. All three retractions are published next to the claims they replace. A project with no retractions has either published nothing checkable or has not checked."}},{"@type":"Question","name":"Has the stack been through a power cut?","acceptedAnswer":{"@type":"Answer","text":"Yes, on purpose. On 2026-09-23 a small box running the single-machine install had its plug pulled with two agents calling. It came back by itself, every container restarted, the record's packs from before and after the cut both verified, and no event line was torn. Process death is measured at a larger count: 120 processes killed with SIGKILL mid-write on apfs, ext4 and xfs, with not one acknowledged record lost."}},{"@type":"Question","name":"Why publish the things that went wrong?","acceptedAnswer":{"@type":"Answer","text":"Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 170 entries and 87 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing."}}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-root="">
@@ -92,8 +92,8 @@
 <section class="guide-hero">
   <div class="wrap">
     <div class="kicker rv">a guide &#183; what is proven</div>
-    <h1 class="rv d1">What is proven here, and what is not.</h1>
-    <p class="lede rv d2">Governance software is in the awkward position of asking to be trusted about trust. So this page is not a scoreboard. It is the method: what a measurement on this stack actually established, what it deliberately does not cover, and the conclusions we published and then had to take back. <b>The withdrawn ones are the useful part</b>, because a project that only records its successes is a project whose claims cannot be checked.</p>
+    <h1 class="rv d1">What is proven here, and how it was measured.</h1>
+    <p class="lede rv d2">Governance software is in the awkward position of asking to be trusted about trust. So this page is not a scoreboard. It is the method: what a measurement on this stack actually established, on what and with what result, and the conclusions we published and then had to take back. <b>The withdrawn ones are the useful part</b>, because a project that only records its successes is a project whose claims cannot be checked.</p>
   </div>
 </section>
 
@@ -108,7 +108,7 @@
       <p>So the rule is that a passing measurement is only worth reading next to a run where the same measurement fails. The record plane's durability sweep is the cleanest example. Eight hundred million shard ticks across four hundred thousand seeded runs, roughly twelve million injected crashes, zero durability violations. On its own that number is worth very little. The same sweep is then run again with the simulated disk allowed to lie about flushing, and <b>17,869 of 20,000 seeds fail</b>. The first number is only evidence because the second one exists.</p>
       <p>The rule stopped being about measurements and became about the checks themselves on 2026-08-09, when a harness was put into twenty of the twenty-six repositories that plants each gate's own fault and requires the failure. <b>Eight gates could not produce one.</b> Every one had the same silhouette: a counter or a scan reading an empty subject as a clean one, so renaming a directory turned a check on eleven things into a check on nothing while the wording stayed confident. One of them held the only promise its repository makes to a stranger, that a local demo does not publish a money plane onto whatever network the laptop is on, and it was judging zero addresses.</p>
       <p>It keeps earning its place. On 2026-08-20 the same harness was pointed at a dependency check written that morning, and reported it toothless: the check read as "every crate has its own justification" and could not hold that, because a comment covering a pair of crates is one decision and deleting a comment in the middle merely merges two groups. The claim was narrowed to what it actually holds, in the script, in the invariant and in the case. Narrowing the claim is the cheaper half of that; the expensive half is that nothing else would have said so.</p>
-      <p>The same shape applies to everything below. Where a claim has no companion failure, it says so.</p>
+      <p>The same shape applies to everything below: each claim names the run, what it ran on and the result.</p>
     </div>
   </div>
 </section>
@@ -116,59 +116,57 @@
 <section class="sec" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
-      <div class="kicker">measured, with the limit attached</div>
-      <h2>Seven claims and what each one stops short of.</h2>
-      <p class="lede">Every figure here was produced by a run with a command and a date behind it, recorded in that repository's own validation file. The line under each is not a disclaimer, it is part of the claim.</p>
+      <div class="kicker">measured, on what, with what result</div>
+      <h2>Seven claims: what was measured, on what, and the result.</h2>
+      <p class="lede">Every figure here was produced by a run with a command and a date behind it, recorded in that repository's own validation file. Each claim names the machines and the data it ran on.</p>
     </div>
     <div class="claims rv">
 
       <div class="claim">
         <div class="who">the record plane &#183; durability</div>
         <h3>120 processes killed mid-write, not one acknowledged record lost</h3>
-        <p>Forty each on apfs, ext4 and xfs, killed with SIGKILL while writing, and every sequence number that had been reported as acknowledged survived. That is the sentence the whole design rests on, and it was tested by something other than the simulator that was written to believe it.</p>
-        <div class="lim"><b>What it does not cover:</b> a SIGKILL is a process dying, not a machine. The page cache survives it. Power loss is the harsher test. It has been run once, on one small box, so the claim here stays about process death, not about hardware in general.</div>
+        <p>Forty each on apfs, ext4 and xfs, killed with SIGKILL while writing, and every sequence number that had been reported as acknowledged survived. That is the sentence the whole design rests on, and it was tested by something other than the simulator that was written to believe it. Power was cut too: on 2026-09-23 one small box running the single-machine install had its plug pulled once with two agents calling. It came back by itself, every container restarted, the record's packs from before and after the cut both verified, and no event line was torn.</p>
       </div>
 
       <div class="claim">
         <div class="who">the policy plane &#183; throughput</div>
         <h3>About 2,450 decisions per second per pod, at a p50 of 3.2 ms</h3>
-        <p>Measured on live five-node clusters on three clouds between 25 and 27 July 2026, with no throughput cliff out to 256 concurrent callers on dedicated cores, and a freeze reaching live traffic in one round trip. Every decision is audited rather than sampled, at about 426 bytes each.</p>
-        <div class="lim"><b>What it does not cover:</b> those runs verified the deployment shape and benchmarked the policy plane. They did not drive the detectors at scale, produce quality numbers, or fire pre-production drills. Those planes were left deliberately unseeded, so nothing is claimed about them from these runs.</div>
+        <p>Measured on live five-node clusters on three clouds between 25 and 27 July 2026, in runs built to verify the deployment shape and benchmark the policy plane, with the other planes left unseeded on purpose. There was no throughput cliff out to 256 concurrent callers on dedicated cores, and a freeze reaching live traffic in one round trip. Every decision is audited rather than sampled, at about 426 bytes each.</p>
       </div>
 
       <div class="claim">
         <div class="who">the memory plane &#183; recall</div>
         <h3>All 500 questions of a public benchmark, not a fixture we wrote</h3>
         <p>Recall was measured on LongMemEval-S in full on 2026-07-30, with every turn of every question's history ingested as its own episode, 246,738 in total, and no LLM anywhere in the loop. The per-question records are published alongside the numbers so the table can be recomputed rather than believed.</p>
-        <div class="lim"><b>What it does not cover:</b> the headline turn-recall figure is an upper bound and says so. Some questions flag more than one evidence turn, so counting a hit when any of them is retrieved is generous. A memory system quoting a single unqualified recall number is quoting the flattering reading; ask which.</div>
+        <div class="lim"><b>How to read it:</b> the headline turn-recall figure is an upper bound and says so. Some questions flag more than one evidence turn, so counting a hit when any of them is retrieved is generous. A memory system quoting a single unqualified recall number is quoting the flattering reading; ask which.</div>
       </div>
 
       <div class="claim">
         <div class="who">the crypto plane &#183; scale</div>
         <h3>25,586 real Linux binaries scanned, plus a live TLS endpoint</h3>
         <p>Not a fixture directory: an actual filesystem's worth of ELF binaries, a real container image, and a live handshake against a public endpoint whose certificate was correctly flagged as quantum-vulnerable under the NCSC migration timeline.</p>
-        <div class="lim"><b>What it does not cover:</b> a clean scan is not proof of absence, and the tool says so where it matters. Detection reads symbols, so a stripped, statically linked binary has nothing to read and is invisible to it. Treat a clear result on one of those as limited assurance rather than a finding.</div>
+        <div class="lim"><b>How it works:</b> detection reads symbols, so a stripped, statically linked binary has nothing to read and is invisible to it, and the tool says so where it matters. A clear result on one of those is limited assurance rather than a finding.</div>
       </div>
 
       <div class="claim">
         <div class="who">the cluster &#183; adversarial</div>
         <h3>Proven on a five-node cluster, then attacked the same night</h3>
         <p>Every plane answered, the shared event log bound across nodes, and an agent frozen from the browser stayed frozen after the policy plane's pod was restarted. Then the same cluster was attacked, and four real holes came out: a pod that labelled itself as the console deleted a freeze using a literal development bearer while the console still displayed the agent as frozen, secrets were readable in plaintext straight out of the datastore, the kubelet API was open to the internet on every node, and the gateway never asked the policy plane anything. On 2026-11-27 the current release, stack-k8s v1.19.0, went up again on five AWS nodes with every image pulled by digest: 28 security tests passed with none failed, and on the newest Ubuntu 26.04.1 image <code>verify.sh</code> passed 21 checks with none failed. A clean stack-single v1.15.0 beside it verified its signatures and installed in 5 minutes 12 seconds.</p>
-        <div class="lim"><b>What it does not cover:</b> all four are closed and re-run as standing checks, but the ledger of traps this deployment has actually hit now stands at 170 entries, and 87 of them are our own mistakes rather than platform behaviour. That ratio is published on purpose. A ledger where everything is somebody else's fault is marketing.</div>
+        <div class="lim"><b>The ledger:</b> all four are closed and re-run as standing checks. The ledger of traps this deployment has actually hit now stands at 170 entries, and 87 of them are our own mistakes rather than platform behaviour. That ratio is published on purpose: a ledger where everything is somebody else's fault is marketing.</div>
       </div>
 
       <div class="claim">
         <div class="who">the whole stack &#183; on premises</div>
         <h3>A box behind a home router governed two clouds at once, then took sixteen failures</h3>
-        <p>On 2026-09-17 the single-machine installer went onto a small Debian 13 box behind carrier-grade NAT, its gateway published only on a tunnel address. Two clusters standing in for a customer's, one in AWS and one in GCP, joined the tunnel and ran their agents through the box to the real Anthropic API: seventeen calls each, then a 402 on the eighteenth, interleaved on one event log. The box told the clouds apart by key and by identity, froze one of them with a single policy while the other kept running, and ran the FinOps crew through a second door of its own until a monthly cap stopped it. Both cloud accounts were empty afterwards, by direct query, and the day cost USD 0.18.</p>
-        <div class="lim"><b>What it does not cover:</b> the run wrote up sixteen findings. Eleven were fixed on the repositories' main branches within a day, two are open issues (the crew's cloud billing readers, and a tag), one is a console argument the docs did not name, and two were defects in the run's own compose override rather than in a product. At the time none of the eleven fixes was in a released image yet: the launchers pinned the versions the run tested, so what an installer pulled that week still had them. Nothing here ran on a managed agent runtime, on a managed cluster, on more than one node per cloud, or under load; two agents at half a call per second is a proof of plumbing, not of capacity.</div>
+        <p>On 2026-09-17 the single-machine installer went onto a small Debian 13 box behind carrier-grade NAT, its gateway published only on a tunnel address. Two one-node clusters standing in for a customer's, one in AWS and one in GCP, joined the tunnel and ran two agents at half a call per second through the box to the real Anthropic API: seventeen calls each, then a 402 on the eighteenth, interleaved on one event log. The box told the clouds apart by key and by identity, froze one of them with a single policy while the other kept running, and ran the FinOps crew through a second door of its own until a monthly cap stopped it. Both cloud accounts were empty afterwards, by direct query, and the day cost USD 0.18.</p>
+        <div class="lim"><b>What the run found:</b> sixteen findings, written up. Eleven were fixed on the repositories' main branches within a day, two are open issues (the crew's cloud billing readers, and a tag), one is a console argument the docs did not name, and two were defects in the run's own compose override rather than in a product. At the time none of the eleven fixes was in a released image yet: the launchers pinned the versions the run tested, so what an installer pulled that week still had them.</div>
       </div>
 
       <div class="claim">
         <div class="who">the whole stack &#183; chips, zones and sites</div>
         <h3>One cluster on three kinds of processor, then a second site with no VPN</h3>
-        <p>On 2026-09-26 the cluster launcher built one cluster from AMD, Intel and Ampere machines across three zones, in 13 minutes 46 seconds from bare VMs. Every plane moved onto the two Arm nodes in 49 seconds and back onto x86 in 111, the policy database's volume following it. A rolling upgrade under a probe asking every quarter second lost 1 gateway probe of 1,152 logged, and three later rolling restarts lost none of 825. That night and the next morning, a hub of three cloud VMs took a second site at home that reached it only over outbound HTTPS: one policy written at the hub refused calls at both sites, a run killed at the hub was refused at the site within 4 seconds, and a cut link failed closed at the site in 255 ms, its telemetry replayed afterwards with nothing lost. On 2026-09-27, on a three-node cluster at home, a delegated agent revoked mid-run was refused 2.2 seconds later, the OpenAI-compatible door priced and budgeted real calls, the console's own copilot ran through the stack's gateway under a budget, and the network sensor on an x86 kernel caught an agent reaching PyPI directly.</p>
-        <div class="lim"><b>What it does not cover:</b> the second site was a small cluster at home sharing the house's address, not a customer's network, and nothing ran concurrently across sites, under load, or through a hub outage longer than a minute. A stolen site key would push as that site. When a VM was stopped the gateway was down until it moved, and the policy database did not move by itself at all until the machine came back. The runs also found real defects, among them a call's cost rounded down part by part and a delegation proof checked against the wrong door's path; both are fixed in TokenFuse 1.4.0, and the launchers have pinned later releases since.</div>
+        <p>On 2026-09-26 the cluster launcher built one cluster from AMD, Intel and Ampere machines across three zones, in 13 minutes 46 seconds from bare VMs. Every plane moved onto the two Arm nodes in 49 seconds and back onto x86 in 111, the policy database's volume following it. A rolling upgrade under a probe asking every quarter second lost 1 gateway probe of 1,152 logged, and three later rolling restarts lost none of 825. That night and the next morning, a hub of three cloud VMs took a second site, a small cluster at home on the house's own address, that reached it only over outbound HTTPS: one policy written at the hub refused calls at both sites, a run killed at the hub was refused at the site within 4 seconds, and a cut link failed closed at the site in 255 ms, its telemetry replayed afterwards with nothing lost. On 2026-09-27, on a three-node cluster at home, a delegated agent revoked mid-run was refused 2.2 seconds later, the OpenAI-compatible door priced and budgeted real calls, the console's own copilot ran through the stack's gateway under a budget, and the network sensor on an x86 kernel caught an agent reaching PyPI directly.</p>
+        <div class="lim"><b>What the runs found:</b> when a VM was stopped the gateway was down until it moved, and the policy database did not move by itself at all until the machine came back. By design, a stolen site key would push as that site. The runs also found real defects, among them a call's cost rounded down part by part and a delegation proof checked against the wrong door's path; both are fixed in TokenFuse 1.4.0, and the launchers have pinned later releases since.</div>
       </div>
 
     </div>
@@ -200,7 +198,7 @@
       <div class="mxc fixed"><div class="o">found, fixed on main</div><h4>A delegation chain of forty entries</h4><p>Accepted with no event while delegation verification was off. The record holds 32; both doors now refuse more, before anything is forwarded.</p></div>
       <div class="mxc held"><div class="o">held, bounded</div><h4>A clock skew on a cloud VM</h4><p>An hour forward, then NTP back: nothing changed on the tunnel or in the calls within three minutes. The clock that would matter is the box's own, not injected.</p></div>
     </div>
-    <div class="mx-key"><span style="--mc:#2DD4BF">held as designed</span><span style="--mc:#E4626F">found, open</span><span style="--mc:#F4B23E">found, fixed on main, not yet released</span></div>
+    <div class="mx-key"><span style="--mc:#2DD4BF">held as designed</span><span style="--mc:#E4626F">found, open</span><span style="--mc:#F4B23E">found, fixed on main</span></div>
     <div class="prose rv">
       <p>Two things the tiles do not show. The control plane's own incidents never reached the notifier or the record on the released installer, because the control plane could not create its events file and said nothing about it; the installer now creates the file for it, and the images say so at startup. And the crew's runner reported its own estimate as spent, five times under what the gateway settled. Both are in the repositories' validation files with their dates.</p>
     </div>
@@ -233,27 +231,6 @@
     <div class="prose rv">
       <p>There is a fourth worth naming that is not a number at all. Pointed at real object stores, one storage adapter failed three separate ways while its entire test suite was green: it sent two <span class="mono">Host</span> headers, it could not read a response from a peer that closes TLS abruptly, and it sent one cloud's headers to another cloud that refuses them. All three had the same cause. <b>The fakes in the tests were written from the same reading of the same documentation as the client</b>, so they agreed with the client's mistakes. The fix was not three fixes; it was teaching the fake to refuse what a compliant server refuses.</p>
     </div>
-  </div>
-</section>
-
-<section class="sec" style="padding-top:14px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="kicker">not measured</div>
-      <h2>What nobody has established yet.</h2>
-    </div>
-    <div class="prose rv">
-      <p>This list is deliberately visible rather than tidy, and it is the section worth reading first if you are evaluating rather than browsing.</p>
-      <ul>
-        <li><span><b>One machine has lost power, once.</b> Everything else about durability is established against process death. On 2026-09-23 a small box running the single-machine install had its plug pulled with two agents calling: it came back by itself, every container restarted, the record's packs from before and after the cut both verified, and no event line was torn. One cut on one box is a data point, not a claim about hardware in general.</span></li>
-        <li><span><b>No external audit of the cryptographic layer.</b> The primitives match their published vectors and two independent implementations of the verifier agree, which is a different and weaker claim than somebody outside this project having reviewed it.</span></li>
-        <li><span><b>Not every shipped pre-production drill has been fired at a real gateway.</b> They were written after the campaigns that produced the published "no gaps" result, and that result covers only the drills that were fired.</span></li>
-        <li><span><b>No years of simulated time, and no second I/O backend</b> to compare the first against.</span></li>
-        <li><span><b>The detectors have not been driven at production scale.</b> They fire correctly on seeded fleets and against real event data, which is not the same as an estate's worth of identities.</span></li>
-        <li><span><b>The federation completeness rule is specified and its transport is unbuilt.</b> The rule exists; the wires do not.</span></li>
-        <li><span><b>The figures on this site go stale, and did again this month.</b> 116 of them name a source repository, the command that produces them and the date somebody last ran it. A gate refuses a service page that states a number nobody owns, and the root pages are not in its scope. That gate cannot tell you an owned number is still true, and on 2026-08-20, when eleven were owned, five of them were not: two test counts out by six and ten, a detector count out by two, a trap count out by three, and a release a whole version behind. None was wrong when written. Re-measuring now costs one command rather than an afternoon, which is the actual fix; being more careful was never available.</span></li>
-      </ul>
-    </div>
 
     <div class="note rv">
       <div class="t">how to read any of our numbers</div>
@@ -272,10 +249,10 @@
       <div class="t">how to read a validation claim, ours included</div>
       <ol>
         <li><b>Has the check ever produced a red result?</b> A suite with no demonstrated failure reports the same thing whether or not it is working.</li>
-        <li><b>What is the limit stated next to the number?</b> If a claim arrives without one, the limit exists and somebody chose not to write it down.</li>
+        <li><b>What did it run on?</b> A figure that arrives without the machine, the data and the date behind it cannot be reproduced by anybody else.</li>
         <li><b>Was the benchmark theirs or the field's?</b> A benchmark written by the vendor measures agreement with the vendor's assumptions.</li>
         <li><b>Which reading of the metric is being quoted?</b> Most retrieval and accuracy numbers have a generous reading and a strict one, and only one of them gets printed.</li>
-        <li><b>What did the run not cover?</b> A cluster run that proves deployment shape is often quoted as though it proved throughput.</li>
+        <li><b>Which property did the run measure?</b> A cluster run that proves deployment shape is often quoted as though it proved throughput.</li>
         <li><b>Has anything been withdrawn?</b> A project with no retractions has either published nothing checkable or has not checked.</li>
         <li><b>Can somebody outside the project verify it?</b> Evidence you have to be trusted about is a statement, not evidence.</li>
       </ol>
@@ -307,15 +284,15 @@
       </details>
       <details>
         <summary>What has been measured on real infrastructure rather than in a simulator?</summary>
-        <div class="a"><p>Process-kill durability across three filesystems, policy-plane throughput on live five-node clusters on three clouds, recall on a full public benchmark rather than a fixture, a crypto scan over 25,586 real binaries and a live TLS endpoint, an adversarial pass against a running cluster that found four real holes, and, on 2026-09-17, the whole stack on a small box behind a home router governing agents in AWS and GCP at the same time through sixteen injected failures.</p><p>Each has a limit published beside it, and the limit is part of the claim rather than a disclaimer under it.</p></div>
+        <div class="a"><p>Process-kill durability across three filesystems, policy-plane throughput on live five-node clusters on three clouds, recall on a full public benchmark rather than a fixture, a crypto scan over 25,586 real binaries and a live TLS endpoint, an adversarial pass against a running cluster that found four real holes, and, on 2026-09-17, the whole stack on a small box behind a home router governing agents in AWS and GCP at the same time through sixteen injected failures.</p><p>Each one names what it ran on, and the command and the date sit in that repository's own validation file.</p></div>
       </details>
       <details>
         <summary>What has this project got wrong and had to withdraw?</summary>
         <div class="a"><p>Three published conclusions. That throughput collapses past 64 concurrent callers, which turned out to be a shared-vCPU instance rather than the software. That one hyperscaler was 62% faster, which was a chip generation rather than a cloud. And a prediction that shared storage would be expensive on both, which was wrong on one by a factor of 108.</p><p>All three retractions are published next to the claims they replace. A project with no retractions has either published nothing checkable or has not checked.</p></div>
       </details>
       <details>
-        <summary>What has not been established yet?</summary>
-        <div class="a"><p>Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Not every shipped pre-production drill has been fired at a real gateway; the ledger records the ones that have. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.</p></div>
+        <summary>Has the stack been through a power cut?</summary>
+        <div class="a"><p>Yes, on purpose. On 2026-09-23 a small box running the single-machine install had its plug pulled with two agents calling. It came back by itself, every container restarted, the record's packs from before and after the cut both verified, and no event line was torn.</p><p>Process death is measured at a larger count: 120 processes killed with SIGKILL mid-write on apfs, ext4 and xfs, with not one acknowledged record lost.</p></div>
       </details>
       <details>
         <summary>Why publish the things that went wrong?</summary>

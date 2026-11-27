@@ -22,25 +22,25 @@ Every page below is available as markdown at the same path with a .md extension.
 - [What runs where and what it costs](https://it-rat.com/what-runs-where.md): One machine, a five-node cluster, or three clouds: the measured shapes of this stack, their throughput, and the storage line that changes by 108x.
 - [From zero to your first alert](https://it-rat.com/first-alert.md): One command, one address, one mail: the shortest honest path from nothing to a governed agent that writes to you when it crosses a line.
 - [Two sites, one control plane, no VPN](https://it-rat.com/two-sites.md): Sites reach one hub over outbound HTTPS through one narrow door: every site by name, one policy everywhere, and a quiet site never mistaken for a dead one.
-- [What is proven and what is not](https://it-rat.com/what-is-proven.md): How to read a validation claim: what was measured on this stack, what the measurement does not cover, and the conclusions we published and had to withdraw.
+- [What is proven and how it was measured](https://it-rat.com/what-is-proven.md): How to read a validation claim: what was measured on this stack, on what and with what result, and the conclusions we published and had to withdraw.
 - [Three shapes of agent tooling](https://it-rat.com/agent-tooling-compared.md): The controls that answer before a call: what each one does, what it does not do yet, and how to check it.
 - [Security by design](https://it-rat.com/security-by-design.md): An agent can be persuaded, so its controls sit where persuasion cannot reach. Eight design decisions in the stack, and what happened when we broke each one.
 - [How the numbers were produced](https://it-rat.com/stack-guide.md): The eight figures on the home page: how each was measured on real infrastructure, the bugs the live runs caught, and where the rest of the record is.
 - [Install the stack, all of it or one service at a time](https://it-rat.com/install.md): One command for the whole stack on a box you own, a cluster or your laptop, and how each service installs and runs on its own.
 - [What changed in the stack, 1 to 15 October 2026](https://it-rat.com/changes-2026-10.md): Prices that match the bill, money that is never forgotten, tool calls judged before they run: what changed in the stack from 1 to 15 October 2026.
-- [Genaryx guide](https://it-rat.com/genaryx-guide.md): How the Genaryx console works, how Felyx is held, what every frame shows, how to take it, and what is not yet in the record, in full.
+- [Genaryx guide](https://it-rat.com/genaryx-guide.md): How the Genaryx console works, how Felyx is held, what every frame shows, how to take it, and the runs on a live fleet, in full.
 - [TokenFuse guide](https://it-rat.com/tokenfuse-guide.md): How TokenFuse works, how to install and configure it, what changed from 1 to 15 October 2026, and what the default install does not do, in full.
-- [CostCrew guide](https://it-rat.com/costcrew-guide.md): How CostCrew works, how to install and configure it, what changed from 1 to 15 October 2026, and what it does not prove yet, in full.
+- [CostCrew guide](https://it-rat.com/costcrew-guide.md): How CostCrew works, how to install and configure it, what changed from 1 to 15 October 2026, and its limits, in full.
 - [TokenFuse Pocket guide](https://it-rat.com/pocket-guide.md): How TokenFuse Pocket is designed to work, how it differs from Heraldyx, where it sits in the stack, and why it is not wired into a running stack yet.
-- [Wardryx guide](https://it-rat.com/wardryx-guide.md): How Wardryx decides allow, deny or hold, how to run it, what changed from 1 to 15 October 2026, and what is open by default or not proven yet.
-- [Idryx guide](https://it-rat.com/idryx-guide.md): How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do or prove yet.
+- [Wardryx guide](https://it-rat.com/wardryx-guide.md): How Wardryx decides allow, deny or hold, how to run it, what changed from 1 to 15 October 2026, and what is open by default.
+- [Idryx guide](https://it-rat.com/idryx-guide.md): How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do.
 - [Scopyx guide](https://it-rat.com/scopyx-guide.md): How Scopyx decides an agent's web egress, how to run its two images, what changed from 1 to 15 October 2026, and what it will not do, in full.
 - [Vouchryx guide](https://it-rat.com/vouchryx-guide.md): How Vouchryx proves and ends an agent's delegation, its seven endpoints, how to run and configure it, what changed in October and November 2026, and its limits.
 - [Qryx guide](https://it-rat.com/qryx-guide.md): How Qryx finds every key and grades its post-quantum risk, the risk model, how to run it, what changed in October 2026, and what it leaves out.
 - [Keyryx guide](https://it-rat.com/keyryx-guide.md): How Keyryx signs, publishes and witnesses keys and the record, its routes, how to configure, run and verify it offline, its releases, and its limits.
 - [Verdryx guide](https://it-rat.com/verdryx-guide.md): How Verdryx turns agent spend into cost per resolved case, its six graders, how to run it offline, what changed in October 2026, and its limits.
-- [Typryx guide](https://it-rat.com/typryx-guide.md): How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and what it does not prove yet.
-- [Mockryx guide](https://it-rat.com/mockryx-guide.md): How Mockryx fire drills work, how to run and download it, the drills added since v0.2.1, and what it does not prove yet.
+- [Typryx guide](https://it-rat.com/typryx-guide.md): How Typryx works, its measured runs in full, how to choose a data mode at install, what changed, and its limits.
+- [Mockryx guide](https://it-rat.com/mockryx-guide.md): How Mockryx fire drills work, how to run and download it, the drills added since v0.2.1, and what it does not do.
 - [Trailryx guide](https://it-rat.com/trailryx-guide.md): How Trailryx proves an answer complete, how erasure leaves the chain intact, the durability runs, the offline verifier, and its limits.
 - [Heraldyx guide](https://it-rat.com/heraldyx-guide.md): How Heraldyx decides what reaches a human, what its mail may carry, what its dispatch record proves, what changed from v0.7.0 to v0.10.0, and its boundaries.
 - [Engram guide](https://it-rat.com/engram-guide.md): How Engram works, the live runs against real Claude, how to install it, what changed in v3.0.0 and v3.1.0, and what it does not do yet, in full.

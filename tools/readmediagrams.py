@@ -81,7 +81,7 @@ ROOMS = {
                   "Typryx: an ask crosses the door, template lookup, egress filter and hourly cap to a "
                   "swappable backend, stub, openai-logprobs or jev, and every answer or refusal is "
                   "journaled, with a calibration loop and the journal on the shared events volume",
-                  "4b7b9704b075"),
+                  "abd7e3c8e96c"),
 }
 
 # Rooms whose README diagram is drawn by hand, and the reason for each. This
