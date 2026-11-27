@@ -222,7 +222,7 @@
       <h3>TokenFuse ships as an image, and since v0.4.3 as binaries</h3>
       <div class="dl-row"><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/pkgs/container/tokenfuse">container image</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases">releases</a></div>
       <div class="dl-row" style="margin-top:10px"><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/tokenfuse-x86_64-unknown-linux-musl">Linux x86-64</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/tokenfuse-aarch64-unknown-linux-musl">Linux arm64</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/tokenfuse-x86_64-apple-darwin">macOS x86-64</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/tokenfuse-aarch64-apple-darwin">macOS arm64</a><a class="pill" href="https://github.com/TAIPANBOX/tokenfuse/releases/latest/download/SHA256SUMS">SHA256SUMS</a></div>
-      <p>The current release is v1.27.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, <span class="mono">TOKENFUSE_UPSTREAM</span> set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.</p>
+      <p>The current release is v1.27.1. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, <span class="mono">TOKENFUSE_UPSTREAM</span> set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.</p>
     </div>
   </div>
 </section>
@@ -277,6 +277,7 @@
           <tr><td>v1.22.0</td><td>A response that stopped short is charged the input as reported and the output at the request's cap, under the cost basis PartialUsage.</td></tr>
           <tr><td>v1.26.0</td><td>Every door judges a tool call's own arguments: the check, the MCP broker and the streamed judge each read the arguments of the call they are deciding, never an argument carried from another call.</td></tr>
           <tr><td>v1.26.0</td><td>The trace and the FOCUS export carry cache and reasoning tokens, and the FOCUS export can be written to specification 1.5.</td></tr>
+          <tr><td>v1.27.1</td><td>The Cloud's published contract caps the replay event's delegation chain at 32 entries, as agent-passport SPEC 5.1 requires; nothing in the gateway's or the Cloud's behaviour changes.</td></tr>
           <tr><td>v1.27.0</td><td>Per-key rate and concurrency limits, off until set. A call over a limit gets a 429 with Retry-After, and nothing is reserved for it.</td></tr>
           <tr><td>v1.27.0</td><td>Two more agent-event types, rate_limited and price_fallback, and one incident per caller when a provider keeps refusing the gateway's credential.</td></tr>
           <tr><td>v1.27.0</td><td>Each MCP upstream can have a credential of its own, and the caller's own credential is never sent to an upstream.</td></tr>
