@@ -92,7 +92,7 @@ Each address always serves the newest release: the asset names carry no version,
 
 What changed from 1 to 15 October 2026, release by release, is in [the stack's changes for October](https://it-rat.com/changes-2026-10.html#trailryx).
 
-## What it does not do, and what is not proven yet.
+## What it does not do.
 
 - The console has no panel for the record plane, so what is sealed is read with the CLI rather than in a browser.
 

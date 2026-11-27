@@ -32,7 +32,7 @@ With WARDRYX_SIGNAL_EVENTS set, a spent error budget from Verdryx becomes an slo
 
 This plane answers about an action. What it cannot answer is whether the caller really holds the delegation it claims, which is a different question with a different mechanism: [Vouchryx](https://it-rat.com/services/vouchryx.html) mints a short-lived token bound to the caller's own key and lets a person end it.
 
-## What is open by default, and what is not proven yet.
+## What is open by default.
 
 ### When it cannot be reached
 

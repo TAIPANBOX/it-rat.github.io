@@ -2,7 +2,7 @@
 
 # Wardryx guide
 
-> How Wardryx decides allow, deny or hold, how to run it, what changed from 1 to 15 October 2026, and what is open by default or not proven yet.
+> How Wardryx decides allow, deny or hold, how to run it, what changed from 1 to 15 October 2026, and what is open by default.
 
 The [Wardryx room](https://it-rat.com/services/wardryx.html) keeps the simulation, the drawing and the common questions. This guide keeps the rest of what the room used to say: how a hold is resolved, the modes and the outage choice, where it sits, how to run it, what changed from 1 to 15 October 2026, and its limits.
 
@@ -165,7 +165,7 @@ The whole stack's fortnight, Wardryx among it, is in [the October changelog](htt
 | v2.7.0 | The person who decides a held call can read its arguments first, sealed to the console's key, with secrets and personal data hidden by fixed rules. Nothing changes until a preview key is set. |
 | v2.8.0 | Every hold has an end: a person decides it, wardryx closes it as expired once it has waited WARDRYX_HOLD_TTL (24 hours unless set, from 1 to 168 hours), or the held agent withdraws it. Neither closure mints a token, so the held call stays refused. An admin key cancels nothing. |
 
-## What is open by default, and what is not proven yet.
+## What is open by default.
 
 - When the decision point is unreachable, the enforcement point picks the failure mode per deployment. The TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing; all three launchers set it closed on purpose. The egress point fails closed with no override.
 

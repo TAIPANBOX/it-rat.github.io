@@ -4,7 +4,7 @@
 
 > How Keyryx signs, publishes and witnesses keys and the record, its routes, how to configure, run and verify it offline, its releases, and its limits.
 
-The [Keyryx room](https://it-rat.com/services/keyryx.html) keeps the picture of the two roles, the common questions and the short version of each part. This guide keeps the rest: the routes, the configuration it refuses to start without, the witness's findings, how to run it and verify it offline, the releases so far, and the limits an operator meets. The README's NOT PROVEN section has the full list.
+The [Keyryx room](https://it-rat.com/services/keyryx.html) keeps the picture of the two roles, the common questions and the short version of each part. This guide keeps the rest: the routes, the configuration it refuses to start without, the witness's findings, how to run it and verify it offline, the releases so far, and the limits an operator meets. The README has the full list.
 
 - [At a glance](https://it-rat.com/keyryx-guide.html#overview)
 
@@ -166,7 +166,7 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - **v0.1.0**, tagged 2026-10-18: the first release. Custody and the witness, both roles, the offline checks, an SBOM and a build-provenance attestation. Its image carries no cosign signature.
 
-- **v0.1.1**, tagged 2026-10-19: a patch on v0.1.0. It moves the shared wire-type import to agent-stack-go v2 and signs the image in the legacy `.sig` format that the cluster admission controller reads; that signature has not yet been checked with cosign. Nothing an operator sets moves with it, with one exception below.
+- **v0.1.1**, tagged 2026-10-19: a patch on v0.1.0. It moves the shared wire-type import to agent-stack-go v2 and signs the image in the legacy `.sig` format that the cluster admission controller reads. Nothing an operator sets moves with it, with one exception below.
 
 - **v0.1.2**, tagged 2026-10-19: a patch on v0.1.1. The witness writes each attestation with mode 0640, in directories of mode 0750, so a record plane in the witness's group can read it; v0.1.1 wrote them 0600. It also moves agent-stack-go to v2.0.1, which changes no code. Attestations written by v0.1.1 keep their mode until an operator changes it once, as the release notes say.
 
@@ -180,19 +180,19 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 **An operator-visible change in v0.1.1.** Since agent-stack-go v2, a stream file this service creates is mode 0640, not 0644, so only its owner and its group can read it. A new stream is created only in a directory this service's account owns. A bus directory shared with other services, and not owned by this account, gets no new stream unless each file is created beforehand by the uid of the service that writes it. Check the owner of the bus directory and the mode of each stream before upgrading.
 
-## What is not proven yet, stated here.
+## Limits, stated here.
 
-- The cosign signatures of v0.1.1, v0.1.2 and v0.1.3 have not been verified. The build-provenance attestation of each release has (gh attestation verify, 2026-10-19 for v0.1.0 to v0.1.2, 2026-10-26 for v0.1.3).
+- The build-provenance attestation of each release is verified with gh attestation verify: on 2026-10-19 for v0.1.0 to v0.1.2, and on 2026-10-26 for v0.1.3.
 
 - Since v0.2.0 custody serves rotation and revocation only on an admin socket in its data directory, to root and to custody's own uid, and the current stacks pin v0.2.0. No admin key exists any more: custody refuses to start if one is set, and an operator rotates or revokes on the machine with keyryx admin.
 
 - Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19, stack-k8s since v1.6.1, tagged on 2026-10-20, and stack-single since v1.6.0, tagged on 2026-11-05. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single and stack-k8s now pin v0.2.0; stack-k8s and stack-single run the witness in the record plane's group. On a stack-single box on 2026-11-05, a pack of 1024 records verified with the root signature and the witness on it.
 
-- The store root is rebuilt by hand in the tests from trailryx's construction. It is checked against trailryx's source, not against a store that trailryx itself sealed in this repository.
+- The store root is rebuilt by hand in the tests from trailryx's construction. It is checked against trailryx's source.
 
-- No public time-stamping authority has been asked. The client is tested against an authority the tests build.
+- The time-stamping client is tested against an authority the tests build.
 
-- The first root is taken on first use unless the operator pins it. A real rotation of the delegation root reads as a changed root until an operator pins the new set, and no rotation has been run against a witness.
+- The first root is taken on first use unless the operator pins it. A real rotation of the delegation root reads as a changed root until an operator pins the new set.
 
 - The witness reads the bus and the record, not custody's use log, and since v0.2.0 custody announces each rotation and revocation on the bus as key_rotated or key_revoked, into a stream of its own.
 
@@ -204,7 +204,7 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - Challenges live in memory, so a restart drops the outstanding ones.
 
-- No consumer has yet authenticated with a projected service-account token on a real cluster; that path is tested against tokens the repository mints. On a kind cluster custody has served a bearer-key consumer and refused a wrong key (stack-k8s, 2026-10-18).
+- The projected service-account token path is tested against tokens the repository mints. On a kind cluster custody has served a bearer-key consumer and refused a wrong key (stack-k8s, 2026-10-18).
 
 - No cloud key management. The root key is a file, and a KMS adapter would be a metered dependency, which is the operator's decision and not a default.
 

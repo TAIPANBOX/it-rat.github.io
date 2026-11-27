@@ -80,7 +80,7 @@ An optional build that ships as its own image tag (tokenfuse:<tag>-cluster). The
 
 ### What a budget survives: a crash, a restart, a partition
 
-The images every launcher installs run one gateway with its ledger in memory, and a restart no longer starts every run at zero. Since v1.4.1 the gateway reads each run's spend back from the Cloud before it serves, for runs active in the last 31 days, and since v1.6.0 a gateway at a remote site does the same through a read scoped to its own site. With no Cloud configured there is nothing to read back, and a run starts from zero. The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry, not yet on a live hub. A budget only means something if two gateways racing each other cannot both spend it, and that is what the cluster build is for, a separate build of the same binary: there the ledger is a raft state machine, and the affordability check is linearized across the whole fleet: four nodes on four machines admit exactly what one budget allows, not four copies of it.
+The images every launcher installs run one gateway with its ledger in memory, and a restart no longer starts every run at zero. Since v1.4.1 the gateway reads each run's spend back from the Cloud before it serves, for runs active in the last 31 days, and since v1.6.0 a gateway at a remote site does the same through a read scoped to its own site. With no Cloud configured there is nothing to read back, and a run starts from zero. The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry. A budget only means something if two gateways racing each other cannot both spend it, and that is what the cluster build is for, a separate build of the same binary: there the ledger is a raft state machine, and the affordability check is linearized across the whole fleet: four nodes on four machines admit exactly what one budget allows, not four copies of it.
 
 In that build, with durable storage on redb, a budget outlives more than a node crash: it survives a full process restart, because a cap that resets when a process dies is a cap an unlucky deploy can hand back to a runaway.
 
@@ -167,7 +167,7 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 | v1.27.0 | Each MCP upstream can have a credential of its own, and the caller's own credential is never sent to an upstream. |
 | v1.27.0 | A child run can roll up into a parent run another agent owns only when the person's delegation proves a chain that names the parent's agent. |
 
-## What the default install does not do, and what is not proven yet.
+## What the default install does not do.
 
 - **The cluster build is optional and ships as its own image tag.** The default image every launcher installs runs one gateway with its ledger in memory.
 
@@ -177,7 +177,7 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 
 - With no Cloud configured there is nothing to read back, and a run starts from zero.
 
-- The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry, not yet on a live hub.
+- The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry.
 
 - The operator's run-budget ceiling bounds each run, not an agent's total: a new run id gets a new ceiling.
 

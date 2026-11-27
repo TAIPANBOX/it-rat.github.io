@@ -26,7 +26,7 @@ Without its issuer, a signing key and the issuers it trusts (or an enrolled agen
 
 The client ships with the service: `vouchryx-demo` makes the keys, performs the exchange and prints a proof.
 
-## What is not proven yet.
+## Limits, in short.
 
 ### Two enforcement points poll
 

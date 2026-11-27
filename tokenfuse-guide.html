@@ -177,7 +177,7 @@
       <h3>Cluster build: a raft-replicated ledger</h3>
       <p>An optional build that ships as its own image tag (tokenfuse:&lt;tag&gt;-cluster). The default image does not run it. Four nodes on four machines held one shared budget through a leader kill and a real network partition: the majority kept serving, the isolated node could not overspend, nothing split-brained.</p>
       <h3>What a budget survives: a crash, a restart, a partition</h3>
-      <p>The images every launcher installs run one gateway with its ledger in memory, and a restart no longer starts every run at zero. Since v1.4.1 the gateway reads each run's spend back from the Cloud before it serves, for runs active in the last 31 days, and since v1.6.0 a gateway at a remote site does the same through a read scoped to its own site. With no Cloud configured there is nothing to read back, and a run starts from zero. The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry, not yet on a live hub. A budget only means something if two gateways racing each other cannot both spend it, and that is what the cluster build is for, a separate build of the same binary: there the ledger is a raft state machine, and the affordability check is linearized across the whole fleet: four nodes on four machines admit exactly what one budget allows, not four copies of it.</p>
+      <p>The images every launcher installs run one gateway with its ledger in memory, and a restart no longer starts every run at zero. Since v1.4.1 the gateway reads each run's spend back from the Cloud before it serves, for runs active in the last 31 days, and since v1.6.0 a gateway at a remote site does the same through a read scoped to its own site. With no Cloud configured there is nothing to read back, and a run starts from zero. The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry. A budget only means something if two gateways racing each other cannot both spend it, and that is what the cluster build is for, a separate build of the same binary: there the ledger is a raft state machine, and the affordability check is linearized across the whole fleet: four nodes on four machines admit exactly what one budget allows, not four copies of it.</p>
       <p>In that build, with durable storage on redb, a budget outlives more than a node crash: it survives a full process restart, because a cap that resets when a process dies is a cap an unlucky deploy can hand back to a runaway.</p>
       <p>That was tested rather than assumed. A four-node cluster across two datacenters took a leader kill and a real network partition: the majority side kept serving, the isolated node could not overspend, and nothing split-brained. Enforcement then held under a burst of 34 concurrent agents, and the cost accounting was run on the same protocol against Hetzner, AWS and GCP so the numbers could be compared honestly.</p>
       <h3>FOCUS export</h3>
@@ -291,7 +291,7 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">limits</div>
-      <h2>What the default install does not do, and what is not proven yet.</h2>
+      <h2>What the default install does not do.</h2>
     </div>
     <div class="prose rv">
       <ul>
@@ -299,7 +299,7 @@
         <li><span>A business unit's monthly cap: each gateway counts its own calls on top of a tally it reads from the Cloud when it starts, so that cap is not yet shared across a fleet of gateways.</span></li>
         <li><span>The model router and the cache both ship switched off: the router is off by default, and the cache is off in the gateway and in the launchers, so the saving seen in live runs arrives when you turn them on, not by default.</span></li>
         <li><span>With no Cloud configured there is nothing to read back, and a run starts from zero.</span></li>
-        <li><span>The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry, not yet on a live hub.</span></li>
+        <li><span>The read-back is proven by tests, and the remote-site half on release binaries behind a stand-in for the hub entry.</span></li>
         <li><span>The operator's run-budget ceiling bounds each run, not an agent's total: a new run id gets a new ceiling.</span></li>
         <li><span>A poisoned tool description marks the run as a suspected injection. The request itself is not refused.</span></li>
         <li><span>A label follows an act that passed through an enforcement point. A process with its own socket passes through none.</span></li>

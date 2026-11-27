@@ -2,7 +2,7 @@
 
 # Mockryx guide
 
-> How Mockryx fire drills work, how to run and download it, the drills added since v0.2.1, and what it does not prove yet.
+> How Mockryx fire drills work, how to run and download it, the drills added since v0.2.1, and what it does not do.
 
 The [Mockryx room](https://it-rat.com/services/mockryx.html) keeps the fire drill, the drawing of one target URL and three exit codes, and the common questions. This guide keeps the rest of what the room used to say: what a scenario names, how a reaction is proven, how a skipped guardrail is told from a gap, where it sits in the stack, how to run and download it, the drills added since v0.2.1, and the limits.
 
