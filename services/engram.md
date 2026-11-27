@@ -12,33 +12,17 @@ A simulation, but not a fantasy: it replays the shape of the live validation run
 
 ## One file on disk. Model calls only when you ask.
 
-Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. The only calls that leave the machine are reflect() and compress(), through a pluggable LLM adapter, and even those can route through TokenFuse; the embedding model downloads once, about 64 MB, on first use.
+Your agent calls observe() and recall() against one .engram file, in-process; only reflect() and compress() leave the machine. [In the guide](https://it-rat.com/engram-guide.html#how-it-works)
 
 ## Not a log of text. Beliefs with receipts.
 
-### Single file, embeddable
+Observing writes an episode with no model in the path; reflect(), only when you ask, distils episodes into facts that each keep a why() chain. [In the guide](https://it-rat.com/engram-guide.html#how-it-works)
 
-One .engram file on SQLite plus sqlite-vec: no server, no Docker, no config file. A write takes a median of 8 ms (200 writes on an Apple Silicon Mac, 2026-10-13) because no LLM sits in the write path.
+Every fact carries when it was true and when Engram learned it, so a fact that changes is closed with an end date and never deleted. [In the guide](https://it-rat.com/engram-guide.html#how-it-works)
 
-### reflect() distills facts
+A model's fact never closes the person's own: it is recorded beside it, and refute_fact() closes a fact while keeping its history. [In the guide](https://it-rat.com/engram-guide.html#how-it-works)
 
-A background reflection loop groups recent episodes and asks an LLM to extract subject-predicate-object facts, each with a confidence score. Every fact keeps a why() chain.
-
-### Facts that know their dates
-
-Every fact carries two timelines: when it was true in reality, and when the system learned it. When Ivan changes jobs the old fact is closed with an end date, never deleted.
-
-### Three ways to recall
-
-Cosine vectors for meaning, BM25 blended with vectors when exact terms matter, and spreading activation that walks the entity graph.
-
-### A person's word outranks a model's
-
-A fact the person wrote is never closed by a fact a model extracted. The newer one is recorded beside it, contradictions() lists the pair, and the contradiction_found event names both.
-
-### A fact can be refuted, not erased
-
-refute_fact() closes a fact without deleting it, so the timeline and as_of keep what was believed before. Every fact derived from it is marked as undermined and stays active.
+One recall call has three modes: hybrid by default, cosine for meaning, and spreading activation over the entity graph. [In the guide](https://it-rat.com/engram-guide.html#recall)
 
 ### The plane that remembers.
 
@@ -48,11 +32,17 @@ The PyPI name is engdbram (the plain name was taken); the import stays `from eng
 
 ## Agent events are off by default, and reflect() is not an MCP tool.
 
-- Since version 3.0.0 (released 2026-10-18) the MCP server sets provenance and scope: a call cannot claim user, the server's ceiling is external unless its operator raises it, and a server started with an agent id serves that agent alone (one started without serves the whole file and says so). A session turns untrusted when recall or why returns a memory that is not the user's own or is quarantined, when the caller labels what it writes as tool or external, or passes read_untrusted=true, or when the flag is set. The server cannot see what an agent read outside engram.
+### Provenance over MCP
 
-- reflect() is deliberately not exposed to MCP clients.
+The MCP server sets provenance and scope, and it cannot see what an agent read outside engram.
 
-- Agent events are opt-in and off by default.
+### No reflect() over MCP
+
+reflect() is deliberately not exposed to MCP clients.
+
+### Events are opt-in
+
+Agent events are opt-in and off by default.
 
 ### The Engram guide
 

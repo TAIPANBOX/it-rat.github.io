@@ -16,37 +16,11 @@ Traces and eval sets go in. What comes out: a cost-per-outcome report, a drift v
 
 ## Not a bigger number. A truer one.
 
-### Cost per outcome
+Six graders score each case between zero and one, and the outcome tags on TokenFuse's trace become a dollar figure per resolved case. Only the judge and the typed grader can spend, and the judge is priced on the same book TokenFuse uses. [In the guide](https://it-rat.com/verdryx-guide.html#grades)
 
-Resolved, abandoned, escalated: real outcome tags straight off the TokenFuse gateway turn into a dollar figure per case, not a total nobody can act on.
+A drift regression or an SLO breach becomes a finding with its evidence and a suspect, and the runs after a registered fix decide it: verified, failed or pending. A person's grade replaces the model's value, which stays beside it. [In the guide](https://it-rat.com/verdryx-guide.html#findings)
 
-### Drift with statistics
-
-A flat threshold catches the obvious drop. Beside it, a bootstrap interval on the difference catches the small, consistent regression a threshold tuned for noise would miss. Welch's t is reported next to the verdict and does not decide it.
-
-### The LLM judge is metered
-
-An llm_judge case's cost is a real dollar figure, priced against the same book TokenFuse uses.
-
-### One-dependency core
-
-The graders and drift maths use only the standard library. The one runtime dependency is rfc8785, which canonicalises the JSON the event chain is hashed over.
-
-### A failure becomes a record
-
-A drift regression or an SLO breach is stored as a finding, with its evidence and a suspect model or version. Register a fix and the runs that follow decide it: verified, failed, or pending with its reason. Unmeasured is never a pass.
-
-### A person's grade outranks the model's
-
-A reviewer's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's own value stays beside it. eval has no path to a grade, and every grade carries its author.
-
-### Error budgets, measured and never enforced
-
-verdryx slo reads the same traces as four ratios of good runs over eligible runs, each with the budget left and the rate it is going. It sends an slo_burn event only when the confidence interval sits below the objective, and it enforces nothing.
-
-### An exhausted budget has two readers
-
-[Wardryx](https://it-rat.com/services/wardryx.html) turns a spent budget into a hold for a person, in both launchers, which measure every six hours. [Heraldyx](https://it-rat.com/services/heraldyx.html) mails an slo_burn at once, in words that say nothing was enforced.
+verdryx slo measures four indicators of good runs over eligible runs and enforces nothing. Wardryx turns a spent budget into a hold for a person, and Heraldyx mails the slo_burn at once. [In the guide](https://it-rat.com/verdryx-guide.html#error-budgets)
 
 ## The line that turns spend into a verdict.
 
@@ -58,9 +32,17 @@ There is no PyPI package, so the version you run is the commit you can read.
 
 ## What runs only when you ask.
 
-- Only the judge and the typed grader can spend money, and neither runs by default.
+### Two graders can spend
 
-- The typed grader from [Typryx](https://it-rat.com/services/typryx.html) is opt-in per run with `--typed-url`.
+Only the judge and the typed grader can spend money, and neither runs by default. [In the guide](https://it-rat.com/verdryx-guide.html#limits)
+
+### Typed is opt-in
+
+The typed grader from [Typryx](https://it-rat.com/services/typryx.html) is opt-in per run with `--typed-url`. [In the guide](https://it-rat.com/verdryx-guide.html#limits)
+
+### Grades live in the store
+
+The store file is the trust boundary for grades, and a console build that reads scores directly shows the model's value until it reads human_grades too. [In the guide](https://it-rat.com/verdryx-guide.html#limits)
 
 ### The Verdryx guide
 

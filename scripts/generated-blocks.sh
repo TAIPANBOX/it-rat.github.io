@@ -67,8 +67,11 @@ problems = []
 # ---------------------------------------------------------------------------
 # A. Coverage
 # ---------------------------------------------------------------------------
+# A dot path is never published (the Pages upload drops it), so a stray
+# worktree under .claude/ is not a page of this site.
 pages = sorted(p for p in ROOT.rglob("*.html")
-               if not str(p.relative_to(ROOT)).startswith("demo/"))
+               if not str(p.relative_to(ROOT)).startswith("demo/")
+               and not any(part.startswith(".") for part in p.relative_to(ROOT).parts))
 if not pages:
     print("UNJUDGEABLE: no HTML pages found, so nothing was measured.")
     sys.exit(1)

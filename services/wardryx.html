@@ -48,10 +48,38 @@
   .install .cmd{color:var(--fg)}
   .install .cmd b{color:var(--accent);font-weight:600}
   .install .note{color:var(--faint);font-size:11.5px;margin-left:auto}
-  /* what is not proven stays on the page (invariant 5); the full list is in the guide */
-  .limits ul{margin:0;padding-left:18px;color:var(--dim);font-size:14.5px;line-height:1.65;max-width:80ch}
-  .limits li+li{margin-top:9px}
-  .limits li::marker{color:var(--accent)}
+  /* the .flight widget (as on keyryx and trailryx): an svg, tabs that drive it,
+     and one sentence per tab */
+  .flight{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);overflow:hidden}
+  .fl-head{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--line);
+    font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .fl-head .n{margin-left:auto;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .fl-head .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);flex:0 0 auto}
+  .flight svg{display:block;width:100%;height:auto}
+  .fl-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 15px;border-top:1px solid var(--line)}
+  .fl-tab{font-family:var(--font-m);font-size:11.5px;color:var(--dim);cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;
+    transition:color .15s,border-color .15s,background .15s}
+  .fl-tab:hover{color:var(--fg);border-color:color-mix(in srgb, var(--accent) 55%, var(--line-2))}
+  .fl-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fl-tab[aria-pressed="true"]{color:#0A1420;background:var(--accent);border-color:var(--accent)}
+  .fl-why{margin:0;padding:13px 15px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;line-height:1.65}
+  .fl-why a{color:var(--accent)}
+  .fl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  @media(max-width:760px){.fl-scroll svg{min-width:720px}}
+  .lim h3{font-size:15px}
+  .lim p{margin-top:8px;color:var(--dim);font-size:13.5px;line-height:1.6}
+  .lim a{color:var(--accent)}
+  /* the tab lights its part of the picture and dims the rest */
+  #wd-svg [data-p]{transition:opacity .35s}
+  #wd-svg[data-show] [data-p]{opacity:.3}
+  #wd-svg[data-show="order"] [data-p~="order"],
+  #wd-svg[data-show="hold"] [data-p~="hold"],
+  #wd-svg[data-show="signal"] [data-p~="signal"]{opacity:1}
+  @media (prefers-reduced-motion: reduce){
+    #wd-svg [data-p]{transition:none}
+    #wd-svg .wd-anim,.wd-anim{display:none}
+  }
   .deeper .cta-row{margin-top:16px}
 </style>
 <!-- seo:auto -->
@@ -199,13 +227,24 @@
       <div class="kicker">what it decides</div>
       <h2>Rules in one fixed order. No moods.</h2>
     </div>
-    <div class="bento">
-      <div class="card hover feature b-6 rv"><h3>Three verdicts, zero improvisation</h3><p>Every answer is allow, deny or hold. A decision you can replay in a test is a decision you can defend in an audit.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>Hold means a human</h3><p>A big spend becomes a hold, not a guess. A human grants it out of band and the agent resubmits with a signed token. Since v2.7.0 the approver can read the call's arguments before granting, sealed to the console's key, with secrets and personal data hidden by fixed rules. stack-single 1.10.0 and stack-k8s 1.13.0 turn it on.</p></div>
-      <div class="card hover feature b-6 rv"><h3>A hard ceiling that outranks approvals</h3><p>deny_above_usd is the rule no token can talk past. It is checked before the hold logic ever runs, so even a granted approval cannot authorize a spend over the ceiling.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>Attestation as a first-class gate</h3><p>deny_if_unattested demands a live attestation before an agent touches the sensitive rules.</p></div>
-      <div class="card hover feature b-6 rv"><h3>A spent error budget puts the agent to a person</h3><p>The quality plane writes an slo_burn event when an agent's error budget is exhausted or burning fast. A hold_if_signal rule on it holds that agent's calls for a person, model calls included, and a granted approval lets one call through. Both launchers set this up, so a spent budget waits for a person out of the box. On its own, wardryx stays off until WARDRYX_SIGNAL_EVENTS names the event file.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>A DPoP proof is accepted once</h3><p>With WARDRYX_DB set, the record of accepted proofs is shared by every instance on that database and survives a restart, so a replay at a second instance is refused. A record that cannot be asked refuses the decide instead of passing the proof.</p></div>
+    <div class="flight rv">
+      <div class="fl-head"><span class="dot"></span>one decision, in order<span class="n" id="wd-n">rule order</span></div>
+      <div class="fl-scroll"><svg id="wd-svg" data-show="order" viewBox="0 0 960 368" role="img" aria-labelledby="wd-svg-t"><title id="wd-svg-t">Wardryx decide: a request to /v1/decide meets the deny rules first, then the deny_above_usd ceiling, then the require_human_above_usd threshold, then hold_if_signal; the first deny answers 403, a hold ends the call with an approval id until a person decides and the agent returns with a token that works once, Verdryx's slo_burn file feeds the signal, and a request nothing objects to is allowed.</title><defs><marker id="wd-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="signal"><rect x="766" y="14" width="170" height="44" rx="10" fill="#141C27" stroke="#FF7AA2" stroke-width="1.2" stroke-dasharray="4 4"/><text x="851" y="31.5" fill="#FF7AA2" font-size="11.5" font-weight="700">verdryx slo_burn</text><text x="851" y="48.5" fill="#8A97A6" font-size="9.5">WARDRYX_SIGNAL_EVENTS</text></g><g data-p="signal"><path d="M851 58 L851 74" stroke="#FF7AA2" stroke-width="1.2" fill="none" marker-end="url(#wd-a)"/></g><g data-p="order"><rect x="24" y="76" width="130" height="64" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="89" y="95" fill="#93A8C4" font-size="12" font-weight="700">/v1/decide</text><text x="89" y="112" fill="#8A97A6" font-size="10.5">agent, tools</text><text x="89" y="129" fill="#8A97A6" font-size="10.5">cost, attestation</text></g><g data-p="order"><path d="M154 108 L170 108" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#wd-a)"/></g><g data-p="order"><rect x="172" y="76" width="200" height="64" rx="10" fill="#141C27" stroke="#2DD4BF" stroke-width="1.2"/><text x="272" y="95" fill="#2DD4BF" font-size="12" font-weight="700">deny rules</text><text x="272" y="112" fill="#8A97A6" font-size="10.5">tools, chain, models</text><text x="272" y="129" fill="#8A97A6" font-size="10.5">steps, domains, attest</text></g><g data-p="order"><path d="M372 108 L388 108" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#wd-a)"/></g><g data-p="order"><rect x="390" y="76" width="160" height="64" rx="10" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="470" y="95" fill="#FF574B" font-size="12" font-weight="700">deny_above_usd</text><text x="470" y="112" fill="#8A97A6" font-size="10.5">the ceiling</text><text x="470" y="129" fill="#8A97A6" font-size="10.5">no token outranks it</text></g><g data-p="order"><path d="M550 108 L566 108" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#wd-a)"/></g><g data-p="order hold"><rect x="568" y="76" width="180" height="64" rx="10" fill="#141C27" stroke="#F4B23E" stroke-width="1.2"/><text x="658" y="103.5" fill="#F4B23E" font-size="11" font-weight="700">require_human_above_usd</text><text x="658" y="120.5" fill="#8A97A6" font-size="10.5">hold, or a valid token</text></g><g data-p="order signal"><path d="M748 108 L764 108" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#wd-a)"/></g><g data-p="order signal"><rect x="766" y="76" width="170" height="64" rx="10" fill="#141C27" stroke="#FF7AA2" stroke-width="1.2"/><text x="851" y="103.5" fill="#FF7AA2" font-size="12" font-weight="700">hold_if_signal</text><text x="851" y="120.5" fill="#8A97A6" font-size="10.5">a signal can only hold</text></g><g data-p="order"><path d="M272 140 L272 292" stroke="#FF574B" stroke-width="1.2" fill="none" marker-end="url(#wd-a)"/></g><g data-p="order"><path d="M470 140 L470 162 L300 162 L300 292" stroke="#FF574B" stroke-width="1.2" fill="none" marker-end="url(#wd-a)"/></g><g data-p="order"><text x="264" y="182" fill="#8A97A6" font-size="10" text-anchor="end">first deny wins</text></g><g data-p="order hold"><path d="M585 140 L585 292" stroke="#F4B23E" stroke-width="1.2" fill="none" marker-end="url(#wd-a)"/></g><g data-p="signal"><path d="M800 140 L742 292" stroke="#F4B23E" stroke-width="1.2" fill="none" marker-end="url(#wd-a)"/></g><g data-p="order"><path d="M870 140 L870 292" stroke="#34D399" stroke-width="1.2" fill="none" marker-end="url(#wd-a)"/></g><g data-p="hold"><rect x="390" y="196" width="160" height="50" rx="10" fill="#161F2C" stroke="#E9EFF6" stroke-width="1.2"/><text x="470" y="216.5" fill="#E9EFF6" font-size="12" font-weight="700">a person decides</text><text x="470" y="233.5" fill="#8A97A6" font-size="10.5">reads sealed args</text></g><g data-p="hold"><path d="M568 322 L470 322 L470 248" stroke="#F4B23E" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#wd-a)"/></g><g data-p="hold"><path d="M530 196 L575 142" stroke="#E9EFF6" stroke-width="1.2" fill="none" marker-end="url(#wd-a)"/></g><g data-p="hold"><text x="522" y="182" fill="#8A97A6" font-size="10" text-anchor="end">token, once</text></g><g data-p="order"><rect x="172" y="294" width="200" height="56" rx="10" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="272" y="317.5" fill="#FF574B" font-size="12" font-weight="700">deny</text><text x="272" y="334.5" fill="#8A97A6" font-size="10.5">403, the rest skipped</text></g><g data-p="order hold signal"><rect x="568" y="294" width="180" height="56" rx="10" fill="#141C27" stroke="#F4B23E" stroke-width="1.2"/><text x="658" y="317.5" fill="#F4B23E" font-size="12" font-weight="700">hold</text><text x="658" y="334.5" fill="#8A97A6" font-size="10.5">an approval id, call ends</text></g><g data-p="order"><rect x="766" y="294" width="170" height="56" rx="10" fill="#141C27" stroke="#34D399" stroke-width="1.2"/><text x="851" y="317.5" fill="#34D399" font-size="12" font-weight="700">allow</text><text x="851" y="334.5" fill="#8A97A6" font-size="10.5">when nothing objects</text></g><g class="wd-anim"><g data-p="order"><circle r="3.6" fill="#93A8C4"><animateMotion path="M154 108 L170 108" dur="2.6s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="order"><circle r="3.6" fill="#FF574B"><animateMotion path="M272 140 L272 292" dur="2.6s" begin="-1.0s" repeatCount="indefinite"/></circle></g><g data-p="order"><circle r="3.6" fill="#34D399"><animateMotion path="M870 140 L870 292" dur="2.6s" begin="-1.8s" repeatCount="indefinite"/></circle></g><g data-p="hold"><circle r="3.6" fill="#F4B23E"><animateMotion path="M568 322 L470 322 L470 248" dur="3.0s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="hold"><circle r="3.6" fill="#E9EFF6"><animateMotion path="M530 196 L575 142" dur="3.0s" begin="-1.5s" repeatCount="indefinite"/></circle></g><g data-p="signal"><circle r="3.6" fill="#FF7AA2"><animateMotion path="M851 58 L851 74" dur="2.4s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="signal"><circle r="3.6" fill="#F4B23E"><animateMotion path="M800 140 L742 292" dur="2.4s" begin="-1.2s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="wd-svg" data-k="order">Rule order</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="wd-svg" data-k="hold">A hold</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="wd-svg" data-k="signal">A signal</button>
+      </div>
+      <div aria-live="polite">
+        <p class="fl-why" data-for="order">Rules run in one fixed order and the first deny wins, so deny_above_usd is checked before any hold and no approval can pass it. <a href="../wardryx-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="hold" hidden>A hold ends the call; a person decides out of band, reading the arguments sealed to the console's key, and the agent returns with a signed token that works once. <a href="../wardryx-guide.html#hold">In the guide</a></p>
+        <p class="fl-why" data-for="signal" hidden>With WARDRYX_SIGNAL_EVENTS set, a spent error budget from Verdryx becomes an slo_burn signal, which a hold_if_signal rule turns into a hold, never a deny. <a href="../wardryx-guide.html#signal">In the guide</a></p>
+      </div>
+    </div>
+    <div class="cta-row rv">
+      <a class="btn" href="../wardryx-guide.html#how-it-works">Every rule, in order</a>
+      <a class="btn" href="../wardryx-guide.html#hold">How a hold ends</a>
+      <a class="btn" href="../wardryx-guide.html#signal">The budget signal</a>
     </div>
   </div>
 </section>
@@ -219,12 +258,13 @@
         <h3 style="margin-top:12px">The desk every expensive idea stops at.</h3>
         <p style="margin-top:10px;color:var(--dim);font-size:14.5px;line-height:1.65">
           <a href="tokenfuse.html" data-dir="fwd" style="color:var(--amber)">TokenFuse</a>'s PEP hook asks Wardryx on every request and stamps the verdict on the response. Each decision lands on the bus as a source: wardryx event, which <a href="idryx.html" data-dir="fwd" style="color:var(--mint)">Idryx</a> correlates into the identity graph.</p>
+        <svg viewBox="0 0 600 112" role="img" aria-labelledby="wd-nb-t" style="display:block;width:100%;height:auto;margin-top:18px"><title id="wd-nb-t">TokenFuse's PEP hook asks Wardryx on every request and stamps the verdict on the response; each decision goes to the event bus as source: wardryx, and Idryx correlates it into the identity graph.</title><defs><marker id="wd-nb-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><rect x="6" y="30" width="134" height="52" rx="10" fill="#141C27" stroke="#F4B23E" stroke-width="1.2"/><text x="73" y="52" fill="#F4B23E" font-size="12" font-weight="700">TokenFuse PEP</text><text x="73" y="69" fill="#8A97A6" font-size="10.5">every request</text><path d="M140 46 L186 46" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#wd-nb-a)"/><path d="M188 68 L142 68" stroke="#2DD4BF" stroke-width="1.2" fill="none" marker-end="url(#wd-nb-a)"/><text x="164" y="22" fill="#8A97A6" font-size="10">asks</text><text x="164" y="98" fill="#8A97A6" font-size="10">verdict stamped</text><rect x="188" y="30" width="120" height="52" rx="10" fill="#141C27" stroke="#2DD4BF" stroke-width="1.2"/><text x="248" y="52" fill="#2DD4BF" font-size="12" font-weight="700">wardryx</text><text x="248" y="69" fill="#8A97A6" font-size="10.5">decides</text><path d="M308 56 L350 56" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#wd-nb-a)"/><rect x="352" y="30" width="128" height="52" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="416" y="52" fill="#93A8C4" font-size="12" font-weight="700">event bus</text><text x="416" y="69" fill="#8A97A6" font-size="10.5">source: wardryx</text><path d="M480 56 L506 56" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#wd-nb-a)"/><rect x="508" y="30" width="86" height="52" rx="10" fill="#141C27" stroke="#34D399" stroke-width="1.2"/><text x="551" y="52" fill="#34D399" font-size="12" font-weight="700">idryx</text><text x="551" y="69" fill="#8A97A6" font-size="10.5">graph</text><g class="wd-anim"><circle r="3.4" fill="#93A8C4"><animateMotion path="M140 46 L186 46" dur="2.6s" repeatCount="indefinite"/></circle><circle r="3.4" fill="#2DD4BF"><animateMotion path="M188 68 L142 68" dur="2.6s" begin="-1.3s" repeatCount="indefinite"/></circle><circle r="3.4" fill="#93A8C4"><animateMotion path="M308 56 L350 56" dur="2.6s" begin="-0.6s" repeatCount="indefinite"/></circle><circle r="3.4" fill="#34D399"><animateMotion path="M480 56 L506 56" dur="2.6s" begin="-1.9s" repeatCount="indefinite"/></circle></g></g></svg>
       </div>
       <div class="card b-4 rv d1" id="run">
         <div class="kicker" style="--accent:var(--mint)">try it now</div>
         <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
           <div class="install" style="border:none;padding:0;background:transparent"><span class="cmd"><b>make serve</b></span></div>
-          <p class="dim" style="font-size:13px;line-height:1.6"><span class="mono" style="font-size:12px">make serve</span> boots it on <span class="mono" style="font-size:12px">127.0.0.1:8090</span> with an in-memory store; <span class="mono" style="font-size:12px">wardryx serve</span> with no address listens on <span class="mono" style="font-size:12px">:8090</span>, every interface. <span class="mono" style="font-size:12px">serve</span> refuses to start without <span class="mono" style="font-size:12px">WARDRYX_KEYS</span>, so <span class="mono" style="font-size:12px">make serve</span> opts in to the dev key on loopback only: allow-all until you load a policy, and it logs that choice. Then dry-run a policy offline against a directory of Agent Passports:</p>
+          <p class="dim" style="font-size:13px;line-height:1.6"><span class="mono" style="font-size:12px">make serve</span> boots it on <span class="mono" style="font-size:12px">127.0.0.1:8090</span> with the dev key on loopback, allowing all until you load a policy. Then dry-run a policy against a directory of Agent Passports:</p>
           <div class="install" style="border:none;padding:0;background:transparent"><span class="cmd"><b>./bin/wardryx</b> check ./passports ./policies/finance.yaml</span></div>
           <a class="btn" href="../wardryx-guide.html#run">Full install and configuration in the guide <span class="mono">&#8594;</span></a>
         </div>
@@ -251,13 +291,10 @@
       <div class="kicker">limits</div>
       <h2>What is open by default, and what is not proven yet.</h2>
     </div>
-    <div class="card limits rv">
-      <ul>
-        <li>When the decision point is unreachable, the TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing. The unset default under enforce became closed on 2026-10-17. All three launchers set the failure mode to closed on purpose.</li>
-        <li>With no shared database, an approval token's single-use guarantee is per process, and the server says so at startup.</li>
-        <li>With no database, the record of accepted DPoP proofs is per process too, and serve says so at start.</li>
-        <li>The typed risk signal from Typryx is an opt-in the launchers leave off by default.</li>
-      </ul>
+        <div class="bento">
+      <div class="card feature lim b-4 rv"><h3>When it cannot be reached</h3><p>Unset, the TokenFuse gateway closes under enforce and stays open in shadow mode; all three launchers set it closed. <a href="../wardryx-guide.html#limits">In the guide</a></p></div>
+      <div class="card feature lim b-4 rv d1"><h3>Once, per process</h3><p>With no shared database, an approval token is single-use per process and so is the record of accepted DPoP proofs, and serve says so at start. <a href="../wardryx-guide.html#limits">In the guide</a></p></div>
+      <div class="card feature lim b-4 rv d2"><h3>The Typryx signal is opt-in</h3><p>The typed risk signal from Typryx is an opt-in the launchers leave off by default. <a href="../wardryx-guide.html#limits">In the guide</a></p></div>
     </div>
   </div>
 </section>
@@ -349,6 +386,22 @@
   </div>
 </footer>
 
+<script>
+/* how: the tabs light their part of the picture */
+(function(){
+  const svg=document.getElementById("wd-svg"); if(!svg) return;
+  const tabs=[...document.querySelectorAll('#how .fl-tab')];
+  const whys=[...document.querySelectorAll('#how .fl-why')];
+  const n=document.getElementById("wd-n");
+  function show(k){
+    svg.setAttribute("data-show",k);
+    tabs.forEach(t=>t.setAttribute("aria-pressed",String(t.dataset.k===k)));
+    whys.forEach(p=>{p.hidden=p.dataset.for!==k;});
+    const t=tabs.find(t=>t.dataset.k===k); if(n&&t) n.textContent=t.textContent.toLowerCase();
+  }
+  tabs.forEach(t=>t.addEventListener("click",()=>show(t.dataset.k)));
+})();
+</script>
 <script src="../assets/site.js?v=e13"></script>
 <script src="../assets/sheet.js?v=e06"></script>
 <script src="../assets/sim.js?v=e14"></script>

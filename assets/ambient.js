@@ -1281,7 +1281,9 @@ function deepField(){
       }
     }
     /* a node fires every couple of seconds: expanding activation ring */
-    const fireSeq=Math.floor(t/1.9), fp=(t%1.9)/1.9;
+    /* t can start a hair below zero on the first frame, and a negative
+       remainder made the ring's radius negative: IndexSizeError. */
+    const fireSeq=Math.floor(t/1.9), fp=(((t%1.9)+1.9)%1.9)/1.9;
     const fi=Math.floor(rng(fireSeq*13+5)()*P.length);
     const F=P[fi];
     if(F){

@@ -8,7 +8,7 @@ Typryx takes a question from a versioned template and returns a typed answer rea
 
 ## Every real judgement from one run, replayed in the same order.
 
-Not an illustration: these are the 60 real arithmetic judgements, qwen2.5:7b run locally on Ollama, wording v2, in the order they were asked. Watch how often "confident" and "right" turn out to be different things.
+The 60 real arithmetic judgements of qwen2.5:7b on Ollama, in the order asked: watch how often "confident" and "right" differ. [In the guide](https://it-rat.com/typryx-guide.html#measured)
 
 ## The path of one ask.
 
@@ -42,9 +42,9 @@ typryx does not train, fine-tune, host or ship a model.
 
 ### Toggle the extra fields. The egress never changes.
 
-Only `task` and `final_answer` are in the template's `fields`, so on a template ask they are the only two that reach the backend. The one exception is a freeform question, which sends the whole state when TYPRYX_ALLOW_FREEFORM=1 is set (off by default).
+On a template ask only the fields the template names reach the backend. [In the guide](https://it-rat.com/typryx-guide.html#egress)
 
-Measured (undated, see the typryx README): a five-field state carrying `user_email` and, separately, `customer_iban`, neither ever reached the backend or the record.
+Measured: neither `user_email` nor `customer_iban` in a five-field state reached the backend or the record.
 
 ## The one-token shortcut is not always faster.
 
@@ -66,23 +66,19 @@ Click or focus a node above for what typryx gives it, which template, and what h
 
 ## A probability, never an enforcement decision.
 
-### Never invents an answer
+An error, a timeout, malformed probabilities or a cap hit leaves the answer unanswered, with a named reason. [In the guide](https://it-rat.com/typryx-guide.html#how-it-works)
 
-A backend error, a timeout, missing or malformed probabilities, a cap hit: the answer is unanswered with a named reason.
+Wardryx's `hold_if_signal` rule may turn a signal into a hold, which a person releases; nothing turns a probability into a deny. [In the guide](https://it-rat.com/typryx-guide.html#how-it-works)
 
-### No deny from a probability
+A later outcome is scored against the template version the answer was asked under, never against today's live template. [In the guide](https://it-rat.com/typryx-guide.html#how-it-works)
 
-Wardryx's `hold_if_signal` rule may turn a signal into a hold, which a person releases; nothing turns a probability into a deny.
+## Limits, in short.
 
-### A later truth, scored honestly
+Not yet: a model tuned from an export and measured against the one it replaces. [In the guide](https://it-rat.com/typryx-guide.html#limits)
 
-An outcome posted later is scored against the exact template version an answer was asked under, never against whatever the live template says today.
+Not yet: the Wardryx signal with a real backend behind it, and the deeper consumers. [In the guide](https://it-rat.com/typryx-guide.html#limits)
 
-## What is not proven yet.
-
-- Not yet: a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers.
-
-- OpenAI's current models refuse the default request; since v0.6.0 three more variables reach them.
+OpenAI's current models refuse the default request; since v0.6.0 three more variables reach them. [In the guide](https://it-rat.com/typryx-guide.html#limits)
 
 ## Optional, and it changes nothing when it is absent.
 

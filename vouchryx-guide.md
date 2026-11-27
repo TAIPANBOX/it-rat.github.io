@@ -46,6 +46,10 @@ An RFC 8693 token exchange that mints a short-lived token carrying nested `act`,
 
 The Agent Passport spec disclaims two things on purpose. It is not an authentication protocol: the Passport names an agent, it does not prove possession. And it is not a freshness claim: the delegation chain records who acted on behalf of whom, not when. So the estate held the record of a delegation and pointed at a mechanism that did not exist. This is that mechanism, and it does not replace `on_behalf_of`; it makes it provable and lets it be ended.
 
+### Mint, prove, verify, end
+
+Two signed tokens and a proof go in, a short-lived one comes out, and the enforcement point verifies it without asking anybody. The dotted path on the room's loop is the one that matters in an incident: a revocation reaches the poller and the same token stops working before it expires.
+
 ### Proof of possession, per request
 
 The minted token carries `cnf.jkt`, the thumbprint of the caller's own key. Spending it needs a fresh DPoP proof from that same key on every call, so a token copied out of a log buys nothing.

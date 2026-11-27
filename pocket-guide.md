@@ -124,6 +124,8 @@ The plane it reads is open today: [stand up the stack's live services locally in
 
 ### Everything the room says is not done
 
+- Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet.
+
 - That is a long way from shipped: no production hardening pass, no security review, no App Store. The effort goes to the web console, and this moves when there is time for it.
 
 - The relay it was built against, genaryx-relay, was removed from genaryx on 2026-07-28, so today there is nothing to pair with and none of this runs end to end. No relay runs today, so nothing can be paired yet.

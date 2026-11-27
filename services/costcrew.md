@@ -10,27 +10,17 @@ Analysts with named missions, budgets and owners take the cloud, SaaS and AI bil
 
 Every frame below is a fresh installation on its own seeded estate. The figures are the fixture's, and the console says on each page which of its numbers are real money and which the estate generated.
 
-## A finding becomes a task, a task becomes a draft, a person stamps it.
-
-### The finding names its rule
-
-The detector is two-sided and ranks by money. Every anomaly carries the rule that judged it.
-
-### The task carries a guard
-
-An analyst gets the task with a mandate and a spend guard on the row. The guard reports an overrun; stopping the spend is the gateway's job.
-
-### Only a person publishes
-
-Work comes back as a draft. A person posts it or returns it, and the return shows on the analyst's card. After that the supervisor applies a posted option itself only up to USD 2,500 per anomaly; everything above, and every closed period, budget or allocation rule, waits for the owner.
-
-### Found, never saved
-
-Nothing is saved until somebody acts. A closed period freezes, and leaves as a general ledger CSV.
-
 ## The path a number takes before anybody is charged for it.
 
 What no screenshot shows is the line itself, and the gate in the middle of it: an agent can carry a finding all the way to the stamp and no further.
+
+## A finding becomes a task, a task becomes a draft, a person stamps it.
+
+The guard reports an overrun on the analyst's card and blocks nothing; stopping the spend is the TokenFuse gateway's job. [In the guide](https://it-rat.com/costcrew-guide.html#how-it-works)
+
+Work comes back as a draft, and a person posts it or returns it, and the return shows on the analyst's card. [In the guide](https://it-rat.com/costcrew-guide.html#how-it-works)
+
+The supervisor applies a posted option itself only up to USD 2,500 per anomaly; everything above, and every closed period, budget or allocation rule, waits for the owner. [In the guide](https://it-rat.com/costcrew-guide.html#how-it-works)
 
 ## Genaryx governs agents. This is a crew of agents that works your bill.
 
@@ -40,13 +30,13 @@ CostCrew's analysts are agents like any other, so [Genaryx](https://it-rat.com/g
 
 First account created at /signup becomes the admin of that installation, so make one before you hand anybody the address.
 
-## What is not proven yet.
+## Limits, in short.
 
-- Release gates through v0.10.2 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
+Release gates through v0.11.0 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open. [In the guide](https://it-rat.com/costcrew-guide.html#limits)
 
-- The AWS reader was proven on a real export, the GCP one only against a hand-written file.
+The AWS reader was proven on a real export, the GCP one only against a hand-written file. [In the guide](https://it-rat.com/costcrew-guide.html#limits)
 
-- Five of the eighteen connectors are specified and not written.
+Five of the eighteen connectors are specified and not written. [In the guide](https://it-rat.com/costcrew-guide.html#limits)
 
 ### The CostCrew guide
 

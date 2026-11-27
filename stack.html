@@ -138,7 +138,7 @@
     <div class="sec-head rv">
       <div class="kicker">how it wires</div>
       <h2>One passport, one event bus, four planes of control.</h2>
-      <p class="lede">Every request carries an Agent Passport. An agent has two ways out, not one: a call to a model, and a fetch of something on the internet, and each has a gate standing in it. Below, memory, identity, crypto, quality, rehearsal, alerting, the record and the key witness read the same NDJSON stream off-path, and one of them feeds back in: Wardryx reads Verdryx's slo_burn events and can hold an agent whose error budget is spent. Nothing here is a dashboard after the fact: the gates enforce in-line, in seconds.</p>
+      <p class="lede">Every request carries an Agent Passport, and both ways out of an agent, a model call and an internet fetch, pass a gate in-line. The rest read one event stream off-path. <a href="stack-guide.html#wiring" style="color:var(--fg);border-bottom:1px solid var(--line-2)">How it wires, in full</a></p>
     </div>
     <div class="diagram rv">
       <svg viewBox="0 0 960 460" role="img" aria-label="Stack wiring diagram: an agent with two outbound lanes, the model lane gated by TokenFuse and the web lane by Scopyx, both asking Wardryx per action, the web lane optionally through the TokenFuse MCP broker, both emitting to one event bus that eight services read, and Wardryx reading Verdryx slo_burn events back from it">

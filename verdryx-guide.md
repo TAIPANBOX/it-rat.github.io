@@ -12,6 +12,8 @@ The [Verdryx room](https://it-rat.com/services/verdryx.html) keeps the sixty-sec
 
 - [What it grades](https://it-rat.com/verdryx-guide.html#grades)
 
+- [Error budgets](https://it-rat.com/verdryx-guide.html#error-budgets)
+
 - [Cost per outcome](https://it-rat.com/verdryx-guide.html#cost-per-outcome)
 
 - [The six graders](https://it-rat.com/verdryx-guide.html#graders)
@@ -28,7 +30,7 @@ The [Verdryx room](https://it-rat.com/services/verdryx.html) keeps the sixty-sec
 
 ## Verdryx at a glance.
 
-- **Version:** 0.2.0 · Python 3.11+.
+- **Version:** v0.4.0 · Python 3.11+.
 
 - **Tests:** fully offline suite.
 
@@ -91,6 +93,14 @@ All of it is deterministic: no model, no network and no new event type on the bu
 ### Defensive by design
 
 Grades an operator's own agents against an eval set or a production outcome tag. The README puts it plainly: it “never manipulates outputs, never crafts adversarial prompts, and never attacks anything.”
+
+## Error budgets, measured and never enforced
+
+verdryx slo reads the same traces as four ratios of good runs over eligible runs, each with the budget left and the rate it is going. It sends an slo_burn event only when the confidence interval sits below the objective, and it enforces nothing.
+
+### An exhausted budget has two readers
+
+[Wardryx](https://it-rat.com/services/wardryx.html) turns a spent budget into a hold for a person, in both launchers, which measure every six hours. [Heraldyx](https://it-rat.com/services/heraldyx.html) mails an slo_burn at once, in words that say nothing was enforced.
 
 ## How a case gets a price, including the calls nobody tagged
 

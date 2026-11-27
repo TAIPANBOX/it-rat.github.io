@@ -73,7 +73,7 @@
   .fl-out .v.go{color:#7BE0A8;border-color:#7BE0A833;background:#7BE0A812}
   .fl-out .v.stop{color:#FF8A8A;border-color:#FF8A8A33;background:#FF8A8A12}
   .fl-why{margin:0;padding:13px 15px;border-top:1px solid var(--line);
-    color:var(--faint);font-size:12px;line-height:1.65;min-height:5.4em}
+    color:var(--faint);font-size:12px;line-height:1.65;min-height:3.6em}
   @media(max-width:640px){.fl-why{min-height:0}.fl-out .v{margin-left:0}}
 
   /* Every gate is one class: untouched, passed, refused, or never reached.
@@ -129,9 +129,10 @@
   /* commands are code, so a reader and a word count both see them as code */
   .install code{font:inherit}
   /* what is not proven stays on the page (invariant 5); the full list is in the guide */
-  .limits ul{margin:0;padding-left:18px;color:var(--dim);font-size:14.5px;line-height:1.65;max-width:80ch}
-  .limits li+li{margin-top:9px}
-  .limits li::marker{color:var(--accent)}
+  /* limits stay on the room as three short blocks (invariant 5); the full list is in the guide */
+  .lim p{margin:10px 0 0;color:var(--dim);font-size:14px;line-height:1.6}
+  .lim a{display:inline-block;margin-top:10px;color:var(--accent);font-size:13px}
+  @media(max-width:860px){.lim{grid-column:span 12}}
   .deeper .cta-row{margin-top:16px}
 </style>
 <!-- seo:auto -->
@@ -302,8 +303,9 @@
         <span class="v go" id="sx-verdict">fetched</span>
       </div>
 
-      <p class="fl-why" id="sx-why">The name is resolved and your policy plane is asked before any verdict, so the cheapest refusal still costs one lookup and one policy question. What a refusal prevents is the fetch. A scheme or a host the rules refuse costs nothing, so those refusals happen while the request is still inside your own process. The site's own preference is asked last, which is the ordering that matters: a destination your policy refuses is never contacted at all, not even to read its <span class="mono">robots.txt</span>.</p>
+      <p class="fl-why" id="sx-why">The name is resolved and your policy asked before any verdict, so even the cheapest refusal costs one lookup and one policy question. The site's own <span class="mono">robots.txt</span> is asked last, so a destination your policy refuses is never contacted at all.</p>
     </div>
+    <div class="cta-row rv"><a class="btn" href="../scopyx-guide.html#how-it-works">Each run explained, in the guide</a></div>
   </div>
 </section>
 
@@ -316,10 +318,11 @@
     </div>
     <div class="bento">
       <div class="card hover feature b-6 rv"><h3>And the socket goes where the decision looked</h3><p>The checked addresses are pinned and the transport refuses to dial a host no decision covered, which makes it the floor under everything above it.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>Every hop is decided again</h3><p>The fetcher it ships with hands a redirect back instead of following it, and Scopyx follows it one hop at a time, with all five gates run again on the new destination. The target's name is looked up at the moment of the hop, never from anything remembered.</p></div>
+      <div class="card hover feature b-6 rv d1"><h3>Every hop is decided again</h3><p>The fetcher hands each redirect back, and all five gates run again on the new destination, its name looked up afresh.</p></div>
       <div class="card hover feature b-6 rv"><h3>Governed at the navigation is not governed per request</h3><p>Every result says which of the two guarantees was in force, so a partial answer is visible as one rather than read as a complete one.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>Chained, so a deletion shows</h3><p>Every line names its predecessor, in the same envelope the rest of the stack speaks. No identity, no record, and the skip is counted.</p></div>
+      <div class="card hover feature b-6 rv d1"><h3>Chained, so a deletion shows</h3><p>Every line names its predecessor, so a deleted line shows, and a fetch with no identity is not written but counted.</p></div>
     </div>
+    <div class="cta-row rv"><a class="btn" href="../scopyx-guide.html#redirects">Redirects and the pinned socket, in the guide</a><a class="btn" href="../scopyx-guide.html#record">What the record keeps</a></div>
   </div>
 </section>
 
@@ -433,8 +436,9 @@
         <span class="v stop" id="mx-verdict">never reached</span>
       </div>
 
-      <p class="fl-why" id="mx-why">Two mechanisms, and they are not the same kind of thing. The proxy is the floor: the browser is launched with no route to the network except it, so a refused destination is a socket that is never opened, and no flag or version of somebody else's browser can talk it out of that. CDP interception is the accountant: it sees the full URL of every request, including inside TLS, which the proxy cannot, so it produces the counts and the per-URL decisions. Where the two disagree the connection wins, because the connection is what carries bytes.</p>
+      <p class="fl-why" id="mx-why">The proxy is the floor: the browser has no route except it, so a refused destination is a socket never opened. CDP interception is the accountant: it sees every full URL, even inside TLS, and produces the counts.</p>
     </div>
+    <div class="cta-row rv"><a class="btn" href="../scopyx-guide.html#mechanisms">Each switch state, in the guide</a></div>
   </div>
 </section>
 
@@ -519,11 +523,9 @@
       <div class="kicker">the boundaries</div>
       <h2>What it will not do, stated rather than discovered.</h2>
     </div>
-    <div class="card limits rv">
-      <ul>
-        <li>No stealth, no CAPTCHA solving, no TLS-fingerprint matching, no bulk crawl, no image harvesting, and <span class="mono">robots.txt</span> is honoured.</li>
-        <li>A vendor API needs an adapter in front of it, and this repository ships none.</li>
-      </ul>
+    <div class="bento">
+      <div class="card b-6 lim rv"><h3>No stealth, no crawl</h3><p>No stealth, no CAPTCHA solving, no TLS-fingerprint matching, no bulk crawl, no image harvesting, and <span class="mono">robots.txt</span> is honoured.</p><a href="../scopyx-guide.html#limits">In the guide</a></div>
+      <div class="card b-6 lim rv d1"><h3>No vendor adapter</h3><p>A vendor API needs an adapter in front of it, and this repository ships none.</p><a href="../scopyx-guide.html#limits">In the guide</a></div>
     </div>
   </div>
 </section>
@@ -630,21 +632,21 @@ const G=[210,322,434,546,658], AGENT=136, WEB=786, ENTRY=136;
 
 const RUNS=[
   { url:"https://example.com/", verdict:"fetched", cls:"go", event:"writes web_fetch",
-    why:"The name is resolved and your policy plane is asked before any verdict, so the cheapest refusal still costs one lookup and one policy question. What a refusal prevents is the fetch. A scheme or a host the rules refuse costs nothing, so those refusals happen while the request is still inside your own process. The site's own preference is asked last, which is the ordering that matters: a destination your policy refuses is never contacted at all, not even to read its robots.txt.",
+    why:"The name is resolved and your policy asked before any verdict, so even the cheapest refusal costs one lookup and one policy question. The site's own robots.txt is asked last, so a destination your policy refuses is never contacted at all.",
     steps:[["g",0],["g",1],["g",2],["g",3],["g",4],["m",WEB]] },
 
   { url:"http://169.254.169.254/latest/meta-data/", verdict:"deny_address", cls:"stop", event:"writes web_blocked",
-    why:"The fixture policy said allow, and it was refused anyway. Policy languages talk about domains an agent may reach and none of them was written with the cloud metadata endpoint in mind, so this gate sits before the policy gate rather than after it. The policy plane was asked, and it answered allow; the address rule decides first, so the policy verdict and the robots.txt gate never run.",
+    why:"The fixture policy said allow, and the address rule refused it anyway, because it decides before the policy gate. The policy verdict and the robots.txt gate never run.",
     steps:[["g",0],["g",1],["gx",2]] },
 
   { url:"https://status.example/notice", url2:"https://exfil.example/collect",
     verdict:"deny_policy, on hop 1", cls:"stop", event:"writes web_blocked",
-    why:"The first destination was allowed. The second was named by the first, which is the oldest allowlist bypass there is and is invisible to any check that reads only the URL the caller passed. The fetcher does not follow a redirect: the hop comes back here, the new name is resolved from scratch, and all five gates run again on a destination nobody asked for.",
+    why:"The second destination was named by the first, the oldest allowlist bypass there is. The fetcher hands the hop back, and all five gates run again on it.",
     steps:[["g",0],["g",1],["g",2],["g",3],["g",4],["m",WEB],["arc"],["back"],
            ["url",1],["g",0],["g",1],["g",2],["gx",3]] },
 
   { url:"https://docs.example/private/draft", verdict:"deny_robots", cls:"stop", event:"writes web_blocked",
-    why:"Your policy allowed this one. The site said no, and because the site is asked after you are, its answer can only narrow what you permitted and never widen it. A robots.txt that cannot be read allows the fetch and records that it could not be read, which is deliberately not the crawler posture: a stranger's outage should not stop your own governed work, and could-not-look is a state to report rather than an answer.",
+    why:"Your policy allowed this one and the site said no; asked after you, the site can only narrow what you permitted. A robots.txt that cannot be read allows the fetch and records that it could not be read.",
     steps:[["g",0],["g",1],["g",2],["g",3],["gx",4]] }
 ];
 
@@ -742,19 +744,19 @@ const STATES={
   "1,1":{state:"both on", where:"refused twice over", verdict:"never reached", stop:true,
     title:"tracker.example: refused", why2:"the proxy did not open the socket",
     saw:"saw nothing",
-    text:"Two mechanisms, and they are not the same kind of thing. The proxy is the floor: the browser has no route to the network except it, so a refused destination is a socket that is never opened, and no flag or version of somebody else's browser can talk it out of that. CDP interception is the accountant: it sees the full URL of every request, including inside TLS, which the proxy cannot, so it produces the counts and the per-URL decisions."},
+    text:"The proxy is the floor: the browser has no route except it, so a refused destination is a socket never opened. CDP interception is the accountant: it sees every full URL, even inside TLS, and produces the counts."},
   "0,1":{state:"the floor off", where:"refused by the accountant", verdict:"never reached", stop:true,
     title:"tracker.example: refused", why2:["CDP failed the request","before it was sent"],
     saw:"saw nothing",
-    text:"With the proxy decision removed, the request is still refused, because CDP interception decided it by its full URL. The refused server is still never reached. What is lost here is not the refusal but the guarantee: the accountant is the browser's own cooperation, and a bug, a flag or a version can withdraw it."},
+    text:"With the proxy off, CDP still refuses the request by its full URL and the server is never reached. What is lost is the guarantee, since the accountant rests on the browser's own cooperation."},
   "1,0":{state:"the accountant off", where:"refused by the floor", verdict:"never reached", stop:true,
     title:"tracker.example: refused", why2:"the proxy did not open the socket",
     saw:"saw nothing",
-    text:"With CDP blocking removed, the request is still refused, because the connection never opens. This is the mutation that matters most: it is the one that proves the guarantee does not rest on the browser telling the truth. What is lost is precision, not enforcement, since for https the proxy sees a host and not a path."},
+    text:"With CDP off, the connection never opens, which proves the guarantee does not rest on the browser telling the truth. What is lost is precision: for https the proxy sees a host, not a path."},
   "0,0":{state:"both off", where:"nothing decided it", verdict:"REACHED", stop:false,
     title:"tracker.example: fetched", why2:["nothing stood between","the page and its server"],
     saw:"saw one request, from your agent's IP",
-    text:"Both removed, and the pixel is fetched. The refused server is reached once and the test goes red: the case asserts on the SERVER that would have served it, not on what the result says. An outcome assertion would pass equally well if the request happened and the answer were discarded, which is the difference between governing egress and filtering a report about it."}
+    text:"Both removed, the pixel is fetched and the test goes red. It asserts on the server that would have served it, not on what the result says."}
 };
 
 function render(){
@@ -811,7 +813,7 @@ const tailWhy=document.getElementById("ur-tailwhy"), why=document.getElementById
 const tabs=[...document.getElementById("ur-box").querySelectorAll(".ur-t")];
 
 const OFF="The path and the query string are not dropped later or redacted later. The field is never built, so there is no window in which the event holds them and no code path that could log one by accident.";
-const ON="Turning retention on is a decision, and the field it writes is called url_unprotected rather than url. There is no subject-keyed payload plane here, so a field called url would imply one and a reader would assume a protection that does not exist. The name is the warning, and it travels with the data.";
+const ON="Turning retention on is a decision, and the field it writes is called url_unprotected rather than url. With no subject-keyed payload plane here, the name is the warning, and it travels with the data.";
 
 function render(on){
   extra.setAttribute("opacity", on?"1":"0");

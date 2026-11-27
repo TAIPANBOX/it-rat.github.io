@@ -72,6 +72,16 @@ FIGURE = re.compile(
 # a version matches none of the nouns above.
 VERSION = re.compile(r"\bv\d+\.\d+\.\d+\b")
 
+# And a version written WITHOUT the v, where a reader takes it as the current
+# release: a value in the hero fact table, or prose saying "version 1.2.3".
+# On 2026-11-27 the verdryx room's hero read "version = 0.2.0" against a
+# released v0.4.0, and this check printed OK, because VERSION wants the v.
+# Bare digits elsewhere (an IP address, "Python 3.11") are not swept: the
+# pattern is anchored to the two places a stale release hides.
+BARE_VERSION = re.compile(
+    r'(?:<span class="v">[^<]*?|\bversion\s+)(?<![v\d.])(\d+\.\d+\.\d+)\b'
+)
+
 
 def outside_scripts(text):
     """Page copy with <script> blocks removed.
@@ -177,7 +187,8 @@ pages = sorted(pathlib.Path("services").glob("*.html"))
 pages += sorted(pathlib.Path("services").glob("*.md"))
 for page in pages:
     text = page.read_text().replace("&#183;", "·")
-    sweeps = [(FIGURE, text), (VERSION, outside_scripts(text))]
+    sweeps = [(FIGURE, text), (VERSION, outside_scripts(text)),
+              (BARE_VERSION, outside_scripts(text))]
     if page.suffix == ".html":
         sweeps.append((LD_FIGURE, structured_data(text)))
     for pattern, subject in sweeps:

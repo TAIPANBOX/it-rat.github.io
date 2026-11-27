@@ -237,6 +237,17 @@ run_case "service-numbers: an unowned figure spelled out inside JSON-LD" fail \
      "Twenty-seven deterministic detectors in four families, plus Twelve checks,")')" \
 	"nothing in numbers.json owns it"
 
+# A version written without its leading v. On 2026-11-27 the verdryx room's
+# hero said "version = 0.2.0" while verdryx had released v0.4.0, and the gate
+# printed OK, because VERSION wanted the v and nothing in numbers.json named
+# the figure. The fact table is the line a stranger reads first.
+run_case "service-numbers: a bare version in a hero fact row that nothing owns" fail \
+	'./scripts/service-numbers.sh' \
+	"$(py 'edit("services/qryx.html",
+     "<span class=\"v\">latest &#183; prebuilt binaries</span>",
+     "<span class=\"v\">1.9.0 &#183; prebuilt binaries</span>")')" \
+	"nothing in numbers.json owns it"
+
 
 # Invariant 7. This case could not exist until 2026-08-10: the gate was red on
 # a clean tree here (the published demo was older than `apps/web`), so any case
@@ -523,6 +534,17 @@ s = open("index.html").read()
 m = re.search(r"</body>", s)
 assert m, "index.html has no closing body tag"
 open("index.html","w").write(s.replace(m.group(0), "<p>Since 2026, on version 2.1, this sentence carries digits and owns nothing.</p></body>", 1))')"
+
+# A page under a dot directory is never published: the Pages upload drops
+# every path starting with a dot. On 2026-11-27 a stray git worktree under
+# .claude/worktrees put 56 of its pages into sitemap.xml through tools/sitemap.py,
+# and this gate then demanded sitemap entries for them. Neither may treat one as
+# a page of the site.
+run_case "generated-blocks: a copy of a page under a dot directory" pass \
+	'./scripts/generated-blocks.sh' \
+	"$(py 'import os, shutil
+os.makedirs(".stray-worktree", exist_ok=True)
+shutil.copy("agent-identity.html", ".stray-worktree/agent-identity.html")')"
 
 # The footer's SHAPE is what this gate owns. Prose arriving on a page is not a
 # shape, and a gate that failed on it would be failing on ordinary writing.

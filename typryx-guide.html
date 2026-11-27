@@ -145,7 +145,7 @@
       </table>
     </div>
     <div class="prose rv">
-      <h3>What leaves the box</h3>
+      <h3 id="egress">What leaves the box</h3>
       <p>Only <span class="mono" style="font-size:12.5px">task</span> and <span class="mono" style="font-size:12.5px">final_answer</span> are in the template's <span class="mono" style="font-size:12.5px">fields</span>, so on a template ask they are the only two that reach the backend, whatever else sits in the state. The type a backend receives for a template ask is constructible only inside the template package, so a map or raw state cannot reach one on that path, even by an implementation mistake. The one exception is a freeform question, which sends the whole state when TYPRYX_ALLOW_FREEFORM=1 is set (off by default).</p>
       <p>Measured (undated, see the typryx README): a five-field state carrying <span class="mono" style="font-size:12.5px">user_email</span> and, separately, <span class="mono" style="font-size:12.5px">customer_iban</span>, neither ever reached the backend or the record. Through Claude Code over MCP, an extra <span class="mono" style="font-size:12.5px">api_token</span> field never reached the record either (<span class="mono" style="font-size:12.5px">held_back_fields: 1</span>).</p>
     </div>
