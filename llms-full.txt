@@ -1561,7 +1561,7 @@ Not a fixture directory: an actual filesystem's worth of ELF binaries, a real co
 
 ### Proven on a five-node cluster, then attacked the same night
 
-Every plane answered, the shared event log bound across nodes, and an agent frozen from the browser stayed frozen after the policy plane's pod was restarted. Then the same cluster was attacked, and four real holes came out: a pod that labelled itself as the console deleted a freeze using a literal development bearer while the console still displayed the agent as frozen, secrets were readable in plaintext straight out of the datastore, the kubelet API was open to the internet on every node, and the gateway never asked the policy plane anything.
+Every plane answered, the shared event log bound across nodes, and an agent frozen from the browser stayed frozen after the policy plane's pod was restarted. Then the same cluster was attacked, and four real holes came out: a pod that labelled itself as the console deleted a freeze using a literal development bearer while the console still displayed the agent as frozen, secrets were readable in plaintext straight out of the datastore, the kubelet API was open to the internet on every node, and the gateway never asked the policy plane anything. On 2026-11-27 the current release, stack-k8s v1.19.0, went up again on five AWS nodes with every image pulled by digest: 28 security tests passed with none failed, and on the newest Ubuntu 26.04.1 image `verify.sh` passed 21 checks with none failed. A clean stack-single v1.15.0 beside it verified its signatures and installed in 5 minutes 12 seconds.
 
 ### A box behind a home router governed two clouds at once, then took sixteen failures
 
@@ -2089,6 +2089,10 @@ The [home page](https://it-rat.com/index.html#proof) shows eight figures from th
 
 - [Where the rest is recorded](https://it-rat.com/stack-guide.html#elsewhere)
 
+- [How it wires](https://it-rat.com/stack-guide.html#wiring)
+
+- [Why all of it is open](https://it-rat.com/stack-guide.html#open)
+
 - [Run it yourself](https://it-rat.com/stack-guide.html#run)
 
 ## Validated on real infrastructure. Then torn down.
@@ -2134,6 +2138,20 @@ The full ledger, every number and every bug, is public in each repository's `VAL
 - **On premises.** The 2026-09-17 run on a small box behind a home router, governing agents in AWS and GCP and then taking sixteen injected failures, is in [what is proven](https://it-rat.com/what-is-proven.html), under "Seven claims and what each one stops short of" and "Sixteen ways to break it, and what each one did".
 
 - **What we withdrew.** The throughput cliff past 64 concurrent callers that turned out to be a shared-vCPU instance is in [what is proven](https://it-rat.com/what-is-proven.html), under "Three things we published and had to withdraw", and in [what runs where](https://it-rat.com/what-runs-where.html).
+
+## One passport, one event bus, four planes of control.
+
+Every request carries an Agent Passport. An agent has two ways out, not one: a call to a model, and a fetch of something on the internet, and each has a gate standing in it. Below, memory, identity, crypto, quality, rehearsal, alerting, the record and the key witness read the same NDJSON stream off-path, and one of them feeds back in: Wardryx reads Verdryx's slo_burn events and can hold an agent whose error budget is spent. Nothing here is a dashboard after the fact: the gates enforce in-line, in seconds.
+
+## Governance you cannot read is governance you have to trust.
+
+Every part of this stack is Apache-2.0, the console included, and that is not a marketing posture. These services decide what an AI agent may do: what it may spend, which tools it may call, whose authority it acts under, and what evidence exists afterwards. A control whose entire job is to remove the need for trust cannot itself be a thing you take on trust.
+
+Closed governance software asks you to believe a claim precisely where you came to stop believing claims. So the source is readable, the validation records name their own bugs, and a conclusion we got wrong is corrected in public next to the one it replaces. Everything on this site runs, which is a different claim from everything on this site is described.
+
+And we are downstream of a great deal of work nobody billed us for. This stack stands on k3s, Calico, Longhorn, Postgres, SQLite and three language ecosystems, none of which sent an invoice. Publishing ours under Apache-2.0 is not charity and not a growth tactic; it is the ordinary way to be a participant in that rather than only a consumer of it.
+
+Take it, run it, fork it, and never speak to us. That is the point of publishing it.
 
 ## You do not have to take our word for it.
 
@@ -3380,6 +3398,8 @@ An analyst gets the task with a mandate, the rights that come with its skills an
 
 Work comes back as a draft. A person posts it or returns it, and the return is on the analyst's own card next to its first-pass rate, so a crew that produces confident noise is visible rather than merely busy.
 
+After that the supervisor applies a posted option itself only up to USD 2,500 per anomaly; everything above, and every closed period, budget or allocation rule, waits for the owner.
+
 ### The path a number takes before anybody is charged for it.
 
 Every screen in the room's gallery shows one station on this line. What no screenshot shows is the line itself, and the gate in the middle of it: an agent can carry a finding all the way to the stamp and no further. Returned work goes back up the dashed path and lands on that analyst's own card, next to its first-pass rate.
@@ -3416,11 +3436,11 @@ Every frame in the room's gallery is a fresh installation of the binary on its o
 
 - **SaaS seats.** Sixty of 315 seats issued and not signed into in thirty days, 4,047.00 a month at what is actually paid, and one renewal inside ninety days whose notice deadline falls before it.
 
-- **Cadence.** Thirty-one tasks are due today at a worst case of 2.3050, and not one of them runs: the switch is off and the ceiling is 0.00, and both of those are a person's own act.
+- **Cadence.** Thirty-two tasks are due today at a worst case of 2.2326, over the ceiling, and not one of them runs: the switch is off and the ceiling is 0.00, and both of those are a person's own act.
 
 - **The plan.** Sixty-seven items proposed under a 1,043.00 ceiling, and nothing exists until somebody approves it. A planner that writes straight to the board has spent the budget before anybody agreed to the work.
 
-- **Owner and told.** Every finding carries the owner it belongs to, read from the team that pays for it or from the analyst that opened it. Telling that owner is its own logged step, so on a fresh install every row still reads not yet.
+- **Owner and told.** Every finding names its owner, or says nobody has claimed it, read from the team that pays for it or from the analyst that opened it. Telling that owner is its own logged step, so on a fresh install every row still reads not yet.
 
 ## Found, never saved.
 
@@ -3509,7 +3529,7 @@ The repository gates more than its suite: every scenario written in the language
 
 - The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
 
-- Release gates through v0.10.2 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
+- Release gates through v0.11.0 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
 
 - The FOCUS 1.1 file of agent spend (costcrew-cloudability, in the image since v0.7.0) has not been accepted by a live tenant yet.
 
@@ -3650,6 +3670,8 @@ The plane it reads is open today: [stand up the stack's live services locally in
 
 ### Everything the room says is not done
 
+- Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet.
+
 - That is a long way from shipped: no production hardening pass, no security review, no App Store. The effort goes to the web console, and this moves when there is time for it.
 
 - The relay it was built against, genaryx-relay, was removed from genaryx on 2026-07-28, so today there is nothing to pair with and none of this runs end to end. No relay runs today, so nothing can be paired yet.
@@ -3745,7 +3767,7 @@ The signing is fail-closed. The token is signed by Keyryx custody (ES256) when W
 
 ### A spent error budget is a reason to hold
 
-The quality plane, [Verdryx](https://it-rat.com/services/verdryx.html), writes an `slo_burn` event to its event file when an agent's error budget is exhausted or burning fast. With `WARDRYX_SIGNAL_EVENTS` pointing at that file, Wardryx adds one standing signal named `slo_burn` to the agent's decisions, and a `hold_if_signal` rule on it holds the call. A granted approval lets that one call through, as for any hold. Both launchers set it and seed the rule, so a spent budget waits for a person out of the box. On its own it is off unless the setting is set, and it changes nothing without a rule that reads the signal: same answer, same policy version.
+The quality plane, [Verdryx](https://it-rat.com/services/verdryx.html), writes an `slo_burn` event to its event file when an agent's error budget is exhausted or burning fast. With `WARDRYX_SIGNAL_EVENTS` pointing at that file, Wardryx adds one standing signal named `slo_burn` to the agent's decisions, and a `hold_if_signal` rule on it holds the call: every call of that agent waits for a person, model calls included. A granted approval lets that one call through, as for any hold. Both launchers set it and seed the rule, so a spent budget waits for a person out of the box. On its own it is off unless the setting is set, and it changes nothing without a rule that reads the signal: same answer, same policy version.
 
 ```
 name: hold-while-the-budget-is-spent
@@ -4109,6 +4131,16 @@ Four real requests, one container, the published image against a fixture policy 
 
 The third row is the one worth reading twice. The fixture policy said **allow**, and it was refused anyway. Policy languages talk about domains an agent may reach, and none of them was written with the cloud metadata endpoint in mind: an agent that can be talked into fetching that address reads the credentials of whatever it runs on. The fourth is not a fetch at all. A free-form header parameter is a credential-laundering channel straight past a broker's inspection, so the tool has no field for one, and an unknown argument is refused by name rather than ignored.
 
+### The four runs on the room, in full
+
+The name is resolved and your policy plane is asked before any verdict, so the cheapest refusal still costs one lookup and one policy question. What a refusal prevents is the fetch. A scheme or a host the rules refuse costs nothing, so those refusals happen while the request is still inside your own process. The site's own preference is asked last, which is the ordering that matters: a destination your policy refuses is never contacted at all, not even to read its `robots.txt`.
+
+The fixture policy said allow, and it was refused anyway. Policy languages talk about domains an agent may reach and none of them was written with the cloud metadata endpoint in mind, so this gate sits before the policy gate rather than after it. The policy plane was asked, and it answered allow; the address rule decides first, so the policy verdict and the `robots.txt` gate never run.
+
+The first destination was allowed. The second was named by the first, which is the oldest allowlist bypass there is and is invisible to any check that reads only the URL the caller passed. The fetcher does not follow a redirect: the hop comes back here, the new name is resolved from scratch, and all five gates run again on a destination nobody asked for.
+
+Your policy allowed this one. The site said no, and because the site is asked after you are, its answer can only narrow what you permitted and never widen it. A `robots.txt` that cannot be read allows the fetch and records that it could not be read, which is deliberately not the crawler posture: a stranger's outage should not stop your own governed work, and could-not-look is a state to report rather than an answer.
+
 ## A redirect is a destination the caller never named.
 
 An allowed host answering 302 to a denied one is the oldest allowlist bypass there is, and it is invisible to any check that reads only the URL the caller passed. The same argument applies one layer down, to the name itself.
@@ -4151,6 +4183,16 @@ A rendering backend is the first one that fetches things the caller never asked 
 
 The two switches are on the [room](https://it-rat.com/services/scopyx.html#mechanisms).
 
+### The four switch states, in full
+
+Two mechanisms, and they are not the same kind of thing. The proxy is the floor: the browser is launched with no route to the network except it, so a refused destination is a socket that is never opened, and no flag or version of somebody else's browser can talk it out of that. CDP interception is the accountant: it sees the full URL of every request, including inside TLS, which the proxy cannot, so it produces the counts and the per-URL decisions. Where the two disagree the connection wins, because the connection is what carries bytes.
+
+With the proxy decision removed, the request is still refused, because CDP interception decided it by its full URL. The refused server is still never reached. What is lost here is not the refusal but the guarantee: the accountant is the browser's own cooperation, and a bug, a flag or a version can withdraw it.
+
+With CDP blocking removed, the request is still refused, because the connection never opens. This is the mutation that matters most: it is the one that proves the guarantee does not rest on the browser telling the truth. What is lost is precision, not enforcement, since for https the proxy sees a host and not a path.
+
+Both removed, and the pixel is fetched. The refused server is reached once and the test goes red: the case asserts on the SERVER that would have served it, not on what the result says. An outcome assertion would pass equally well if the request happened and the answer were discarded, which is the difference between governing egress and filtering a report about it.
+
 ## Governed at the navigation is not governed per request.
 
 A fetch through a service you already run is decided before it is made, and then that service loads the page's images, fonts and scripts with nothing in between. The navigation was governed. The requests it caused were not. Every result says which of the two guarantees was in force, so a partial answer is visible as one rather than read as a complete one.
@@ -4166,6 +4208,12 @@ It is an error. For a person, degrading to a blank frame is right. For an agent 
 ## A URL is personal data, and the record is built around that.
 
 `https://crm.example/customers/12345?email=jane@example.com` is an address and also a name, an identifier and a contact detail. With `SCOPYX_RETAIN` unset, the default, the path and the query string, which is exactly where an identifier or a session token lives, are never assembled into the event at all. What is kept is the origin and a SHA-384, so two records can be compared without either holding the address. Setting `SCOPYX_RETAIN=payload` writes the full URL into `url_unprotected`.
+
+### Retention, off and on
+
+The path and the query string are not dropped later or redacted later. The field is never built, so there is no window in which the event holds them and no code path that could log one by accident.
+
+Turning retention on is a decision, and the field it writes is called url_unprotected rather than url. There is no subject-keyed payload plane here, so a field called url would imply one and a reader would assume a protection that does not exist. The name is the warning, and it travels with the data.
 
 ### Its own journal, its own volume
 
@@ -4300,6 +4348,10 @@ An RFC 8693 token exchange that mints a short-lived token carrying nested `act`,
 ## The record said who acted for whom. Nothing proved it.
 
 The Agent Passport spec disclaims two things on purpose. It is not an authentication protocol: the Passport names an agent, it does not prove possession. And it is not a freshness claim: the delegation chain records who acted on behalf of whom, not when. So the estate held the record of a delegation and pointed at a mechanism that did not exist. This is that mechanism, and it does not replace `on_behalf_of`; it makes it provable and lets it be ended.
+
+### Mint, prove, verify, end
+
+Two signed tokens and a proof go in, a short-lived one comes out, and the enforcement point verifies it without asking anybody. The dotted path on the room's loop is the one that matters in an incident: a revocation reaches the poller and the same token stops working before it expires.
 
 ### Proof of possession, per request
 
@@ -4790,6 +4842,8 @@ The [Verdryx room](https://it-rat.com/services/verdryx.html) keeps the sixty-sec
 
 - [What it grades](https://it-rat.com/verdryx-guide.html#grades)
 
+- [Error budgets](https://it-rat.com/verdryx-guide.html#error-budgets)
+
 - [Cost per outcome](https://it-rat.com/verdryx-guide.html#cost-per-outcome)
 
 - [The six graders](https://it-rat.com/verdryx-guide.html#graders)
@@ -4806,7 +4860,7 @@ The [Verdryx room](https://it-rat.com/services/verdryx.html) keeps the sixty-sec
 
 ## Verdryx at a glance.
 
-- **Version:** 0.2.0 · Python 3.11+.
+- **Version:** v0.4.0 · Python 3.11+.
 
 - **Tests:** fully offline suite.
 
@@ -4869,6 +4923,14 @@ All of it is deterministic: no model, no network and no new event type on the bu
 ### Defensive by design
 
 Grades an operator's own agents against an eval set or a production outcome tag. The README puts it plainly: it “never manipulates outputs, never crafts adversarial prompts, and never attacks anything.”
+
+## Error budgets, measured and never enforced
+
+verdryx slo reads the same traces as four ratios of good runs over eligible runs, each with the budget left and the rate it is going. It sends an slo_burn event only when the confidence interval sits below the objective, and it enforces nothing.
+
+### An exhausted budget has two readers
+
+[Wardryx](https://it-rat.com/services/wardryx.html) turns a spent budget into a hold for a person, in both launchers, which measure every six hours. [Heraldyx](https://it-rat.com/services/heraldyx.html) mails an slo_burn at once, in words that say nothing was enforced.
 
 ## How a case gets a price, including the calls nobody tagged
 
@@ -5863,6 +5925,8 @@ Released as v3.0.0 on 2026-10-18. The library records a source for every observa
 | v3.1.0 | A fact stamps its provenance when it is written, so a person's fact stays the person's after its source episodes are forgotten or pruned. The store moves to schema generation 2 with three nullable columns on facts, and assert_fact takes provenance and derived_from. |
 
 ## What it does not do, and what is still open.
+
+- Since version 3.0.0 (released 2026-10-18) the MCP server sets provenance and scope: a call cannot claim user, the server's ceiling is external unless its operator raises it, and a server started with an agent id serves that agent alone (one started without serves the whole file and says so). A session turns untrusted when recall or why returns a memory that is not the user's own or is quarantined, when the caller labels what it writes as tool or external, or passes read_untrusted=true, or when the flag is set. The server cannot see what an agent read outside engram.
 
 - The server cannot see what an agent read outside engram. A session turns untrusted when recall or why returns a memory that is not the user's own or is quarantined, when the caller labels its input or passes read_untrusted, or when the server is started with the untrusted flag.
 

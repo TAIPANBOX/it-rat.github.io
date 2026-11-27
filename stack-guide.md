@@ -14,6 +14,10 @@ The [home page](https://it-rat.com/index.html#proof) shows eight figures from th
 
 - [Where the rest is recorded](https://it-rat.com/stack-guide.html#elsewhere)
 
+- [How it wires](https://it-rat.com/stack-guide.html#wiring)
+
+- [Why all of it is open](https://it-rat.com/stack-guide.html#open)
+
 - [Run it yourself](https://it-rat.com/stack-guide.html#run)
 
 ## Validated on real infrastructure. Then torn down.
