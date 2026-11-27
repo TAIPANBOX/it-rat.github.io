@@ -132,6 +132,35 @@
   .prov.loc{border-color:color-mix(in srgb,var(--mint) 45%,var(--line-2))}
   .prov.byo{border-color:color-mix(in srgb,var(--amber) 40%,var(--line-2))}
   .deeper .cta-row{margin-top:16px}
+  /* the .flight widget (as on keyryx and trailryx): an svg, tabs that drive it,
+     and one sentence per tab */
+  .flight{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);overflow:hidden}
+  .fl-head{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--line);
+    font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .fl-head .n{margin-left:auto;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .fl-head .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);flex:0 0 auto}
+  .flight svg{display:block;width:100%;height:auto}
+  .fl-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 15px;border-top:1px solid var(--line)}
+  .fl-tab{font-family:var(--font-m);font-size:11.5px;color:var(--dim);cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;
+    transition:color .15s,border-color .15s,background .15s}
+  .fl-tab:hover{color:var(--fg);border-color:color-mix(in srgb, var(--accent) 55%, var(--line-2))}
+  .fl-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fl-tab[aria-pressed="true"]{color:#0A1420;background:var(--accent);border-color:var(--accent)}
+  .fl-why{margin:0;padding:13px 15px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;line-height:1.65}
+  .fl-why a{color:var(--accent)}
+  .fl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  @media(max-width:760px){.fl-scroll svg{min-width:720px}}
+  #gxt-svg [data-p]{transition:opacity .35s}
+  #gxt-svg[data-show] [data-p]{opacity:.3}
+  #gxt-svg[data-show="core"] [data-p~="core"],
+  #gxt-svg[data-show="passkey"] [data-p~="passkey"],
+  #gxt-svg[data-show="tunnel"] [data-p~="tunnel"],
+  #gxt-svg[data-show="chain"] [data-p~="chain"]{opacity:1}
+  @media (prefers-reduced-motion: reduce){
+    #gxt-svg [data-p]{transition:none}
+    #gxt-svg .gxt-anim{display:none}
+  }
 </style>
 <!-- seo:auto -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["SoftwareApplication","WebApplication"],"name":"Genaryx","url":"https://it-rat.com/genaryx.html","description":"Genaryx: one browser control room over the whole agent stack, on your own box. Passkey-signed kills, WireGuard-only reach and signed evidence packs.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/genaryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"browserRequirements":"Requires a modern browser with WebAuthn support"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Genaryx","item":"https://it-rat.com/genaryx.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is Genaryx free, or is there a paid tier above it?","acceptedAnswer":{"@type":"Answer","text":"It is Apache-2.0, the same licence as every service under it, and an Apache grant on a version already released cannot be taken back afterwards. There is no tier above it, no seat count, no licence key and no account to create."}},{"@type":"Question","name":"Is it open source, or open core with the useful parts held back?","acceptedAnswer":{"@type":"Answer","text":"Open source, and nothing is held back. The console is one repository, TAIPANBOX/genaryx , and every tab in the screenshots above is built from it. There is no edition kept beside it, held back or otherwise."}},{"@type":"Question","name":"Is Genaryx a desktop application?","acceptedAnswer":{"@type":"Answer","text":"No. The core is a Rust binary running on infrastructure you own, and you open the console in a browser. Nothing is installed on a laptop, which is the point at 2am when the person on call is using whatever machine is nearest. Reaching a private plane is the console's own WireGuard tunnel rather than a VPN somebody has to maintain."}},{"@type":"Question","name":"What does the console add that the services do not already do?","acceptedAnswer":{"@type":"Answer","text":"One window over every plane, and three things no single service has a place to put: a destructive action confirmed by the passkey in your hand and journaled with the reason you typed, an incident feed sorted worst-first across every plane, and one signed evidence pack carrying EU AI Act, SR 11-7 and SOC 2 mappings. You can run the open stack by hand in one command, and plenty of teams should. The console is for the point where the person on call is not the person who built it."}}]}]}</script>
@@ -215,7 +244,7 @@
     <div class="sec-head rv">
       <div class="kicker">the console, frame by frame</div>
       <h2>One Rust core. Eighteen frames you can open yourself.</h2>
-      <p class="lede">Every frame below is the demo above, which is the console itself on simulated data. What this console did on a real box against a live plane, where it killed a runaway on live traffic, is written up in <a href="what-is-proven.html">what is proven</a>.</p>
+      <p class="lede">Every frame is the demo on simulated data; the live run is in <a href="what-is-proven.html">what is proven</a>. <a href="genaryx-guide.html#frames">Every frame, in the guide</a></p>
     </div>
     <div class="gxc-demo rv">
       <a class="gxc-cta" href="demo/" target="_blank" rel="noopener">
@@ -397,11 +426,24 @@
       <div class="kicker">the technology</div>
       <h2>One shell. One Rust brain. Hardware where it counts.</h2>
     </div>
-    <div class="bento">
-      <div class="card hover feature b-6 rv"><h3>One core, one shell</h3><p>The browser console is the product, and it is deliberately thin: every screen is a call into one shared Rust command layer.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>Hardware signatures, shipped</h3><p>Kills, budget changes and approval grants are confirmed per action with a passkey on your own device: Touch ID, Windows Hello or a security key.</p></div>
-      <div class="card hover feature b-6 rv"><h3>WireGuard, but yours</h3><p>Your box runs the WireGuard side and issues each device its own peer config as a QR: scan, connect, done.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>An audit trail that proves itself</h3><p>Every governance event the stack emits carries the SHA-256 of the event before it. Tampering does not hide, it breaks the chain exactly where it happened.</p></div>
+    <div class="flight rv" data-fl="gxt">
+      <div class="fl-head"><span class="dot"></span>one core, one shell<span class="n" id="gxt-n">the core</span></div>
+      <div class="fl-scroll"><svg id="gxt-svg" data-show="core" viewBox="0 0 960 330" role="img" aria-labelledby="gxt-svg-t"><title id="gxt-svg-t">The technology: a thin browser shell calls genaryx-api, the one command layer, into genaryx-core and on to the planes; a kill, a budget change or an approval grant is confirmed per action by a passkey on your own device with an ES256 assertion bound to the command, and journaled with the credential that confirmed it; your box runs the WireGuard side and issues each device its own peer config as a QR, and the browser opens the console only inside that tunnel; every governance event carries the SHA-256 of the event before it, and agent-conform -chain verifies the chain.</title><defs><marker id="gxt-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="core tunnel"><rect x="24" y="40" width="180" height="56" rx="10" fill="#161F2C" stroke="#B48CFF" stroke-width="1.4"/><text x="114" y="60" fill="#B48CFF" font-size="12" font-weight="700">browser shell</text><text x="114" y="77" fill="#8A97A6" font-size="10.5">thin, apps/web</text></g><g data-p="core"><path d="M204 68 L246 68" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#gxt-a)"/></g><g data-p="core passkey"><rect x="248" y="40" width="200" height="56" rx="10" fill="#161F2C" stroke="#B48CFF" stroke-width="1.4"/><text x="348" y="60" fill="#B48CFF" font-size="12" font-weight="700">genaryx-api</text><text x="348" y="77" fill="#8A97A6" font-size="10.5">the one command layer</text></g><g data-p="core"><path d="M448 68 L490 68" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#gxt-a)"/></g><g data-p="core"><rect x="492" y="40" width="210" height="56" rx="10" fill="#141C27" stroke="#B48CFF" stroke-width="1.2"/><text x="597" y="60" fill="#B48CFF" font-size="12" font-weight="700">genaryx-core</text><text x="597" y="77" fill="#8A97A6" font-size="10.5">stores, ceremonies, graph</text></g><g data-p="core passkey"><path d="M702 68 L744 68" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#gxt-a)"/></g><g data-p="core passkey"><rect x="746" y="40" width="190" height="56" rx="10" fill="#141C27" stroke="#34D399" stroke-width="1.2"/><text x="841" y="60" fill="#34D399" font-size="12" font-weight="700">the planes</text><text x="841" y="77" fill="#8A97A6" font-size="10.5">where kills and caps land</text></g><g data-p="passkey"><rect x="248" y="150" width="200" height="56" rx="10" fill="#161F2C" stroke="#FDE68A" stroke-width="1.4"/><text x="348" y="170" fill="#FDE68A" font-size="12" font-weight="700">your passkey</text><text x="348" y="187" fill="#8A97A6" font-size="10.5">Touch ID, Hello, a key</text></g><g data-p="passkey"><path d="M348 150 L348 98" stroke="#FDE68A" stroke-width="1.2" fill="none" marker-end="url(#gxt-a)"/></g><g data-p="passkey"><text x="360" y="128" fill="#FDE68A" font-size="10.5" text-anchor="start">ES256, per action</text></g><g data-p="passkey"><path d="M448 178 L490 178" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#gxt-a)"/></g><g data-p="passkey"><rect x="492" y="150" width="210" height="56" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="597" y="170" fill="#93A8C4" font-size="12" font-weight="700">the journal</text><text x="597" y="187" fill="#8A97A6" font-size="10.5">which credential confirmed it</text></g><g data-p="tunnel"><rect x="24" y="250" width="180" height="56" rx="10" fill="#161F2C" stroke="#34D399" stroke-width="1.4"/><text x="114" y="270" fill="#34D399" font-size="12" font-weight="700">your box</text><text x="114" y="287" fill="#8A97A6" font-size="10.5">the WireGuard side</text></g><g data-p="tunnel"><path d="M114 250 L114 208" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#gxt-a)"/></g><g data-p="tunnel"><text x="124" y="232" fill="#34D399" font-size="10.5" text-anchor="start">a peer config, as a QR</text></g><g data-p="tunnel"><rect x="24" y="150" width="180" height="56" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="114" y="170" fill="#93A8C4" font-size="12" font-weight="700">each device</text><text x="114" y="187" fill="#8A97A6" font-size="10.5">its own peer</text></g><g data-p="tunnel"><path d="M114 150 L114 98" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#gxt-a)"/></g><g data-p="tunnel"><text x="124" y="128" fill="#93A8C4" font-size="10.5" text-anchor="start">HTTPS, in the tunnel</text></g><g data-p="chain"><rect x="248" y="250" width="170" height="56" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="333" y="270" fill="#93A8C4" font-size="12" font-weight="700">event n-1</text><text x="333" y="287" fill="#8A97A6" font-size="10.5">one governance event</text></g><g data-p="chain"><path d="M418 278 L460 278" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#gxt-a)"/></g><g data-p="chain"><rect x="462" y="250" width="220" height="56" rx="10" fill="#161F2C" stroke="#B48CFF" stroke-width="1.4"/><text x="572" y="270" fill="#B48CFF" font-size="12" font-weight="700">event n</text><text x="572" y="287" fill="#8A97A6" font-size="10.5">carries sha256 of n-1</text></g><g data-p="chain"><path d="M682 278 L724 278" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#gxt-a)"/></g><g data-p="chain"><rect x="726" y="250" width="210" height="56" rx="10" fill="#161F2C" stroke="#B48CFF" stroke-width="1.4"/><text x="831" y="270" fill="#B48CFF" font-size="12" font-weight="700">event n+1</text><text x="831" y="287" fill="#8A97A6" font-size="10.5">carries sha256 of n</text></g><g data-p="chain"><text x="831" y="170" fill="#FDE68A" font-size="11" text-anchor="middle" font-weight="700">agent-conform -chain</text></g><g data-p="chain"><text x="831" y="188" fill="#8A97A6" font-size="10.5" text-anchor="middle">verifies it in one command</text></g><g data-p="chain"><path d="M831 196 L831 248" stroke="#5A6675" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#gxt-a)"/></g><g class="gxt-anim"><g data-p="core"><circle r="3.6" fill="#B48CFF"><animateMotion path="M204 68 L246 68" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="core"><circle r="3.6" fill="#B48CFF"><animateMotion path="M448 68 L490 68" dur="2.8s" begin="-0.8s" repeatCount="indefinite"/></circle></g><g data-p="core passkey"><circle r="3.6" fill="#34D399"><animateMotion path="M702 68 L744 68" dur="2.8s" begin="-1.6s" repeatCount="indefinite"/></circle></g><g data-p="passkey"><circle r="3.6" fill="#FDE68A"><animateMotion path="M348 150 L348 98" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="passkey"><circle r="3.6" fill="#FDE68A"><animateMotion path="M448 178 L490 178" dur="2.8s" begin="-1.2s" repeatCount="indefinite"/></circle></g><g data-p="tunnel"><circle r="3.6" fill="#34D399"><animateMotion path="M114 250 L114 208" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="tunnel"><circle r="3.6" fill="#93A8C4"><animateMotion path="M114 150 L114 98" dur="2.8s" begin="-1.0s" repeatCount="indefinite"/></circle></g><g data-p="chain"><circle r="3.6" fill="#B48CFF"><animateMotion path="M418 278 L460 278" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="chain"><circle r="3.6" fill="#B48CFF"><animateMotion path="M682 278 L724 278" dur="2.8s" begin="-1.3s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="gxt-svg" data-k="core">The core</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="gxt-svg" data-k="passkey">Passkey</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="gxt-svg" data-k="tunnel">Tunnel</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="gxt-svg" data-k="chain">Audit chain</button>
+      </div>
+      <div aria-live="polite">
+        <p class="fl-why" data-for="core">The browser console is deliberately thin: every screen is a call into one shared Rust command layer. <a href="genaryx-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="passkey" hidden>Kills, budget changes and approval grants are confirmed per action with a passkey on your own device: Touch ID, Windows Hello or a security key. <a href="genaryx-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="tunnel" hidden>Your box runs the WireGuard side and issues each device its own peer config as a QR: scan, connect, done. <a href="genaryx-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="chain" hidden>Every governance event the stack emits carries the SHA-256 of the event before it, so tampering breaks the chain exactly where it happened. <a href="genaryx-guide.html#how-it-works">In the guide</a></p>
+      </div>
+    </div>
+    <div class="cta-row rv">
+      <a class="btn" href="genaryx-guide.html#how-it-works">How it works, in full</a>
     </div>
   </div>
 </section>
@@ -518,6 +560,21 @@
   </div>
 </footer>
 
+<script>
+/* each .flight with data-fl: its tabs light their part of the picture */
+document.querySelectorAll('.flight[data-fl]').forEach(function(box){
+  const p=box.dataset.fl, svg=document.getElementById(p+"-svg"); if(!svg) return;
+  const tabs=[...box.querySelectorAll('.fl-tab')], whys=[...box.querySelectorAll('.fl-why')];
+  const n=document.getElementById(p+"-n");
+  function show(k){
+    svg.setAttribute("data-show",k);
+    tabs.forEach(t=>t.setAttribute("aria-pressed",String(t.dataset.k===k)));
+    whys.forEach(w=>{w.hidden=w.dataset.for!==k;});
+    const t=tabs.find(t=>t.dataset.k===k); if(n&&t) n.textContent=t.textContent.toLowerCase();
+  }
+  tabs.forEach(t=>t.addEventListener("click",()=>show(t.dataset.k)));
+});
+</script>
 <script src="assets/site.js?v=e13"></script>
 <script src="assets/diagram.js"></script>
 <script src="assets/shotbox.js?v=e06"></script>

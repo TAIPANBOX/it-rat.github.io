@@ -821,13 +821,13 @@
     },
     {
       "page": "services/typryx.html",
-      "claim": "1051 tests",
+      "claim": "1106 tests",
       "occurrences": 2,
       "repo": "TAIPANBOX/typryx",
-      "command": "typryx README badge at origin/main read 2026-11-04 (the repository's scripts/readme-numbers.sh gates this badge against go test -v === RUN lines); go test not run here, since Go gates run on forge",
+      "command": "typryx README badge at origin/main (4ae7581) read 2026-11-27: tests-1106; the repository's scripts/readme-numbers.sh gates this badge against go test -v === RUN lines, subtests included; go test not run here",
       "status": "derived",
-      "measured_on": "2026-11-06",
-      "note": "Moved 2026-11-06: typryx README at origin/main, measured by scripts/readme-numbers.sh. Previously 998 tests. Updated 2026-11-04: README badge tests-998 at origin/main. Previously 986 tests. Re-run 2026-09-30 in a clean worktree at the v0.3.0 tag (4c75e45): './scripts/readme-numbers.sh' printed '946 tests, and the README says so' (806 at f4045e0 on 2026-09-25, 897 when this page last said so). The README badge says 946. Stated twice on the page: the hero rail and the replay badge. Moved to 986 on 2026-10-05 from the README badge on typryx main (64c7d5c, release v0.4.0), which readme-numbers.sh gates. Reproduced 2026-10-05: numbers-drift.sh ran readme-numbers.sh in a clone of typryx main 64c7d5c and it printed 986.",
+      "measured_on": "2026-11-27",
+      "note": "Moved 2026-11-27: README badge at origin/main 4ae7581 reads tests-1106, gated by scripts/readme-numbers.sh; numbers-drift.sh measured the same 1106. Previously 1051 tests (2026-11-06). Moved 2026-11-06: typryx README at origin/main, measured by scripts/readme-numbers.sh. Previously 998 tests. Updated 2026-11-04: README badge tests-998 at origin/main. Previously 986 tests. Re-run 2026-09-30 in a clean worktree at the v0.3.0 tag (4c75e45): './scripts/readme-numbers.sh' printed '946 tests, and the README says so' (806 at f4045e0 on 2026-09-25, 897 when this page last said so). The README badge says 946. Stated twice on the page: the hero rail and the replay badge. Moved to 986 on 2026-10-05 from the README badge on typryx main (64c7d5c, release v0.4.0), which readme-numbers.sh gates. Reproduced 2026-10-05: numbers-drift.sh ran readme-numbers.sh in a clone of typryx main 64c7d5c and it printed 986.",
       "repo_dir": "typryx",
       "check": "./scripts/readme-numbers.sh | grep -oE '^[0-9]+' | head -1"
     },
@@ -1829,42 +1829,29 @@
     },
     {
       "page": "services/costcrew.html",
-      "claim": "v0.10.2",
-      "occurrences": 1,
-      "repo": "TAIPANBOX/costcrew",
-      "command": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name; and gh run list -R TAIPANBOX/costcrew --commit $(git rev-list -n1 v0.10.2) shows ci green",
-      "status": "measured",
-      "measured_on": "2026-11-23",
-      "note": "Re-pointed 2026-11-23: costcrew's ci workflow (tests, the race detector and every teeth shard, all on the generated estate and fixtures) ran green on the v0.10.2 commit, so the gates ran through v0.10.2, the newest release. Re-pointed 2026-11-14: the limit names the release the gates ran through; v0.10.2 is a Go 1.27.4 rebuild and was not part of those runs. Moved 2026-11-05 to v0.10.1; moved 2026-11-04: the room names the release the gates ran through; costcrew v0.10.1 is the newest release. Previously v0.6.0. Added 2026-10-16: the room's limits name the release whose runs all used the generated estate. A named release, checked by its own tag so it does not drift when a newer tag lands. On 2026-10-16 releases/latest was still v0.6.0.",
-      "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name",
-      "slow": false
-    },
-    {
-      "page": "services/costcrew.html",
       "claim": "v0.11.0",
-      "occurrences": 1,
+      "occurrences": 4,
       "repo": "TAIPANBOX/costcrew",
-      "command": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.11.0 --jq .tag_name",
+      "command": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name; and gh run list -R TAIPANBOX/costcrew --commit $(git rev-list -n1 v0.11.0) shows ci green",
       "status": "measured",
       "measured_on": "2026-11-27",
       "repo_dir": "costcrew",
       "check": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.11.0 --jq .tag_name",
       "slow": false,
-      "note": "Added 2026-11-27: the room says the Azure billing export is read since v0.11.0 (published 2026-11-25)."
+      "note": "Moved 2026-11-27: gh run list -R TAIPANBOX/costcrew --commit $(git rev-list -n1 v0.11.0) (fc6352fc) shows ci, release, Scorecard and secretscan all concluded success, so the release gates ran green through v0.11.0, the newest release (gh api repos/TAIPANBOX/costcrew/releases/latest). The figure was v0.10.2 before. Stated four times: the hero's reads row (Azure read since v0.11.0), and in the limits schematic its label, its title and the one-sentence block. Added 2026-11-27: the room says the Azure billing export is read since v0.11.0 (published 2026-11-25)."
     },
     {
       "page": "services/costcrew.md",
-      "claim": "v0.10.2",
+      "claim": "v0.11.0",
       "occurrences": 1,
       "repo": "TAIPANBOX/costcrew",
-      "command": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name; and gh run list -R TAIPANBOX/costcrew --commit $(git rev-list -n1 v0.10.2) shows ci green",
+      "command": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name; and gh run list -R TAIPANBOX/costcrew --commit $(git rev-list -n1 v0.11.0) shows ci green",
       "status": "measured",
-      "measured_on": "2026-11-23",
-      "note": "Re-pointed 2026-11-23: costcrew's ci workflow (tests, the race detector and every teeth shard, all on the generated estate and fixtures) ran green on the v0.10.2 commit, so the gates ran through v0.10.2, the newest release. Re-pointed 2026-11-14: the limit names the release the gates ran through; v0.10.2 is a Go 1.27.4 rebuild and was not part of those runs. Moved 2026-11-05 to v0.10.1; moved 2026-11-04 with the room. Previously v0.6.0. Added 2026-10-13: v0.6.0 is the latest costcrew release and the current image.",
-      "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name",
-      "slow": false
+      "measured_on": "2026-11-27",
+      "repo_dir": "costcrew",
+      "check": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.11.0 --jq .tag_name",
+      "slow": false,
+      "note": "The markdown twin of the room: the limit about the release gates; the hero's fact rows and the schematic are not in the twin. Moved 2026-11-27 from v0.10.2: gh run list -R TAIPANBOX/costcrew --commit $(git rev-list -n1 v0.11.0) (fc6352fc) shows ci concluded success."
     },
     {
       "page": "platform-guide.html",
@@ -2531,21 +2518,8 @@
     },
     {
       "page": "costcrew-guide.html",
-      "claim": "v0.10.2",
-      "occurrences": 1,
-      "repo": "TAIPANBOX/costcrew",
-      "command": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.10.2 --jq .tag_name",
-      "status": "measured",
-      "measured_on": "2026-11-27",
-      "repo_dir": "costcrew",
-      "check": "gh api repos/TAIPANBOX/costcrew/releases/tags/v0.10.2 --jq .tag_name",
-      "slow": false,
-      "note": "Re-scoped 2026-11-27: the guide's only remaining v0.10.2 is the release-gates sentence; the current release moved to v0.11.0. Re-pointed 2026-11-23: costcrew's ci workflow (tests, the race detector and every teeth shard, all on the generated estate and fixtures) ran green on the v0.10.2 commit, so the gates ran through v0.10.2, the newest release. The guide now names v0.10.2 twice: the status line and the limit about the release gates. Moved 2026-11-14: costcrew v0.10.2 published 2026-11-12 (Go 1.27.4). Previously v0.10.1. The guide names v0.10.1 once more, in the limit about the release gates."
-    },
-    {
-      "page": "costcrew-guide.html",
       "claim": "v0.11.0",
-      "occurrences": 1,
+      "occurrences": 2,
       "repo": "TAIPANBOX/costcrew",
       "command": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name",
       "status": "measured",
@@ -2553,7 +2527,7 @@
       "repo_dir": "costcrew",
       "check": "gh api repos/TAIPANBOX/costcrew/releases/latest --jq .tag_name",
       "slow": false,
-      "note": "Moved 2026-11-27: costcrew v0.11.0 published 2026-11-25 (Azure Cost Management FOCUS reader); the guide names it as the current release. The sentence about release gates still names v0.10.2, which is why that figure stays."
+      "note": "Moved 2026-11-27: gh run list -R TAIPANBOX/costcrew --commit $(git rev-list -n1 v0.11.0) (fc6352fc) shows ci, release, Scorecard and secretscan all concluded success, so the release gates ran green through v0.11.0, the newest release (gh api repos/TAIPANBOX/costcrew/releases/latest). The figure was v0.10.2 before. The guide now names v0.11.0 twice: the current release and the limit about the release gates. Moved 2026-11-27: costcrew v0.11.0 published 2026-11-25 (Azure Cost Management FOCUS reader); the guide names it as the current release. The sentence about release gates still names v0.10.2, which is why that figure stays."
     },
     {
       "page": "costcrew-guide.html",

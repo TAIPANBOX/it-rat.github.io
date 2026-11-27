@@ -16,7 +16,7 @@ Genaryx exists for the moment the fleet stops being a side project: when the per
 
 ## One Rust core. Eighteen frames you can open yourself.
 
-Every frame below is the demo above, which is the console itself on simulated data. What this console did on a real box against a live plane, where it killed a runaway on live traffic, is written up in [what is proven](https://it-rat.com/what-is-proven.html).
+Every frame is the demo on simulated data; the live run is in [what is proven](https://it-rat.com/what-is-proven.html). [Every frame, in the guide](https://it-rat.com/genaryx-guide.html#frames)
 
 ## An AI that reads everything and can touch nothing.
 
@@ -28,21 +28,13 @@ The console reaches a client-hosted Cloud from inside your own WireGuard tunnel,
 
 ## One shell. One Rust brain. Hardware where it counts.
 
-### One core, one shell
+The browser console is deliberately thin: every screen is a call into one shared Rust command layer. [In the guide](https://it-rat.com/genaryx-guide.html#how-it-works)
 
-The browser console is the product, and it is deliberately thin: every screen is a call into one shared Rust command layer.
+Kills, budget changes and approval grants are confirmed per action with a passkey on your own device: Touch ID, Windows Hello or a security key. [In the guide](https://it-rat.com/genaryx-guide.html#how-it-works)
 
-### Hardware signatures, shipped
+Your box runs the WireGuard side and issues each device its own peer config as a QR: scan, connect, done. [In the guide](https://it-rat.com/genaryx-guide.html#how-it-works)
 
-Kills, budget changes and approval grants are confirmed per action with a passkey on your own device: Touch ID, Windows Hello or a security key.
-
-### WireGuard, but yours
-
-Your box runs the WireGuard side and issues each device its own peer config as a QR: scan, connect, done.
-
-### An audit trail that proves itself
-
-Every governance event the stack emits carries the SHA-256 of the event before it. Tampering does not hide, it breaks the chain exactly where it happened.
+Every governance event the stack emits carries the SHA-256 of the event before it, so tampering breaks the chain exactly where it happened. [In the guide](https://it-rat.com/genaryx-guide.html#how-it-works)
 
 ## Built, and proven on a live fleet.
 
