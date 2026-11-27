@@ -704,6 +704,26 @@ run_case "security-txt: the file itself is gone" fail \
 	"$(py 'import os; os.remove(".well-known/security.txt")')" \
 	"measured nothing"
 
+# Invariant 16: what was built, modelled or run is stated as done. A limits
+# heading that frames the work as not proven is the shape it stood in on 2026-11-27.
+run_case "no-gap-framing: a limits heading that says not proven yet" fail \
+	'./scripts/no-gap-framing.sh' \
+	"$(py 'edit("services/qryx.html", "</body>", "<h2>What is not proven yet.</h2></body>")')" \
+	"frames work as not done"
+
+# A product-scope fact is not a proof gap, and a gate that fired on one would
+# be switched off within the week.
+run_case "no-gap-framing: the licence does not cover the machines (non-fault)" pass \
+	'./scripts/no-gap-framing.sh' \
+	"$(py 'edit("services/qryx.html", "</body>", "<p>The licence covers the code. It does not cover the machines the stack runs on.</p></body>")')"
+
+run_case "no-gap-framing: no published page left to read" fail \
+	'./scripts/no-gap-framing.sh' \
+	"$(py 'import pathlib
+for p in pathlib.Path(".").rglob("*.html"):
+    if not any(x.startswith(".") for x in p.parts): p.unlink()')" \
+	"measured nothing"
+
 echo
 if [ -n "$(git status --porcelain)" ]; then
 	printf 'FAIL: this script left the tree dirty, so it cannot be trusted about anything above\n'

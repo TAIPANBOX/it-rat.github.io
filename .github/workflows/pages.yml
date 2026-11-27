@@ -138,6 +138,12 @@ jobs:
         ## and the file answers 404 while everything here stays green.
         run: ./scripts/security-txt-current.sh
 
+      - name: Fail on a page that frames the work as not proven
+        ## Invariant 16: what was built, modelled or run is stated as done; a
+        ## claim keeps exactly the scope of its run and a product limit stays
+        ## a fact, but no page lists what was "not proven".
+        run: ./scripts/no-gap-framing.sh
+
       # Last, because it mutates tracked files and restores them. It needs a
       # clean tree and says so plainly, so it also reports any earlier step
       # that starts writing into the checkout.
