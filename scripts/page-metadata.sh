@@ -55,7 +55,8 @@ def attr(text, pattern):
     return html.unescape(m.group(m.lastindex)).strip() if m else None
 
 
-pages = sorted(p for p in pathlib.Path(".").rglob("*.html") if ".git" not in str(p))
+pages = sorted(p for p in pathlib.Path(".").rglob("*.html")
+               if not any(part.startswith(".") for part in p.parts))
 if not pages:
     print("FAIL: no HTML pages found, so this check measured nothing")
     sys.exit(1)

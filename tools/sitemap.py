@@ -105,6 +105,10 @@ def pages():
         rel = p.relative_to(ROOT).as_posix()
         if rel.startswith("demo/"):
             continue
+        # Never published: the Pages upload drops every dot path. A stray git
+        # worktree under .claude/ once put 56 pages in here.
+        if any(part.startswith(".") for part in p.relative_to(ROOT).parts):
+            continue
         if "noindex" in p.read_text(encoding="utf-8", errors="ignore"):
             continue
         out.append(rel)

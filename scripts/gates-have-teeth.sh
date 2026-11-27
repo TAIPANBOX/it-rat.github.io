@@ -535,6 +535,17 @@ m = re.search(r"</body>", s)
 assert m, "index.html has no closing body tag"
 open("index.html","w").write(s.replace(m.group(0), "<p>Since 2026, on version 2.1, this sentence carries digits and owns nothing.</p></body>", 1))')"
 
+# A page under a dot directory is never published: the Pages upload drops
+# every path starting with a dot. On 2026-11-27 a stray git worktree under
+# .claude/worktrees put 56 of its pages into sitemap.xml through tools/sitemap.py,
+# and this gate then demanded sitemap entries for them. Neither may treat one as
+# a page of the site.
+run_case "generated-blocks: a copy of a page under a dot directory" pass \
+	'./scripts/generated-blocks.sh' \
+	"$(py 'import os, shutil
+os.makedirs(".stray-worktree", exist_ok=True)
+shutil.copy("agent-identity.html", ".stray-worktree/agent-identity.html")')"
+
 # The footer's SHAPE is what this gate owns. Prose arriving on a page is not a
 # shape, and a gate that failed on it would be failing on ordinary writing.
 run_case "footer-shelves: a page gains a paragraph" pass \
