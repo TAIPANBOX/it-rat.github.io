@@ -30,9 +30,9 @@ One command on a box you own, one agent pointed at it, one address to write to, 
 
 *the honest half*
 
-### [What is proven here, and what is not](https://it-rat.com/what-is-proven.html)
+### [What is proven here, and how it was measured](https://it-rat.com/what-is-proven.html)
 
-What a measurement on this stack actually established, the limit published beside each one, three conclusions we withdrew, and the list of what nobody has established yet.
+What a measurement on this stack actually established, on what and with what result, sixteen injected failures and what each did, and three conclusions we withdrew.
 
 *the operational half*
 

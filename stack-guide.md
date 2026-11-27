@@ -60,7 +60,7 @@ The full ledger, every number and every bug, is public in each repository's `VAL
 
 ## Where the rest of the record is.
 
-- **On premises.** The 2026-09-17 run on a small box behind a home router, governing agents in AWS and GCP and then taking sixteen injected failures, is in [what is proven](https://it-rat.com/what-is-proven.html), under "Seven claims and what each one stops short of" and "Sixteen ways to break it, and what each one did".
+- **On premises.** The 2026-09-17 run on a small box behind a home router, governing agents in AWS and GCP and then taking sixteen injected failures, is in [what is proven](https://it-rat.com/what-is-proven.html), under "Seven claims: what was measured, on what, and the result" and "Sixteen ways to break it, and what each one did".
 
 - **What we withdrew.** The throughput cliff past 64 concurrent callers that turned out to be a shared-vCPU instance is in [what is proven](https://it-rat.com/what-is-proven.html), under "Three things we published and had to withdraw", and in [what runs where](https://it-rat.com/what-runs-where.html).
 
