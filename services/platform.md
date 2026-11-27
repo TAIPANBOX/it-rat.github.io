@@ -12,7 +12,7 @@ This is a simulation, labeled as one: a replay of the envelope's normal day. A p
 
 ## Everything meets at the envelope.
 
-Fifteen registered sources write one shape: twelve onto one NDJSON bus, and heraldyx, scopyx and the keyryx witness into files of their own (dashed). agent-conform counts among the twelve: it writes only its own stream, in the bus directory. Five required fields, six optional ones. On the right, the part your platform team owns: budgets, passports and policies as Terraform resources.
+Fifteen registered sources write one envelope, onto the shared bus or into files of their own; on the right is the part your platform team owns. [In the guide](https://it-rat.com/platform-guide.html#how-it-works)
 
 ## Boring on purpose. Load-bearing anyway.
 
@@ -46,17 +46,23 @@ Every event carries one agent_id and an explicit schema field. Anyone can implem
 
 ### The layer every other page stands on.
 
-Every other page on this site is a producer or a consumer of this contract. [Engram](https://it-rat.com/services/engram.html) writes memory_written and reflection_run into the same stream, and [Idryx](https://it-rat.com/services/idryx.html) reads everything back into one identity graph, checking passports with the same passport.Parse this platform ships.
+Every other page on this site is a producer or a consumer of this contract. [In the guide](https://it-rat.com/platform-guide.html#where-it-sits)
 
 This installs nothing of the stack: it is the contract itself, for an agent of your own.
 
 ## Small claims, kept.
 
-- The passport is metadata, not a token, and the spec is not an authentication protocol.
+### Metadata, not a token
 
-- The laptop sandbox is for trying the stack, not a production deployment: it binds loopback only, so nothing on it is reachable by an agent on another machine.
+The passport is metadata, not a token, and the spec is not an authentication protocol.
 
-- Where the API has no delete, the Terraform provider says so instead of pretending.
+### A sandbox, not production
+
+The laptop sandbox binds loopback only, so nothing on it is reachable by an agent on another machine.
+
+### No pretend deletes
+
+Where the API has no delete, the Terraform provider says so instead of pretending.
 
 ### The Platform guide
 

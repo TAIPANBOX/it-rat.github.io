@@ -50,10 +50,39 @@
   .install .note{color:var(--faint);font-size:11.5px;margin-left:auto}
   /* commands are code, so a reader and a word count both see them as code */
   .install code{font:inherit}
-  /* what is not proven stays on the page (invariant 5); the full list is in the guide */
-  .limits ul{margin:0;padding-left:18px;color:var(--dim);font-size:14.5px;line-height:1.65;max-width:80ch}
-  .limits li+li{margin-top:9px}
-  .limits li::marker{color:var(--accent)}
+  /* limits stay on the room as three short blocks (invariant 5); the full list is in the guide */
+  .lim p{margin:10px 0 0;color:var(--dim);font-size:14px;line-height:1.6}
+  .lim a{display:inline-block;margin-top:10px;color:var(--accent);font-size:13px}
+  @media(max-width:860px){.lim{grid-column:span 12}}
+  /* the .flight widget (as on keyryx and trailryx): an svg, tabs that drive it,
+     and one sentence per tab */
+  .flight{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);overflow:hidden}
+  .fl-head{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--line);
+    font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .fl-head .n{margin-left:auto;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .fl-head .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);flex:0 0 auto}
+  .flight svg{display:block;width:100%;height:auto}
+  .fl-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 15px;border-top:1px solid var(--line)}
+  .fl-tab{font-family:var(--font-m);font-size:11.5px;color:var(--dim);cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;
+    transition:color .15s,border-color .15s,background .15s}
+  .fl-tab:hover{color:var(--fg);border-color:color-mix(in srgb, var(--accent) 55%, var(--line-2))}
+  .fl-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fl-tab[aria-pressed="true"]{color:#0A1420;background:var(--accent);border-color:var(--accent)}
+  .fl-why{margin:0;padding:13px 15px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;line-height:1.65}
+  .fl-why a{color:var(--accent)}
+  .fl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  @media(max-width:760px){.fl-scroll svg{min-width:720px}}
+  #en-svg [data-p]{transition:opacity .35s}
+  #en-svg[data-show] [data-p]{opacity:.28}
+  #en-svg[data-show="distil"] [data-p~="distil"],
+  #en-svg[data-show="date"] [data-p~="date"],
+  #en-svg[data-show="contest"] [data-p~="contest"],
+  #en-svg[data-show="recall"] [data-p~="recall"]{opacity:1}
+  @media (prefers-reduced-motion: reduce){
+    #en-svg [data-p]{transition:none}
+    #en-svg .en-anim{display:none}
+  }
   .deeper .cta-row{margin-top:16px}
 </style>
 <!-- seo:auto -->
@@ -120,7 +149,7 @@
     <div class="sec-head rv">
       <div class="kicker">under the hood</div>
       <h2>One file on disk. Model calls only when you ask.</h2>
-      <p class="lede">Your agent calls observe() and recall() against one .engram file: SQLite plus sqlite-vec, in-process, nothing between the agent and its memory. The only calls that leave the machine are reflect() and compress(), through a pluggable LLM adapter, and even those can route through TokenFuse; the embedding model downloads once, about 64 MB, on first use.</p>
+      <p class="lede">Your agent calls observe() and recall() against one .engram file, in-process; only reflect() and compress() leave the machine. <a href="../engram-guide.html#how-it-works" style="color:var(--accent)">In the guide</a></p>
     </div>
     <div class="diagram rv">
       <svg viewBox="0 0 960 330" role="img" aria-label="Engram architecture">
@@ -179,13 +208,25 @@
       <div class="kicker">what it holds</div>
       <h2>Not a log of text. Beliefs with receipts.</h2>
     </div>
-    <div class="bento">
-      <div class="card hover feature b-6 rv"><h3>Single file, embeddable</h3><p>One .engram file on SQLite plus sqlite-vec: no server, no Docker, no config file. A write takes a median of 8 ms (200 writes on an Apple Silicon Mac, 2026-10-13) because no LLM sits in the write path.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>reflect() distills facts</h3><p>A background reflection loop groups recent episodes and asks an LLM to extract subject-predicate-object facts, each with a confidence score. Every fact keeps a why() chain.</p></div>
-      <div class="card hover feature b-6 rv"><h3>Facts that know their dates</h3><p>Every fact carries two timelines: when it was true in reality, and when the system learned it. When Ivan changes jobs the old fact is closed with an end date, never deleted.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>Three ways to recall</h3><p>Cosine vectors for meaning, BM25 blended with vectors when exact terms matter, and spreading activation that walks the entity graph.</p></div>
-      <div class="card hover feature b-6 rv"><h3>A person's word outranks a model's</h3><p>A fact the person wrote is never closed by a fact a model extracted. The newer one is recorded beside it, contradictions() lists the pair, and the contradiction_found event names both.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>A fact can be refuted, not erased</h3><p>refute_fact() closes a fact without deleting it, so the timeline and as_of keep what was believed before. Every fact derived from it is marked as undermined and stays active.</p></div>
+    <div class="flight rv">
+      <div class="fl-head"><span class="dot"></span>one fact, from episode to recall<span class="n" id="en-n">distilled</span></div>
+      <div class="fl-scroll"><svg id="en-svg" data-show="distil" viewBox="0 0 960 366" role="img" aria-labelledby="en-svg-t"><title id="en-svg-t">A fact's life in Engram: episodes are observed with no model, reflect() distils them into a fact with a confidence and a why() chain; each fact carries valid time and recorded time, so Ivan's Acme fact is closed when Globex opens; a model's fact never closes the person's own, contradictions() lists the pair and refute_fact() closes a fact while keeping it; recall() runs hybrid, cosine or spreading activation.</title><defs><marker id="en-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="distil"><rect x="10" y="10" width="462" height="170" rx="12" fill="none" stroke="#2a3547" stroke-width="1"/><text x="26" y="34" fill="#6C7BFF" font-size="11" font-weight="700" text-anchor="start">1 &#183; DISTILLED</text></g><g data-p="distil"><rect x="28" y="48" width="100" height="26" rx="7" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="78.0" y="65.0" fill="#93A8C4" font-size="10.5" font-weight="700">episode</text><rect x="28" y="82" width="100" height="26" rx="7" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="78.0" y="99.0" fill="#93A8C4" font-size="10.5" font-weight="700">episode</text><rect x="28" y="116" width="100" height="26" rx="7" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="78.0" y="133.0" fill="#93A8C4" font-size="10.5" font-weight="700">episode</text><text x="78" y="164" fill="#5A6675" font-size="9.5">observe(): no model</text></g><g data-p="distil"><path d="M128 61 L166 90" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#en-a)"/><path d="M128 95 L166 95" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#en-a)"/><path d="M128 129 L166 100" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#en-a)"/></g><g data-p="distil"><rect x="168" y="70" width="124" height="52" rx="9" fill="#161F2C" stroke="#6C7BFF" stroke-width="1.2"/><text x="230.0" y="88" fill="#6C7BFF" font-size="11.5" font-weight="700">reflect()</text><text x="230.0" y="104" fill="#8A97A6" font-size="10">only when asked</text></g><g data-p="distil"><path d="M292 96 L326 96" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#en-a)"/></g><g data-p="distil"><rect x="328" y="48" width="130" height="96" rx="9" fill="#141C27" stroke="#E9EFF6" stroke-width="1.2"/><text x="393.0" y="66" fill="#E9EFF6" font-size="11.5" font-weight="700">a fact</text><text x="393.0" y="82" fill="#8A97A6" font-size="10">s &#183; p &#183; o</text><text x="393" y="98" fill="#8A97A6" font-size="10">+ confidence</text><text x="393" y="114" fill="#8A97A6" font-size="10">+ why() chain</text><text x="393" y="132" fill="#5A6675" font-size="9.5">to its episodes</text></g><g data-p="date"><rect x="488" y="10" width="462" height="170" rx="12" fill="none" stroke="#2a3547" stroke-width="1"/><text x="504" y="34" fill="#6C7BFF" font-size="11" font-weight="700" text-anchor="start">2 &#183; DATED</text></g><g data-p="date"><text x="506" y="66" fill="#8A97A6" font-size="10" text-anchor="start">Ivan</text><rect x="540" y="52" width="196" height="22" rx="6" fill="#141C27" stroke="#5A6675" stroke-width="1.2"/><text x="638" y="67" fill="#8A97A6" font-size="10.5">works_at Acme</text><rect x="744" y="52" width="190" height="22" rx="6" fill="#161F2C" stroke="#6C7BFF" stroke-width="1.2"/><text x="839" y="67" fill="#6C7BFF" font-size="10.5" font-weight="700">works_at Globex</text><rect x="739.4" y="44" width="1.2" height="40" fill="#F4B23E"/><text x="740" y="98" fill="#F4B23E" font-size="10">valid_to set: closed, never deleted</text><text x="506" y="124" fill="#8A97A6" font-size="10" text-anchor="start">valid_from / valid_to: when it was true</text><text x="506" y="142" fill="#8A97A6" font-size="10" text-anchor="start">recorded_at / superseded_at: when it was learned</text><text x="506" y="164" fill="#E9EFF6" font-size="10" text-anchor="start">as_of March answers with what March believed</text></g><g data-p="contest"><rect x="10" y="196" width="462" height="160" rx="12" fill="none" stroke="#2a3547" stroke-width="1"/><text x="26" y="220" fill="#6C7BFF" font-size="11" font-weight="700" text-anchor="start">3 &#183; CONTESTED</text></g><g data-p="contest"><rect x="28" y="234" width="156" height="46" rx="9" fill="#161F2C" stroke="#6C7BFF" stroke-width="1.2"/><text x="106.0" y="252" fill="#6C7BFF" font-size="11.5" font-weight="700">person's fact</text><text x="106.0" y="268" fill="#8A97A6" font-size="10">provenance user</text><rect x="28" y="292" width="156" height="46" rx="9" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="106.0" y="310" fill="#93A8C4" font-size="11.5" font-weight="700">model's fact</text><text x="106.0" y="326" fill="#8A97A6" font-size="10">from reflect()</text></g><g data-p="contest"><path d="M184 315 L218 270" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#en-a)"/><path d="M184 257 L218 262" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#en-a)"/></g><g data-p="contest"><rect x="220" y="234" width="236" height="46" rx="9" fill="#141C27" stroke="#E9EFF6" stroke-width="1.2"/><text x="338.0" y="252" fill="#E9EFF6" font-size="11.5" font-weight="700">contradictions()</text><text x="338.0" y="268" fill="#8A97A6" font-size="10">lists the pair; neither is closed</text></g><g data-p="contest"><path d="M184 322 L218 314" stroke="#93A8C4" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#en-a)"/><rect x="220" y="292" width="236" height="46" rx="9" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="338.0" y="310" fill="#FF574B" font-size="11.5" font-weight="700">refute_fact()</text><text x="338.0" y="326" fill="#8A97A6" font-size="9.5">closed and kept; derived: undermined</text></g><g data-p="recall"><rect x="488" y="196" width="462" height="160" rx="12" fill="none" stroke="#2a3547" stroke-width="1"/><text x="504" y="220" fill="#6C7BFF" font-size="11" font-weight="700" text-anchor="start">4 &#183; RECALLED</text></g><g data-p="recall"><rect x="506" y="266" width="100" height="46" rx="9" fill="#141C27" stroke="#E9EFF6" stroke-width="1.2"/><text x="556.0" y="284" fill="#E9EFF6" font-size="11.5" font-weight="700">recall()</text><text x="556.0" y="300" fill="#8A97A6" font-size="10">one call</text></g><g data-p="recall"><rect x="654" y="232" width="282" height="30" rx="8" fill="#141C27" stroke="#6C7BFF" stroke-width="1.2"/><text x="795" y="251" fill="#6C7BFF" font-size="10.5" font-weight="700">hybrid &#183; BM25 + cosine &#183; default</text><rect x="654" y="272" width="282" height="30" rx="8" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="795" y="291" fill="#E9EFF6" font-size="10.5">cosine &#183; same meaning, other words</text><rect x="654" y="312" width="282" height="30" rx="8" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="795" y="331" fill="#E9EFF6" font-size="10.5">spreading &#183; walks the entity graph</text><path d="M606 280 L652 248" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#en-a)"/><path d="M606 289 L652 287" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#en-a)"/><path d="M606 298 L652 326" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#en-a)"/></g><g class="en-anim"><g data-p="distil"><circle r="3.4" fill="#93A8C4"><animateMotion path="M128 95 L166 95" dur="2.4s" begin="-0s" repeatCount="indefinite"/></circle><circle r="3.4" fill="#6C7BFF"><animateMotion path="M292 96 L326 96" dur="2.4s" begin="-1.2s" repeatCount="indefinite"/></circle></g><g data-p="contest"><circle r="3.4" fill="#93A8C4"><animateMotion path="M184 315 L218 270" dur="2.8s" begin="-0.4s" repeatCount="indefinite"/></circle></g><g data-p="recall"><circle r="3.4" fill="#6C7BFF"><animateMotion path="M606 280 L652 248" dur="2.6s" begin="-0s" repeatCount="indefinite"/></circle><circle r="3.4" fill="#93A8C4"><animateMotion path="M606 289 L652 287" dur="2.6s" begin="-0.9s" repeatCount="indefinite"/></circle><circle r="3.4" fill="#93A8C4"><animateMotion path="M606 298 L652 326" dur="2.6s" begin="-1.7s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="en-svg" data-k="distil">Distilled</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="en-svg" data-k="date">Dated</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="en-svg" data-k="contest">Contested</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="en-svg" data-k="recall">Recalled</button>
+      </div>
+      <div aria-live="polite">
+        <p class="fl-why" data-for="distil">Observing writes an episode with no model in the path; reflect(), only when you ask, distils episodes into facts that each keep a why() chain. <a href="../engram-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="date" hidden>Every fact carries when it was true and when Engram learned it, so a fact that changes is closed with an end date and never deleted. <a href="../engram-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="contest" hidden>A model's fact never closes the person's own: it is recorded beside it, and refute_fact() closes a fact while keeping its history. <a href="../engram-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="recall" hidden>One recall call has three modes: hybrid by default, cosine for meaning, and spreading activation over the entity graph. <a href="../engram-guide.html#recall">In the guide</a></p>
+      </div>
+    </div>
+    <div class="cta-row rv">
+      <a class="btn" href="../engram-guide.html#how-it-works">Every mechanism, in the guide</a>
+      <a class="btn" href="../engram-guide.html#recall">The three recall modes</a>
     </div>
   </div>
 </section>
@@ -224,12 +265,10 @@
       <div class="kicker">limits</div>
       <h2>Agent events are off by default, and reflect() is not an MCP tool.</h2>
     </div>
-    <div class="card limits rv">
-      <ul>
-        <li>Since version 3.0.0 (released 2026-10-18) the MCP server sets provenance and scope: a call cannot claim user, the server's ceiling is external unless its operator raises it, and a server started with an agent id serves that agent alone (one started without serves the whole file and says so). A session turns untrusted when recall or why returns a memory that is not the user's own or is quarantined, when the caller labels what it writes as tool or external, or passes read_untrusted=true, or when the flag is set. The server cannot see what an agent read outside engram.</li>
-        <li>reflect() is deliberately not exposed to MCP clients.</li>
-        <li>Agent events are opt-in and off by default.</li>
-      </ul>
+    <div class="bento">
+      <div class="card b-4 lim rv"><h3>Provenance over MCP</h3><p>The MCP server sets provenance and scope, and it cannot see what an agent read outside engram.</p><a href="../engram-guide.html#limits">In the guide</a></div>
+      <div class="card b-4 lim rv d1"><h3>No reflect() over MCP</h3><p>reflect() is deliberately not exposed to MCP clients.</p><a href="../engram-guide.html#limits">In the guide</a></div>
+      <div class="card b-4 lim rv d2"><h3>Events are opt-in</h3><p>Agent events are opt-in and off by default.</p><a href="../engram-guide.html#limits">In the guide</a></div>
     </div>
   </div>
 </section>
@@ -318,6 +357,23 @@
   </div>
 </footer>
 
+<script>
+/* tabs light their part of the en picture */
+(function(){
+  const svg=document.getElementById("en-svg"); if(!svg) return;
+  const box=document.getElementById("how");
+  const tabs=[...box.querySelectorAll('.fl-tab')];
+  const whys=[...box.querySelectorAll('.fl-why')];
+  const n=document.getElementById("en-n");
+  function show(k){
+    svg.setAttribute("data-show",k);
+    tabs.forEach(t=>t.setAttribute("aria-pressed",String(t.dataset.k===k)));
+    whys.forEach(p=>{p.hidden=p.dataset.for!==k;});
+    const t=tabs.find(t=>t.dataset.k===k); if(n&&t) n.textContent=t.textContent.toLowerCase();
+  }
+  tabs.forEach(t=>t.addEventListener("click",()=>show(t.dataset.k)));
+})();
+</script>
 <script src="../assets/site.js?v=e13"></script>
 <script src="../assets/sheet.js?v=e06"></script>
 <script src="../assets/sim.js?v=e14"></script>

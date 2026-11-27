@@ -2387,14 +2387,27 @@
       "slow": false
     },
     {
-      "page": "services/engram.html",
+      "page": "engram-guide.html",
       "claim": "3.0.0",
-      "occurrences": 1,
+      "occurrences": 8,
       "repo": "TAIPANBOX/engram",
-      "command": "gh api repos/TAIPANBOX/engram/releases/tags/v3.0.0 --jq .tag_name | sed 's/^v//'",
+      "command": "gh api repos/TAIPANBOX/engram/releases/tags/v3.0.0 --jq .tag_name",
       "status": "measured",
       "measured_on": "2026-11-27",
-      "note": "Re-scoped 2026-11-27: the room says 'Since version 3.0.0 (released 2026-10-18)', a statement about when the behaviour began, so it is checked against the v3.0.0 tag and not against the newest release (v3.1.0). Added 2026-10-19: the room states version 3.0.0, the newest release (tag v3.0.0, 2026-10-18). The entry had been removed while the room kept the figure, which the gate did not see without the v prefix.",
+      "note": "history, checked by its own tag. Moved 2026-11-27 with the room's long limits item ('Since version 3.0.0 (released 2026-10-18) the MCP server sets provenance and scope...') to the guide's #limits; the count of 8 includes the seven 'v3.0.0' mentions the guide already carried. Before that it was the room's one figure.",
+      "repo_dir": "engram",
+      "check": "gh api repos/TAIPANBOX/engram/releases/tags/v3.0.0 --jq .tag_name | sed 's/^v//'",
+      "slow": false
+    },
+    {
+      "page": "engram-guide.md",
+      "claim": "3.0.0",
+      "occurrences": 5,
+      "repo": "TAIPANBOX/engram",
+      "command": "gh api repos/TAIPANBOX/engram/releases/tags/v3.0.0 --jq .tag_name",
+      "status": "measured",
+      "measured_on": "2026-11-27",
+      "note": "history, checked by its own tag. The guide's markdown twin carries the same limits item as engram-guide.html; the count of 5 includes the 'v3.0.0' mentions.",
       "repo_dir": "engram",
       "check": "gh api repos/TAIPANBOX/engram/releases/tags/v3.0.0 --jq .tag_name | sed 's/^v//'",
       "slow": false
