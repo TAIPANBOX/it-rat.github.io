@@ -103,6 +103,24 @@
   .limits li+li{margin-top:9px}
   .limits li::marker{color:var(--accent)}
   .deeper .cta-row{margin-top:16px}
+  #txh-svg [data-p]{transition:opacity .35s}
+  #txh-svg[data-show] [data-p]{opacity:.3}
+  #txh-svg[data-show="never"] [data-p~="never"],
+  #txh-svg[data-show="hold"] [data-p~="hold"],
+  #txh-svg[data-show="truth"] [data-p~="truth"]{opacity:1}
+  @media (prefers-reduced-motion: reduce){
+    #txh-svg [data-p]{transition:none}
+    #txh-svg .txh-anim{display:none}
+  }
+  #txl-svg [data-p]{transition:opacity .35s}
+  #txl-svg[data-show] [data-p]{opacity:.3}
+  #txl-svg[data-show="tuned"] [data-p~="tuned"],
+  #txl-svg[data-show="signal"] [data-p~="signal"],
+  #txl-svg[data-show="openai"] [data-p~="openai"]{opacity:1}
+  @media (prefers-reduced-motion: reduce){
+    #txl-svg [data-p]{transition:none}
+    #txl-svg .txl-anim{display:none}
+  }
 </style>
 <!-- seo:auto -->
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"Typryx","url":"https://it-rat.com/services/typryx.html","description":"A typed answer, choice, score or yes/no, with a probability, never a guess: capped, journaled, and calibrated against real outcomes.","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS","publisher":{"@id":"https://it-rat.com/#org"},"isAccessibleForFree":true,"codeRepository":"https://github.com/TAIPANBOX/typryx","license":"https://www.apache.org/licenses/LICENSE-2.0","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"The stack","item":"https://it-rat.com/stack.html"},{"@type":"ListItem","position":3,"name":"Typryx","item":"https://it-rat.com/services/typryx.html"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is typryx required to run the rest of the stack?","acceptedAnswer":{"@type":"Answer","text":"No. It is an optional add-on, and every other service keeps its current path unchanged when it is absent. Nothing in this repository or a planned consumer is built to depend on it."}},{"@type":"Question","name":"What leaves the box when I send it a state?","acceptedAnswer":{"@type":"Answer","text":"Only the fields the template's own fields list names, held by the type system rather than a promise: internal/backend.Backend.Ask takes a template.Egress , a type constructible only inside the template package. Measured on a live run: a state carrying user_email and, separately, customer_iban , neither reached the backend or the record."}},{"@type":"Question","name":"Can a probability block anything?","acceptedAnswer":{"@type":"Answer","text":"Not here, and not in a consumer. A probability is a signal a policy can threshold; Wardryx's hold_if_signal rule can turn one into a hold, which a person releases, and never into a deny. That path is built and released, and measured on the stub backend only."}},{"@type":"Question","name":"How do I know a probability is honest?","acceptedAnswer":{"@type":"Answer","text":"Not from the number alone, which is the finding of the calibration run below: every group was 96% to 100% confident on average and right 50% to 73% of the time. typryx calibration groups by template, version, backend and model, never pooled, and prints accuracy, mean confidence, ECE and Brier against a later truth posted to /v1/outcome , so calibration is measured rather than assumed."}},{"@type":"Question","name":"Does typryx need Jev to be useful?","acceptedAnswer":{"@type":"Answer","text":"No. Jev is one backend behind one interface, not the contract. The stub backend answers deterministically for tests and demos, and openai-logprobs reaches any OpenAI-compatible server, including a model on your own hardware. Jev has run live (2026-09-30) and was the most accurate of the three data modes on the 434 questions, but it is a hosted service: choosing it sends the fields a question names to TypeSafe AI. With your own model nothing leaves your hardware, and with typryx off the stack runs as it did before."}},{"@type":"Question","name":"Can I use my own model instead of Jev?","acceptedAnswer":{"@type":"Answer","text":"Yes. Point typryx at any OpenAI-compatible server you run, such as Ollama or vLLM, and nothing leaves your hardware. On the same 434 questions a 7B model on a machine with no GPU was less accurate and less well calibrated than Jev, and slower. You can also tune a model on your own questions: typryx keeps an opt-in training log and exports the questions a person has judged, and it measures the new model against the old per template. It does not train or ship a model, and no tune has been run from an export yet."}}]}]}</script>
@@ -141,7 +159,7 @@
       </div>
       <div class="hero-side rv d2">
         <div class="row"><span class="k">release</span><span class="v">v0.6.1 &#183; Go 1.27</span></div>
-        <div class="row"><span class="k">tests</span><span class="v">1051 tests &#183; httptest fakes, no live calls</span></div>
+        <div class="row"><span class="k">tests</span><span class="v">1106 tests &#183; httptest fakes, no live calls</span></div>
         <div class="row"><span class="k">deps</span><span class="v">one direct dependency</span></div>
         <div class="row"><span class="k">spend cap</span><span class="v">1,000 calls an hour, by default</span></div>
         <div class="row"><span class="k">image</span><span class="v">16.8 MB &#183; ghcr.io, signed</span></div>
@@ -157,7 +175,7 @@
     <div class="sec-head rv">
       <div class="kicker">a measured replay</div>
       <h2>Every real judgement from one run, replayed in the same order.</h2>
-      <p class="lede">Not an illustration: these are the 60 real arithmetic judgements, qwen2.5:7b run locally on Ollama, wording v2, in the order they were asked. Watch how often "confident" and "right" turn out to be different things.</p>
+      <p class="lede">The 60 real arithmetic judgements of qwen2.5:7b on Ollama, in the order asked: watch how often "confident" and "right" differ. <a href="../typryx-guide.html#measured" style="color:var(--accent)">In the guide</a></p>
     </div>
     <div class="rv" id="tx-sim"></div>
   </div>
@@ -459,7 +477,7 @@
       <div class="card b-12 rv">
         <div class="kicker">what leaves the box</div>
         <h3 style="margin-top:10px">Toggle the extra fields. The egress never changes.</h3>
-        <p style="margin-top:8px;color:var(--dim);font-size:14.5px;line-height:1.65">Only <span class="mono" style="font-size:12.5px">task</span> and <span class="mono" style="font-size:12.5px">final_answer</span> are in the template's <span class="mono" style="font-size:12.5px">fields</span>, so on a template ask they are the only two that reach the backend. The one exception is a freeform question, which sends the whole state when TYPRYX_ALLOW_FREEFORM=1 is set (off by default).</p>
+        <p style="margin-top:8px;color:var(--dim);font-size:14.5px;line-height:1.65">On a template ask only the fields the template names reach the backend. <a href="../typryx-guide.html#egress" style="color:var(--accent)">In the guide</a></p>
         <div class="flight" style="margin-top:16px">
           <div class="fl-scroll"><svg id="eg-svg" viewBox="0 0 960 250" role="img" aria-label="Five field chips represent one state. Two, task and final_answer, always pass the egress filter. The other three can be toggled in or out of the state, and whichever are in, the filter still lets through only task and final_answer, held back and counted.">
             <defs><marker id="txeg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5A6675"/></marker></defs>
@@ -500,7 +518,7 @@
             <button class="fchip" type="button" data-f="customer_iban" aria-pressed="true">customer_iban</button>
             <button class="fchip" type="button" data-f="api_token" aria-pressed="true">api_token</button>
           </div>
-          <p class="fl-why">Measured (undated, see the typryx README): a five-field state carrying <span class="mono" style="font-size:12.5px">user_email</span> and, separately, <span class="mono" style="font-size:12.5px">customer_iban</span>, neither ever reached the backend or the record.</p>
+          <p class="fl-why">Measured: neither <span class="mono" style="font-size:12.5px">user_email</span> nor <span class="mono" style="font-size:12.5px">customer_iban</span> in a five-field state reached the backend or the record.</p>
         </div>
       </div>
     </div>
@@ -580,10 +598,19 @@
       <div class="kicker">what it holds to</div>
       <h2>A probability, never an enforcement decision.</h2>
     </div>
-    <div class="bento">
-      <div class="card hover feature b-4 rv"><h3>Never invents an answer</h3><p>A backend error, a timeout, missing or malformed probabilities, a cap hit: the answer is unanswered with a named reason.</p></div>
-      <div class="card hover feature b-4 rv d1"><h3>No deny from a probability</h3><p>Wardryx's <span class="mono" style="font-size:12.5px">hold_if_signal</span> rule may turn a signal into a hold, which a person releases; nothing turns a probability into a deny.</p></div>
-      <div class="card hover feature b-4 rv d2"><h3>A later truth, scored honestly</h3><p>An outcome posted later is scored against the exact template version an answer was asked under, never against whatever the live template says today.</p></div>
+    <div class="flight rv" data-fl="txh">
+      <div class="fl-head"><span class="dot"></span>what it holds to<span class="n" id="txh-n">never invents</span></div>
+      <div class="fl-scroll"><svg id="txh-svg" data-show="never" viewBox="0 0 960 306" role="img" aria-labelledby="txh-svg-t"><title id="txh-svg-t">What typryx holds to: an ask from a versioned template reaches the backend and a typed answer is read off the distribution, or a backend error, a timeout, malformed probabilities or a cap hit makes it unanswered with a named reason and no answer or probabilities; an outcome posted later is scored against the template version the answer was asked under, never the live one; a signal reaches Wardryx&#x27;s hold_if_signal rule, which can only hold, a person releases the hold, and no probability becomes a deny.</title><defs><marker id="txh-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="never hold truth"><rect x="24" y="40" width="200" height="56" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="124" y="60" fill="#93A8C4" font-size="12" font-weight="700">an ask</text><text x="124" y="77" fill="#8A97A6" font-size="10.5">a versioned template</text></g><g data-p="never"><path d="M224 68 L266 68" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#txh-a)"/></g><g data-p="never"><rect x="268" y="40" width="200" height="56" rx="10" fill="#161F2C" stroke="#60A5FA" stroke-width="1.4"/><text x="368" y="60" fill="#60A5FA" font-size="12" font-weight="700">the backend</text><text x="368" y="77" fill="#8A97A6" font-size="10.5">returns a distribution</text></g><g data-p="never truth"><path d="M468 68 L510 68" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#txh-a)"/></g><g data-p="never truth hold"><rect x="512" y="40" width="200" height="56" rx="10" fill="#161F2C" stroke="#60A5FA" stroke-width="1.4"/><text x="612" y="60" fill="#60A5FA" font-size="12" font-weight="700">a typed answer</text><text x="612" y="77" fill="#8A97A6" font-size="10.5">read off the distribution</text></g><g data-p="never"><path d="M368 96 L368 138" stroke="#FDE68A" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#txh-a)"/></g><g data-p="never"><text x="356" y="116" fill="#FDE68A" font-size="10.5" text-anchor="end">error, timeout,</text></g><g data-p="never"><text x="356" y="130" fill="#FDE68A" font-size="10.5" text-anchor="end">malformed, cap hit</text></g><g data-p="never"><rect x="268" y="140" width="200" height="72" rx="10" fill="none" stroke="#FDE68A" stroke-width="1.2" stroke-dasharray="4 4"/><text x="368" y="160" fill="#FDE68A" font-size="12" font-weight="700">unanswered</text><text x="368" y="177" fill="#8A97A6" font-size="10.5">a named reason</text><text x="368" y="192" fill="#8A97A6" font-size="10.5">no answer, no probabilities</text></g><g data-p="truth"><path d="M712 68 L754 68" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#txh-a)"/></g><g data-p="truth"><rect x="756" y="40" width="180" height="56" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="846" y="60" fill="#93A8C4" font-size="12" font-weight="700">an outcome</text><text x="846" y="77" fill="#8A97A6" font-size="10.5">posted later</text></g><g data-p="truth"><path d="M846 96 L846 138" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#txh-a)"/></g><g data-p="truth"><rect x="756" y="140" width="180" height="72" rx="10" fill="#161F2C" stroke="#60A5FA" stroke-width="1.4"/><text x="846" y="160" fill="#60A5FA" font-size="12" font-weight="700">scored against</text><text x="846" y="177" fill="#8A97A6" font-size="10.5">the version it was</text><text x="846" y="192" fill="#8A97A6" font-size="10.5">asked under, not today&#x27;s</text></g><g data-p="hold"><rect x="24" y="236" width="200" height="56" rx="10" fill="#141C27" stroke="#60A5FA" stroke-width="1.2"/><text x="124" y="256" fill="#60A5FA" font-size="12" font-weight="700">a signal</text><text x="124" y="273" fill="#8A97A6" font-size="10.5">typryx&#x27;s probability</text></g><g data-p="hold"><path d="M224 264 L266 264" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#txh-a)"/></g><g data-p="hold"><rect x="268" y="236" width="200" height="56" rx="10" fill="#161F2C" stroke="#2DD4BF" stroke-width="1.4"/><text x="368" y="256" fill="#2DD4BF" font-size="12" font-weight="700">wardryx</text><text x="368" y="273" fill="#8A97A6" font-size="10.5">hold_if_signal</text></g><g data-p="hold"><path d="M468 264 L510 264" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#txh-a)"/></g><g data-p="hold"><rect x="512" y="236" width="200" height="56" rx="10" fill="#141C27" stroke="#2DD4BF" stroke-width="1.2"/><text x="612" y="256" fill="#2DD4BF" font-size="12" font-weight="700">a hold</text><text x="612" y="273" fill="#8A97A6" font-size="10.5">a person releases it</text></g><g data-p="hold"><rect x="756" y="236" width="180" height="56" rx="10" fill="none" stroke="#5A6675" stroke-width="1.2" stroke-dasharray="4 4"/><text x="846" y="256" fill="#5A6675" font-size="12" font-weight="700">no deny</text><text x="846" y="273" fill="#8A97A6" font-size="10.5">from a probability, ever</text></g><g data-p="hold"><path d="M612 96 L612 224 L124 224 L124 234" stroke="#5A6675" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#txh-a)"/></g><g class="txh-anim"><g data-p="never"><circle r="3.6" fill="#93A8C4"><animateMotion path="M224 68 L266 68" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="never truth"><circle r="3.6" fill="#60A5FA"><animateMotion path="M468 68 L510 68" dur="2.8s" begin="-0.7s" repeatCount="indefinite"/></circle></g><g data-p="never"><circle r="3.6" fill="#FDE68A"><animateMotion path="M368 96 L368 138" dur="2.8s" begin="-1.4s" repeatCount="indefinite"/></circle></g><g data-p="truth"><circle r="3.6" fill="#93A8C4"><animateMotion path="M712 68 L754 68" dur="2.8s" begin="-0.3s" repeatCount="indefinite"/></circle></g><g data-p="truth"><circle r="3.6" fill="#93A8C4"><animateMotion path="M846 96 L846 138" dur="2.8s" begin="-1.1s" repeatCount="indefinite"/></circle></g><g data-p="hold"><circle r="3.6" fill="#60A5FA"><animateMotion path="M224 264 L266 264" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="hold"><circle r="3.6" fill="#2DD4BF"><animateMotion path="M468 264 L510 264" dur="2.8s" begin="-0.9s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="txh-svg" data-k="never">Never invents</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="txh-svg" data-k="hold">No deny</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="txh-svg" data-k="truth">Later truth</button>
+      </div>
+      <div aria-live="polite">
+        <p class="fl-why" data-for="never">An error, a timeout, malformed probabilities or a cap hit leaves the answer unanswered, with a named reason. <a href="../typryx-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="hold" hidden>Wardryx's <span class="mono" style="font-size:12.5px">hold_if_signal</span> rule may turn a signal into a hold, which a person releases; nothing turns a probability into a deny. <a href="../typryx-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="truth" hidden>A later outcome is scored against the template version the answer was asked under, never against today's live template. <a href="../typryx-guide.html#how-it-works">In the guide</a></p>
+      </div>
     </div>
   </div>
 </section>
@@ -593,13 +620,24 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">limits</div>
-      <h2>What is not proven yet.</h2>
+      <h2>Limits, in short.</h2>
     </div>
-    <div class="card limits rv">
-      <ul>
-        <li>Not yet: a model tuned from an export and measured against the one it replaces, the Wardryx signal with a real backend behind it, and the deeper consumers.</li>
-        <li>OpenAI's current models refuse the default request; since v0.6.0 three more variables reach them.</li>
-      </ul>
+    <div class="flight rv" data-fl="txl">
+      <div class="fl-head"><span class="dot"></span>what is not proven yet<span class="n" id="txl-n">tuned model</span></div>
+      <div class="fl-scroll"><svg id="txl-svg" data-show="tuned" viewBox="0 0 960 236" role="img" aria-labelledby="txl-svg-t"><title id="txl-svg-t">What is not proven yet: your export to a tuned model that is compared with the one it replaces is not measured; the Wardryx signal runs on the stub backend only, with a real backend and the deeper consumers not yet; OpenAI&#x27;s current models refuse the default request and take three more variables: five top logprobs, sixteen completion tokens and no reasoning.</title><defs><marker id="txl-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="tuned"><rect x="24" y="30" width="270" height="56" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="159" y="50" fill="#93A8C4" font-size="12" font-weight="700">an export</text><text x="159" y="67" fill="#8A97A6" font-size="10.5">human truths, from the ledger</text></g><g data-p="tuned"><path d="M159 86 L159 118" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#txl-a)"/></g><g data-p="tuned"><rect x="24" y="120" width="270" height="56" rx="10" fill="none" stroke="#5A6675" stroke-width="1.2" stroke-dasharray="4 4"/><text x="159" y="140" fill="#5A6675" font-size="12" font-weight="700">your tuned model</text><text x="159" y="157" fill="#8A97A6" font-size="10.5">compared with the old one</text></g><g data-p="tuned"><text x="159" y="204" fill="#FDE68A" font-size="11" text-anchor="middle" font-weight="700">not measured yet</text></g><g data-p="signal"><rect x="340" y="30" width="270" height="56" rx="10" fill="#161F2C" stroke="#2DD4BF" stroke-width="1.4"/><text x="475" y="50" fill="#2DD4BF" font-size="12" font-weight="700">the wardryx signal</text><text x="475" y="67" fill="#8A97A6" font-size="10.5">hold_if_signal</text></g><g data-p="signal"><path d="M475 86 L475 118" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#txl-a)"/></g><g data-p="signal"><rect x="340" y="120" width="270" height="56" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="475" y="140" fill="#93A8C4" font-size="12" font-weight="700">the stub backend</text><text x="475" y="157" fill="#8A97A6" font-size="10.5">the only one behind it yet</text></g><g data-p="signal"><text x="475" y="204" fill="#FDE68A" font-size="10.5" text-anchor="middle">a real backend, the deeper consumers: not yet</text></g><g data-p="openai"><rect x="666" y="30" width="270" height="56" rx="10" fill="none" stroke="#FF574B" stroke-width="1.2" stroke-dasharray="4 4"/><text x="801" y="50" fill="#FF574B" font-size="12" font-weight="700">the default request</text><text x="801" y="67" fill="#8A97A6" font-size="10.5">refused by current OpenAI models</text></g><g data-p="openai"><path d="M801 86 L801 118" stroke="#5A6675" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#txl-a)"/></g><g data-p="openai"><rect x="666" y="120" width="270" height="72" rx="10" fill="#161F2C" stroke="#60A5FA" stroke-width="1.4"/><text x="801" y="140" fill="#60A5FA" font-size="12" font-weight="700">three more variables</text><text x="801" y="157" fill="#8A97A6" font-size="10.5">five top logprobs, sixteen</text><text x="801" y="172" fill="#8A97A6" font-size="10.5">completion tokens, no reasoning</text></g><g class="txl-anim"><g data-p="tuned"><circle r="3.6" fill="#93A8C4"><animateMotion path="M159 86 L159 118" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="signal"><circle r="3.6" fill="#2DD4BF"><animateMotion path="M475 86 L475 118" dur="2.8s" begin="-0s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="txl-svg" data-k="tuned">Tuned model</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="txl-svg" data-k="signal">Wardryx signal</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="txl-svg" data-k="openai">OpenAI</button>
+      </div>
+      <div aria-live="polite">
+        <p class="fl-why" data-for="tuned">Not yet: a model tuned from an export and measured against the one it replaces. <a href="../typryx-guide.html#limits">In the guide</a></p>
+        <p class="fl-why" data-for="signal" hidden>Not yet: the Wardryx signal with a real backend behind it, and the deeper consumers. <a href="../typryx-guide.html#limits">In the guide</a></p>
+        <p class="fl-why" data-for="openai" hidden>OpenAI's current models refuse the default request; since v0.6.0 three more variables reach them. <a href="../typryx-guide.html#limits">In the guide</a></p>
+      </div>
+    </div>
+    <div class="cta-row rv">
+      <a class="btn" href="../typryx-guide.html#limits">Every limit, in the guide</a>
     </div>
   </div>
 </section>
@@ -704,6 +742,21 @@
   </div>
 </footer>
 
+<script>
+/* each .flight with data-fl: its tabs light their part of the picture */
+document.querySelectorAll('.flight[data-fl]').forEach(function(box){
+  const p=box.dataset.fl, svg=document.getElementById(p+"-svg"); if(!svg) return;
+  const tabs=[...box.querySelectorAll('.fl-tab')], whys=[...box.querySelectorAll('.fl-why')];
+  const n=document.getElementById(p+"-n");
+  function show(k){
+    svg.setAttribute("data-show",k);
+    tabs.forEach(t=>t.setAttribute("aria-pressed",String(t.dataset.k===k)));
+    whys.forEach(w=>{w.hidden=w.dataset.for!==k;});
+    const t=tabs.find(t=>t.dataset.k===k); if(n&&t) n.textContent=t.textContent.toLowerCase();
+  }
+  tabs.forEach(t=>t.addEventListener("click",()=>show(t.dataset.k)));
+});
+</script>
 <script src="../assets/site.js?v=e13"></script>
 <script src="../assets/sheet.js?v=e06"></script>
 <script src="../assets/sim.js?v=e14"></script>
@@ -742,7 +795,7 @@ Sim.mount(document.getElementById("tx-sim"),{
   title:"measured replay &#183; 60 judgements, qwen2.5:7b, 2026-09-25",
   window:60, duration:19000,
   clock:t=>"ask "+Math.min(60,Math.floor(t)+1),
-  badges:[{label:"measured run",color:"#34D399"},{label:"1051 tests",color:"#60A5FA"}],
+  badges:[{label:"measured run",color:"#34D399"},{label:"1106 tests",color:"#60A5FA"}],
   stage:{mode:"typed", rows:ROWS},
   series:[{id:"noop",label:"",color:"#8A97A6",max:1,points:[[0,0],[60,0]]}],
   counters:[

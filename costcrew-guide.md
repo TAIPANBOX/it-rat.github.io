@@ -54,6 +54,8 @@ An analyst gets the task with a mandate, the rights that come with its skills an
 
 Work comes back as a draft. A person posts it or returns it, and the return is on the analyst's own card next to its first-pass rate, so a crew that produces confident noise is visible rather than merely busy.
 
+After that the supervisor applies a posted option itself only up to USD 2,500 per anomaly; everything above, and every closed period, budget or allocation rule, waits for the owner.
+
 ### The path a number takes before anybody is charged for it.
 
 Every screen in the room's gallery shows one station on this line. What no screenshot shows is the line itself, and the gate in the middle of it: an agent can carry a finding all the way to the stamp and no further. Returned work goes back up the dashed path and lands on that analyst's own card, next to its first-pass rate.
@@ -183,7 +185,7 @@ The repository gates more than its suite: every scenario written in the language
 
 - The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
 
-- Release gates through v0.10.2 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
+- Release gates through v0.11.0 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
 
 - The FOCUS 1.1 file of agent spend (costcrew-cloudability, in the image since v0.7.0) has not been accepted by a live tenant yet.
 
