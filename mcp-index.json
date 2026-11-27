@@ -30,7 +30,7 @@
       "markdown": "https://it-rat.com/guides.md",
       "title": "Guides index",
       "kind": "guide",
-      "description": "Sixteen guides: seven on the field of AI agent governance, and nine on running this stack, from a first alert to what changed in October."
+      "description": "Seventeen guides: seven on the field of AI agent governance, and ten on running this stack, from a first alert to what changed in October and November."
     },
     {
       "url": "https://it-rat.com/ai-agent-governance.html",
@@ -150,6 +150,13 @@
       "title": "What changed in the stack, 1 to 15 October 2026",
       "kind": "guide",
       "description": "Prices that match the bill, money that is never forgotten, tool calls judged before they run: what changed in the stack from 1 to 15 October 2026."
+    },
+    {
+      "url": "https://it-rat.com/changes-2026-11.html",
+      "markdown": "https://it-rat.com/changes-2026-11.md",
+      "title": "What changed in the stack, 16 October to 27 November 2026",
+      "kind": "guide",
+      "description": "Keys held in custody, an agent's own credential at every door, a person for every ungranted tool call: what changed from 16 October to 27 November 2026."
     },
     {
       "url": "https://it-rat.com/genaryx-guide.html",

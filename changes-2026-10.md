@@ -514,4 +514,4 @@ The Model Context Protocol, the common way agents reach tools. The broker stands
 **FOCUS**
 The FinOps Foundation's open format for cost and usage data, which the gateway and CostCrew write and read.
 
-[Security by design](https://it-rat.com/security-by-design.html) explains the eight decisions behind the tool-safety and fail-closed work on this page. [The glossary](https://it-rat.com/glossary.html) has the rest of the vocabulary, and [the guides index](https://it-rat.com/guides.html) has every guide.
+[What changed from 16 October to 27 November](https://it-rat.com/changes-2026-11.html) is what came next. [Security by design](https://it-rat.com/security-by-design.html) explains the eight decisions behind the tool-safety and fail-closed work on this page. [The glossary](https://it-rat.com/glossary.html) has the rest of the vocabulary, and [the guides index](https://it-rat.com/guides.html) has every guide.
