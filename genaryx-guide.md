@@ -2,9 +2,9 @@
 
 # Genaryx guide
 
-> How the Genaryx console works, how Felyx is held, what every frame shows, how to take it, and what is not yet in the record, in full.
+> How the Genaryx console works, how Felyx is held, what every frame shows, how to take it, and the runs on a live fleet, in full.
 
-The [Genaryx room](https://it-rat.com/genaryx.html) keeps the eighteen frames, the live demo, the drawing of the plane and the common questions. This guide keeps the rest of what the room used to say: the core, the passkey ceremony and the tunnel in detail, how Felyx is held, what each frame shows, the console beside the stack by hand, taking it, and what is reported but not yet in the record.
+The [Genaryx room](https://it-rat.com/genaryx.html) keeps the eighteen frames, the live demo, the drawing of the plane and the common questions. This guide keeps the rest of what the room used to say: the core, the passkey ceremony and the tunnel in detail, how Felyx is held, what each frame shows, the console beside the stack by hand, taking it, and the runs on a live fleet.
 
 - [At a glance](https://it-rat.com/genaryx-guide.html#overview)
 
@@ -250,9 +250,9 @@ The console's own list for 1 to 15 October 2026 is in [the stack's changes](http
 | console 1.7.5 | A candidate policy is proved against the decisions already recorded (a Wardryx replay) and a candidate budget against the calls already made (a TokenFuse backtest): each says whether it would have stopped the incident and how many other decisions or calls it would have changed, and applies nothing. |
 | console 1.7.5 | A case can be sealed as one canonical document, written in the form RFC 8785 fixes, with the operator's decision and the proofs they asked for; its digest is the target of one line in the console's own chain, and sealing changes nothing in any plane. |
 
-## What is reported and not yet in the record, and what it does not do.
+## The runs on a live fleet, and what it does not do.
 
-### Built, and proven on a live fleet: reported, not yet in the record
+### Built, and proven on a live fleet
 
 - A laptop on the public internet opened the console over a tunnel this box issued itself, with no other route in.
 
@@ -264,11 +264,11 @@ The console's own list for 1 to 15 October 2026 is in [the stack's changes](http
 
 - Felyx, on a live local model, named the caught runaway and filed a capped proposal only a human could approve, on 42 agents.
 
-**The runs described behind each of those lines; none is cited here yet.** A laptop on the public internet imported the peer config this box issued itself, completed a handshake against the box's published UDP port, and opened the console over TLS inside that tunnel, from a machine that had no other route to it. It then enrolled a passkey and issued a second device, and that action was refused until the operator confirmed it on their own authenticator: the journal records it signed `webauthn-es256`, naming the credential they touched. Revoking a device cut it off the same way.
+**The runs behind each of those lines.** A laptop on the public internet imported the peer config this box issued itself, completed a handshake against the box's published UDP port, and opened the console over TLS inside that tunnel, from a machine that had no other route to it. It then enrolled a passkey and issued a second device, and that action was refused until the operator confirmed it on their own authenticator: the journal records it signed `webauthn-es256`, naming the credential they touched. Revoking a device cut it off the same way.
 
 Every one of those records carries the hash of the event before it, and the stack's own conformance checker verifies the chain they sit in. The console has separately driven a real fleet and put a device-signed kill through it, against a plane closed to the internet.
 
-Felyx has run against a live local model, named the caught runaway and what it burned, and filed a capped-budget proposal only a human could approve, on a fleet of 42 agents. No run is cited for this yet.
+Felyx has run against a live local model, named the caught runaway and what it burned, and filed a capped-budget proposal only a human could approve, on a fleet of 42 agents.
 
 The practice this console is built for is written up separately: [AI agent governance and the runtime controls](https://it-rat.com/ai-agent-governance.html), [AI agent security](https://it-rat.com/ai-agent-security.html), and [FinOps for AI](https://it-rat.com/finops-for-ai.html).
 

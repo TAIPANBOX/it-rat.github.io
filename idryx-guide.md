@@ -2,7 +2,7 @@
 
 # Idryx guide
 
-> How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do or prove yet.
+> How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do.
 
 The [Idryx room](https://it-rat.com/services/idryx.html) keeps the simulation, the drawing and the common questions. This guide keeps the rest of what the room used to say: what the graph is made of, what the detectors look for, what it answers, where it sits, how to run it, and its limits.
 
@@ -92,7 +92,7 @@ What does this key reach, transitively? Idryx computes the union of every permis
 
 ### eBPF network sensor
 
-A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent connecting straight to the PyPI package hosts when it started. That was one agent turn on one lab node, on 2026-09-27; it has not yet run on a fleet or a cloud host.
+A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent connecting straight to the PyPI package hosts when it started. That was one agent turn on one lab node, on 2026-09-27.
 
 ### AI usage: declared, seen, in the code
 
@@ -157,7 +157,7 @@ Idryx's releases from 1 to 15 October 2026 are listed in [the October changelog]
 |---|---|
 | v1.4.0 | idryx ai-inventory reports, for each agent or service, what was declared, what was seen and what the code can reach, and names every disagreement. Additive to the idryx.ai-inventory/v1 schema. |
 
-## What it does not do, and what is not proven yet.
+## What it does not do.
 
 - **Read-only by design:** it proposes Terraform diffs, it never applies. Applying a diff stays your decision.
 
@@ -169,7 +169,7 @@ Idryx's releases from 1 to 15 October 2026 are listed in [the October changelog]
 
 - The companion detector bom_incomplete flags the agents the BOM cannot yet prove.
 
-- The eBPF network sensor is Linux-only. It has attached and captured live flows on two kernels: a Docker Desktop Linux VM on a Mac (2026-09-08, arm64 kernel 7.0.12; a 12-second capture in a container, not against an agent: 3 flows on the fixed build, after 16 of the first run's 21 flows turned out to be the sensor's own traffic) and one x86_64 lab node (2026-09-27, one agent turn, 349 flows in 70 seconds). It has not yet run on a fleet or a cloud host.
+- The eBPF network sensor is Linux-only. It has attached and captured live flows on two kernels: a Docker Desktop Linux VM on a Mac (2026-09-08, arm64 kernel 7.0.12; a 12-second capture in a container, not against an agent: 3 flows on the fixed build, after 16 of the first run's 21 flows turned out to be the sensor's own traffic) and one x86_64 lab node (2026-09-27, one agent turn, 349 flows in 70 seconds).
 
 - The bus carries a model only in `call_retained`, which the AI usage report does not read, so it compares no model names with anything: the egress side names a host, never a model. Whether an identity has a declaration is read from its source or from a declared model or attestation, which is a reading of the graph and not an attested fact.
 

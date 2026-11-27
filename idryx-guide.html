@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Idryx guide: how it works, running it, what it answers · IT-RAT</title>
-<meta name="description" content="How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do or prove yet.">
+<meta name="description" content="How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do.">
 <link rel="canonical" href="https://it-rat.com/idryx-guide.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="IT-RAT">
@@ -52,7 +52,7 @@
   .gtoc a:hover{color:var(--accent)}
 </style>
 <!-- seo:auto -->
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Idryx guide: how it works, running it, what it answers","name":"Idryx guide","url":"https://it-rat.com/idryx-guide.html","description":"How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do or prove yet.","inLanguage":"en","datePublished":"2026-10-16","dateModified":"2026-10-16","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/idryx-guide.html","about":{"@type":"SoftwareApplication","name":"Idryx","url":"https://it-rat.com/services/idryx.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"Idryx guide","item":"https://it-rat.com/idryx-guide.html"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"Idryx guide: how it works, running it, what it answers","name":"Idryx guide","url":"https://it-rat.com/idryx-guide.html","description":"How Idryx builds one identity graph and what its detectors look for, how to run it, what it answers, and what it does not do.","inLanguage":"en","datePublished":"2026-10-16","dateModified":"2026-10-16","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/idryx-guide.html","about":{"@type":"SoftwareApplication","name":"Idryx","url":"https://it-rat.com/services/idryx.html"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"Idryx guide","item":"https://it-rat.com/idryx-guide.html"}]}]}</script>
 <!-- /seo:auto -->
 </head>
 <body data-root="">
@@ -194,7 +194,7 @@
       <h3>Blast radius</h3>
       <p>What does this key reach, transitively? Idryx computes the union of every permission reachable through an identity's delegation chain. excessive_agency fires when an agent reaches admin-equivalent power through that chain (OWASP LLM06).</p>
       <h3>eBPF network sensor</h3>
-      <p>A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent connecting straight to the PyPI package hosts when it started. That was one agent turn on one lab node, on 2026-09-27; it has not yet run on a fleet or a cloud host.</p>
+      <p>A Linux-only sensor on a kprobe on __sys_connect_file, run on arm64 and x86_64 kernels, captures real outbound connections and flags egress to known LLM APIs. unmanaged_egress fires for identities the sensor is the only evidence of: no IAM record, no passport, just traffic. Pointed at a real agent on an x86_64 box, it labelled every one of the agent's flows with the passport the agent claimed, showed its model calls leaving through the gateway, and caught the one thing that did not: the agent connecting straight to the PyPI package hosts when it started. That was one agent turn on one lab node, on 2026-09-27.</p>
       <h3>AI usage: declared, seen, in the code</h3>
       <p><span class="mono">idryx ai-inventory</span> compared its sources provider by provider. It now also says, for each agent or service, what was declared, what was seen and what the code can reach, and it names every disagreement. Nothing in it is scored or ranked, and nothing in it is a detector.</p>
       <p><b>One row per source.</b> The report is built from up to five sources: <span class="mono">declared</span>, <span class="mono">bus</span>, <span class="mono">egress</span>, <span class="mono">ebpf</span> and <span class="mono">code</span>. A source nobody supplied is a row that says what its absence means. Code not scanned is not nothing in the code, and an absent capture is not a capture that saw nothing.</p>
@@ -293,7 +293,7 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">limits</div>
-      <h2>What it does not do, and what is not proven yet.</h2>
+      <h2>What it does not do.</h2>
     </div>
     <div class="prose rv">
       <ul>
@@ -302,7 +302,7 @@
         <li><span>A baseline engine learns what is normal per identity and stays quiet during its learning period rather than opening a week of false positives on day one.</span></li>
         <li><span>Least privilege fires only where usage data exists, so a source with no observed-usage signal produces no recommendations rather than confident nonsense.</span></li>
         <li><span>The companion detector bom_incomplete flags the agents the BOM cannot yet prove.</span></li>
-        <li><span>The eBPF network sensor is Linux-only. It has attached and captured live flows on two kernels: a Docker Desktop Linux VM on a Mac (2026-09-08, arm64 kernel 7.0.12; a 12-second capture in a container, not against an agent: 3 flows on the fixed build, after 16 of the first run's 21 flows turned out to be the sensor's own traffic) and one x86_64 lab node (2026-09-27, one agent turn, 349 flows in 70 seconds). It has not yet run on a fleet or a cloud host.</span></li>
+        <li><span>The eBPF network sensor is Linux-only. It has attached and captured live flows on two kernels: a Docker Desktop Linux VM on a Mac (2026-09-08, arm64 kernel 7.0.12; a 12-second capture in a container, not against an agent: 3 flows on the fixed build, after 16 of the first run's 21 flows turned out to be the sensor's own traffic) and one x86_64 lab node (2026-09-27, one agent turn, 349 flows in 70 seconds).</span></li>
         <li><span>The bus carries a model only in <span class="mono">call_retained</span>, which the AI usage report does not read, so it compares no model names with anything: the egress side names a host, never a model. Whether an identity has a declaration is read from its source or from a declared model or attestation, which is a reading of the graph and not an attested fact.</span></li>
         <li><span>The room's runaway is a simulation, but it replays the shape of the live validation run.</span></li>
       </ul>

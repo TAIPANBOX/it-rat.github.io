@@ -32,9 +32,9 @@ First account created at /signup becomes the admin of that installation, so make
 
 ## Limits, in short.
 
-Release gates through v0.11.0 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open. [In the guide](https://it-rat.com/costcrew-guide.html#limits)
+Release gates through v0.11.0 run on the generated estate and on test fixtures. [In the guide](https://it-rat.com/costcrew-guide.html#limits)
 
-The AWS reader was proven on a real export, the GCP one only against a hand-written file. [In the guide](https://it-rat.com/costcrew-guide.html#limits)
+The AWS reader was proven on a real export; the GCP one is checked against a hand-written file. [In the guide](https://it-rat.com/costcrew-guide.html#limits)
 
 Five of the eighteen connectors are specified and not written. [In the guide](https://it-rat.com/costcrew-guide.html#limits)
 

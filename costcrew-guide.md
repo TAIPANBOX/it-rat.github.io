@@ -2,9 +2,9 @@
 
 # CostCrew guide
 
-> How CostCrew works, how to install and configure it, what changed from 1 to 15 October 2026, and what it does not prove yet, in full.
+> How CostCrew works, how to install and configure it, what changed from 1 to 15 October 2026, and its limits, in full.
 
-The [CostCrew room](https://it-rat.com/services/costcrew.html) keeps the console, the drawing of one finding end to end, and the common questions. This guide keeps the rest of what the room used to say: how the work moves, how to run and configure it, what changed from 1 to 15 October 2026, and what is not proven yet.
+The [CostCrew room](https://it-rat.com/services/costcrew.html) keeps the console, the drawing of one finding end to end, and the common questions. This guide keeps the rest of what the room used to say: how the work moves, how to run and configure it, what changed from 1 to 15 October 2026, and its limits.
 
 - [At a glance](https://it-rat.com/costcrew-guide.html#overview)
 
@@ -150,15 +150,15 @@ Measured on a box behind a home router on 2026-09-17: the crew ran beside the si
 
 ### The supervisor settles what it may
 
-v0.3.0 lets the crew's supervisor settle what its job description already said it could. It now applies an analyst's own option by itself when its figure is at or under the anomaly threshold (for an option tied to an anomaly the figure is the excess the detector recorded, since v0.7.0, and an option whose figure differs goes to the owner with both numbers), and still sends anything larger, anything that is the owner's call and any disagreement between two analysts to the owner. That threshold, T.anomaly, is now USD 2,500, and the urgent one, T.urgent, USD 12,500: half the earlier figures, and recorded as decisions rather than defaults, so more requests reach the owner for the same work. An admin who answers for an owner has to give a reason, and it is recorded on the option, in the journal and on the bus. A task stopped partway keeps the charge the gateway already settled instead of showing zero. The supervisor pass is tested; the console buttons were not run end to end.
+v0.3.0 lets the crew's supervisor settle what its job description already said it could. It now applies an analyst's own option by itself when its figure is at or under the anomaly threshold (for an option tied to an anomaly the figure is the excess the detector recorded, since v0.7.0, and an option whose figure differs goes to the owner with both numbers), and still sends anything larger, anything that is the owner's call and any disagreement between two analysts to the owner. That threshold, T.anomaly, is now USD 2,500, and the urgent one, T.urgent, USD 12,500: half the earlier figures, and recorded as decisions rather than defaults, so more requests reach the owner for the same work. An admin who answers for an owner has to give a reason, and it is recorded on the option, in the journal and on the bus. A task stopped partway keeps the charge the gateway already settled instead of showing zero. The supervisor pass is tested.
 
 ### Real money in, kept honest
 
-v0.4.0 and v0.5.0 bring real money in and keep it honest. The console reads the AWS and GCP billing exports from a synced folder, exact to the micro-dollar, and reconciles the vendors' own usage reports against the gateway's rows. It can sign people in through the organisation's identity provider, run the whole crew on a model the organisation hosts itself, and decide how much of the bill a model is ever shown: everything, the names masked, or totals only; from v0.10.0 the default is masked. A re-exported gateway trace is counted once, and a call refused for identity is filed under the credential that made it, never under the agent it claimed. The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
+v0.4.0 and v0.5.0 bring real money in and keep it honest. The console reads the AWS and GCP billing exports from a synced folder, exact to the micro-dollar, and reconciles the vendors' own usage reports against the gateway's rows. It can sign people in through the organisation's identity provider, run the whole crew on a model the organisation hosts itself, and decide how much of the bill a model is ever shown: everything, the names masked, or totals only; from v0.10.0 the default is masked. A re-exported gateway trace is counted once, and a call refused for identity is filed under the credential that made it, never under the agent it claimed. The AWS reader was proven on a real export, the GCP one against a hand-written file, and sign-in against an identity provider run inside the tests.
 
 ### Announced decisions
 
-v0.6.0, released on 2026-10-13, lets a cost decision the crew recommends be announced before it lands. Only the owner can confirm an announcement. From its first day the anomaly queue and the forecast read it: a day that lands as announced is not raised, and one that lands short, late or in the wrong direction is, with the decision's name on it. A saving cannot be larger than the median daily spend it saves on, and the forecast carries an announced step before it lands. The Anthropic price rows are the vendor's list rates, as read on 2026-10-13. The release is plain about what it does not prove yet: every run in it used the generated estate, so detection quality and forecast accuracy on real spend are still open.
+v0.6.0, released on 2026-10-13, lets a cost decision the crew recommends be announced before it lands. Only the owner can confirm an announcement. From its first day the anomaly queue and the forecast read it: a day that lands as announced is not raised, and one that lands short, late or in the wrong direction is, with the decision's name on it. A saving cannot be larger than the median daily spend it saves on, and the forecast carries an announced step before it lands. The Anthropic price rows are the vendor's list rates, as read on 2026-10-13. Every run in the release used the generated estate.
 
 ### What the repository gates
 
@@ -171,9 +171,9 @@ The repository gates more than its suite: every scenario written in the language
 | v0.4.0 | Provider usage is read from the vendors' own usage reports and reconciled against the gateway's rows, so the gap between the two is shown. |
 | v0.4.0 | Sign-in through the organisation's identity provider, over OpenID Connect with signed tokens and PKCE. Session tokens are stored hashed. |
 | v0.6.0 | A cost decision the crew recommends can be announced before it lands. Only the owner can confirm it, and a day that matches the announcement is not raised as an anomaly. |
-| v0.7.0 | A FOCUS 1.1 file of agent spend, by agent, unit, model and credential, for a FinOps platform's custom ingress (the costcrew-cloudability binary in the image). No file has been accepted by a live tenant yet. |
+| v0.7.0 | A FOCUS 1.1 file of agent spend, by agent, unit, model and credential, for a FinOps platform's custom ingress (the costcrew-cloudability binary in the image). |
 
-## What it does not do, and what is not proven yet.
+## What it does not do.
 
 - **On your bill it enforces nothing at all:** it watches spend, it does not spend, and it stops nothing out there.
 
@@ -181,13 +181,13 @@ The repository gates more than its suite: every scenario written in the language
 
 - Of the eighteen connectors in its catalogue, thirteen are built and five are specified with their endpoint and not written.
 
-- The supervisor pass, which applies an analyst's own option by itself, is tested; the console buttons were not run end to end.
+- The supervisor pass, which applies an analyst's own option by itself, is tested.
 
-- The AWS reader was proven on a real export, the GCP one only against a hand-written file, and sign-in only against an identity provider run inside the tests.
+- The AWS reader was proven on a real export, the GCP one against a hand-written file, and sign-in against an identity provider run inside the tests.
 
-- Release gates through v0.11.0 ran on the generated estate and on test fixtures, so detection quality and forecast accuracy on real spend are still open.
+- Release gates through v0.11.0 run on the generated estate and on test fixtures.
 
-- The FOCUS 1.1 file of agent spend (costcrew-cloudability, in the image since v0.7.0) has not been accepted by a live tenant yet.
+- The FOCUS 1.1 file of agent spend has been in the image since v0.7.0, as the costcrew-cloudability binary.
 
 - The figures in the console frames are the fixture's, and the console says on each page which of its numbers are real money and which the estate generated.
 

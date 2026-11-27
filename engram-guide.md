@@ -174,7 +174,7 @@ Released as v3.0.0 on 2026-10-18. The library records a source for every observa
 | v3.1.0 | The documents no longer claim procedural memory: the store never modelled it, and remember(kind="procedural") is refused. |
 | v3.1.0 | A fact stamps its provenance when it is written, so a person's fact stays the person's after its source episodes are forgotten or pruned. The store moves to schema generation 2 with three nullable columns on facts, and assert_fact takes provenance and derived_from. |
 
-## What it does not do, and what is still open.
+## What it does not do.
 
 - Since version 3.0.0 (released 2026-10-18) the MCP server sets provenance and scope: a call cannot claim user, the server's ceiling is external unless its operator raises it, and a server started with an agent id serves that agent alone (one started without serves the whole file and says so). A session turns untrusted when recall or why returns a memory that is not the user's own or is quarantined, when the caller labels what it writes as tool or external, or passes read_untrusted=true, or when the flag is set. The server cannot see what an agent read outside engram.
 

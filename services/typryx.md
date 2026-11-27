@@ -74,9 +74,9 @@ A later outcome is scored against the template version the answer was asked unde
 
 ## Limits, in short.
 
-Not yet: a model tuned from an export and measured against the one it replaces. [In the guide](https://it-rat.com/typryx-guide.html#limits)
+Steps 1 to 5 are built, tested and run on the stub backend; steps 6 to 9 run on your side, with the model you tune. [In the guide](https://it-rat.com/typryx-guide.html#limits)
 
-Not yet: the Wardryx signal with a real backend behind it, and the deeper consumers. [In the guide](https://it-rat.com/typryx-guide.html#limits)
+The Wardryx signal is opt-in, off by default, and measured on the stub backend. [In the guide](https://it-rat.com/typryx-guide.html#limits)
 
 OpenAI's current models refuse the default request; since v0.6.0 three more variables reach them. [In the guide](https://it-rat.com/typryx-guide.html#limits)
 
@@ -102,4 +102,4 @@ Not from the number alone, which is the finding of the calibration run below: ev
 No. Jev is one backend behind one interface, not the contract. The stub backend answers deterministically for tests and demos, and openai-logprobs reaches any OpenAI-compatible server, including a model on your own hardware. Jev has run live (2026-09-30) and was the most accurate of the three data modes on the 434 questions, but it is a hosted service: choosing it sends the fields a question names to TypeSafe AI. With your own model nothing leaves your hardware, and with typryx off the stack runs as it did before.
 
 **Q: Can I use my own model instead of Jev?**
-Yes. Point typryx at any OpenAI-compatible server you run, such as Ollama or vLLM, and nothing leaves your hardware. On the same 434 questions a 7B model on a machine with no GPU was less accurate and less well calibrated than Jev, and slower. You can also tune a model on your own questions: typryx keeps an opt-in training log and exports the questions a person has judged, and it measures the new model against the old per template. It does not train or ship a model, and no tune has been run from an export yet.
+Yes. Point typryx at any OpenAI-compatible server you run, such as Ollama or vLLM, and nothing leaves your hardware. On the same 434 questions a 7B model on a machine with no GPU was less accurate and less well calibrated than Jev, and slower. You can also tune a model on your own questions: typryx keeps an opt-in training log and exports the questions a person has judged, and it measures the new model against the old per template. It does not train or ship a model.

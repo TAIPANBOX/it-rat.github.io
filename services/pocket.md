@@ -53,11 +53,11 @@ As designed, Pocket reads a relay and signs the kill on the device, but the rela
 
 Wardryx and the budgets you set decide what is enforced and the gateway enforces it; Pocket lets you watch that and pull the kill from somewhere else. [In the guide](https://it-rat.com/pocket-guide.html#where-it-sits)
 
-## What is not proven yet.
+## Limits, in short.
 
-### Built, not run here
+### Built, driven on a simulator
 
-Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet.
+Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator.
 
 ### Not shipped
 

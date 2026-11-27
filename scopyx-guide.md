@@ -215,7 +215,7 @@ Every other line above holds because no code path exists to do it, and an absenc
 
 Scopyx applies rules you wrote and infers nothing, so we do not treat it as an AI system under Article 3(1). Whether a system you run is one is for your own legal review. Used beside one, it supplies evidence for Article 12 record-keeping and Article 14 human oversight. The wording here is "covers the requirements of Article 12", never "AI Act compliant", because there is no certification and no auditor behind those words, and a claim nobody can hold is worse than no claim.
 
-### What is not proven or not shipped
+### What it does not ship
 
 - A vendor API needs an adapter in front of it, and this repository ships none.
 

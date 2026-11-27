@@ -4,7 +4,7 @@
 
 > How Vouchryx proves and ends an agent's delegation, its seven endpoints, how to run and configure it, what changed in October and November 2026, and its limits.
 
-The [Vouchryx room](https://it-rat.com/services/vouchryx.html) keeps the loop drawn end to end, the two kill switches, how to start it, and the common questions. This guide keeps the rest of what the room used to say: the gap it closes in full, the seven endpoints, the configuration it will not start without, a measured revocation run, what changed from 1 to 15 October 2026, and what is not proven yet.
+The [Vouchryx room](https://it-rat.com/services/vouchryx.html) keeps the loop drawn end to end, the two kill switches, how to start it, and the common questions. This guide keeps the rest of what the room used to say: the gap it closes in full, the seven endpoints, the configuration it will not start without, a measured revocation run, what changed from 1 to 15 October 2026, and its limits.
 
 - [At a glance](https://it-rat.com/vouchryx-guide.html#overview)
 
@@ -127,7 +127,7 @@ One phase of the run failed, rotation. The provider's new key was in its publish
 | v0.8.0 | A revoke key can be scoped to the rights it needs (revoke, ban, lift) and to a prefix of the subjects it may touch. A bare key keeps every right, as before. |
 | v0.7.0 | Key set files are read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), so a provider that rotates its signing key is followed without a restart. Found by a run against a real OpenID provider. |
 
-## What it does not do, and what is not proven yet.
+## What it does not do.
 
 - The TokenFuse gateway polls that list, and so does Wardryx from 2.3.0; no other enforcement point does yet.
 
