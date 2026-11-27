@@ -53,6 +53,7 @@ GUIDES = [
     ("stack-guide.html", "How the numbers were produced"),
     ("install.html", "Install the stack, all of it or one service at a time"),
     ("changes-2026-10.html", "What changed in the stack, 1 to 15 October 2026"),
+    ("changes-2026-11.html", "What changed in the stack, 16 October to 27 November 2026"),
 ]
 # Then one guide per room in STACK, derived rather than listed (see
 # tools/stackguides.py). They are guides like the rest: listed under Guides in

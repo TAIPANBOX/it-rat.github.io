@@ -47,6 +47,24 @@ prints what drifted. Run it before a sweep, never in the publish path: see
 invariant 3 for why a deploy must not depend on nine other repositories being
 present and buildable.
 
+Three more tools, added 2026-11-27, none of them a gate for the same reason
+(Chrome, the network or another repository must not stand in the publish
+path):
+
+```sh
+./scripts/motion-check.sh [pages]  # does every room's motion run: backdrop, hero motif,
+                                   # replays, SMIL, tabbed pictures, scroll reveal, no JS errors
+./scripts/versions-exist.sh        # every vX.Y.Z on any page is a real tag of an estate repo
+./scripts/publish.sh               # after the go to publish: push upstream, wait for the live
+                                   # deploy, re-run the mirror's Pages run, check the domain
+```
+
+The mirror's Pages run is red after every merge until upstream has the
+commit, because `deploy-target-current.sh` sees the live repository behind;
+`publish.sh` re-runs it once the live deploy is through. Merge site PRs with
+a merge commit, not a squash: `tools/sitemap.py` dates pages from history,
+and a squash moved every lastmod and needed a follow-up PR twice (#64, #65).
+
 This list did not exist until 2026-08-09: the gates were named only inside the
 invariants that own them, while the Pages workflow ran three of them.
 

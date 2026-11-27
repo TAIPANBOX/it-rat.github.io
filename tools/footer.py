@@ -55,6 +55,7 @@ PAGES = {
     "stack-guide.html": ("", ""),
     "install.html": ("", ""),
     "changes-2026-10.html": ("", ""),
+    "changes-2026-11.html": ("", ""),
     "console.html": ("", ""),
     "404.html": ("/", ""),
     "services/engram.html": ("../", "Apache-2.0"),

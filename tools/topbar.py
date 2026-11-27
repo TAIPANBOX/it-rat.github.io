@@ -75,6 +75,7 @@ PAGES = {
     # Added 2026-10-20: the install guide, first on the hub.
     "install.html": "",
     "changes-2026-10.html": "",
+    "changes-2026-11.html": "",
     "console.html": None,
     "404.html": "/",
     "services/costcrew.html": "../",

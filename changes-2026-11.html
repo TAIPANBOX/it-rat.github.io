@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What changed in the stack, 16 October to 27 November 2026 · IT-RAT</title>
+<meta name="description" content="Keys held in custody, an agent's own credential at every door, a person for every ungranted tool call: what changed from 16 October to 27 November 2026.">
+<link rel="canonical" href="https://it-rat.com/changes-2026-11.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="IT-RAT">
+<meta property="og:url" content="https://it-rat.com/changes-2026-11.html">
+<meta property="og:title" content="What changed in the stack, 16 October to 27 November 2026 · IT-RAT">
+<meta property="og:description" content="158 release tags across 19 repositories in six weeks, grouped by the problem each change solves: key custody, agent credentials, held tool calls, the MCP broker, quality signals and operations, then the whole stack on AWS again.">
+<meta property="og:image" content="https://it-rat.com/assets/og/index.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What changed in the stack, 16 October to 27 November 2026 · IT-RAT">
+<meta name="twitter:description" content="158 release tags across 19 repositories in six weeks, grouped by the problem each change solves: key custody, agent credentials, held tool calls, the MCP broker, quality signals and operations, then the whole stack on AWS again.">
+<meta name="twitter:image" content="https://it-rat.com/assets/og/index.png">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="alternate" type="text/markdown" href="https://it-rat.com/changes-2026-11.md">
+<link rel="stylesheet" href="assets/site.css?v=e22">
+<style>
+  :root{--accent:#F4B23E}
+  .guide-hero{padding:clamp(48px,7vw,84px) 0 30px}
+  .guide-hero h1{margin-top:14px;max-width:22ch;text-wrap:balance}
+  .guide-hero .lede{margin-top:20px;max-width:74ch}
+  .guide-hero .lede b{color:var(--fg);font-weight:650}
+  .prose{max-width:76ch}
+  .prose p{color:var(--dim);font-size:15.5px;line-height:1.75;margin-top:14px}
+  .prose p:first-child{margin-top:0}
+  .prose p b{color:var(--fg);font-weight:650}
+  .prose a{color:var(--accent)}
+  .prose h3{margin-top:34px;font-size:19px}
+  .prose ul{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:11px}
+  .prose li{display:flex;gap:12px;color:var(--dim);font-size:15px;line-height:1.65}
+  .prose li::before{content:"";flex:0 0 7px;height:7px;border-radius:50%;background:var(--accent);margin-top:8px}
+  .prose li b{color:var(--fg)}
+  .prose code,.tbl code{font-family:var(--font-m);font-size:.9em;color:var(--fg)}
+  .prose .record{margin-top:18px;font-family:var(--font-m);font-size:12.5px;line-height:1.7;color:var(--dim);
+    border-left:2px solid var(--line-2);padding-left:13px}
+  .prose .record b{color:var(--fg);font-weight:600}
+  .gtoc-sec{padding:6px 0 0}
+  .gtoc{border:1px solid var(--line);border-radius:var(--rad-s);background:var(--panel);padding:18px 22px 16px;max-width:980px}
+  .gtoc ol{margin:12px 0 0;padding:0;list-style:none;columns:2 260px;column-gap:40px;font-size:14px;line-height:1.55}
+  .gtoc li{break-inside:avoid;padding:3px 0}
+  .gtoc a{color:var(--dim)}
+  .gtoc a:hover{color:var(--accent)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--rad-s);overflow:hidden;max-width:980px}
+  .stat{background:var(--panel);padding:20px 20px 18px}
+  .stat .n{font-family:var(--font-d);font-size:38px;font-weight:750;letter-spacing:-.02em;color:var(--fg);line-height:1}
+  .stat p{margin-top:10px;color:var(--dim);font-size:14px;line-height:1.5}
+  .themes{margin:14px 0 0;padding:0;list-style:none;counter-reset:t;max-width:84ch}
+  .themes li{counter-increment:t;display:grid;grid-template-columns:40px 1fr;gap:12px;padding:11px 0;border-top:1px solid var(--line);color:var(--dim);font-size:15px;line-height:1.6}
+  .themes li:first-child{border-top:0}
+  .themes li::before{content:counter(t,decimal-leading-zero);font-family:var(--font-m);font-size:12px;color:var(--accent);padding-top:3px;letter-spacing:.06em}
+  .themes a{color:var(--fg);font-weight:650}
+  .themes a:hover{color:var(--accent)}
+  .dfig{margin:28px 0 0;max-width:960px}
+  .dfig .frame{border:1px solid var(--line);border-radius:var(--rad-s);background:var(--bg2);padding:18px 18px 14px;overflow-x:auto}
+  .dfig svg{width:100%;height:auto;min-width:760px}
+  .dfig svg.wide{min-width:940px}
+  .dfig figcaption{margin-top:10px;color:var(--dim);font-size:13.5px;line-height:1.6;max-width:84ch}
+  .tbl-wrap{margin-top:24px;max-width:980px}
+  .tbl caption{caption-side:bottom;text-align:left;padding:12px 14px;color:var(--dim);font-size:13.5px;line-height:1.6;border-top:1px solid var(--line)}
+  .tbl th{white-space:nowrap}
+  .tbl td.v{font-family:var(--font-m);font-size:12.5px;font-weight:500;white-space:nowrap}
+  .tbl td.v.open{color:var(--amber)}
+  .svc{padding:30px 0 4px;border-top:1px solid var(--line);max-width:980px}
+  .svc:first-of-type{border-top:0;padding-top:4px}
+  .svc h3{font-size:22px;display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+  .svc h3 i{width:10px;height:10px;border-radius:50%;flex:0 0 10px}
+  .svc h3 .what{font-family:var(--font-t);font-size:14px;font-weight:500;letter-spacing:0;color:var(--dim)}
+  .svc .meta{margin-top:8px;font-family:var(--font-m);font-size:12px;letter-spacing:.02em;color:var(--dim)}
+  .svc .meta a{color:var(--accent)}
+  .svc .tbl-scroll{margin-top:14px}
+  .svc .prose{margin-top:14px}
+  .terms{margin:0;max-width:80ch}
+  .terms dt{margin-top:18px;color:var(--fg);font-weight:650;font-size:15.5px}
+  .terms dt:first-child{margin-top:0}
+  .terms dd{margin:6px 0 0;color:var(--dim);font-size:15px;line-height:1.7}
+  .note{border:1px solid var(--line-2);border-left:3px solid var(--accent);border-radius:12px;
+    background:var(--panel);padding:18px 20px;margin-top:24px;max-width:76ch}
+  .note .t{font-family:var(--font-m);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  .note p{margin-top:10px;color:var(--dim);font-size:14.5px;line-height:1.7}
+  .note a{color:var(--accent)}
+</style>
+<!-- seo:auto -->
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"TechArticle","headline":"What changed in the stack, 16 October to 27 November 2026","name":"What changed in the stack, 16 October to 27 November 2026","url":"https://it-rat.com/changes-2026-11.html","description":"Keys held in custody, an agent's own credential at every door, a person for every ungranted tool call: what changed from 16 October to 27 November 2026.","inLanguage":"en","datePublished":"2026-11-27","dateModified":"2026-11-27","author":{"@id":"https://it-rat.com/#org"},"publisher":{"@id":"https://it-rat.com/#org"},"mainEntityOfPage":"https://it-rat.com/changes-2026-11.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IT-RAT","item":"https://it-rat.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://it-rat.com/guides.html"},{"@type":"ListItem","position":3,"name":"What changed in the stack, 16 October to 27 November 2026","item":"https://it-rat.com/changes-2026-11.html"}]}]}</script>
+<!-- /seo:auto -->
+</head>
+<body data-root="">
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html"><svg class="glyph" viewBox="0 0 24 24" fill="none"><path d="M13.5 2 5 13.2h5.1L9.4 22l9-11.8h-5.3L13.5 2Z" fill="#F4B23E"/></svg>IT<b>-</b>RAT</a>
+    <span class="crumb">guides<span class="sep">/</span><span class="here">changes</span></span>
+    <span class="spacer"></span>
+    <a class="tb-link tb-cta" href="demo/">Live demo</a>
+    <a class="tb-link" href="stack.html">Stack</a>
+    <a class="tb-link" href="guides.html">All guides</a>
+    <a class="tb-link tb-opt" href="console.html">Console</a>
+    <button class="kbd-hint" data-cmdk type="button"><span>jump</span><kbd>&#8984;K</kbd></button>
+  </div>
+</header>
+
+<section class="guide-hero">
+  <div class="wrap">
+    <div class="kicker rv">a guide &#183; what changed</div>
+    <h1 class="rv d1">What changed in the stack, 16 October to 27 November 2026.</h1>
+    <p class="lede rv d2">What changed in the services in the six weeks after <a href="changes-2026-10.html" style="color:var(--accent)">the October page</a>, why each change matters, and what it improves for the people who run AI agents and answer for them. It is grouped by the problem each change solves, not by repository, because most problems were solved by several services moving together. <b>The period ends with the whole stack deployed again on AWS, on 27 November.</b></p>
+  </div>
+</section>
+
+<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#at-a-glance">At a glance</a></li><li><a href="#releases">Releases, day by day</a></li><li><a href="#custody">1. Keys in custody, the record witnessed</a></li><li><a href="#credentials">2. An agent's own credential at every door</a></li><li><a href="#holds">3. A tool call nothing grants waits for a person</a></li><li><a href="#broker">4. The MCP broker judges every call</a></li><li><a href="#quality">5. Quality becomes a signal the policy reads</a></li><li><a href="#operations">6. Running it: the bus, signed installs, drills</a></li><li><a href="#aws">27 November: the stack on AWS again</a></li><li><a href="#terms">A few terms</a></li></ol></nav></div></section>
+
+<section class="sec" style="padding-top:34px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">at a glance</div>
+      <h2 id="at-a-glance">Six weeks, in five numbers.</h2>
+    </div>
+    <div class="stats rv" role="list">
+      <div class="stat" role="listitem"><div class="n">158</div><p>release tags</p></div>
+      <div class="stat" role="listitem"><div class="n">19</div><p>repositories that released</p></div>
+      <div class="stat" role="listitem"><div class="n">58</div><p>launcher releases, 32 for a cluster and 26 for one machine</p></div>
+      <div class="stat" role="listitem"><div class="n">3</div><p>first releases: Keyryx, Verdryx and the Genaryx console</p></div>
+      <div class="stat" role="listitem"><div class="n">28</div><p>security tests passed on AWS on 27 November, none failed</p></div>
+    </div>
+    <div class="prose rv" style="margin-top:24px">
+      <p>Across 19 repositories we cut 158 release tags between 16 October and 27 November. TokenFuse moved from v1.14.0 to v1.27.0, Wardryx from v1.5.0 to v2.8.0 and Vouchryx from v0.2.0 to v0.9.0. Keyryx and Verdryx shipped their first releases, the console became a release of its own, and the two launchers released 58 times between them to carry those versions to real machines.</p>
+      <p><b>How these were counted.</b> A release counts when GitHub published it between 16 October and 27 November. Ranges run from the latest release before 16 October to the latest on 27 November. Counts were read from each repository's releases on 27 November.</p>
+      <h3 id="six-themes">The six themes</h3>
+      <p>Each theme opens with the problem in plain words, then lists what changed, then says why it matters for someone who runs agents and answers for what they do. A short line at the end names the releases.</p>
+    </div>
+    <ol class="themes rv">
+      <li><span><a href="#custody">Keys in custody, the record witnessed.</a> The signing keys left the services that use them, and a witness outside the writers keeps its own signed log of the record.</span></li>
+      <li><span><a href="#credentials">An agent's own credential at every door.</a> Both launchers require an agent's own short-lived token by default, bound to a key the agent holds, and a proof is good for one decision.</span></li>
+      <li><span><a href="#holds">A tool call nothing grants waits for a person.</a> The person sees the call's arguments, sealed, can make the answer stand, and every hold ends on the record.</span></li>
+      <li><span><a href="#broker">The MCP broker judges every call.</a> Batches, redirects and an unreachable gateway no longer lead around the broker's checks.</span></li>
+      <li><span><a href="#quality">Quality becomes a signal the policy reads.</a> A quality failure is a finding with an owner, and an agent with a spent error budget waits for a person.</span></li>
+      <li><span><a href="#operations">Running it: the bus, signed installs, drills.</a> Each plane owns its stream, only a signed release installs, and drills cover a provider that is up but failing.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">the period</div>
+      <h2 id="releases">Releases, day by day.</h2>
+    </div>
+    <div class="prose rv">
+      <p>Most services released in three bursts: from 18 to 20 October, when key custody, agent tokens and the new defaults landed together; from 4 to 15 November, when holds, the argument preview and the bus ownership work landed; and from 24 to 26 November, when key rotation moved to custody's admin socket and the console became its own release. The launchers, <a href="https://github.com/TAIPANBOX/stack-single">stack-single</a> for one machine and <a href="https://github.com/TAIPANBOX/stack-k8s">stack-k8s</a> for a cluster, release whenever a service they carry moves, which is why they lead the count.</p>
+    </div>
+    <figure class="dfig rv">
+      <div class="frame"><svg class="fig wide" viewBox="0 0 1180 670" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Release timeline, 16 October to 27 November 2026" style="font-family:var(--font-t)"><rect x="1154.5" y="36" width="23.0" height="578" style="fill:color-mix(in srgb,var(--amber) 14%,var(--panel))" /><text x="1169.5" y="26" font-size="13" text-anchor="end" font-weight="700" style="fill:var(--amber)">AWS re-run</text><rect x="8" y="42" width="1164" height="44" opacity="0.55" style="fill:var(--panel-3)" /><rect x="8" y="130" width="1164" height="44" opacity="0.55" style="fill:var(--panel-3)" /><rect x="8" y="218" width="1164" height="44" opacity="0.55" style="fill:var(--panel-3)" /><rect x="8" y="306" width="1164" height="44" opacity="0.55" style="fill:var(--panel-3)" /><rect x="8" y="394" width="1164" height="44" opacity="0.55" style="fill:var(--panel-3)" /><rect x="8" y="482" width="1164" height="44" opacity="0.55" style="fill:var(--panel-3)" /><rect x="8" y="570" width="1164" height="44" opacity="0.55" style="fill:var(--panel-3)" /><line x1="200.0" y1="42" x2="200.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="200.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">16</text><line x1="223.0" y1="42" x2="223.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="223.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">17</text><line x1="246.0" y1="42" x2="246.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="246.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">18</text><line x1="269.0" y1="42" x2="269.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="269.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">19</text><line x1="292.0" y1="42" x2="292.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="292.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">20</text><line x1="315.0" y1="42" x2="315.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="315.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">21</text><line x1="338.0" y1="42" x2="338.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="338.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">22</text><line x1="361.0" y1="42" x2="361.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="361.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">23</text><line x1="384.0" y1="42" x2="384.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="384.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">24</text><line x1="407.0" y1="42" x2="407.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="407.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">25</text><line x1="430.0" y1="42" x2="430.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="430.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">26</text><line x1="453.0" y1="42" x2="453.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="453.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">27</text><line x1="476.0" y1="42" x2="476.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="476.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">28</text><line x1="499.0" y1="42" x2="499.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="499.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">29</text><line x1="522.0" y1="42" x2="522.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="522.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">30</text><line x1="545.0" y1="42" x2="545.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="545.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">31</text><line x1="568.0" y1="42" x2="568.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="568.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">1</text><line x1="591.0" y1="42" x2="591.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="591.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">2</text><line x1="614.0" y1="42" x2="614.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="614.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">3</text><line x1="637.0" y1="42" x2="637.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="637.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">4</text><line x1="660.0" y1="42" x2="660.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="660.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">5</text><line x1="683.0" y1="42" x2="683.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="683.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">6</text><line x1="706.0" y1="42" x2="706.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="706.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">7</text><line x1="729.0" y1="42" x2="729.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="729.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">8</text><line x1="752.0" y1="42" x2="752.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="752.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">9</text><line x1="775.0" y1="42" x2="775.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="775.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">10</text><line x1="798.0" y1="42" x2="798.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="798.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">11</text><line x1="821.0" y1="42" x2="821.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="821.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">12</text><line x1="844.0" y1="42" x2="844.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="844.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">13</text><line x1="867.0" y1="42" x2="867.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="867.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">14</text><line x1="890.0" y1="42" x2="890.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="890.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">15</text><line x1="913.0" y1="42" x2="913.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="913.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">16</text><line x1="936.0" y1="42" x2="936.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="936.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">17</text><line x1="959.0" y1="42" x2="959.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="959.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">18</text><line x1="982.0" y1="42" x2="982.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="982.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">19</text><line x1="1005.0" y1="42" x2="1005.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="1005.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">20</text><line x1="1028.0" y1="42" x2="1028.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="1028.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">21</text><line x1="1051.0" y1="42" x2="1051.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="1051.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">22</text><line x1="1074.0" y1="42" x2="1074.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="1074.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">23</text><line x1="1097.0" y1="42" x2="1097.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="1097.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">24</text><line x1="1120.0" y1="42" x2="1120.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="1120.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">25</text><line x1="1143.0" y1="42" x2="1143.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="1143.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">26</text><line x1="1166.0" y1="42" x2="1166.0" y2="614" stroke-width="1" style="stroke:var(--line-2)" /><text x="1166.0" y="634" font-size="12.5" text-anchor="middle" font-weight="400" style="fill:var(--dim)">27</text><text x="372.5" y="656" font-size="13" text-anchor="middle" font-weight="600" style="fill:var(--dim)">October 2026</text><text x="867.0" y="656" font-size="13" text-anchor="middle" font-weight="600" style="fill:var(--dim)">November 2026</text><line x1="556.5" y1="642" x2="556.5" y2="662" stroke-width="1.4" style="stroke:var(--line-2)" /><text x="16" y="62.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">TokenFuse</text><text x="16" y="79.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">v1.14.0 to v1.27.0</text><circle cx="246.0" cy="64.0" r="11.0" style="fill:var(--teal)" /><text x="246.0" y="68.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">3</text><circle cx="269.0" cy="64.0" r="11.0" style="fill:var(--teal)" /><text x="269.0" y="68.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">3</text><circle cx="430.0" cy="64.0" r="7.0" style="fill:var(--teal)" /><circle cx="476.0" cy="64.0" r="9.0" style="fill:var(--teal)" /><text x="476.0" y="68.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="637.0" cy="64.0" r="7.0" style="fill:var(--teal)" /><circle cx="683.0" cy="64.0" r="7.0" style="fill:var(--teal)" /><circle cx="706.0" cy="64.0" r="7.0" style="fill:var(--teal)" /><circle cx="729.0" cy="64.0" r="7.0" style="fill:var(--teal)" /><circle cx="821.0" cy="64.0" r="7.0" style="fill:var(--teal)" /><circle cx="1120.0" cy="64.0" r="9.0" style="fill:var(--teal)" /><text x="1120.0" y="68.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><text x="16" y="106.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">Wardryx</text><text x="16" y="123.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">v1.5.0 to v2.8.0</text><circle cx="246.0" cy="108.0" r="11.0" style="fill:var(--teal)" /><text x="246.0" y="112.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">3</text><circle cx="269.0" cy="108.0" r="11.0" style="fill:var(--teal)" /><text x="269.0" y="112.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">3</text><circle cx="430.0" cy="108.0" r="7.0" style="fill:var(--teal)" /><circle cx="637.0" cy="108.0" r="9.0" style="fill:var(--teal)" /><text x="637.0" y="112.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="706.0" cy="108.0" r="9.0" style="fill:var(--teal)" /><text x="706.0" y="112.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="821.0" cy="108.0" r="9.0" style="fill:var(--teal)" /><text x="821.0" y="112.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="867.0" cy="108.0" r="7.0" style="fill:var(--teal)" /><text x="16" y="150.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">Vouchryx</text><text x="16" y="167.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">v0.2.0 to v0.9.0</text><circle cx="246.0" cy="152.0" r="11.0" style="fill:var(--teal)" /><text x="246.0" y="156.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">3</text><circle cx="269.0" cy="152.0" r="7.0" style="fill:var(--teal)" /><circle cx="430.0" cy="152.0" r="7.0" style="fill:var(--teal)" /><circle cx="637.0" cy="152.0" r="7.0" style="fill:var(--teal)" /><circle cx="821.0" cy="152.0" r="7.0" style="fill:var(--teal)" /><circle cx="1120.0" cy="152.0" r="7.0" style="fill:var(--teal)" /><text x="16" y="194.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">Keyryx</text><text x="16" y="211.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">new, to v0.2.0</text><circle cx="246.0" cy="196.0" r="7.0" style="fill:var(--teal)" /><circle cx="269.0" cy="196.0" r="9.0" style="fill:var(--teal)" /><text x="269.0" y="200.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="430.0" cy="196.0" r="7.0" style="fill:var(--teal)" /><circle cx="706.0" cy="196.0" r="7.0" style="fill:var(--teal)" /><circle cx="821.0" cy="196.0" r="7.0" style="fill:var(--teal)" /><circle cx="1120.0" cy="196.0" r="7.0" style="fill:var(--teal)" /><text x="16" y="238.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">CostCrew</text><text x="16" y="255.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">v0.6.0 to v0.11.0</text><circle cx="246.0" cy="240.0" r="9.0" style="fill:var(--teal)" /><text x="246.0" y="244.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="269.0" cy="240.0" r="9.0" style="fill:var(--teal)" /><text x="269.0" y="244.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="660.0" cy="240.0" r="7.0" style="fill:var(--teal)" /><circle cx="821.0" cy="240.0" r="7.0" style="fill:var(--teal)" /><circle cx="1120.0" cy="240.0" r="7.0" style="fill:var(--teal)" /><text x="16" y="282.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">Trailryx</text><text x="16" y="299.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">v1.2.1 to v1.7.0</text><circle cx="269.0" cy="284.0" r="11.5" style="fill:var(--teal)" /><text x="269.0" y="288.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">4</text><circle cx="890.0" cy="284.0" r="7.0" style="fill:var(--teal)" /><circle cx="1120.0" cy="284.0" r="7.0" style="fill:var(--teal)" /><text x="16" y="326.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">Heraldyx</text><text x="16" y="343.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">v0.7.0 to v0.10.0</text><circle cx="269.0" cy="328.0" r="7.0" style="fill:var(--teal)" /><circle cx="292.0" cy="328.0" r="7.0" style="fill:var(--teal)" /><circle cx="430.0" cy="328.0" r="7.0" style="fill:var(--teal)" /><circle cx="637.0" cy="328.0" r="7.0" style="fill:var(--teal)" /><circle cx="821.0" cy="328.0" r="7.0" style="fill:var(--teal)" /><circle cx="1120.0" cy="328.0" r="7.0" style="fill:var(--teal)" /><text x="16" y="370.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">Mockryx</text><text x="16" y="387.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">v0.2.1 to v0.5.1</text><circle cx="269.0" cy="372.0" r="9.0" style="fill:var(--teal)" /><text x="269.0" y="376.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="430.0" cy="372.0" r="7.0" style="fill:var(--teal)" /><circle cx="637.0" cy="372.0" r="7.0" style="fill:var(--teal)" /><circle cx="729.0" cy="372.0" r="7.0" style="fill:var(--teal)" /><circle cx="821.0" cy="372.0" r="7.0" style="fill:var(--teal)" /><text x="16" y="414.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">Idryx</text><text x="16" y="431.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">v1.2.1 to v1.4.1</text><circle cx="269.0" cy="416.0" r="9.0" style="fill:var(--teal)" /><text x="269.0" y="420.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="430.0" cy="416.0" r="7.0" style="fill:var(--teal)" /><circle cx="637.0" cy="416.0" r="7.0" style="fill:var(--teal)" /><circle cx="821.0" cy="416.0" r="7.0" style="fill:var(--teal)" /><text x="16" y="458.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">Scopyx</text><text x="16" y="475.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">v1.0.1 to v1.3.1</text><circle cx="269.0" cy="460.0" r="7.0" style="fill:var(--teal)" /><circle cx="430.0" cy="460.0" r="7.0" style="fill:var(--teal)" /><circle cx="637.0" cy="460.0" r="7.0" style="fill:var(--teal)" /><circle cx="683.0" cy="460.0" r="7.0" style="fill:var(--teal)" /><circle cx="821.0" cy="460.0" r="7.0" style="fill:var(--teal)" /><text x="16" y="502.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">Verdryx</text><text x="16" y="519.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">new, to v0.4.0</text><circle cx="269.0" cy="504.0" r="7.0" style="fill:var(--teal)" /><circle cx="637.0" cy="504.0" r="7.0" style="fill:var(--teal)" /><circle cx="706.0" cy="504.0" r="7.0" style="fill:var(--teal)" /><circle cx="1120.0" cy="504.0" r="7.0" style="fill:var(--teal)" /><text x="16" y="546.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">stack-single</text><text x="16" y="563.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">v1.1.35 to v1.15.0</text><circle cx="269.0" cy="548.0" r="11.0" style="fill:var(--teal)" /><text x="269.0" y="552.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">3</text><circle cx="407.0" cy="548.0" r="9.0" style="fill:var(--teal)" /><text x="407.0" y="552.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="430.0" cy="548.0" r="9.0" style="fill:var(--teal)" /><text x="430.0" y="552.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="476.0" cy="548.0" r="7.0" style="fill:var(--teal)" /><circle cx="660.0" cy="548.0" r="9.0" style="fill:var(--teal)" /><text x="660.0" y="552.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="683.0" cy="548.0" r="9.0" style="fill:var(--teal)" /><text x="683.0" y="552.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="706.0" cy="548.0" r="11.0" style="fill:var(--teal)" /><text x="706.0" y="552.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">3</text><circle cx="729.0" cy="548.0" r="9.0" style="fill:var(--teal)" /><text x="729.0" y="552.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="821.0" cy="548.0" r="9.0" style="fill:var(--teal)" /><text x="821.0" y="552.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="844.0" cy="548.0" r="7.0" style="fill:var(--teal)" /><circle cx="867.0" cy="548.0" r="7.0" style="fill:var(--teal)" /><circle cx="890.0" cy="548.0" r="7.0" style="fill:var(--teal)" /><circle cx="1097.0" cy="548.0" r="7.0" style="fill:var(--teal)" /><circle cx="1120.0" cy="548.0" r="9.0" style="fill:var(--teal)" /><text x="1120.0" y="552.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="1143.0" cy="548.0" r="7.0" style="fill:var(--teal)" /><text x="16" y="590.5" font-size="16" text-anchor="start" font-weight="650" style="fill:var(--fg)">stack-k8s</text><text x="16" y="607.5" font-size="13.5" text-anchor="start" font-weight="400" style="fill:var(--dim)">v1.1.46 to v1.19.0</text><circle cx="269.0" cy="592.0" r="11.5" style="fill:var(--teal)" /><text x="269.0" y="596.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">7</text><circle cx="292.0" cy="592.0" r="11.0" style="fill:var(--teal)" /><text x="292.0" y="596.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">3</text><circle cx="430.0" cy="592.0" r="9.0" style="fill:var(--teal)" /><text x="430.0" y="596.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="476.0" cy="592.0" r="9.0" style="fill:var(--teal)" /><text x="476.0" y="596.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="660.0" cy="592.0" r="7.0" style="fill:var(--teal)" /><circle cx="683.0" cy="592.0" r="9.0" style="fill:var(--teal)" /><text x="683.0" y="596.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="706.0" cy="592.0" r="11.0" style="fill:var(--teal)" /><text x="706.0" y="596.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">3</text><circle cx="729.0" cy="592.0" r="7.0" style="fill:var(--teal)" /><circle cx="821.0" cy="592.0" r="11.0" style="fill:var(--teal)" /><text x="821.0" y="596.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">3</text><circle cx="844.0" cy="592.0" r="7.0" style="fill:var(--teal)" /><circle cx="867.0" cy="592.0" r="9.0" style="fill:var(--teal)" /><text x="867.0" y="596.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="890.0" cy="592.0" r="7.0" style="fill:var(--teal)" /><circle cx="1097.0" cy="592.0" r="7.0" style="fill:var(--teal)" /><circle cx="1120.0" cy="592.0" r="9.0" style="fill:var(--teal)" /><text x="1120.0" y="596.3" font-size="12" text-anchor="middle" font-weight="700" style="fill:var(--ink)">2</text><circle cx="1143.0" cy="592.0" r="7.0" style="fill:var(--teal)" /></svg></div>
+      <figcaption>Figure 1. Release tags per service per day; the number in a dot counts that day's tags. Ranges run from the latest release before 16 October to the latest on 27 November. agent-stack-go, Qryx, Typryx, Engram, agent-passport and Genaryx released 16 more tags between them.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">theme 1 &#183; evidence</div>
+      <h2 id="custody">Keys in custody, the record witnessed.</h2>
+    </div>
+    <div class="prose rv">
+      <p>A record proves what happened only if two things hold: the key that signed it was not lying around beside the code that used it, and somebody other than the writers saw the record when it was written. Until this period the services that sign, approvals, record seals and delegation tokens, each held their own keys, and nothing outside them watched the record. <a href="services/keyryx.html">Keyryx</a>, first released on 18 October, answers both.</p>
+    </div>
+    <figure class="dfig rv">
+      <div class="frame"><svg class="fig" viewBox="0 0 920 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keyryx custody and witness" style="font-family:var(--font-t)"><defs><marker id="n-custody-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--dim)" /></marker><marker id="n-custody-aht" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--teal)" /></marker></defs><g class="bx"><rect x="8" y="10" width="230" height="60" rx="8" stroke-width="1.3" style="fill:var(--panel);stroke:var(--line-2)" /><text x="123" y="35" font-size="15" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Wardryx</text><text x="123" y="56" font-size="14" font-weight="400" text-anchor="middle" style="fill:var(--dim)">approval tokens</text></g><g class="bx"><rect x="8" y="82" width="230" height="60" rx="8" stroke-width="1.3" style="fill:var(--panel);stroke:var(--line-2)" /><text x="123" y="107" font-size="15" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Trailryx</text><text x="123" y="128" font-size="14" font-weight="400" text-anchor="middle" style="fill:var(--dim)">record seal roots</text></g><g class="bx"><rect x="8" y="154" width="230" height="60" rx="8" stroke-width="1.3" style="fill:var(--panel);stroke:var(--line-2)" /><text x="123" y="179" font-size="15" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Vouchryx</text><text x="123" y="200" font-size="14" font-weight="400" text-anchor="middle" style="fill:var(--dim)">its token key, certified</text></g><g class="bx"><rect x="8" y="226" width="230" height="60" rx="8" stroke-width="1.3" style="fill:var(--panel);stroke:var(--line-2)" /><text x="123" y="251" font-size="15" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Producers</text><text x="123" y="272" font-size="14" font-weight="400" text-anchor="middle" style="fill:var(--dim)">stream checkpoint keys</text></g><line x1="240" y1="40" x2="326" y2="40" stroke-width="1.8" marker-end="url(#n-custody-ah)" style="stroke:var(--dim)" /><line x1="240" y1="112" x2="326" y2="112" stroke-width="1.8" marker-end="url(#n-custody-ah)" style="stroke:var(--dim)" /><line x1="240" y1="184" x2="326" y2="184" stroke-width="1.8" marker-end="url(#n-custody-ah)" style="stroke:var(--dim)" /><line x1="240" y1="256" x2="326" y2="256" stroke-width="1.8" marker-end="url(#n-custody-ah)" style="stroke:var(--dim)" /><g class="bx"><rect x="330" y="10" width="250" height="276" rx="8" stroke-width="1.3" style="fill:color-mix(in srgb,var(--teal) 14%,var(--panel));stroke:var(--teal)" /><text x="455" y="104" font-size="16" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Keyryx custody</text><text x="455" y="132" font-size="15" font-weight="400" text-anchor="middle" style="fill:var(--fg)">holds the keys</text><text x="455" y="154" font-size="15" font-weight="400" text-anchor="middle" style="fill:var(--fg)">signs on request</text><text x="455" y="176" font-size="15" font-weight="400" text-anchor="middle" style="fill:var(--fg)">certifies short-lived keys</text><text x="455" y="198" font-size="15" font-weight="400" text-anchor="middle" style="fill:var(--fg)">publishes key sets</text><text x="455" y="220" font-size="15" font-weight="400" text-anchor="middle" style="fill:var(--fg)">with an overlap</text></g><text x="626" y="132" font-size="13" font-weight="600" text-anchor="middle" style="fill:var(--teal)">key sets,</text><text x="626" y="148" font-size="13" font-weight="600" text-anchor="middle" style="fill:var(--teal)">cached</text><line x1="582" y1="160" x2="670" y2="160" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#n-custody-aht)" style="stroke:var(--teal)" /><g class="bx"><rect x="672" y="115" width="240" height="90" rx="8" stroke-width="1.3" style="fill:var(--panel);stroke:var(--line-2)" /><text x="792" y="146" font-size="15" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Verifiers</text><text x="792" y="168" font-size="14" font-weight="400" text-anchor="middle" style="fill:var(--dim)">enforcement points</text><text x="792" y="188" font-size="14" font-weight="400" text-anchor="middle" style="fill:var(--dim)">and auditors</text></g><path d="M582,262 H792 V316" fill="none" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#n-custody-ah)" style="stroke:var(--dim)" /><g class="bx"><rect x="672" y="320" width="240" height="72" rx="8" stroke-width="1.3" style="fill:var(--panel-3);stroke:var(--line-2)" /><text x="792" y="342" font-size="14" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Rotate or revoke</text><text x="792" y="362" font-size="13.5" font-weight="400" text-anchor="middle" style="fill:var(--fg)">only on the admin socket,</text><text x="792" y="380" font-size="13.5" font-weight="400" text-anchor="middle" style="fill:var(--fg)">announced on the bus</text></g><g class="bx"><rect x="8" y="320" width="300" height="72" rx="8" stroke-width="1.3" style="fill:color-mix(in srgb,var(--amber) 14%,var(--panel));stroke:var(--amber)" /><text x="158" y="342" font-size="15" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Keyryx witness</text><text x="158" y="362" font-size="13.5" font-weight="400" text-anchor="middle" style="fill:var(--fg)">its own log, signed with</text><text x="158" y="380" font-size="13.5" font-weight="400" text-anchor="middle" style="fill:var(--fg)">P-384 and ML-DSA-65</text></g><line x1="310" y1="356" x2="356" y2="356" stroke-width="1.8" marker-end="url(#n-custody-ah)" style="stroke:var(--dim)" /><text x="333" y="346" font-size="12.5" font-weight="600" text-anchor="middle" style="fill:var(--dim)">reads</text><g class="bx"><rect x="360" y="320" width="220" height="72" rx="8" stroke-width="1.3" style="fill:var(--panel);stroke:var(--line-2)" /><text x="470" y="351" font-size="14.5" font-weight="400" text-anchor="middle" style="fill:var(--fg)">The event bus and</text><text x="470" y="371" font-size="14.5" font-weight="400" text-anchor="middle" style="fill:var(--fg)">the sealed record</text></g></svg></div>
+      <figcaption>Figure 2. Custody signs and certifies for four kinds of consumer and publishes key sets that verifiers cache, so nothing calls it on a request path. The witness is a separate process that only reads.</figcaption>
+    </figure>
+    <div class="prose rv" style="margin-top:22px">
+      <h3 id="custody-changed">What changed</h3>
+      <ul>
+        <li><span><b>Custody holds the keys and signs on request.</b> Wardryx's approval tokens are signed through Keyryx and verified from a cached key set. Trailryx's seals are signed through it, queued while it is down, and each signature is checked against Keyryx's pinned key before the seal is kept.</span></li>
+        <li><span><b>High-rate signers get short-lived keys it certifies.</b> Vouchryx signs tokens with a working key Keyryx certifies, renewed at half its life, and refuses to issue without one. A producer on the event bus can sign checkpoints of its stream with a key of its own, certified the same way.</span></li>
+        <li><span><b>A witness outside the writers.</b> The witness reads the record and never writes to it, checks that every byte it saw before is still there, and signs what it saw into its own append-only log, with ECDSA P-384 and ML-DSA-65 side by side. Its findings reach the notifier and the console.</span></li>
+        <li><span><b>On by default.</b> Every cluster launcher installs custody and the witness from 20 October, and a single box signs and witnesses its record from 5 November, including a box with 1,024 records of history written before signing existed.</span></li>
+        <li><span><b>Rotation without an outage, and only by an operator.</b> Key sets are published with an overlap, so a rotation never breaks a verifier. At the bound on live keys, a new key retires its owner's oldest one instead of being refused. From 25 November rotating or revoking a key is a command on custody's admin socket only, and every change is announced on the bus, where the notifier reads it.</span></li>
+      </ul>
+      <h3 id="custody-why">Why it matters</h3>
+      <p>An auditor asks two questions of a record: who could have signed this, and could anyone have changed it afterwards. With the keys in custody the first has one answer, and every rotation and revocation is itself on the record. The witness answers the second from outside the services that write, and because its log carries a post-quantum signature beside the classical one, what it signs now still verifies after classical signatures are retired.</p>
+      <p class="record"><b>For the record:</b> Keyryx v0.1.0 (18 October) to v0.2.0 (25 November); Wardryx v2.2.0; Trailryx v1.3.0 and v1.5.0; Vouchryx v0.5.0 and v0.6.0; agent-stack-go v2.0.0; stack-k8s v1.6.0 and v1.7.0; stack-single v1.6.0.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">theme 2 &#183; identity</div>
+      <h2 id="credentials">An agent's own credential at every door.</h2>
+    </div>
+    <div class="prose rv">
+      <p>A static client key says which key made a call, not which agent made it, and it works for anyone who copies it. An incident needs a different answer: which agent, acting for whom, and could the credential have been replayed. In this period the agent's own token became the default at both doors that take agent calls, the gateway and the MCP broker.</p>
+      <h3 id="credentials-changed">What changed</h3>
+      <ul>
+        <li><span><b>Required by default.</b> From 19 October both launchers require an agent's own short-lived token at the gateway and the MCP broker. A static client key is admitted only when its id is on a named list, and Vouchryx, which issues the tokens, starts on every install and runs without an identity provider.</span></li>
+        <li><span><b>Bound to a key, good once.</b> Vouchryx issues per-agent credentials bound to a key the agent holds (client credentials with DPoP), workload tokens and a standing ban. Wardryx checks the token and its proof itself; a proof is good for one decision, and with a database the record of spent proofs is shared by every instance and survives a restart. Bearer keys are compared in constant time and stored by their SHA-256 digest.</span></li>
+        <li><span><b>Unconfigured means enforcing.</b> An unconfigured gateway and MCP broker enforce what they advertise instead of starting in observation, and a gateway that listens beyond loopback with nothing authenticating its callers refuses to start.</span></li>
+        <li><span><b>The person behind the agent.</b> A call made on behalf of a person carries that person's delegation beside the agent's own token, and the policy plane receives the person's chain as proven. An approval names the person who gave it, through a statement the console signs.</span></li>
+        <li><span><b>Keys that move without a restart.</b> Vouchryx reads its issuers' key set files again every 30 seconds, so a provider that rotates its signing key is trusted again without a restart. A revoke key can be scoped to the rights and the parties its holder needs, and an actor credential with no key is refused on a first hop.</span></li>
+        <li><span><b>Only verified images and hosts.</b> The default cluster install admits only verified images into the stack's namespace, and the cloud launchers check each node's SSH host key before they connect.</span></li>
+      </ul>
+      <h3 id="credentials-why">Why it matters</h3>
+      <p>With a token bound to a key the agent holds, a copied token is useless without that key, a replayed proof is refused, and every refusal is filed under the agent and the person behind it. The defaults matter as much as the feature: a control that has to be switched on is off on most machines, so this one now has to be switched off, by name.</p>
+      <p class="record"><b>For the record:</b> Vouchryx v0.4.0 to v0.9.0; Wardryx v2.3.0, v2.4.0 and v2.5.0; TokenFuse v1.16.0, v1.19.0 and v1.25.0; stack-k8s v1.3.0, v1.4.0 and v1.5.0; stack-single v1.3.0.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">theme 3 &#183; human in the loop</div>
+      <h2 id="holds">A tool call nothing grants waits for a person.</h2>
+    </div>
+    <div class="prose rv">
+      <p>A tool call is where an agent acts on the world: it sends the mail, moves the file, calls the API. Before this period a tool call that no rule mentioned went through, and the person deciding a held call could not see its arguments. A queue of holds also had no end, so a hold nobody answered waited forever.</p>
+    </div>
+    <figure class="dfig rv">
+      <div class="frame"><svg class="fig" viewBox="0 0 920 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The life of a held tool call" style="font-family:var(--font-t)"><defs><marker id="n-hold-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--dim)" /></marker></defs><g class="bx"><rect x="8" y="10" width="280" height="86" rx="8" stroke-width="1.3" style="fill:var(--panel);stroke:var(--line-2)" /><text x="148" y="47" font-size="15" font-weight="400" text-anchor="middle" style="fill:var(--fg)">A tool call that</text><text x="148" y="68" font-size="15" font-weight="400" text-anchor="middle" style="fill:var(--fg)">no rule grants</text></g><line x1="290" y1="53" x2="316" y2="53" stroke-width="1.8" marker-end="url(#n-hold-ah)" style="stroke:var(--dim)" /><g class="bx"><rect x="320" y="10" width="280" height="86" rx="8" stroke-width="1.3" style="fill:color-mix(in srgb,var(--amber) 14%,var(--panel));stroke:var(--amber)" /><text x="460" y="47" font-size="15" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Held for a person</text><text x="460" y="68" font-size="15" font-weight="400" text-anchor="middle" style="fill:var(--fg)">the agent is told why</text></g><line x1="602" y1="53" x2="628" y2="53" stroke-width="1.8" marker-end="url(#n-hold-ah)" style="stroke:var(--dim)" /><g class="bx"><rect x="632" y="10" width="280" height="86" rx="8" stroke-width="1.3" style="fill:color-mix(in srgb,var(--teal) 14%,var(--panel));stroke:var(--teal)" /><text x="772" y="36" font-size="15" font-weight="400" text-anchor="middle" style="fill:var(--fg)">The person sees the</text><text x="772" y="57" font-size="15" font-weight="400" text-anchor="middle" style="fill:var(--fg)">arguments, sealed, with</text><text x="772" y="78" font-size="15" font-weight="400" text-anchor="middle" style="fill:var(--fg)">secrets hidden</text></g><path d="M772,98 V124" fill="none" stroke-width="1.8" style="stroke:var(--dim)" /><line x1="115.5" y1="124" x2="796.5" y2="124" stroke-width="1.8" style="stroke:var(--dim)" /><line x1="115.5" y1="124" x2="115.5" y2="146" stroke-width="1.8" marker-end="url(#n-hold-ah)" style="stroke:var(--dim)" /><line x1="342.5" y1="124" x2="342.5" y2="146" stroke-width="1.8" marker-end="url(#n-hold-ah)" style="stroke:var(--dim)" /><line x1="569.5" y1="124" x2="569.5" y2="146" stroke-width="1.8" marker-end="url(#n-hold-ah)" style="stroke:var(--dim)" /><line x1="796.5" y1="124" x2="796.5" y2="146" stroke-width="1.8" marker-end="url(#n-hold-ah)" style="stroke:var(--dim)" /><g class="bx"><rect x="8" y="150" width="215" height="86" rx="8" stroke-width="1.3" style="fill:var(--panel);stroke:var(--line-2)" /><text x="115.5" y="186" font-size="15" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Approved</text><text x="115.5" y="207" font-size="14" font-weight="400" text-anchor="middle" style="fill:var(--dim)">this call runs</text></g><g class="bx"><rect x="235" y="150" width="215" height="86" rx="8" stroke-width="1.3" style="fill:var(--panel);stroke:var(--line-2)" /><text x="342.5" y="186" font-size="15" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Denied</text><text x="342.5" y="207" font-size="14" font-weight="400" text-anchor="middle" style="fill:var(--dim)">this call is refused</text></g><g class="bx"><rect x="462" y="150" width="215" height="86" rx="8" stroke-width="1.3" style="fill:var(--panel);stroke:var(--line-2)" /><text x="569.5" y="179" font-size="15" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Always allow</text><text x="569.5" y="200" font-size="14" font-weight="400" text-anchor="middle" style="fill:var(--dim)">a standing grant,</text><text x="569.5" y="219" font-size="14" font-weight="400" text-anchor="middle" style="fill:var(--dim)">the next one passes</text></g><g class="bx"><rect x="689" y="150" width="215" height="86" rx="8" stroke-width="1.3" style="fill:var(--panel-3);stroke:var(--line-2)" /><text x="796.5" y="179" font-size="15" font-weight="700" text-anchor="middle" style="fill:var(--fg)">Expired or withdrawn</text><text x="796.5" y="200" font-size="14" font-weight="400" text-anchor="middle" style="fill:var(--dim)">after 24 hours,</text><text x="796.5" y="219" font-size="14" font-weight="400" text-anchor="middle" style="fill:var(--dim)">or by the agent</text></g><line x1="115.5" y1="238" x2="115.5" y2="260" stroke-width="1.8" marker-end="url(#n-hold-ah)" style="stroke:var(--dim)" /><line x1="342.5" y1="238" x2="342.5" y2="260" stroke-width="1.8" marker-end="url(#n-hold-ah)" style="stroke:var(--dim)" /><line x1="569.5" y1="238" x2="569.5" y2="260" stroke-width="1.8" marker-end="url(#n-hold-ah)" style="stroke:var(--dim)" /><line x1="796.5" y1="238" x2="796.5" y2="260" stroke-width="1.8" marker-end="url(#n-hold-ah)" style="stroke:var(--dim)" /><g class="bx"><rect x="8" y="264" width="896" height="56" rx="8" stroke-width="1.3" style="fill:color-mix(in srgb,var(--teal) 14%,var(--panel));stroke:var(--teal)" /><text x="456" y="297" font-size="15" font-weight="400" text-anchor="middle" style="fill:var(--fg)">Every outcome closes the hold on the record, a lifetime and a withdrawal included</text></g></svg></div>
+      <figcaption>Figure 3. The life of a held tool call, from the missing grant to the closing record.</figcaption>
+    </figure>
+    <div class="prose rv" style="margin-top:22px">
+      <h3 id="holds-changed">What changed</h3>
+      <ul>
+        <li><span><b>Held by default.</b> From 7 November a tool call nothing grants waits for a person on every new install, with nothing to turn on. Model calls pass as before, and only an explicit grant lifts the hold. A box that already runs agents is told what the hold would stop before anything on it changes.</span></li>
+        <li><span><b>The person sees the arguments.</b> Wardryx builds a preview from the bytes the approval is bound to, hides secrets and personal data by fixed rules, and seals it so that only the console can read it. A person may deny a sealed hold without opening it. Both launchers turn the preview on from 13 November.</span></li>
+        <li><span><b>An answer can stand.</b> The console's approvals inbox offers "Always allow" beside Grant and Deny, and writes the same grant the installer's own command writes, so the same question does not come back.</span></li>
+        <li><span><b>Every hold ends.</b> A hold nobody decides is closed as expired once it has waited <code>WARDRYX_HOLD_TTL</code>, 24 hours by default, and the held agent may withdraw its own. The console shows them as "Expired, nobody decided in time" and "Withdrawn by the agent", in a neutral colour, and Trailryx writes a closing record for both.</span></li>
+        <li><span><b>The agent is told why.</b> A held MCP tool call says why it was held, and the broker's list of tools leaves out the ones the policy refuses the calling agent outright, so an agent is not shown tools it may never use.</span></li>
+      </ul>
+      <h3 id="holds-why">Why it matters</h3>
+      <p>Human approval works only when the person can decide well and the queue cannot rot. Seeing the arguments turns a rubber stamp into a decision; a standing grant stops approval fatigue from training people to click yes; a lifetime means a forgotten hold closes as a timeout on the record instead of waiting forever. The <a href="genaryx.html">console</a> and the record show the same outcome, so an auditor reads what the approver saw.</p>
+      <p class="record"><b>For the record:</b> Wardryx v2.6.0, v2.7.0 and v2.8.0; Trailryx v1.6.0; TokenFuse v1.23.0 and v1.24.0; stack-k8s v1.8.7 to v1.16.0; stack-single v1.7.0 to v1.12.0; Mockryx v0.5.0 for the hold drill.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">theme 4 &#183; tool safety</div>
+      <h2 id="broker">The MCP broker judges every call.</h2>
+    </div>
+    <div class="prose rv">
+      <p>The broker stands between agents and every tool server, so a request that slips past its checks is a call nobody judged. Most fixes in this theme close a way around the judgement rather than add a new one, which is the kind of defect worth finding before anyone else does.</p>
+      <h3 id="broker-changed">What changed</h3>
+      <ul>
+        <li><span><b>A batch no longer walks around the checks.</b> The broker read <code>method</code> from one JSON-RPC object, and a batch is an array, so it skipped the policy decision, the identity requirement, the argument scan and the record. A message that is not one object is now refused before an upstream is resolved or a secret read. The refusal was re-run on a live box on 28 October.</span></li>
+        <li><span><b>Fails closed.</b> When the gateway cannot judge a tool call, the broker refuses it instead of letting it through unjudged, and it follows no redirect.</span></li>
+        <li><span><b>Taint from what happened.</b> The agent firewall takes a run's taint label from the act an enforcement point saw, not from the tool name the agent reported. The injection detector sees Unicode tag characters and bidirectional isolates, and every refusal text is cleaned before a model reads it.</span></li>
+        <li><span><b>Every door judges the arguments.</b> Each door judges a tool call's own arguments, and the judge of streamed calls is hardened.</span></li>
+        <li><span><b>Limits per key, credentials per upstream.</b> A client key can carry its own rate and concurrency limits, and each MCP upstream can have a credential of its own.</span></li>
+        <li><span><b>A web read under the run that asked for it.</b> A fetch through the broker carries the run that asked for it, so Scopyx, the egress gate, labels the read with the run that made it.</span></li>
+      </ul>
+      <h3 id="broker-why">Why it matters</h3>
+      <p>A policy is only as strong as the request shape it forgot. An agent that has read untrusted text can be talked into anything a tool allows, so the broker has to see every call in every shape, judge it on what the agent actually did, and refuse when it cannot judge. After these changes, a call the broker cannot judge is refused.</p>
+      <p class="record"><b>For the record:</b> TokenFuse v1.20.1 to v1.27.0; Scopyx v1.2.0 and v1.3.0; stack-single v1.8.0.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">theme 5 &#183; quality</div>
+      <h2 id="quality">Quality becomes a signal the policy reads.</h2>
+    </div>
+    <div class="prose rv">
+      <p>Spend and safety are judged per call; quality is judged per outcome, and until this period it lived in reports. A failing agent showed up as a line somebody might read, while the agent went on acting. <a href="services/verdryx.html">Verdryx</a> shipped its first release on 19 October and turned that line into a signal.</p>
+      <h3 id="quality-changed">What changed</h3>
+      <ul>
+        <li><span><b>A quality plane with six graders.</b> Verdryx grades an agent's outputs against an eval set (exact, regex, outcome tag, a model as judge, a tool-call trace, and a typed verdict from Typryx), flags drift against a stored baseline, turns the gateway's traces into cost per outcome, and computes error budgets over the same traces. It measures and does not enforce.</span></li>
+        <li><span><b>A failure becomes a finding.</b> A quality failure is a record an operator comes back to, a fix is registered against it and judged by the runs that follow, and a person's grade outranks a model's score. The model judge stops guessing a score from a reply that carries none.</span></li>
+        <li><span><b>A spent budget holds the agent.</b> When Verdryx's error budget signal stands for an agent, Wardryx puts that agent's tool calls to a person, and a caller cannot remove the signal. Both launchers run the measurement and carry the rule by default from 7 November, and on that day an agent with a spent budget was held on a live box.</span></li>
+        <li><span><b>Memory that keeps the person's word.</b> In Engram a fact that traces to the person's own words is no longer displaced by anything a model writes, and a fact can be refuted without being erased.</span></li>
+        <li><span><b>An inventory that names disagreements.</b> Idryx's AI inventory says, for each agent or service, what was declared, what was seen and what the code can reach, and names every disagreement between them.</span></li>
+      </ul>
+      <h3 id="quality-why">Why it matters</h3>
+      <p>An agent that keeps answering wrong costs more than its tokens. Before, the cost showed up later in a review; now a falling quality score has an owner and a fix it is judged against, and when the budget is spent the agent stops acting alone until a person looks. The same measurement feeds the FinOps view, because cost per resolved case needs to know which cases were resolved.</p>
+      <p class="record"><b>For the record:</b> Verdryx v0.1.0 (19 October) to v0.4.0; Wardryx v2.5.0; Engram v3.1.0; Idryx v1.4.0; Typryx v0.6.0, whose backend reaches the current OpenAI models; stack-k8s v1.8.5; stack-single v1.6.3.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">theme 6 &#183; operations</div>
+      <h2 id="operations">Running it: the bus, signed installs, drills.</h2>
+    </div>
+    <div class="prose rv">
+      <p>Every plane writes to one event bus, every launcher installs from the internet, and every alert reaches a person by mail. Each of those is a place where one compromised or misbehaving part could speak for another, or where a person stops reading because there is too much to read.</p>
+      <h3 id="operations-changed">What changed</h3>
+      <ul>
+        <li><span><b>Each plane owns its stream.</b> On a cluster every plane that writes the bus runs under a uid and a group of its own, and only the bus owner can create, rename or remove a name in the bus directory, so no plane can forge or replace another's stream. Stream files are readable by their owner's group and nobody else, and Wardryx writes only the event types the registry lists for it.</span></li>
+        <li><span><b>Only a signed release installs.</b> A piped install runs only a release whose signature verified. On one machine the installer compares what Docker runs with the pins, keeps a journal with a rollback index, and refuses a tree older than that index.</span></li>
+        <li><span><b>Drills for a provider that is up but failing.</b> Mockryx adds drills for a provider that answers errors, rate-limits or times out, beside the outage drill, and one for the tool hold. A drill beside the notifier proves the whole reaction chain to the operator's mail.</span></li>
+        <li><span><b>Fewer, safer mails.</b> Heraldyx sends mail only over an encrypted connection, a storm of failures from one dependency is one mail, and the gateway folds a provider that keeps failing into one incident.</span></li>
+        <li><span><b>Patched within days.</b> Every Go service was rebuilt on Go 1.27.3 and then on Go 1.27.4 for the two Go advisories of the period, and the services that read the whole bus get 1 GiB of memory.</span></li>
+        <li><span><b>The console is its own release.</b> Genaryx published its own signed image on 25 November, for amd64 and arm64, and both launchers run it. The FinOps console reads the gateway's spend on a cluster and on one machine.</span></li>
+      </ul>
+      <h3 id="operations-why">Why it matters</h3>
+      <p>The controls above are only as good as the ground they stand on. A bus where one plane can rewrite another's stream makes the record a matter of trust; an install that runs whatever arrives makes every control optional; a notifier that sends forty mails for one outage teaches people to ignore it. These changes keep the ground under the controls as strict as the controls themselves.</p>
+      <p class="record"><b>For the record:</b> stack-k8s v1.10.0, v1.17.0 and v1.19.0; stack-single v1.7.0, v1.13.0 and v1.15.0; Mockryx v0.4.0 and v0.5.0; Heraldyx v0.8.0 to v0.10.0; agent-passport v1.1.0; Genaryx v0.1.0.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">the run</div>
+      <h2 id="aws">27 November: the stack on AWS again.</h2>
+    </div>
+    <div class="prose rv">
+      <p>On the last day of the period the current releases were deployed from their tags on fresh machines in AWS eu-central-1: stack-k8s v1.19.0 on five c7i.2xlarge nodes running self-managed k3s, and stack-single v1.15.0 on one m7i.xlarge beside it. Images were pulled by digest, nothing was built, and everything was torn down afterwards.</p>
+    </div>
+    <div class="stats rv" role="list" style="margin-top:22px">
+      <div class="stat" role="listitem"><div class="n">16:30</div><p>minutes from zero to every plane answering on five nodes</p></div>
+      <div class="stat" role="listitem"><div class="n">28</div><p>security tests passed, none failed</p></div>
+      <div class="stat" role="listitem"><div class="n">21</div><p>checks passed with the stack frozen, none failed</p></div>
+      <div class="stat" role="listitem"><div class="n">5:12</div><p>minutes to install stack-single, signature check included</p></div>
+      <div class="stat" role="listitem"><div class="n">62</div><p>checks ok in stack-single's own status</p></div>
+    </div>
+    <div class="prose rv" style="margin-top:24px">
+      <ul>
+        <li><span><b>The cluster.</b> The deploy took 16 min 30 s. The security tests passed 28 with none failed, and the frozen-stack checks passed 21 with none failed. The cluster's own verify run passed 20 checks and failed one: the bus owner could not reach the root of the shared Longhorn volume and got a remote I/O error. The console answered HTTP 200 through a load balancer.</span></li>
+        <li><span><b>The single box.</b> stack-single v1.15.0 checked its release signature against the release workflow's identity, installed in 5 min 12 s, and its own status reported 62 checks ok and none failed, with 18 containers up.</span></li>
+        <li><span><b>The newer image.</b> On the current Ubuntu 26.04.1 image, with kernel 7.0, the same deploy stopped: AppArmor denied signals between containers and the policy store never left recovery. The installers learned the two kernel 7.0 host settings the same morning, and on that image the stack then ran with the bus owner working, the security tests at 28 passed and none failed, and verify at 21 passed and none failed. The fix was merged to main straight after.</span></li>
+        <li><span><b>Teardown.</b> 21 resources destroyed, and the region was empty by direct query.</span></li>
+      </ul>
+      <p>The full logs, with public addresses and the account masked, are in <a href="https://github.com/TAIPANBOX/stack-k8s/tree/main/cloud/aws/evidence">the stack-k8s evidence folder</a>. <a href="what-is-proven.html">What is proven and how it was measured</a> keeps the earlier runs beside this one.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">glossary</div>
+      <h2 id="terms">A few terms.</h2>
+    </div>
+    <dl class="terms rv">
+      <dt id="term-custody">Key custody</dt>
+      <dd>A service that holds signing keys and signs on request, so the keys never sit beside the code that uses them.</dd>
+      <dt id="term-witness">Witness</dt>
+      <dd>A process outside the writers that reads the record, checks nothing it saw has changed, and signs what it saw into a log of its own.</dd>
+      <dt id="term-dpop">DPoP</dt>
+      <dd>Demonstrating proof of possession: a token bound to a key its holder keeps, presented with a fresh proof signed by that key.</dd>
+      <dt id="term-hold">Hold</dt>
+      <dd>A call the policy neither allows nor refuses, kept waiting until a person decides, it expires, or its agent withdraws it.</dd>
+      <dt id="term-error-budget">Error budget</dt>
+      <dd>How many failed outcomes an agent may have in a window before its objective is missed.</dd>
+    </dl>
+    <div class="note rv">
+      <div class="t">read next</div>
+      <p><a href="changes-2026-10.html">What changed from 1 to 15 October</a> comes before this page. <a href="security-by-design.html">Security by design</a> explains the decisions behind custody, holds and fail-closed defaults, <a href="glossary.html">the glossary</a> has the rest of the vocabulary, and <a href="guides.html">the guides index</a> has every guide.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+<!-- footer:auto -->
+    <div class="cols">
+      <div>
+        <a class="brand" href="index.html" style="margin-bottom:10px"><svg class="glyph" viewBox="0 0 24 24" fill="none"><path d="M13.5 2 5 13.2h5.1L9.4 22l9-11.8h-5.3L13.5 2Z" fill="#F4B23E"/></svg>IT<b>-</b>RAT</a>
+      </div>
+      <div class="foot-groups">
+        <div class="foot-row">
+          <div class="foot-group"><div class="l"><i style="background:#B48CFF"></i>the room</div>
+            <div class="foot-chips"><a class="foot-chip" href="genaryx.html"><i style="background:#B48CFF"></i>Genaryx</a></div>
+          </div>
+          <div class="foot-group"><div class="l"><i style="background:#F4B23E"></i>money</div>
+            <div class="foot-chips"><a class="foot-chip" href="services/tokenfuse.html"><i style="background:#F4B23E"></i>TokenFuse</a><a class="foot-chip" href="services/costcrew.html"><i style="background:#7DD3A0"></i>CostCrew</a><a class="foot-chip" href="services/pocket.html"><i style="background:#22D3EE"></i>TokenFuse Pocket</a></div>
+          </div>
+          <div class="foot-group"><div class="l"><i style="background:#2DD4BF"></i>guardrails</div>
+            <div class="foot-chips"><a class="foot-chip" href="services/wardryx.html"><i style="background:#2DD4BF"></i>Wardryx</a><a class="foot-chip" href="services/idryx.html"><i style="background:#34D399"></i>Idryx</a><a class="foot-chip" href="services/scopyx.html"><i style="background:#F0ABFC"></i>Scopyx</a><a class="foot-chip" href="services/vouchryx.html"><i style="background:#8B9DFF"></i>Vouchryx</a></div>
+          </div>
+          <div class="foot-group"><div class="l"><i style="background:#FF7AA2"></i>proof</div>
+            <div class="foot-chips"><a class="foot-chip" href="services/qryx.html"><i style="background:#B48CFF"></i>Qryx</a><a class="foot-chip" href="services/keyryx.html"><i style="background:#FDE68A"></i>Keyryx</a><a class="foot-chip" href="services/verdryx.html"><i style="background:#FF7AA2"></i>Verdryx</a><a class="foot-chip" href="services/typryx.html"><i style="background:#60A5FA"></i>Typryx</a><a class="foot-chip" href="services/mockryx.html"><i style="background:#FF8A5B"></i>Mockryx</a><a class="foot-chip" href="services/trailryx.html"><i style="background:#E4626F"></i>Trailryx</a></div>
+          </div>
+          <div class="foot-group"><div class="l"><i style="background:#6C7BFF"></i>ground</div>
+            <div class="foot-chips"><a class="foot-chip" href="services/heraldyx.html"><i style="background:#5BC8F5"></i>Heraldyx</a><a class="foot-chip" href="services/engram.html"><i style="background:#6C7BFF"></i>Engram</a><a class="foot-chip" href="services/platform.html"><i style="background:#93A8C4"></i>Platform</a></div>
+          </div>
+          <div class="foot-group"><div class="l"><i style="background:#A3E635"></i>side project</div>
+            <div class="foot-chips"><a class="foot-chip" href="services/sphere.html"><i style="background:#A3E635"></i>Sphere</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- /footer:auto -->
+    <div class="foot-note">&#169; 2026 IT-RAT <svg style="display:inline-block;width:15px;height:11px;vertical-align:-1px;margin:0 3px;border-radius:2px" viewBox="0 0 3 2" role="img" aria-label="Ukraine"><title>Ukraine</title><rect width="3" height="1" fill="#005BBB"/><rect y="1" width="3" height="1" fill="#FFD500"/></svg></div>
+  </div>
+</footer>
+
+<script src="assets/site.js?v=e13"></script>
+<script src="assets/sheet.js?v=e06"></script>
+<script src="assets/ambient.js?v=e05"></script>
+</body>
+</html>

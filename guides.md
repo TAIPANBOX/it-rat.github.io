@@ -2,9 +2,9 @@
 
 # Guides index
 
-> Sixteen guides: seven on the field of AI agent governance, and nine on running this stack, from a first alert to what changed in October.
+> Seventeen guides: seven on the field of AI agent governance, and ten on running this stack, from a first alert to what changed in October and November.
 
-Sixteen guides, grouped by what you came for: how to install it, where to start, how the stack is secured, the practice of running agents, and what changed in October. Each service has its own guide too, listed beside its room on [the Stack page](https://it-rat.com/stack.html).
+Seventeen guides, grouped by what you came for: how to install it, where to start, how the stack is secured, the practice of running agents, and what changed in October and November. Each service has its own guide too, listed beside its room on [the Stack page](https://it-rat.com/stack.html).
 
 ## Install
 
@@ -117,6 +117,12 @@ One ordinary failure, an agent stuck in a retry loop, followed from its first ov
 ### [What changed in the stack, 1 to 15 October 2026](https://it-rat.com/changes-2026-10.html)
 
 What changed across the stack between 1 and 15 October 2026, in one place.
+
+*what changed next*
+
+### [What changed in the stack, 16 October to 27 November 2026](https://it-rat.com/changes-2026-11.html)
+
+Key custody, an agent's own credential at every door, a person for every ungranted tool call, and the whole stack on AWS again.
 
 ## Every control in the guides has an open implementation.
 
