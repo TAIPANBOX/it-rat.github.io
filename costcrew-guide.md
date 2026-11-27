@@ -92,11 +92,11 @@ Every frame in the room's gallery is a fresh installation of the binary on its o
 
 - **SaaS seats.** Sixty of 315 seats issued and not signed into in thirty days, 4,047.00 a month at what is actually paid, and one renewal inside ninety days whose notice deadline falls before it.
 
-- **Cadence.** Thirty-one tasks are due today at a worst case of 2.3050, and not one of them runs: the switch is off and the ceiling is 0.00, and both of those are a person's own act.
+- **Cadence.** Thirty-two tasks are due today at a worst case of 2.2326, over the ceiling, and not one of them runs: the switch is off and the ceiling is 0.00, and both of those are a person's own act.
 
 - **The plan.** Sixty-seven items proposed under a 1,043.00 ceiling, and nothing exists until somebody approves it. A planner that writes straight to the board has spent the budget before anybody agreed to the work.
 
-- **Owner and told.** Every finding carries the owner it belongs to, read from the team that pays for it or from the analyst that opened it. Telling that owner is its own logged step, so on a fresh install every row still reads not yet.
+- **Owner and told.** Every finding names its owner, or says nobody has claimed it, read from the team that pays for it or from the analyst that opened it. Telling that owner is its own logged step, so on a fresh install every row still reads not yet.
 
 ## Found, never saved.
 
