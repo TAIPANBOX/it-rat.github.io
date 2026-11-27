@@ -136,7 +136,7 @@ class Page {
 const inPage = async () => {
   const wait = (ms) => new Promise((z) => setTimeout(z, ms));
   const hash = (c) => { try { const d = c.toDataURL(); let h = 0; for (let i = 0; i < d.length; i += 7) h = (h * 31 + d.charCodeAt(i)) | 0; return h + ":" + d.length; } catch (e) { return "ERR"; } };
-  const ink = (c) => { try { const x = c.getContext("2d"); if (!x || !c.width || !c.height) return 0; const d = x.getImageData(0, 0, c.width, c.height).data; let n = 0; for (let i = 3; i < d.length; i += 4 * 97) if (d[i] > 0) n++; return n; } catch (e) { return -1; } };
+  const ink = (c) => { try { const x = c.getContext("2d"); if (!x || !c.width || !c.height) return 0; const d = x.getImageData(0, 0, c.width, c.height).data; for (let i = 3; i < d.length; i += 4) if (d[i] > 0) return 1; return 0; /* every pixel, first ink wins: a sparse sampling missed the home page's early, faint field */ } catch (e) { return -1; } };
   const f = [];
   const deep = () => document.querySelector("canvas.ambient-deep"), motif = () => document.querySelector("canvas.ambient");
   const d0 = deep() && hash(deep()), m0 = motif() && hash(motif());
