@@ -4,7 +4,7 @@
 
 > Inventory every key, certificate and algorithm you actually run, grade the post-quantum risk against the NCSC 2028, 2031 and 2035 dates, sign the evidence.
 
-Qryx tells you what is actually running: it scans binaries, containers, live TLS, certificates, dependencies and cloud KMS, and comes back with a cryptographic asset graph instead of a slide deck.
+Qryx tells you what is actually running: it scans binaries, containers, live TLS and SSH endpoints, certificates, dependencies and cloud KMS, and comes back with a cryptographic asset graph instead of a slide deck.
 
 ## Watch it find every key in the building.
 
@@ -12,7 +12,7 @@ A simulation of a live run against 25,586 ELF binaries, a container image and a 
 
 ## One graph. Every report reads the same one.
 
-Five kinds of sources feed one scan engine: binaries, containers, live TLS, cloud KMS, and source plus Terraform. CBOM, the CNSA audit, the NCSC readiness report and the migration plan all read that same graph, so they cannot disagree with each other.
+Five kinds of sources feed one scan engine: binaries, containers, live TLS and SSH, cloud KMS, and source plus Terraform. CBOM, the CNSA audit, the NCSC readiness report and the migration plan all read that same graph, so they cannot disagree with each other.
 
 ## A graph that grades itself.
 
@@ -39,7 +39,7 @@ Grab the latest binary from the [releases page](https://github.com/TAIPANBOX/qry
 ## Where a post-quantum migration actually starts
 
 **Q: How do I start a post-quantum migration?**
-With an inventory, because you cannot migrate what you have not found. Qryx scans binaries, containers, live TLS endpoints, certificates, dependencies and cloud KMS, and returns a cryptographic asset graph graded against the NCSC milestones: discovery by 2028, the highest-priority systems by 2031, everything by 2035.
+With an inventory, because you cannot migrate what you have not found. Qryx scans binaries, containers, live TLS and SSH endpoints, certificates, dependencies and cloud KMS, and returns a cryptographic asset graph graded against the NCSC milestones: discovery by 2028, the highest-priority systems by 2031, everything by 2035.
 
 **Q: What is a CBOM?**
 A cryptographic bill of materials in CycloneDX 1.6: one component per unique asset and risk class, with every occurrence attached. It lives in the same supply-chain tooling as your SBOMs, so cryptography stops having its own isolated report nobody reads.

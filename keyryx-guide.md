@@ -69,10 +69,10 @@ Each consumer in the policy authenticates exactly one way: a unix socket of its 
 | `GET /v1/statements/{kid}` | anyone, cacheable | the statement that certified a delegated key, and when it was revoked |
 | `POST /v1/keys/{name}/sign` | a consumer granted sign | signs a statement of at most 4 KiB |
 | `POST /v1/keys/{name}/challenge` and `/delegate` | a consumer granted delegate | the proof-of-possession steps for a delegated key |
-| `POST /v1/keys/{name}/rotate` | an admin key | creates the next key, published before it signs |
-| `POST /v1/kids/{kid}/revoke` | an admin key | takes a key id out of every key set at once |
+| `POST /v1/keys/{name}/rotate` | root or custody's user, on the admin socket | creates the next key, published before it signs |
+| `POST /v1/kids/{kid}/revoke` | root or custody's user, on the admin socket | takes a key id out of every key set at once |
 
-A refusal answers its status and a word, and the reason goes to the operator's log. Admin routes answer 403 when no admin key is configured and 401 for a wrong one.
+A refusal answers its status and a word, and the reason goes to the operator's log. The two admin routes are served on the admin socket alone, never on the network, and the kernel's record of who connected decides who is served.
 
 ### Witness
 
@@ -134,7 +134,7 @@ The witness pins the delegation root the first time it reads it, unless an opera
 
 - Its findings go to keyryx.ndjson on a volume of their own, which Heraldyx and the console mount read only. Heraldyx mails the high ones (the medium ones go in the digest), and the console shows them as incidents. An operator can also check the witness log with keyryx verify.
 
-- In the current stacks no admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one. They pin keyryx v0.1.5; v0.2.0 moves rotation and revocation to an admin socket of their own, and no stack runs it yet.
+- Since v0.2.0 custody serves rotation and revocation only on an admin socket in its data directory, to root and to custody's own uid, and the current stacks pin v0.2.0. No admin key exists any more: custody refuses to start if one is set, and an operator rotates or revokes on the machine with keyryx admin.
 
 ## Build, run, and check the outputs offline.
 
@@ -160,7 +160,7 @@ keyryx verify streams --events events/ --checkpoints checkpoints/ \
 
 Each check prints ok, weak or broken for each item and ends with VERIFIED (exit 0) or NOT VERIFIED (exit 1). A directory with nothing in it is reported as measured nothing, never as verified.
 
-The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/arm64, with no moving tag. The stack-single Compose file pins v0.1.5 by digest.
+The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/arm64, with no moving tag. The stack-single Compose file pins v0.2.0 by digest.
 
 ## What each release is.
 
@@ -172,15 +172,21 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - **v0.1.3**, tagged 2026-10-26: a patch on v0.1.2. The binary and the image are built with Go 1.27.3, which fixes GO-2026-6809 in crypto/x509 (reached through the time-stamping client, only when KEYRYX_WITNESS_TSA_URL is set). No key, statement, log, route or variable changes.
 
+- **v0.1.4**, tagged 2026-11-07: a patch on v0.1.3. At the bound on live keys of a delegated name, a new key of an owner retires that owner's oldest key instead of being refused, once the next key has been signing for the name's overlap. A retired key is not a revoked key.
+
+- **v0.1.5**, tagged 2026-11-12: a patch on v0.1.4. Built with Go 1.27.4, which fixes GO-2026-6859 in net/http. No key, statement, log, route or variable changes.
+
+- **v0.2.0**, tagged 2026-11-25: a minor release under 0.x, because the custody admin surface changes in a breaking way. Rotation and revocation are served only on an admin unix socket, to root and custody's own uid, with keyryx admin rotate and keyryx admin revoke as the commands; KEYRYX_ADMIN_KEYS is gone and the start refuses when it is set; custody announces each change on the bus, and KEYRYX_EVENTS is now required. It also bounds the witness's memory on reads, adds committed statement vectors that a second verifier is held to, and can keep public copies of the delegation root and every statement for a reader on the same machine.
+
 **An operator-visible change in v0.1.1.** Since agent-stack-go v2, a stream file this service creates is mode 0640, not 0644, so only its owner and its group can read it. A new stream is created only in a directory this service's account owns. A bus directory shared with other services, and not owned by this account, gets no new stream unless each file is created beforehand by the uid of the service that writes it. Check the owner of the bus directory and the mode of each stream before upgrading.
 
 ## What is not proven yet, stated here.
 
 - The cosign signatures of v0.1.1, v0.1.2 and v0.1.3 have not been verified. The build-provenance attestation of each release has (gh attestation verify, 2026-10-19 for v0.1.0 to v0.1.2, 2026-10-26 for v0.1.3).
 
-- In the current stacks no admin key is set, so custody refuses every rotation and revocation (403) until an operator sets one. They pin keyryx v0.1.5; v0.2.0 moves rotation and revocation to an admin socket of their own, and no stack runs it yet.
+- Since v0.2.0 custody serves rotation and revocation only on an admin socket in its data directory, to root and to custody's own uid, and the current stacks pin v0.2.0. No admin key exists any more: custody refuses to start if one is set, and an operator rotates or revokes on the machine with keyryx admin.
 
-- Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19, stack-k8s since v1.6.1, tagged on 2026-10-20, and stack-single since v1.6.0, tagged on 2026-11-05. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single, stack-up and stack-k8s now pin v0.1.3; stack-k8s and stack-single run the witness in the record plane's group. On a stack-single box on 2026-11-05, a pack of 1024 records verified with the root signature and the witness on it.
+- Trailryx reads the witness's attestations into a pack only when its attestations folder is set to the witness's output. stack-up has set it by default since 2026-10-19, stack-k8s since v1.6.1, tagged on 2026-10-20, and stack-single since v1.6.0, tagged on 2026-11-05. At keyryx v0.1.1 the witness wrote each attestation readable only by its own user, so a record plane running as another user could not open it; stack-up runs the witness and the record plane as one user, so it could. keyryx v0.1.2, tagged on 2026-10-19, writes them readable by the group, and stack-single and stack-k8s now pin v0.2.0; stack-k8s and stack-single run the witness in the record plane's group. On a stack-single box on 2026-11-05, a pack of 1024 records verified with the root signature and the witness on it.
 
 - The store root is rebuilt by hand in the tests from trailryx's construction. It is checked against trailryx's source, not against a store that trailryx itself sealed in this repository.
 
@@ -188,7 +194,7 @@ The image is published as `ghcr.io/taipanbox/keyryx` for linux/amd64 and linux/a
 
 - The first root is taken on first use unless the operator pins it. A real rotation of the delegation root reads as a changed root until an operator pins the new set, and no rotation has been run against a witness.
 
-- The witness reads the bus and the record, not custody's use log, and custody writes no key rotation or revocation event yet.
+- The witness reads the bus and the record, not custody's use log, and since v0.2.0 custody announces each rotation and revocation on the bus as key_rotated or key_revoked, into a stream of its own.
 
 - Vouchryx consumes key statements from 0.5.0 and, from 0.6.0, checks each one against a pinned root, and stack-single switches that on by default from v1.6.0. TokenFuse consumes them for its checkpoint key from 1.18.0, which is opt-in: no launcher switches it on, and no producer in a launcher writes signed checkpoints yet.
 

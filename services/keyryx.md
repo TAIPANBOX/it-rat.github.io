@@ -42,7 +42,7 @@ Keyryx is on no request path and decides nothing: verifiers check a cached key s
 
 In stack-single custody and the witness are two containers under their own uids, and the witness, with no network, writes its findings to a file that Heraldyx mails and the console shows. [In the guide](https://it-rat.com/keyryx-guide.html#stack-single)
 
-In the current stacks no admin key is set, so rotation answers 403, and both roles share one host and one root key file until an operator adds an off-host anchor. [In the guide](https://it-rat.com/keyryx-guide.html#limits)
+Rotation and revocation run only on custody's admin socket on the machine, and both roles share one host and one root key file until an operator adds an off-host anchor. [In the guide](https://it-rat.com/keyryx-guide.html#limits)
 
 ### Build the binary and read its version.
 

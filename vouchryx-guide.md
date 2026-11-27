@@ -98,7 +98,7 @@ vouchryx-demo exchange -url http://127.0.0.1:4310 -idp-key idp.pem -kid idp-1 -i
 
 ### A measured run
 
-Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 359 tests, and the repository gates that number against its own suite.
+Measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release: a call 0.9 seconds after the subject was revoked was still answered, and one 2.2 seconds after it was refused, and every call after that was refused too. 478 tests, and the repository gates that number against its own suite.
 
 ### A run against a real provider
 
@@ -118,6 +118,9 @@ One phase of the run failed, rotation. The provider's new key was in its publish
 
 | shipped in | what it does |
 |---|---|
+| v0.9.0 | A first hop refuses an actor credential that is not bound to a key: a bearer provider token with no key binding is no longer exchanged for any key its holder proves. Bind the provider token with DPoP, or use the service's own client credentials agent credential, which is always bound. |
+| v0.9.0 | In file mode the next signing key can be published ahead of a rotation, through a key set file of at most four public keys, so a rotation no longer strands verifiers that have not refreshed yet. |
+| v0.8.0 | A revoke key can be scoped to the rights it needs (revoke, ban, lift) and to a prefix of the subjects it may touch. A bare key keeps every right, as before. |
 | v0.7.0 | Key set files are read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), so a provider that rotates its signing key is followed without a restart. Found by a run against a real OpenID provider. |
 
 ## What it does not do, and what is not proven yet.

@@ -42,11 +42,11 @@ The [Qryx room](https://it-rat.com/services/qryx.html) keeps the sixty-second sw
 
 ### What it is
 
-A crypto audit tells you what your architecture documents say you run. Qryx tells you what is actually running: it scans binaries, containers, live TLS, certificates, dependencies and cloud KMS, and comes back with a cryptographic asset graph instead of a slide deck. Every asset gets a post-quantum grade against the NCSC's 2028, 2031 and 2035 milestones, and CI fails the day a new weak key ships, not at the next audit cycle.
+A crypto audit tells you what your architecture documents say you run. Qryx tells you what is actually running: it scans binaries, containers, live TLS and SSH endpoints, certificates, dependencies and cloud KMS, and comes back with a cryptographic asset graph instead of a slide deck. Every asset gets a post-quantum grade against the NCSC's 2028, 2031 and 2035 milestones, and CI fails the day a new weak key ships, not at the next audit cycle.
 
 ## One graph. Every report reads the same one.
 
-Five kinds of sources feed one scan engine: binaries, containers, live TLS, cloud KMS, and source plus Terraform. Findings dedupe into an asset graph keyed on algorithm, key size and risk class, so a certificate that is both expired and quantum-vulnerable gets two nodes, not one silently overwriting the other. CBOM, the CNSA audit, the NCSC readiness report and the migration plan all read that same graph, so they cannot disagree with each other.
+Five kinds of sources feed one scan engine: binaries, containers, live TLS and SSH, cloud KMS, and source plus Terraform. Findings dedupe into an asset graph keyed on algorithm, key size and risk class, so a certificate that is both expired and quantum-vulnerable gets two nodes, not one silently overwriting the other. CBOM, the CNSA audit, the NCSC readiness report and the migration plan all read that same graph, so they cannot disagree with each other.
 
 The [room](https://it-rat.com/services/qryx.html#sim) replays a live run against 25,586 ELF binaries, a container image and a live TLS endpoint. A quantum-vulnerable cert turns up mid-sweep.
 
@@ -107,7 +107,7 @@ The classification is not merely path-based either: Rust's in-file test modules 
 
 ## You cannot migrate what you cannot see.
 
-Qryx reads binaries, container images, live TLS endpoints, certificates, dependencies, cloud KMS and source code, and puts them into one graph graded against the CNSA 2.0 and NCSC milestones.
+Qryx reads binaries, container images, live TLS and SSH endpoints, certificates, dependencies, cloud KMS and source code, and puts them into one graph graded against the CNSA 2.0 and NCSC milestones.
 
 ## The inventory the rest of the stack borrows from.
 

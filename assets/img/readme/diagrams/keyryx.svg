@@ -52,13 +52,13 @@
           <text x="774" y="108" fill="#8A97A6" font-size="10.5">keep verifying when custody is down</text>
           <path d="M556 96 L600 96" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#kx-a)"/>
           <rect x="600" y="140" width="348" height="124" rx="13" fill="#141C27" stroke="#5A6675" stroke-width="1.2"/>
-          <text x="774" y="162" fill="#93A8C4" font-size="12" font-weight="700">key rotation, admin only</text>
+          <text x="774" y="162" fill="#93A8C4" font-size="12" font-weight="700">key rotation, admin socket only</text>
           <rect x="620" y="176" width="130" height="34" rx="8" fill="#161F2C" stroke="#93A8C4" stroke-width="1.2"/>
           <rect x="798" y="176" width="130" height="34" rx="8" fill="#161F2C" stroke="#FDE68A" stroke-width="1.2"/>
           <text x="685" y="197" fill="#93A8C4" font-size="11" font-weight="700">key n-1</text>
           <text x="863" y="197" fill="#FDE68A" font-size="11" font-weight="700">key n</text>
           <path d="M752 193 L796 193" stroke="#5A6675" stroke-width="1.2" fill="none" marker-end="url(#kx-a)"/>
-          <text x="774" y="240" fill="#8A97A6" font-size="10">no launcher sets an admin key, so 403</text>
+          <text x="774" y="240" fill="#8A97A6" font-size="10">on the machine only, no network route</text>
           <text x="774" y="255" fill="#8A97A6" font-size="10">new key beside old, then old retired</text>
           <rect x="12" y="292" width="212" height="50" rx="11" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/>
           <text x="118" y="312" fill="#93A8C4" font-size="12" font-weight="700">event streams</text>

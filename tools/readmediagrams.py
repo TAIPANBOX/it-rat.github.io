@@ -43,7 +43,7 @@ ROOMS = {
                   "a7c5b48f983c"),
     "keyryx":   ("services/keyryx.html", "#FDE68A",
                   "Keyryx: custody signs for granted consumers and publishes key sets, and a read-only witness signs its tree heads and reports a rewritten stream",
-                  "a3658b56d2c4"),
+                  "e7b67adc0c5a"),
     "verdryx":   ("services/verdryx.html", "#FF7AA2",
                   "Verdryx: outcomes judged and priced per resolved case, with drift watched over time",
                   "c61935fe07c8"),
@@ -62,9 +62,9 @@ ROOMS = {
                   "9a774670aaf6"),
     "costcrew":  ("services/costcrew.html", "#7DD3A0",
                   "CostCrew: charges arrive from the connectors built so far (the TokenFuse FOCUS export, "
-                  "seats, recommendations; the AWS and GCP billing exports are read, the Azure one is specified), a two-sided "
+                  "seats, recommendations; the AWS, Azure and GCP billing exports are read), a two-sided "
                   "detector opens anomalies, and an agent analyst drafts a fix a person posts or returns",
-                  "ca3540b4d4e2"),
+                  "71365d35bc08"),
     "vouchryx":  ("services/vouchryx.html", "#8B9DFF",
                   "Vouchryx: a subject token, an actor token and a DPoP proof are exchanged for a "
                   "short-lived delegation token, verified offline and revoked by a polled list",
