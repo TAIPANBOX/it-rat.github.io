@@ -79,7 +79,7 @@
   </div>
 </section>
 
-<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#grades">What it grades</a></li><li><a href="#cost-per-outcome">Cost per outcome</a></li><li><a href="#graders">The six graders</a></li><li><a href="#in-the-stack">In the stack</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#changes-november">What changed in November</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
+<section class="sec gtoc-sec"><div class="wrap"><nav class="gtoc" aria-label="On this page"><div class="kicker">on this page</div><ol><li><a href="#overview">At a glance</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#grades">What it grades</a></li><li><a href="#error-budgets">Error budgets</a></li><li><a href="#cost-per-outcome">Cost per outcome</a></li><li><a href="#graders">The six graders</a></li><li><a href="#in-the-stack">In the stack</a></li><li><a href="#run">Running it</a></li><li><a href="#changes">What changed</a></li><li><a href="#changes-november">What changed in November</a></li><li><a href="#limits">Limits</a></li></ol></nav></div></section>
 
 <section class="sec" id="overview" style="padding-top:14px">
   <div class="wrap">
@@ -89,7 +89,7 @@
     </div>
     <div class="prose rv">
       <ul>
-        <li><span><b>Version:</b> 0.2.0 &#183; Python 3.11+.</span></li>
+        <li><span><b>Version:</b> v0.4.0 &#183; Python 3.11+.</span></li>
         <li><span><b>Tests:</b> fully offline suite.</span></li>
         <li><span><b>Core deps:</b> one, rfc8785 (+ optional extras).</span></li>
         <li><span><b>Reads:</b> tokenfuse Parquet traces &#183; NDJSON &#183; CSV.</span></li>
@@ -133,7 +133,7 @@
       <p>The graders and drift maths use only the standard library. The one runtime dependency is rfc8785, which canonicalises the JSON the event chain is hashed over. Anthropic and Parquet support are opt-in extras, not a tax on the common path.</p>
       <h3>Offline test suite</h3>
       <p>The suite runs against a deterministic StubLLMAdapter, with no network and no API key. It's what Verdryx's own CI runs, and what --model stub gives you too.</p>
-      <h3>Findings</h3>
+      <h3 id="findings">Findings</h3>
       <p>drift and slo used to print a verdict and forget it. A drift regression, or an SLO breach the interval establishes (the bar the bus already uses), is now stored as a finding: the agent, the window, the kind (<span class="mono">drift</span>, <span class="mono">slo_exhausted</span> or <span class="mono">slo_fast_burn</span>), the evidence (run ids, the lowest scoring cases, the gateway runs that failed an indicator) and a suspect model or version. The suspect says which of three things it is: a change, no change across the runs compared, or too few runs to compare. <span class="mono">verdryx eval</span> can record an <span class="mono">--agent-version</span> on a run. The same failure seen again is one finding seen again, and <span class="mono">verdryx findings list</span> and <span class="mono">show</span> read them back.</p>
       <h3>Fix verification</h3>
       <p><span class="mono">verdryx findings fix ID --note ...</span> registers a fix, with an optional <span class="mono">--version</span>. The next drift or slo decides it from the runs that started after it. Measured and clean is <span class="mono">verified</span>, and the finding closes. Measured and still failing is <span class="mono">failed</span>: the finding reopens and the attempt is kept with its numbers. Anything short of a measurement stays <span class="mono">pending</span> with its reason: no run since, too few runs, runs of another version, or an interval that still covers the target. A fix draws a line in time. Runs from before it neither verify it nor undo it, and a closed finding is not reopened by the runs it was closed over. Unmeasured is never a pass.</p>
@@ -142,6 +142,20 @@
       <p>All of it is deterministic: no model, no network and no new event type on the bus.</p>
       <h3>Defensive by design</h3>
       <p>Grades an operator's own agents against an eval set or a production outcome tag. The README puts it plainly: it &#8220;never manipulates outputs, never crafts adversarial prompts, and never attacks anything.&#8221;</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="error-budgets" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">error budgets</div>
+      <h2>Error budgets, measured and never enforced</h2>
+    </div>
+    <div class="prose rv">
+      <p>verdryx slo reads the same traces as four ratios of good runs over eligible runs, each with the budget left and the rate it is going. It sends an slo_burn event only when the confidence interval sits below the objective, and it enforces nothing.</p>
+      <h3>An exhausted budget has two readers</h3>
+      <p><a href="services/wardryx.html">Wardryx</a> turns a spent budget into a hold for a person, in both launchers, which measure every six hours. <a href="services/heraldyx.html">Heraldyx</a> mails an slo_burn at once, in words that say nothing was enforced.</p>
     </div>
   </div>
 </section>

@@ -50,10 +50,38 @@
   .install .note{color:var(--faint);font-size:11.5px;margin-left:auto}
   /* commands are code, so a reader and a word count both see them as code */
   .install code{font:inherit}
-  /* what is not proven stays on the page (invariant 5); the full list is in the guide */
-  .limits ul{margin:0;padding-left:18px;color:var(--dim);font-size:14.5px;line-height:1.65;max-width:80ch}
-  .limits li+li{margin-top:9px}
-  .limits li::marker{color:var(--accent)}
+  /* the .flight widget (as on keyryx and trailryx): an svg, tabs that drive it,
+     and one sentence per tab */
+  .flight{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);overflow:hidden}
+  .fl-head{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--line);
+    font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .fl-head .n{margin-left:auto;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .fl-head .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);flex:0 0 auto}
+  .flight svg{display:block;width:100%;height:auto}
+  .fl-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 15px;border-top:1px solid var(--line)}
+  .fl-tab{font-family:var(--font-m);font-size:11.5px;color:var(--dim);cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;
+    transition:color .15s,border-color .15s,background .15s}
+  .fl-tab:hover{color:var(--fg);border-color:color-mix(in srgb, var(--accent) 55%, var(--line-2))}
+  .fl-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fl-tab[aria-pressed="true"]{color:#0A1420;background:var(--accent);border-color:var(--accent)}
+  .fl-why{margin:0;padding:13px 15px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;line-height:1.65}
+  .fl-why a{color:var(--accent)}
+  .fl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  @media(max-width:760px){.fl-scroll svg{min-width:720px}}
+  .lim h3{font-size:15px}
+  .lim p{margin-top:8px;color:var(--dim);font-size:13.5px;line-height:1.6}
+  .lim a{color:var(--accent)}
+  /* the tab lights its part of the picture and dims the rest */
+  #vd-svg [data-p]{transition:opacity .35s}
+  #vd-svg[data-show] [data-p]{opacity:.3}
+  #vd-svg[data-show="grade"] [data-p~="grade"],
+  #vd-svg[data-show="findings"] [data-p~="findings"],
+  #vd-svg[data-show="budget"] [data-p~="budget"]{opacity:1}
+  @media (prefers-reduced-motion: reduce){
+    #vd-svg [data-p]{transition:none}
+    #vd-svg .vd-anim{display:none}
+  }
   .deeper .cta-row{margin-top:16px}
 </style>
 <!-- seo:auto -->
@@ -90,7 +118,7 @@
         </div>
       </div>
       <div class="hero-side rv d2">
-        <div class="row"><span class="k">version</span><span class="v">0.2.0 &#183; Python 3.11+</span></div>
+        <div class="row"><span class="k">version</span><span class="v">v0.4.0 &#183; Python 3.11+</span></div>
         <div class="row"><span class="k">tests</span><span class="v">fully offline suite</span></div>
         <div class="row"><span class="k">core deps</span><span class="v">one, rfc8785 (+ optional extras)</span></div>
         <div class="row"><span class="k">reads</span><span class="v">tokenfuse Parquet traces &#183; NDJSON &#183; CSV</span></div>
@@ -194,15 +222,24 @@
       <div class="kicker">what it grades</div>
       <h2>Not a bigger number. A truer one.</h2>
     </div>
-    <div class="bento">
-      <div class="card hover feature b-6 rv"><h3>Cost per outcome</h3><p>Resolved, abandoned, escalated: real outcome tags straight off the TokenFuse gateway turn into a dollar figure per case, not a total nobody can act on.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>Drift with statistics</h3><p>A flat threshold catches the obvious drop. Beside it, a bootstrap interval on the difference catches the small, consistent regression a threshold tuned for noise would miss. Welch's t is reported next to the verdict and does not decide it.</p></div>
-      <div class="card hover feature b-6 rv"><h3>The LLM judge is metered</h3><p>An llm_judge case's cost is a real dollar figure, priced against the same book TokenFuse uses.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>One-dependency core</h3><p>The graders and drift maths use only the standard library. The one runtime dependency is rfc8785, which canonicalises the JSON the event chain is hashed over.</p></div>
-      <div class="card hover feature b-6 rv"><h3>A failure becomes a record</h3><p>A drift regression or an SLO breach is stored as a finding, with its evidence and a suspect model or version. Register a fix and the runs that follow decide it: verified, failed, or pending with its reason. Unmeasured is never a pass.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>A person's grade outranks the model's</h3><p>A reviewer's grade replaces the model's value in a run's mean, in drift and in the quality floor, and the model's own value stays beside it. eval has no path to a grade, and every grade carries its author.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>Error budgets, measured and never enforced</h3><p>verdryx slo reads the same traces as four ratios of good runs over eligible runs, each with the budget left and the rate it is going. It sends an slo_burn event only when the confidence interval sits below the objective, and it enforces nothing.</p></div>
-      <div class="card hover feature b-6 rv"><h3>An exhausted budget has two readers</h3><p><a href="wardryx.html">Wardryx</a> turns a spent budget into a hold for a person, in both launchers, which measure every six hours. <a href="heraldyx.html">Heraldyx</a> mails an slo_burn at once, in words that say nothing was enforced.</p></div>
+    <div class="flight rv">
+      <div class="fl-head"><span class="dot"></span>traces and eval sets in, verdicts out<span class="n" id="vd-n">grade</span></div>
+      <div class="fl-scroll"><svg id="vd-svg" data-show="grade" viewBox="0 0 960 376" role="img" aria-labelledby="vd-svg-t"><title id="vd-svg-t">Verdryx: an eval set runs through six graders (exact, regex, outcome tag, tool trace, a priced LLM judge and an opt-in typed grader) into verdryx.db, where a person's grade outranks the model's; TokenFuse traces give cost-per-correct; drift against a baseline and an SLO breach the interval shows become findings a fix is checked against; verdryx slo reads the traces as four indicators and writes an slo_burn event that Wardryx holds on and Heraldyx mails.</title><defs><marker id="vd-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="grade budget"><rect x="24" y="40" width="150" height="306" rx="10" fill="#141C27" stroke="#F4B23E" stroke-width="1.2"/><text x="99" y="180" fill="#F4B23E" font-size="12" font-weight="700">tokenfuse traces</text><text x="99" y="197" fill="#8A97A6" font-size="10.5">Parquet</text><text x="99" y="214" fill="#8A97A6" font-size="10.5">NDJSON, CSV</text></g><g data-p="grade"><path d="M174 65 L212 65" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#vd-a)"/></g><g data-p="grade"><rect x="214" y="40" width="190" height="50" rx="10" fill="#141C27" stroke="#F4B23E" stroke-width="1.2"/><text x="309" y="60.5" fill="#F4B23E" font-size="12" font-weight="700">cost-per-correct</text><text x="309" y="77.5" fill="#8A97A6" font-size="10.5">$ per resolved case</text></g><g data-p="grade"><rect x="214" y="150" width="190" height="50" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="309" y="170.5" fill="#93A8C4" font-size="12" font-weight="700">eval set</text><text x="309" y="187.5" fill="#8A97A6" font-size="10.5">cases, --agent-id</text></g><g data-p="grade"><path d="M404 175 L442 175" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#vd-a)"/></g><g data-p="grade findings"><rect x="444" y="118" width="230" height="114" rx="12" fill="#161F2C" stroke="#FF7AA2" stroke-width="1.4"/><text x="559" y="140" fill="#FF7AA2" font-size="12.5" font-weight="700">six graders</text></g><g data-p="grade"><rect x="454" y="150" width="100" height="22" rx="6" fill="#10161F" stroke="#34D399" stroke-width="1"/><text x="504" y="165" fill="#34D399" font-size="10">exact</text></g><g data-p="grade"><rect x="564" y="150" width="100" height="22" rx="6" fill="#10161F" stroke="#34D399" stroke-width="1"/><text x="614" y="165" fill="#34D399" font-size="10">regex</text></g><g data-p="grade"><rect x="454" y="176" width="100" height="22" rx="6" fill="#10161F" stroke="#34D399" stroke-width="1"/><text x="504" y="191" fill="#34D399" font-size="10">outcome tag</text></g><g data-p="grade"><rect x="564" y="176" width="100" height="22" rx="6" fill="#10161F" stroke="#34D399" stroke-width="1"/><text x="614" y="191" fill="#34D399" font-size="10">tool trace</text></g><g data-p="grade"><rect x="454" y="202" width="100" height="22" rx="6" fill="#10161F" stroke="#F4B23E" stroke-width="1"/><text x="504" y="217" fill="#F4B23E" font-size="10">llm judge</text></g><g data-p="grade"><rect x="564" y="202" width="100" height="22" rx="6" fill="#10161F" stroke="#F4B23E" stroke-width="1"/><text x="614" y="217" fill="#F4B23E" font-size="10">typed</text></g><g data-p="grade findings"><path d="M674 175 L712 175" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#vd-a)"/></g><g data-p="grade findings"><rect x="714" y="86" width="222" height="44" rx="10" fill="#161F2C" stroke="#E9EFF6" stroke-width="1.2"/><text x="825" y="103.5" fill="#E9EFF6" font-size="11.5" font-weight="700">verdryx grade</text><text x="825" y="120.5" fill="#8A97A6" font-size="10.5">a person's value wins</text></g><g data-p="grade findings"><path d="M825 130 L825 148" stroke="#E9EFF6" stroke-width="1.2" fill="none" marker-end="url(#vd-a)"/></g><g data-p="grade findings"><rect x="714" y="150" width="222" height="50" rx="10" fill="#141C27" stroke="#FF7AA2" stroke-width="1.2"/><text x="825" y="170.5" fill="#FF7AA2" font-size="12" font-weight="700">verdryx.db</text><text x="825" y="187.5" fill="#8A97A6" font-size="10.5">runs, findings, grades</text></g><g data-p="findings"><path d="M761 200 L761 220" stroke="#FF7AA2" stroke-width="1.2" fill="none" marker-end="url(#vd-a)"/></g><g data-p="findings"><rect x="714" y="222" width="94" height="44" rx="10" fill="#141C27" stroke="#FF7AA2" stroke-width="1.2"/><text x="761" y="239.5" fill="#FF7AA2" font-size="11.5" font-weight="700">drift</text><text x="761" y="256.5" fill="#8A97A6" font-size="10.5">vs baseline</text></g><g data-p="findings"><path d="M808 244 L830 244" stroke="#FF7AA2" stroke-width="1.2" fill="none" marker-end="url(#vd-a)"/></g><g data-p="findings"><rect x="832" y="222" width="104" height="44" rx="10" fill="#141C27" stroke="#FF7AA2" stroke-width="1.2"/><text x="884" y="239.5" fill="#FF7AA2" font-size="11.5" font-weight="700">findings</text><text x="884" y="256.5" fill="#8A97A6" font-size="10.5">fix verified?</text></g><g data-p="budget"><path d="M174 321 L212 321" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#vd-a)"/></g><g data-p="budget findings"><rect x="214" y="296" width="190" height="50" rx="10" fill="#141C27" stroke="#FF7AA2" stroke-width="1.2"/><text x="309" y="316.5" fill="#FF7AA2" font-size="12" font-weight="700">verdryx slo</text><text x="309" y="333.5" fill="#8A97A6" font-size="10.5">four indicators</text></g><g data-p="findings"><path d="M309 296 L309 280 L884 280 L884 268" stroke="#FF7AA2" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#vd-a)"/></g><g data-p="findings"><text x="560" y="274" fill="#8A97A6" font-size="10" text-anchor="middle">a breach the interval shows</text></g><g data-p="budget"><path d="M404 321 L442 321" stroke="#FF7AA2" stroke-width="1.2" fill="none" marker-end="url(#vd-a)"/></g><g data-p="budget"><rect x="444" y="296" width="230" height="50" rx="10" fill="#141C27" stroke="#FF7AA2" stroke-width="1.2" stroke-dasharray="4 4"/><text x="559" y="316.5" fill="#FF7AA2" font-size="12" font-weight="700">slo_burn event</text><text x="559" y="333.5" fill="#8A97A6" font-size="10.5">only when the interval shows it</text></g><g data-p="budget"><path d="M674 321 L712 321" stroke="#2DD4BF" stroke-width="1.2" fill="none" marker-end="url(#vd-a)"/></g><g data-p="budget"><rect x="714" y="296" width="106" height="50" rx="10" fill="#141C27" stroke="#2DD4BF" stroke-width="1.2"/><text x="767" y="316.5" fill="#2DD4BF" font-size="12" font-weight="700">wardryx</text><text x="767" y="333.5" fill="#8A97A6" font-size="10.5">holds</text></g><g data-p="budget"><path d="M560 346 L560 362 L883 362 L883 348" stroke="#5BC8F5" stroke-width="1.2" fill="none" marker-end="url(#vd-a)"/></g><g data-p="budget"><rect x="830" y="296" width="106" height="50" rx="10" fill="#141C27" stroke="#5BC8F5" stroke-width="1.2"/><text x="883" y="316.5" fill="#5BC8F5" font-size="12" font-weight="700">heraldyx</text><text x="883" y="333.5" fill="#8A97A6" font-size="10.5">mails it</text></g><g class="vd-anim"><g data-p="grade"><circle r="3.6" fill="#F4B23E"><animateMotion path="M174 65 L212 65" dur="2.4s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="grade"><circle r="3.6" fill="#93A8C4"><animateMotion path="M404 175 L442 175" dur="2.4s" begin="-0.8s" repeatCount="indefinite"/></circle></g><g data-p="grade"><circle r="3.6" fill="#FF7AA2"><animateMotion path="M674 175 L712 175" dur="2.4s" begin="-1.6s" repeatCount="indefinite"/></circle></g><g data-p="findings"><circle r="3.6" fill="#FF7AA2"><animateMotion path="M761 200 L761 220" dur="2.2s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="findings"><circle r="3.6" fill="#FF7AA2"><animateMotion path="M309 296 L309 280 L884 280 L884 268" dur="3.4s" begin="-1.0s" repeatCount="indefinite"/></circle></g><g data-p="budget"><circle r="3.6" fill="#F4B23E"><animateMotion path="M174 321 L212 321" dur="2.6s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="budget"><circle r="3.6" fill="#FF7AA2"><animateMotion path="M404 321 L442 321" dur="2.6s" begin="-0.9s" repeatCount="indefinite"/></circle></g><g data-p="budget"><circle r="3.6" fill="#2DD4BF"><animateMotion path="M674 321 L712 321" dur="2.6s" begin="-1.7s" repeatCount="indefinite"/></circle></g><g data-p="budget"><circle r="3.6" fill="#5BC8F5"><animateMotion path="M560 346 L560 362 L883 362 L883 348" dur="2.6s" begin="-1.7s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="vd-svg" data-k="grade">Grade</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="vd-svg" data-k="findings">Findings</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="vd-svg" data-k="budget">Error budget</button>
+      </div>
+      <div aria-live="polite">
+        <p class="fl-why" data-for="grade">Six graders score each case between zero and one, and the outcome tags on TokenFuse's trace become a dollar figure per resolved case. Only the judge and the typed grader can spend, and the judge is priced on the same book TokenFuse uses. <a href="../verdryx-guide.html#grades">In the guide</a></p>
+        <p class="fl-why" data-for="findings" hidden>A drift regression or an SLO breach becomes a finding with its evidence and a suspect, and the runs after a registered fix decide it: verified, failed or pending. A person's grade replaces the model's value, which stays beside it. <a href="../verdryx-guide.html#findings">In the guide</a></p>
+        <p class="fl-why" data-for="budget" hidden>verdryx slo measures four indicators of good runs over eligible runs and enforces nothing. Wardryx turns a spent budget into a hold for a person, and Heraldyx mails the slo_burn at once. <a href="../verdryx-guide.html#error-budgets">In the guide</a></p>
+      </div>
+    </div>
+    <div class="cta-row rv">
+      <a class="btn" href="../verdryx-guide.html#grades">What it grades, in full</a>
+      <a class="btn" href="../verdryx-guide.html#findings">Findings and fixes</a>
+      <a class="btn" href="../verdryx-guide.html#error-budgets">Error budgets</a>
     </div>
   </div>
 </section>
@@ -251,11 +288,10 @@
       <div class="kicker">limits</div>
       <h2>What runs only when you ask.</h2>
     </div>
-    <div class="card limits rv">
-      <ul>
-        <li>Only the judge and the typed grader can spend money, and neither runs by default.</li>
-        <li>The typed grader from <a href="typryx.html" data-dir="fwd" style="color:#60A5FA">Typryx</a> is opt-in per run with <span class="mono">--typed-url</span>.</li>
-      </ul>
+        <div class="bento">
+      <div class="card feature lim b-4 rv"><h3>Two graders can spend</h3><p>Only the judge and the typed grader can spend money, and neither runs by default. <a href="../verdryx-guide.html#limits">In the guide</a></p></div>
+      <div class="card feature lim b-4 rv d1"><h3>Typed is opt-in</h3><p>The typed grader from <a href="typryx.html" data-dir="fwd" style="color:#60A5FA">Typryx</a> is opt-in per run with <span class="mono">--typed-url</span>. <a href="../verdryx-guide.html#limits">In the guide</a></p></div>
+      <div class="card feature lim b-4 rv d2"><h3>Grades live in the store</h3><p>The store file is the trust boundary for grades, and a console build that reads scores directly shows the model's value until it reads human_grades too. <a href="../verdryx-guide.html#limits">In the guide</a></p></div>
     </div>
   </div>
 </section>
@@ -348,6 +384,22 @@
   </div>
 </footer>
 
+<script>
+/* how: the tabs light their part of the picture */
+(function(){
+  const svg=document.getElementById("vd-svg"); if(!svg) return;
+  const tabs=[...document.querySelectorAll('#how .fl-tab')];
+  const whys=[...document.querySelectorAll('#how .fl-why')];
+  const n=document.getElementById("vd-n");
+  function show(k){
+    svg.setAttribute("data-show",k);
+    tabs.forEach(t=>t.setAttribute("aria-pressed",String(t.dataset.k===k)));
+    whys.forEach(p=>{p.hidden=p.dataset.for!==k;});
+    const t=tabs.find(t=>t.dataset.k===k); if(n&&t) n.textContent=t.textContent.toLowerCase();
+  }
+  tabs.forEach(t=>t.addEventListener("click",()=>show(t.dataset.k)));
+})();
+</script>
 <script src="../assets/site.js?v=e13"></script>
 <script src="../assets/sheet.js?v=e06"></script>
 <script src="../assets/sim.js?v=e14"></script>

@@ -47,10 +47,38 @@
   .install .note{color:var(--faint);font-size:11.5px;margin-left:auto}
   /* commands are code, so a reader and a word count both see them as code */
   .install code{font:inherit}
-  /* what is not proven stays on the page (invariant 5); the full list is in the guide */
-  .limits ul{margin:0;padding-left:18px;color:var(--dim);font-size:14.5px;line-height:1.65;max-width:80ch}
-  .limits li+li{margin-top:9px}
-  .limits li::marker{color:var(--accent)}
+  /* the .flight widget (as on keyryx and trailryx): an svg, tabs that drive it,
+     and one sentence per tab */
+  .flight{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);overflow:hidden}
+  .fl-head{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--line);
+    font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .fl-head .n{margin-left:auto;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .fl-head .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);flex:0 0 auto}
+  .flight svg{display:block;width:100%;height:auto}
+  .fl-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 15px;border-top:1px solid var(--line)}
+  .fl-tab{font-family:var(--font-m);font-size:11.5px;color:var(--dim);cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;
+    transition:color .15s,border-color .15s,background .15s}
+  .fl-tab:hover{color:var(--fg);border-color:color-mix(in srgb, var(--accent) 55%, var(--line-2))}
+  .fl-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fl-tab[aria-pressed="true"]{color:#0A1420;background:var(--accent);border-color:var(--accent)}
+  .fl-why{margin:0;padding:13px 15px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;line-height:1.65}
+  .fl-why a{color:var(--accent)}
+  .fl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  @media(max-width:760px){.fl-scroll svg{min-width:720px}}
+  .lim h3{font-size:15px}
+  .lim p{margin-top:8px;color:var(--dim);font-size:13.5px;line-height:1.6}
+  .lim a{color:var(--accent)}
+  /* the tab lights its part of the picture and dims the rest */
+  #vh-svg [data-p]{transition:opacity .35s}
+  #vh-svg[data-show] [data-p]{opacity:.3}
+  #vh-svg[data-show="proof"] [data-p~="proof"],
+  #vh-svg[data-show="end"] [data-p~="end"],
+  #vh-svg[data-show="start"] [data-p~="start"]{opacity:1}
+  @media (prefers-reduced-motion: reduce){
+    #vh-svg [data-p]{transition:none}
+    #vh-svg .vh-anim{display:none}
+  }
   .deeper .cta-row{margin-top:16px}
 </style>
 <!-- seo:auto -->
@@ -98,30 +126,13 @@
   </div>
 </section>
 
-<!-- ================= HOW IT WORKS ================= -->
-<section class="sec" id="how" style="padding-top:20px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="kicker">the gap this closes</div>
-      <h2>The record said who acted for whom. Nothing proved it.</h2>
-    </div>
-    <div class="bento">
-      <div class="card hover feature b-6 rv"><h3>Proof of possession, per request</h3><p>The minted token carries <span class="mono">cnf.jkt</span>, the thumbprint of the caller's own key. Spending it needs a fresh DPoP proof from that same key on every call.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>Revocation an incident can use</h3><p>By one token id, or by subject for every token an agent already holds. The list carries <span class="mono">as_of</span>, so an empty answer and an unreachable service are never the same answer to a machine reading it.</p></div>
-      <div class="card hover feature b-6 rv"><h3>Verification without a round trip</h3><p>Public keys at a JWKS endpoint, so an enforcement point verifies offline. That is also why there is no introspection endpoint, on purpose.</p></div>
-      <div class="card hover feature b-6 rv d1"><h3>It refuses to start rather than start permissive</h3><p>Three values are required and have no default: VOUCHRYX_ISSUER, VOUCHRYX_SIGNING_KEY (for the file signer; the Keyryx signer needs its own four values instead) and VOUCHRYX_TRUSTED_ISSUERS (unless VOUCHRYX_AGENTS enrols an agent). A missing or malformed value aborts the process and names the variable.</p></div>
-      <div class="card hover feature b-12 rv"><h3>Run against a real provider</h3><p>A live run with a real OpenID provider found that a provider which rotated its signing key was refused until the service restarted. The key set files are now read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), and a file that cannot be used never replaces the keys held.</p></div>
-    </div>
-  </div>
-</section>
-
 <!-- ================= THE SCHEMATIC ================= -->
-<section class="sec" style="padding-top:14px">
+<section class="sec" style="padding-top:20px">
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">the loop, drawn</div>
       <h2>Mint, prove, verify, end.</h2>
-      <p class="lede">Two signed tokens and a proof go in, a short-lived one comes out, and the enforcement point verifies it without asking anybody. The dotted path is the one that matters in an incident: a revocation reaches the poller and the same token stops working before it expires.</p>
+      <p class="lede">Two signed tokens and a proof go in, and a short-lived token comes out. The dotted path is a revocation stopping that token before it expires. <a href="../vouchryx-guide.html#how-it-works" style="color:var(--accent)">In the guide</a></p>
     </div>
     <div class="diagram rv">
       <svg viewBox="0 0 960 382" role="img" aria-label="Vouchryx loop: a subject token, an actor token and a DPoP proof are exchanged at POST /v1/token for a short-lived JWT carrying nested act and a key thumbprint; an enforcement point verifies it offline against the JWKS and polls the revocation list; a person posting to /v1/revoke with an actor and a reason puts the token on that list, and the enforcement point then refuses it before it expires">
@@ -218,6 +229,35 @@
   </div>
 </section>
 
+<!-- ================= HOW IT WORKS ================= -->
+<section class="sec" id="how" style="padding-top:14px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="kicker">the gap this closes</div>
+      <h2>The record said who acted for whom. Nothing proved it.</h2>
+    </div>
+    <div class="flight rv">
+      <div class="fl-head"><span class="dot"></span>one token, proved and ended<span class="n" id="vh-n">proof per call</span></div>
+      <div class="fl-scroll"><svg id="vh-svg" data-show="proof" viewBox="0 0 960 340" role="img" aria-labelledby="vh-svg-t"><title id="vh-svg-t">Vouchryx on :4310 serves POST /v1/token, its public keys at /.well-known/jwks.json, GET /v1/revocations and POST /v1/revoke, and no introspection endpoint; an agent exchanges for a token and spends it with a fresh DPoP proof that the enforcement point matches to cnf.jkt, verifying offline; a person revokes with an actor and a reason and the enforcement point polls the list with as_of; at start three values are required and a missing or malformed one aborts the process, and issuer key set files are re-read every VOUCHRYX_JWKS_RELOAD_SECONDS.</title><defs><marker id="vh-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="start"><rect x="24" y="40" width="250" height="112" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="149" y="74.5" fill="#93A8C4" font-size="12" font-weight="700">required at start</text><text x="149" y="91.5" fill="#8A97A6" font-size="10.5">VOUCHRYX_ISSUER</text><text x="149" y="108.5" fill="#8A97A6" font-size="10.5">VOUCHRYX_SIGNING_KEY</text><text x="149" y="125.5" fill="#8A97A6" font-size="10.5">VOUCHRYX_TRUSTED_ISSUERS</text></g><g data-p="start"><path d="M274 96 L328 96" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#vh-a)"/></g><g data-p="start"><path d="M149 152 L149 168" stroke="#FF574B" stroke-width="1.2" fill="none" marker-end="url(#vh-a)"/></g><g data-p="start"><rect x="24" y="170" width="250" height="44" rx="10" fill="#141C27" stroke="#FF574B" stroke-width="1.2"/><text x="149" y="187.5" fill="#FF574B" font-size="11.5" font-weight="700">missing or malformed</text><text x="149" y="204.5" fill="#8A97A6" font-size="10.5">aborts and names it</text></g><g data-p="start"><rect x="24" y="232" width="250" height="68" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="149" y="253" fill="#93A8C4" font-size="11.5" font-weight="700">issuer key set files</text><text x="149" y="270" fill="#8A97A6" font-size="10.5">re-read every</text><text x="149" y="287" fill="#8A97A6" font-size="10.5">VOUCHRYX_JWKS_RELOAD_SECONDS</text></g><g data-p="start"><path d="M274 266 L328 266" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#vh-a)"/></g><g data-p="proof end start"><rect x="330" y="30" width="284" height="300" rx="14" fill="#161F2C" stroke="#8B9DFF" stroke-width="1.4"/><text x="472" y="56" fill="#8B9DFF" font-size="13" font-weight="700">vouchryx :4310</text></g><g data-p="proof"><rect x="346" y="72" width="252" height="34" rx="8" fill="#10161F" stroke="#8B9DFF" stroke-width="1.1"/><text x="472" y="93" fill="#8B9DFF" font-size="11">POST /v1/token</text></g><g data-p="proof start"><rect x="346" y="118" width="252" height="34" rx="8" fill="#10161F" stroke="#8B9DFF" stroke-width="1.1"/><text x="472" y="139" fill="#8B9DFF" font-size="11">GET /.well-known/jwks.json</text></g><g data-p="end"><rect x="346" y="164" width="252" height="34" rx="8" fill="#10161F" stroke="#8B9DFF" stroke-width="1.1"/><text x="472" y="185" fill="#8B9DFF" font-size="11">GET /v1/revocations</text></g><g data-p="end"><rect x="346" y="210" width="252" height="34" rx="8" fill="#10161F" stroke="#8B9DFF" stroke-width="1.1"/><text x="472" y="231" fill="#8B9DFF" font-size="11">POST /v1/revoke</text></g><g data-p="proof"><rect x="346" y="266" width="252" height="34" rx="8" fill="#10161F" stroke="#93A8C4" stroke-width="1.1" stroke-dasharray="4 4"/><text x="472" y="287" fill="#93A8C4" font-size="11">no introspection, on purpose</text></g><g data-p="proof"><rect x="686" y="40" width="250" height="56" rx="10" fill="#141C27" stroke="#34D399" stroke-width="1.2"/><text x="811" y="63.5" fill="#34D399" font-size="12" font-weight="700">agent</text><text x="811" y="80.5" fill="#8A97A6" font-size="10.5">holds its own key</text></g><g data-p="proof"><path d="M686 68 L600 88" stroke="#34D399" stroke-width="1.2" fill="none" marker-end="url(#vh-a)"/></g><g data-p="proof"><text x="651" y="64" fill="#8A97A6" font-size="10" text-anchor="middle">exchange</text></g><g data-p="proof"><path d="M811 96 L811 128" stroke="#34D399" stroke-width="1.2" fill="none" marker-end="url(#vh-a)"/></g><g data-p="proof"><text x="803" y="117" fill="#8A97A6" font-size="10" text-anchor="end">token + fresh proof, each call</text></g><g data-p="proof end"><rect x="686" y="130" width="250" height="80" rx="10" fill="#141C27" stroke="#F4B23E" stroke-width="1.2"/><text x="811" y="157" fill="#F4B23E" font-size="12" font-weight="700">enforcement point</text><text x="811" y="174" fill="#8A97A6" font-size="10.5">proof matches cnf.jkt</text><text x="811" y="191" fill="#8A97A6" font-size="10.5">refuses a revoked token</text></g><g data-p="proof start"><path d="M598 135 L684 158" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#vh-a)"/></g><g data-p="proof"><text x="644" y="168" fill="#8A97A6" font-size="10" text-anchor="middle">offline</text></g><g data-p="end"><path d="M598 181 L684 190" stroke="#FF574B" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#vh-a)"/></g><g data-p="end"><text x="654" y="207" fill="#8A97A6" font-size="10" text-anchor="middle">as_of</text></g><g data-p="end"><rect x="686" y="250" width="250" height="50" rx="10" fill="#161F2C" stroke="#E9EFF6" stroke-width="1.2"/><text x="811" y="270.5" fill="#E9EFF6" font-size="12" font-weight="700">a person</text><text x="811" y="287.5" fill="#8A97A6" font-size="10.5">names an actor and a reason</text></g><g data-p="end"><path d="M686 275 L600 232" stroke="#FF574B" stroke-width="1.2" fill="none" marker-end="url(#vh-a)"/></g><g class="vh-anim"><g data-p="proof"><circle r="3.6" fill="#34D399"><animateMotion path="M686 68 L600 88" dur="2.4s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="proof"><circle r="3.6" fill="#34D399"><animateMotion path="M811 96 L811 128" dur="2.4s" begin="-1.0s" repeatCount="indefinite"/></circle></g><g data-p="proof"><circle r="3.6" fill="#8B9DFF"><animateMotion path="M598 135 L684 158" dur="2.4s" begin="-1.6s" repeatCount="indefinite"/></circle></g><g data-p="end"><circle r="3.6" fill="#FF574B"><animateMotion path="M686 275 L600 232" dur="2.6s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="end"><circle r="3.6" fill="#FF574B"><animateMotion path="M598 181 L684 190" dur="2.6s" begin="-1.3s" repeatCount="indefinite"/></circle></g><g data-p="start"><circle r="3.6" fill="#93A8C4"><animateMotion path="M274 96 L328 96" dur="2.6s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="start"><circle r="3.6" fill="#93A8C4"><animateMotion path="M274 266 L328 266" dur="2.6s" begin="-1.3s" repeatCount="indefinite"/></circle></g><g data-p="start"><circle r="3.6" fill="#FF574B"><animateMotion path="M149 152 L149 168" dur="2.6s" begin="-0.6s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="vh-svg" data-k="proof">Proof per call</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="vh-svg" data-k="end">Ending it</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="vh-svg" data-k="start">Starting</button>
+      </div>
+      <div aria-live="polite">
+        <p class="fl-why" data-for="proof">The minted token carries cnf.jkt, the thumbprint of the caller's own key, so spending it needs a fresh DPoP proof from that key on every call. Enforcement points verify it offline against the published keys, which is why there is no introspection endpoint. <a href="../vouchryx-guide.html#how-it-works">In the guide</a></p>
+        <p class="fl-why" data-for="end" hidden>A person revokes one token by its id, or every token an agent holds by subject, naming an actor and a reason. The list carries as_of, so an empty answer and an unreachable service never read the same. <a href="../vouchryx-guide.html#surface">In the guide</a></p>
+        <p class="fl-why" data-for="start" hidden>Without its issuer, a signing key and the issuers it trusts (or an enrolled agent), the process aborts and names the variable. Key set files are read again while it runs, so a provider's rotated key is followed without a restart. <a href="../vouchryx-guide.html#configuration">In the guide</a></p>
+      </div>
+    </div>
+    <div class="cta-row rv">
+      <a class="btn" href="../vouchryx-guide.html#how-it-works">How it works, in full</a>
+      <a class="btn" href="../vouchryx-guide.html#surface">Every endpoint</a>
+      <a class="btn" href="../vouchryx-guide.html#configuration">What it refuses to start without</a>
+    </div>
+  </div>
+</section>
+
 <!-- ================= TWO SWITCHES ================= -->
 <section class="sec" style="padding-top:14px">
   <div class="wrap">
@@ -258,12 +298,10 @@
       <div class="kicker">limits</div>
       <h2>What is not proven yet.</h2>
     </div>
-    <div class="card limits rv">
-      <ul>
-        <li>The TokenFuse gateway polls that list, and so does Wardryx from 2.3.0; no other enforcement point does yet.</li>
-        <li>Revoking ends the right to act at every enforcement point on its next poll of the list, 12 seconds by default at the gateway; a call admitted before that poll is not pulled back.</li>
-        <li>The revocation timing was measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release.</li>
-      </ul>
+        <div class="bento">
+      <div class="card feature lim b-4 rv"><h3>Two enforcement points poll</h3><p>The TokenFuse gateway polls the list, and so does Wardryx from 2.3.0; no other enforcement point does yet. <a href="../vouchryx-guide.html#limits">In the guide</a></p></div>
+      <div class="card feature lim b-4 rv d1"><h3>On the next poll</h3><p>Revoking takes effect at each enforcement point on its next poll, 12 seconds by default at the gateway, and a call admitted before it is not pulled back. <a href="../vouchryx-guide.html#limits">In the guide</a></p></div>
+      <div class="card feature lim b-4 rv d2"><h3>Timed on a lab image</h3><p>The revocation timing was measured on 2026-09-27 on the forge lab, with a lab image rather than a published release. <a href="../vouchryx-guide.html#limits">In the guide</a></p></div>
     </div>
   </div>
 </section>
@@ -360,6 +398,22 @@
   </div>
 </footer>
 
+<script>
+/* how: the tabs light their part of the picture */
+(function(){
+  const svg=document.getElementById("vh-svg"); if(!svg) return;
+  const tabs=[...document.querySelectorAll('#how .fl-tab')];
+  const whys=[...document.querySelectorAll('#how .fl-why')];
+  const n=document.getElementById("vh-n");
+  function show(k){
+    svg.setAttribute("data-show",k);
+    tabs.forEach(t=>t.setAttribute("aria-pressed",String(t.dataset.k===k)));
+    whys.forEach(p=>{p.hidden=p.dataset.for!==k;});
+    const t=tabs.find(t=>t.dataset.k===k); if(n&&t) n.textContent=t.textContent.toLowerCase();
+  }
+  tabs.forEach(t=>t.addEventListener("click",()=>show(t.dataset.k)));
+})();
+</script>
 <script src="../assets/site.js?v=e13"></script>
 <script src="../assets/sheet.js?v=e06"></script>
 <script src="../assets/diagram.js"></script>
