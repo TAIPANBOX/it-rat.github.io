@@ -206,8 +206,10 @@ true.
    now runs the gate on the UNMUTATED tree first and reports `UNJUDGEABLE`
    rather than a pass. Verified by writing exactly that case and watching it
    refuse.
-   *(gate: `scripts/gates-have-teeth.sh`, 55 cases, counted from the harness's
-   own "OK: 55 cases" in a local run on a clean tree on 2026-11-27, after two
+   *(gate: `scripts/gates-have-teeth.sh`, 58 cases, counted from the harness's
+   own "OK: 58 cases" in a local run on a clean tree on 2026-11-27, after
+   invariant 16's three cases were added. Before that it was 55, counted from
+   "OK: 55 cases" the same day, after two
    were added: a version written without its leading v in a hero fact row
    (verdryx said 0.2.0 against v0.4.0 and the gate printed OK), and a page
    under a dot directory, which is never published (a stray worktree under
