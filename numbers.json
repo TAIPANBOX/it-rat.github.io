@@ -144,9 +144,9 @@
       "command": "gh api repos/TAIPANBOX/scopyx/tags --jq '.[0].name'; scopyx publishes a tag and TWO multi-arch GHCR images, the service and a `-chromium` variant. The page states the version once, in the spec rail: the run lines link to the repository instead of pinning a tag, so that line is the only copy that can drift",
       "status": "measured",
       "measured_on": "2026-11-14",
-      "note": "Moved 2026-11-14: scopyx v1.3.1 published 2026-11-12 (Go 1.27.4). Previously v1.3.0. Moved 2026-11-06: scopyx v1.3.0 published 2026-11-06. Previously v1.2.0. Moved 2026-11-04: scopyx v1.2.0 published 2026-11-04. Previously v1.1.0. Moved 2026-10-20 from v1.0.1 (occurrences 3): scopyx's newest tag is v1.1.0 (`gh api` above, 2026-10-20). The docker run lines that pinned v1.0.1 now link to the repository's Run it and Backends sections. Bumped from v0.1.0 on 2026-08-10 and the measured panel was RE-RUN rather than relabelled: all four requests were sent again to the published v0.1.2 image against a fixture policy, and every verdict matched the row it is drawn beside, including the header refusal, which comes back as a JSON-RPC -32602 naming the argument. Relabelling a measured panel with a new version without re-running it is precisely the fault this file exists to prevent. Re-measured 2026-09-18 by numbers-drift.sh: v0.1.2 -> v1.0.1.",
+      "note": "Moved 2026-11-14: scopyx v1.3.1 published 2026-11-12 (Go 1.27.4). Previously v1.3.0. Moved 2026-11-06: scopyx v1.3.0 published 2026-11-06. Previously v1.2.0. Moved 2026-11-04: scopyx v1.2.0 published 2026-11-04. Previously v1.1.0. Moved 2026-10-20 from v1.0.1 (occurrences 3): scopyx's newest tag is v1.1.0 (`gh api` above, 2026-10-20). The docker run lines that pinned v1.0.1 now link to the repository's Run it and Backends sections. Bumped from v0.1.0 on 2026-08-10 and the measured panel was RE-RUN rather than relabelled: all four requests were sent again to the published v0.1.2 image against a fixture policy, and every verdict matched the row it is drawn beside, including the header refusal, which comes back as a JSON-RPC -32602 naming the argument. Relabelling a measured panel with a new version without re-running it is precisely the fault this file exists to prevent. Re-measured 2026-09-18 by numbers-drift.sh: v0.1.2 -> v1.0.1. Scopyx publishes a tag and TWO multi-arch GHCR images, the service and a `-chromium` variant. The page states the version once, in the spec rail: the run lines link to the repository instead of pinning a tag, so that line is the only copy that can drift. Check fixed 2026-11-27: this prose had sat in the check field after a semicolon, so the shell ran it and the tool reported \"could not measure\".",
       "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/scopyx/tags --jq '.[0].name'; scopyx publishes a tag and TWO multi-arch GHCR images, the service and a `-chromium` variant. The page states the version once, in the spec rail: the run lines link to the repository instead of pinning a tag, so that line is the only copy that can drift",
+      "check": "gh api repos/TAIPANBOX/scopyx/releases/latest --jq .tag_name",
       "slow": false
     },
     {
@@ -157,9 +157,9 @@
       "command": "gh api repos/TAIPANBOX/scopyx/tags --jq '.[0].name'; scopyx publishes a tag and TWO multi-arch GHCR images, the service and a `-chromium` variant. The guide states the version once, in its Shipped line: the run lines link to the repository instead of pinning a tag, so that line is the only copy that can drift",
       "status": "measured",
       "measured_on": "2026-11-14",
-      "note": "Moved 2026-11-14: scopyx v1.3.1 published 2026-11-12 (Go 1.27.4). Previously v1.3.0. The guide names v1.3.0 once more, in the table row that says what it shipped. Moved 2026-11-06: scopyx v1.3.0 published 2026-11-06. Previously v1.2.0. Moved 2026-11-04: scopyx v1.2.0 published 2026-11-04. Previously v1.1.0. Moved 2026-10-20 from v1.0.1 (occurrences 3): scopyx's newest tag is v1.1.0 (`gh api` above, 2026-10-20). The docker run lines that pinned v1.0.1 now link to the repository's Run it and Backends sections. Added 2026-10-16: the guide repeats the room fact table line and both docker run lines, so it states the version three times, like the room.",
+      "note": "Moved 2026-11-14: scopyx v1.3.1 published 2026-11-12 (Go 1.27.4). Previously v1.3.0. The guide names v1.3.0 once more, in the table row that says what it shipped. Moved 2026-11-06: scopyx v1.3.0 published 2026-11-06. Previously v1.2.0. Moved 2026-11-04: scopyx v1.2.0 published 2026-11-04. Previously v1.1.0. Moved 2026-10-20 from v1.0.1 (occurrences 3): scopyx's newest tag is v1.1.0 (`gh api` above, 2026-10-20). The docker run lines that pinned v1.0.1 now link to the repository's Run it and Backends sections. Added 2026-10-16: the guide repeats the room fact table line and both docker run lines, so it states the version three times, like the room. Scopyx publishes a tag and TWO multi-arch GHCR images, the service and a `-chromium` variant. The guide states the version once, in its Shipped line: the run lines link to the repository instead of pinning a tag, so that line is the only copy that can drift. Check fixed 2026-11-27: this prose had sat in the check field after a semicolon, so the shell ran it and the tool reported \"could not measure\".",
       "repo_dir": null,
-      "check": "gh api repos/TAIPANBOX/scopyx/tags --jq '.[0].name'; scopyx publishes a tag and TWO multi-arch GHCR images, the service and a `-chromium` variant. The guide states the version once, in its Shipped line: the run lines link to the repository instead of pinning a tag, so that line is the only copy that can drift",
+      "check": "gh api repos/TAIPANBOX/scopyx/releases/latest --jq .tag_name",
       "slow": false
     },
     {
@@ -1063,132 +1063,132 @@
       "claim": "87.1%",
       "occurrences": 2,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "python3 bench/metrics.py results/NAME.jsonl (accuracy, overall row), after bench/run.py against a typryx deployment; README 'Results' row for typryx + Jev (TypeSafe AI, jev-1.13.0, hosted, called from a laptop)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + Jev'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/jev.jsonl | awk '/^overall/{printf \"%.1f%%\\n\",$4*100}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + Jev')][0].split('|'); print(r[2].strip())\""
     },
     {
       "page": "services/typryx.html",
       "claim": "83.6 to 89.9",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, Wilson 95% interval of the accuracy, typryx + Jev (TypeSafe AI, jev-1.13.0, hosted, called from a laptop)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + Jev'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/jev.jsonl | awk '/^overall/{gsub(/[\\[\\]]/,\"\",$5); split($5,a,\",\"); printf \"%.1f to %.1f\\n\",a[1]*100,a[2]*100}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + Jev')][0].split('|'); a,b=r[3].strip().strip('[]').split(','); print(a.strip()+' to '+b.strip())\""
     },
     {
       "page": "services/typryx.html",
       "claim": "0.042",
       "occurrences": 2,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, expected calibration error (10 equal-width bins), typryx + Jev (TypeSafe AI, jev-1.13.0, hosted, called from a laptop)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + Jev'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/jev.jsonl | awk '/^overall/{print $7}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + Jev')][0].split('|'); print(r[4].strip())\""
     },
     {
       "page": "services/typryx.html",
       "claim": "229 ms",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, p50 of latency_ms as typryx measured it per ask, typryx + Jev (TypeSafe AI, jev-1.13.0, hosted, called from a laptop)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + Jev'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/jev.jsonl | awk '/^overall/{split($8,a,\"/\"); print a[1] \" ms\"}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + Jev')][0].split('|'); v=int(r[5].split()[0]); print(f'{v} ms')\""
     },
     {
       "page": "services/typryx.html",
       "claim": "70.0%",
       "occurrences": 2,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "python3 bench/metrics.py results/NAME.jsonl (accuracy, overall row), after bench/run.py against a typryx deployment; README 'Results' row for typryx + qwen2.5:7b via Ollama (8-vCPU CPU VM, no GPU)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + qwen2.5:7b'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/qwen7b.jsonl | awk '/^overall/{printf \"%.1f%%\\n\",$4*100}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + qwen2.5:7b')][0].split('|'); print(r[2].strip())\""
     },
     {
       "page": "services/typryx.html",
       "claim": "65.6 to 74.2",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, Wilson 95% interval of the accuracy, typryx + qwen2.5:7b via Ollama (8-vCPU CPU VM, no GPU)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + qwen2.5:7b'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/qwen7b.jsonl | awk '/^overall/{gsub(/[\\[\\]]/,\"\",$5); split($5,a,\",\"); printf \"%.1f to %.1f\\n\",a[1]*100,a[2]*100}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + qwen2.5:7b')][0].split('|'); a,b=r[3].strip().strip('[]').split(','); print(a.strip()+' to '+b.strip())\""
     },
     {
       "page": "services/typryx.html",
       "claim": "0.273",
       "occurrences": 2,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, expected calibration error (10 equal-width bins), typryx + qwen2.5:7b via Ollama (8-vCPU CPU VM, no GPU)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + qwen2.5:7b'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/qwen7b.jsonl | awk '/^overall/{print $7}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + qwen2.5:7b')][0].split('|'); print(r[4].strip())\""
     },
     {
       "page": "services/typryx.html",
       "claim": "2,130 ms",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, p50 of latency_ms as typryx measured it per ask, typryx + qwen2.5:7b via Ollama (8-vCPU CPU VM, no GPU)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + qwen2.5:7b'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/qwen7b.jsonl | awk '/^overall/{split($8,a,\"/\"); print a[1] \" ms\"}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + qwen2.5:7b')][0].split('|'); v=int(r[5].split()[0]); print(f'{v} ms')\""
     },
     {
       "page": "services/typryx.html",
       "claim": "25.1%",
       "occurrences": 2,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "python3 bench/metrics.py results/NAME.jsonl (accuracy, overall row), after bench/run.py against a typryx deployment; README 'Results' row for the constant baseline, a fixed default answer (what the stack does without typryx)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'constant (no model)'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/constant.jsonl | awk '/^overall/{printf \"%.1f%%\\n\",$4*100}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| constant (no model)')][0].split('|'); print(r[2].strip())\""
     },
     {
       "page": "services/typryx.html",
       "claim": "21.3 to 29.4",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, Wilson 95% interval of the accuracy, the constant baseline, a fixed default answer (what the stack does without typryx)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'constant (no model)'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/constant.jsonl | awk '/^overall/{gsub(/[\\[\\]]/,\"\",$5); split($5,a,\",\"); printf \"%.1f to %.1f\\n\",a[1]*100,a[2]*100}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| constant (no model)')][0].split('|'); a,b=r[3].strip().strip('[]').split(','); print(a.strip()+' to '+b.strip())\""
     },
     {
       "page": "services/typryx.html",
       "claim": "0.749",
       "occurrences": 2,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, expected calibration error (10 equal-width bins), the constant baseline, a fixed default answer (what the stack does without typryx)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'constant (no model)'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. Stated in the modes chart's table and in its aria-label. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/constant.jsonl | awk '/^overall/{print $7}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| constant (no model)')][0].split('|'); print(r[4].strip())\""
     },
     {
       "page": "services/typryx.md",
@@ -1219,132 +1219,132 @@
       "claim": "87.1%",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "python3 bench/metrics.py results/NAME.jsonl (accuracy, overall row), after bench/run.py against a typryx deployment; README 'Results' row for typryx + Jev (TypeSafe AI, jev-1.13.0, hosted, called from a laptop)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + Jev'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/jev.jsonl | awk '/^overall/{printf \"%.1f%%\\n\",$4*100}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + Jev')][0].split('|'); print(r[2].strip())\""
     },
     {
       "page": "services/typryx.md",
       "claim": "83.6 to 89.9",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, Wilson 95% interval of the accuracy, typryx + Jev (TypeSafe AI, jev-1.13.0, hosted, called from a laptop)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + Jev'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/jev.jsonl | awk '/^overall/{gsub(/[\\[\\]]/,\"\",$5); split($5,a,\",\"); printf \"%.1f to %.1f\\n\",a[1]*100,a[2]*100}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + Jev')][0].split('|'); a,b=r[3].strip().strip('[]').split(','); print(a.strip()+' to '+b.strip())\""
     },
     {
       "page": "services/typryx.md",
       "claim": "0.042",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, expected calibration error (10 equal-width bins), typryx + Jev (TypeSafe AI, jev-1.13.0, hosted, called from a laptop)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + Jev'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/jev.jsonl | awk '/^overall/{print $7}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + Jev')][0].split('|'); print(r[4].strip())\""
     },
     {
       "page": "services/typryx.md",
       "claim": "229 ms",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, p50 of latency_ms as typryx measured it per ask, typryx + Jev (TypeSafe AI, jev-1.13.0, hosted, called from a laptop)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + Jev'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/jev.jsonl | awk '/^overall/{split($8,a,\"/\"); print a[1] \" ms\"}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + Jev')][0].split('|'); v=int(r[5].split()[0]); print(f'{v} ms')\""
     },
     {
       "page": "services/typryx.md",
       "claim": "70.0%",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "python3 bench/metrics.py results/NAME.jsonl (accuracy, overall row), after bench/run.py against a typryx deployment; README 'Results' row for typryx + qwen2.5:7b via Ollama (8-vCPU CPU VM, no GPU)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + qwen2.5:7b'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/qwen7b.jsonl | awk '/^overall/{printf \"%.1f%%\\n\",$4*100}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + qwen2.5:7b')][0].split('|'); print(r[2].strip())\""
     },
     {
       "page": "services/typryx.md",
       "claim": "65.6 to 74.2",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, Wilson 95% interval of the accuracy, typryx + qwen2.5:7b via Ollama (8-vCPU CPU VM, no GPU)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + qwen2.5:7b'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/qwen7b.jsonl | awk '/^overall/{gsub(/[\\[\\]]/,\"\",$5); split($5,a,\",\"); printf \"%.1f to %.1f\\n\",a[1]*100,a[2]*100}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + qwen2.5:7b')][0].split('|'); a,b=r[3].strip().strip('[]').split(','); print(a.strip()+' to '+b.strip())\""
     },
     {
       "page": "services/typryx.md",
       "claim": "0.273",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, expected calibration error (10 equal-width bins), typryx + qwen2.5:7b via Ollama (8-vCPU CPU VM, no GPU)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + qwen2.5:7b'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/qwen7b.jsonl | awk '/^overall/{print $7}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + qwen2.5:7b')][0].split('|'); print(r[4].strip())\""
     },
     {
       "page": "services/typryx.md",
       "claim": "2,130 ms",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, p50 of latency_ms as typryx measured it per ask, typryx + qwen2.5:7b via Ollama (8-vCPU CPU VM, no GPU)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'typryx + qwen2.5:7b'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/qwen7b.jsonl | awk '/^overall/{split($8,a,\"/\"); print a[1] \" ms\"}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| typryx + qwen2.5:7b')][0].split('|'); v=int(r[5].split()[0]); print(f'{v} ms')\""
     },
     {
       "page": "services/typryx.md",
       "claim": "25.1%",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "python3 bench/metrics.py results/NAME.jsonl (accuracy, overall row), after bench/run.py against a typryx deployment; README 'Results' row for the constant baseline, a fixed default answer (what the stack does without typryx)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'constant (no model)'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/constant.jsonl | awk '/^overall/{printf \"%.1f%%\\n\",$4*100}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| constant (no model)')][0].split('|'); print(r[2].strip())\""
     },
     {
       "page": "services/typryx.md",
       "claim": "21.3 to 29.4",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, Wilson 95% interval of the accuracy, the constant baseline, a fixed default answer (what the stack does without typryx)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'constant (no model)'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/constant.jsonl | awk '/^overall/{gsub(/[\\[\\]]/,\"\",$5); split($5,a,\",\"); printf \"%.1f to %.1f\\n\",a[1]*100,a[2]*100}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| constant (no model)')][0].split('|'); a,b=r[3].strip().strip('[]').split(','); print(a.strip()+' to '+b.strip())\""
     },
     {
       "page": "services/typryx.md",
       "claim": "0.749",
       "occurrences": 1,
       "repo": "TAIPANBOX/typryx-evalset",
-      "command": "the same metrics.py overall row, expected calibration error (10 equal-width bins), the constant baseline, a fixed default answer (what the stack does without typryx)",
+      "command": "typryx-evalset README, section 'Results' (measured 2026-09-30 on the frozen 434-row test split), row 'constant (no model)'",
       "status": "measured",
       "measured_on": "2026-09-30",
-      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table.",
+      "note": "Measured by TAIPANBOX/typryx-evalset on 2026-09-30 on the frozen 434-question test split; one run per row, so a statement about that day. Re-computed the same day from the saved result files (~/Development/typryx-bench-2026-09-30/results/) with bench/metrics.py, which printed the same overall row; the result files stay outside the repository by design. The markdown twin of the modes table. Re-pointed 2026-11-27: the saved result files under ~/Development/typryx-bench-2026-09-30 are no longer on this machine, so the check reads the same run's row in the repository's own README table, which records it.",
       "repo_dir": "typryx-evalset",
-      "check": "python3 bench/metrics.py ../typryx-bench-2026-09-30/results/constant.jsonl | awk '/^overall/{print $7}'"
+      "check": "python3 -c \"import sys; r=[l for l in open('README.md') if l.startswith('| constant (no model)')][0].split('|'); print(r[4].strip())\""
     },
     {
       "page": "services/typryx.html",
