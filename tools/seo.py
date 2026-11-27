@@ -43,6 +43,7 @@ GUIDES = {
     "stack-guide.html": "How the numbers were produced",
     "install.html": "Install the stack",
     "changes-2026-10.html": "What changed in the stack, 1 to 15 October 2026",
+    "changes-2026-11.html": "What changed in the stack, 16 October to 27 November 2026",
 }
 # The sixteen service guides are NOT listed here. They are <id>-guide.html for
 # every room in STACK, derived by tools/stackguides.py, named "<registry name>
@@ -203,6 +204,7 @@ PUBLISHED = {
     "stack-guide.html": "2026-10-16",
     "install.html": "2026-10-20",
     "changes-2026-10.html": "2026-10-16",
+    "changes-2026-11.html": "2026-11-27",
 }
 
 # The service guides arrived together, on 2026-10-16, so a derived guide takes
