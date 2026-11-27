@@ -10,7 +10,7 @@ Scopyx sits between an agent and whatever fetching tool you already run, and add
 
 The verdicts run in this order: the scheme, the host, every address that name resolves to at the moment of the fetch, your policy plane, and last the site's own `robots.txt`. Pick a request and watch where it stops.
 
-The name is resolved and your policy plane is asked before any verdict, so the cheapest refusal still costs one lookup and one policy question. What a refusal prevents is the fetch. A scheme or a host the rules refuse costs nothing, so those refusals happen while the request is still inside your own process. The site's own preference is asked last, which is the ordering that matters: a destination your policy refuses is never contacted at all, not even to read its `robots.txt`.
+The name is resolved and your policy asked before any verdict, so even the cheapest refusal costs one lookup and one policy question. The site's own `robots.txt` is asked last, so a destination your policy refuses is never contacted at all.
 
 ## The four things that were missing.
 
@@ -20,7 +20,7 @@ The checked addresses are pinned and the transport refuses to dial a host no dec
 
 ### Every hop is decided again
 
-The fetcher it ships with hands a redirect back instead of following it, and Scopyx follows it one hop at a time, with all five gates run again on the new destination. The target's name is looked up at the moment of the hop, never from anything remembered.
+The fetcher hands each redirect back, and all five gates run again on the new destination, its name looked up afresh.
 
 ### Governed at the navigation is not governed per request
 
@@ -28,7 +28,7 @@ Every result says which of the two guarantees was in force, so a partial answer 
 
 ### Chained, so a deletion shows
 
-Every line names its predecessor, in the same envelope the rest of the stack speaks. No identity, no record, and the skip is counted.
+Every line names its predecessor, so a deleted line shows, and a fetch with no identity is not written but counted.
 
 ## It is not a browser, and that is the whole design.
 
@@ -38,7 +38,7 @@ Scopyx supplies no capability you do not already have. Point it at the fetching 
 
 Two separate things stop a refused one, and they are not redundancy for its own sake. Switch either off and see.
 
-Two mechanisms, and they are not the same kind of thing. The proxy is the floor: the browser is launched with no route to the network except it, so a refused destination is a socket that is never opened, and no flag or version of somebody else's browser can talk it out of that. CDP interception is the accountant: it sees the full URL of every request, including inside TLS, which the proxy cannot, so it produces the counts and the per-URL decisions. Where the two disagree the connection wins, because the connection is what carries bytes.
+The proxy is the floor: the browser has no route except it, so a refused destination is a socket never opened. CDP interception is the accountant: it sees every full URL, even inside TLS, and produces the counts.
 
 ## A URL is personal data, and the record is built around that.
 
@@ -50,8 +50,12 @@ The path and the query string are not dropped later or redacted later. The field
 
 ## What it will not do, stated rather than discovered.
 
-- No stealth, no CAPTCHA solving, no TLS-fingerprint matching, no bulk crawl, no image harvesting, and `robots.txt` is honoured.
+### No stealth, no crawl
 
-- A vendor API needs an adapter in front of it, and this repository ships none.
+No stealth, no CAPTCHA solving, no TLS-fingerprint matching, no bulk crawl, no image harvesting, and `robots.txt` is honoured.
+
+### No vendor adapter
+
+A vendor API needs an adapter in front of it, and this repository ships none.
 
 ### The Scopyx guide

@@ -58,6 +58,16 @@ Four real requests, one container, the published image against a fixture policy 
 
 The third row is the one worth reading twice. The fixture policy said **allow**, and it was refused anyway. Policy languages talk about domains an agent may reach, and none of them was written with the cloud metadata endpoint in mind: an agent that can be talked into fetching that address reads the credentials of whatever it runs on. The fourth is not a fetch at all. A free-form header parameter is a credential-laundering channel straight past a broker's inspection, so the tool has no field for one, and an unknown argument is refused by name rather than ignored.
 
+### The four runs on the room, in full
+
+The name is resolved and your policy plane is asked before any verdict, so the cheapest refusal still costs one lookup and one policy question. What a refusal prevents is the fetch. A scheme or a host the rules refuse costs nothing, so those refusals happen while the request is still inside your own process. The site's own preference is asked last, which is the ordering that matters: a destination your policy refuses is never contacted at all, not even to read its `robots.txt`.
+
+The fixture policy said allow, and it was refused anyway. Policy languages talk about domains an agent may reach and none of them was written with the cloud metadata endpoint in mind, so this gate sits before the policy gate rather than after it. The policy plane was asked, and it answered allow; the address rule decides first, so the policy verdict and the `robots.txt` gate never run.
+
+The first destination was allowed. The second was named by the first, which is the oldest allowlist bypass there is and is invisible to any check that reads only the URL the caller passed. The fetcher does not follow a redirect: the hop comes back here, the new name is resolved from scratch, and all five gates run again on a destination nobody asked for.
+
+Your policy allowed this one. The site said no, and because the site is asked after you are, its answer can only narrow what you permitted and never widen it. A `robots.txt` that cannot be read allows the fetch and records that it could not be read, which is deliberately not the crawler posture: a stranger's outage should not stop your own governed work, and could-not-look is a state to report rather than an answer.
+
 ## A redirect is a destination the caller never named.
 
 An allowed host answering 302 to a denied one is the oldest allowlist bypass there is, and it is invisible to any check that reads only the URL the caller passed. The same argument applies one layer down, to the name itself.
@@ -100,6 +110,16 @@ A rendering backend is the first one that fetches things the caller never asked 
 
 The two switches are on the [room](https://it-rat.com/services/scopyx.html#mechanisms).
 
+### The four switch states, in full
+
+Two mechanisms, and they are not the same kind of thing. The proxy is the floor: the browser is launched with no route to the network except it, so a refused destination is a socket that is never opened, and no flag or version of somebody else's browser can talk it out of that. CDP interception is the accountant: it sees the full URL of every request, including inside TLS, which the proxy cannot, so it produces the counts and the per-URL decisions. Where the two disagree the connection wins, because the connection is what carries bytes.
+
+With the proxy decision removed, the request is still refused, because CDP interception decided it by its full URL. The refused server is still never reached. What is lost here is not the refusal but the guarantee: the accountant is the browser's own cooperation, and a bug, a flag or a version can withdraw it.
+
+With CDP blocking removed, the request is still refused, because the connection never opens. This is the mutation that matters most: it is the one that proves the guarantee does not rest on the browser telling the truth. What is lost is precision, not enforcement, since for https the proxy sees a host and not a path.
+
+Both removed, and the pixel is fetched. The refused server is reached once and the test goes red: the case asserts on the SERVER that would have served it, not on what the result says. An outcome assertion would pass equally well if the request happened and the answer were discarded, which is the difference between governing egress and filtering a report about it.
+
 ## Governed at the navigation is not governed per request.
 
 A fetch through a service you already run is decided before it is made, and then that service loads the page's images, fonts and scripts with nothing in between. The navigation was governed. The requests it caused were not. Every result says which of the two guarantees was in force, so a partial answer is visible as one rather than read as a complete one.
@@ -115,6 +135,12 @@ It is an error. For a person, degrading to a blank frame is right. For an agent 
 ## A URL is personal data, and the record is built around that.
 
 `https://crm.example/customers/12345?email=jane@example.com` is an address and also a name, an identifier and a contact detail. With `SCOPYX_RETAIN` unset, the default, the path and the query string, which is exactly where an identifier or a session token lives, are never assembled into the event at all. What is kept is the origin and a SHA-384, so two records can be compared without either holding the address. Setting `SCOPYX_RETAIN=payload` writes the full URL into `url_unprotected`.
+
+### Retention, off and on
+
+The path and the query string are not dropped later or redacted later. The field is never built, so there is no window in which the event holds them and no code path that could log one by accident.
+
+Turning retention on is a decision, and the field it writes is called url_unprotected rather than url. There is no subject-keyed payload plane here, so a field called url would imply one and a reader would assume a protection that does not exist. The name is the warning, and it travels with the data.
 
 ### Its own journal, its own volume
 

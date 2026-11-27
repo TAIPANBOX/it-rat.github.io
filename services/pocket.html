@@ -58,10 +58,38 @@
   }
   .standalone p{color:var(--dim);font-size:14px;line-height:1.65;margin:0}
   .standalone b{color:var(--fg)}
-  /* what is not proven stays on the page (invariant 5); the full list is in the guide */
-  .limits ul{margin:0;padding-left:18px;color:var(--dim);font-size:14.5px;line-height:1.65;max-width:80ch}
-  .limits li+li{margin-top:9px}
-  .limits li::marker{color:var(--accent)}
+  /* limits stay on the room as three short blocks (invariant 5); the full list is in the guide */
+  .lim p{margin:10px 0 0;color:var(--dim);font-size:14px;line-height:1.6}
+  .lim a{display:inline-block;margin-top:10px;color:var(--accent);font-size:13px}
+  @media(max-width:860px){.lim{grid-column:span 12}}
+  /* the .flight widget (as on keyryx and trailryx): an svg, tabs that drive it,
+     and one sentence per tab */
+  .flight{border:1px solid var(--line-2);border-radius:var(--rad-s);background:var(--panel);overflow:hidden}
+  .fl-head{display:flex;align-items:center;gap:10px;padding:11px 15px;border-bottom:1px solid var(--line);
+    font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .fl-head .n{margin-left:auto;text-transform:none;letter-spacing:0;font-size:11.5px}
+  .fl-head .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);flex:0 0 auto}
+  .flight svg{display:block;width:100%;height:auto}
+  .fl-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 15px;border-top:1px solid var(--line)}
+  .fl-tab{font-family:var(--font-m);font-size:11.5px;color:var(--dim);cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line-2);border-radius:999px;padding:6px 13px;
+    transition:color .15s,border-color .15s,background .15s}
+  .fl-tab:hover{color:var(--fg);border-color:color-mix(in srgb, var(--accent) 55%, var(--line-2))}
+  .fl-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .fl-tab[aria-pressed="true"]{color:#0A1420;background:var(--accent);border-color:var(--accent)}
+  .fl-why{margin:0;padding:13px 15px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;line-height:1.65}
+  .fl-why a{color:var(--accent)}
+  .fl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  @media(max-width:760px){.fl-scroll svg{min-width:720px}}
+  #pk-svg [data-p]{transition:opacity .35s}
+  #pk-svg[data-show] [data-p]{opacity:.28}
+  #pk-svg[data-show="mail"] [data-p~="mail"],
+  #pk-svg[data-show="pocket"] [data-p~="pocket"],
+  #pk-svg[data-show="decide"] [data-p~="decide"]{opacity:1}
+  @media (prefers-reduced-motion: reduce){
+    #pk-svg [data-p]{transition:none}
+    #pk-svg .pk-anim{display:none}
+  }
   .deeper .cta-row{margin-top:16px}
   /* Narrow screens, panel opened inline (no script, or before it loads): the
      trigger takes its own line, the panel reads in the body face at 14px rather
@@ -252,23 +280,30 @@
 
 
 <!-- ================= POCKET AND HERALDYX ================= -->
-<section class="sec" style="padding-top:14px">
+<section class="sec" id="nights" style="padding-top:14px">
   <div class="wrap">
     <div class="sec-head rv">
       <div class="kicker">two ways the same night reaches you</div>
       <h2>Heraldyx mails you. Pocket buzzes. They are not the same control.</h2>
-      <p class="lede">Both answer one question, how a human finds out, and they answer it from the same events. The difference is what each one is allowed to do about it, and that difference is the reason both exist rather than one replacing the other.</p>
+      <p class="lede">Both tell a human from the same events; what differs is what each may do about it.</p>
     </div>
-  </div>
-</section>
-
-<!-- ================= IN THE STACK ================= -->
-<section class="sec" style="padding-top:14px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="kicker">where it sits</div>
-      <h2>The human end of a machine decision.</h2>
-      <p class="lede">Pocket is the human end of <a href="tokenfuse.html" data-dir="fwd">TokenFuse</a>: the gateway enforces the budget in the request path, Pocket lets you watch it happen and pull the kill switch from somewhere else entirely. What actually gets enforced was decided upstream, by <a href="wardryx.html" data-dir="fwd">Wardryx</a> and the budgets you set.</p>
+    <div class="flight rv">
+      <div class="fl-head"><span class="dot"></span>the same events, two controls<span class="n" id="pk-n">heraldyx mails</span></div>
+      <div class="fl-scroll"><svg id="pk-svg" data-show="mail" viewBox="0 0 960 336" role="img" aria-labelledby="pk-svg-t"><title id="pk-svg-t">Two ways the same night reaches you: Wardryx and your budgets decide what the TokenFuse gateway enforces in the request path; the gateway writes the agent-event log on the box, Heraldyx reads it and mails a view with no action, and spend_spike never reaches the mail; as designed, a relay serves relay/v1/exceptions to an iPhone and Watch that sign a kill with a Secure Enclave key, which the gateway only checks, but no relay runs today and Pocket is not wired in yet.</title><defs><marker id="pk-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#93A8C4"/></marker></defs><g font-family="ui-monospace,Menlo,monospace" text-anchor="middle"><g data-p="decide"><rect x="24" y="32" width="210" height="50" rx="10" fill="#141C27" stroke="#2DD4BF" stroke-width="1.2"/><text x="129.0" y="54.0" fill="#2DD4BF" font-size="12" font-weight="700">wardryx + budgets</text><text x="129.0" y="71.0" fill="#8A97A6" font-size="10.5">decide what is enforced</text></g><g data-p="decide"><path d="M129 82 L129 128" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#pk-a)"/></g><g data-p="mail pocket decide"><rect x="24" y="130" width="210" height="56" rx="10" fill="#141C27" stroke="#F4B23E" stroke-width="1.2"/><text x="129.0" y="155.0" fill="#F4B23E" font-size="12" font-weight="700">tokenfuse gateway</text><text x="129.0" y="172.0" fill="#8A97A6" font-size="10.5">the request path</text></g><g data-p="mail"><path d="M234 158 L298 158" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#pk-a)"/></g><g data-p="mail"><rect x="300" y="130" width="200" height="56" rx="10" fill="#141C27" stroke="#93A8C4" stroke-width="1.2"/><text x="400.0" y="155.0" fill="#93A8C4" font-size="12" font-weight="700">agent-event log</text><text x="400.0" y="172.0" fill="#8A97A6" font-size="10.5">on the box, shared</text></g><g data-p="mail"><path d="M500 144 L578 80" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#pk-a)"/></g><g data-p="mail"><rect x="580" y="40" width="180" height="56" rx="10" fill="#141C27" stroke="#5BC8F5" stroke-width="1.2"/><text x="670.0" y="65.0" fill="#5BC8F5" font-size="12" font-weight="700">heraldyx</text><text x="670.0" y="82.0" fill="#8A97A6" font-size="10.5">reads it, speaks SMTP</text></g><g data-p="mail"><path d="M760 68 L796 68" stroke="#93A8C4" stroke-width="1.2" fill="none" marker-end="url(#pk-a)"/></g><g data-p="mail"><rect x="798" y="40" width="140" height="56" rx="10" fill="#141C27" stroke="#5BC8F5" stroke-width="1.2"/><text x="868.0" y="65.0" fill="#5BC8F5" font-size="12" font-weight="700">your inbox</text><text x="868.0" y="82.0" fill="#8A97A6" font-size="10.5">a view, no action</text></g><g data-p="mail"><text x="760" y="120" fill="#8A97A6" font-size="10" text-anchor="middle">spend_spike never reaches the mail</text></g><g data-p="pocket"><path d="M234 176 L578 254" stroke="#22D3EE" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#pk-a)"/></g><g data-p="pocket"><text x="430" y="252" fill="#22D3EE" font-size="10" text-anchor="middle">spend_spike: phone only</text></g><g data-p="pocket"><text x="938" y="220" fill="#FF574B" font-size="10" text-anchor="end" font-weight="700">pocket: not wired in yet</text></g><g data-p="pocket"><rect x="580" y="230" width="180" height="56" rx="10" fill="#141C27" stroke="#22D3EE" stroke-width="1.2" stroke-dasharray="4 4"/><text x="670.0" y="255.0" fill="#22D3EE" font-size="12" font-weight="700">a relay</text><text x="670.0" y="272.0" fill="#8A97A6" font-size="10.5">relay/v1/exceptions</text></g><g data-p="pocket"><text x="670" y="304" fill="#FF574B" font-size="10" text-anchor="middle">none runs today</text></g><g data-p="pocket"><path d="M760 258 L796 258" stroke="#22D3EE" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#pk-a)"/></g><g data-p="pocket"><rect x="798" y="230" width="140" height="56" rx="10" fill="#141C27" stroke="#22D3EE" stroke-width="1.2"/><text x="868.0" y="255.0" fill="#22D3EE" font-size="12" font-weight="700">iPhone + Watch</text><text x="868.0" y="272.0" fill="#8A97A6" font-size="10.5">Secure Enclave key</text></g><g data-p="pocket"><path d="M868 286 L868 320 L144 320 L144 188" stroke="#22D3EE" stroke-width="1.2" fill="none" stroke-dasharray="4 4" marker-end="url(#pk-a)"/></g><g data-p="pocket"><text x="440" y="314" fill="#22D3EE" font-size="10" text-anchor="middle">as designed: a device-signed kill the gateway only checks</text></g><g data-p="decide"><text x="260" y="62" fill="#8A97A6" font-size="10" text-anchor="start">Pocket does not make that call</text></g><g class="pk-anim"><g data-p="mail"><circle r="3.4" fill="#93A8C4"><animateMotion path="M234 158 L298 158" dur="2.6s" begin="-0s" repeatCount="indefinite"/></circle></g><g data-p="mail"><circle r="3.4" fill="#5BC8F5"><animateMotion path="M500 144 L578 80" dur="2.6s" begin="-1.0s" repeatCount="indefinite"/></circle></g><g data-p="mail"><circle r="3.4" fill="#5BC8F5"><animateMotion path="M760 68 L796 68" dur="2.6s" begin="-1.8s" repeatCount="indefinite"/></circle></g><g data-p="decide"><circle r="3.4" fill="#2DD4BF"><animateMotion path="M129 82 L129 128" dur="2.4s" begin="-0s" repeatCount="indefinite"/></circle></g></g></g></svg></div>
+      <div class="fl-tabs" role="group" aria-label="Choose what the picture shows">
+        <button class="fl-tab" type="button" aria-pressed="true" aria-controls="pk-svg" data-k="mail">Heraldyx mails</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="pk-svg" data-k="pocket">Pocket buzzes</button>
+        <button class="fl-tab" type="button" aria-pressed="false" aria-controls="pk-svg" data-k="decide">Who decides</button>
+      </div>
+      <div aria-live="polite">
+        <p class="fl-why" data-for="mail">Heraldyx reads the planes' shared event log on the box and needs nothing else running; its mail carries a view with no action in it. <a href="../pocket-guide.html#heraldyx">In the guide</a></p>
+        <p class="fl-why" data-for="pocket" hidden>As designed, Pocket reads a relay and signs the kill on the device, but the relay it was built against was removed, so none of this runs today. <a href="../pocket-guide.html#heraldyx">In the guide</a></p>
+        <p class="fl-why" data-for="decide" hidden>Wardryx and the budgets you set decide what is enforced and the gateway enforces it; Pocket lets you watch that and pull the kill from somewhere else. <a href="../pocket-guide.html#where-it-sits">In the guide</a></p>
+      </div>
+    </div>
+    <div class="cta-row rv">
+      <a class="btn" href="../pocket-guide.html#heraldyx">Pocket beside Heraldyx, in full</a>
+      <a class="btn" href="../pocket-guide.html#where-it-sits">Where it sits</a>
     </div>
   </div>
 </section>
@@ -280,12 +315,10 @@
       <div class="kicker">limits</div>
       <h2>What is not proven yet.</h2>
     </div>
-    <div class="card limits rv">
-      <ul>
-        <li>Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet.</li>
-        <li>That is a long way from shipped: no production hardening pass, no security review, no App Store.</li>
-        <li>The relay it was built against, genaryx-relay, was removed from genaryx on 2026-07-28, so today there is nothing to pair with and none of this runs end to end.</li>
-      </ul>
+    <div class="bento">
+      <div class="card b-4 lim rv"><h3>Built, not run here</h3><p>Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet.</p><a href="../pocket-guide.html#limits">In the guide</a></div>
+      <div class="card b-4 lim rv d1"><h3>Not shipped</h3><p>No production hardening pass, no security review, no App Store.</p><a href="../pocket-guide.html#limits">In the guide</a></div>
+      <div class="card b-4 lim rv d2"><h3>Nothing to pair with</h3><p>The relay it was built against, genaryx-relay, was removed from genaryx on 2026-07-28, so today there is nothing to pair with and none of this runs end to end.</p><a href="../pocket-guide.html#limits">In the guide</a></div>
     </div>
   </div>
 </section>
@@ -348,6 +381,23 @@
   </div>
 </footer>
 
+<script>
+/* tabs light their part of the pk picture */
+(function(){
+  const svg=document.getElementById("pk-svg"); if(!svg) return;
+  const box=document.getElementById("nights");
+  const tabs=[...box.querySelectorAll('.fl-tab')];
+  const whys=[...box.querySelectorAll('.fl-why')];
+  const n=document.getElementById("pk-n");
+  function show(k){
+    svg.setAttribute("data-show",k);
+    tabs.forEach(t=>t.setAttribute("aria-pressed",String(t.dataset.k===k)));
+    whys.forEach(p=>{p.hidden=p.dataset.for!==k;});
+    const t=tabs.find(t=>t.dataset.k===k); if(n&&t) n.textContent=t.textContent.toLowerCase();
+  }
+  tabs.forEach(t=>t.addEventListener("click",()=>show(t.dataset.k)));
+})();
+</script>
 <script src="../assets/site.js?v=e13"></script>
 <script src="../assets/sheet.js?v=e06"></script>
 <script src="../assets/sim.js?v=e14"></script>

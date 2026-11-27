@@ -45,18 +45,26 @@ Scan the QR code a Genaryx relay issues. No relay runs today, so nothing can be 
 
 ## Heraldyx mails you. Pocket buzzes. They are not the same control.
 
-Both answer one question, how a human finds out, and they answer it from the same events. The difference is what each one is allowed to do about it, and that difference is the reason both exist rather than one replacing the other.
+Both tell a human from the same events; what differs is what each may do about it.
 
-## The human end of a machine decision.
+Heraldyx reads the planes' shared event log on the box and needs nothing else running; its mail carries a view with no action in it. [In the guide](https://it-rat.com/pocket-guide.html#heraldyx)
 
-Pocket is the human end of [TokenFuse](https://it-rat.com/services/tokenfuse.html): the gateway enforces the budget in the request path, Pocket lets you watch it happen and pull the kill switch from somewhere else entirely. What actually gets enforced was decided upstream, by [Wardryx](https://it-rat.com/services/wardryx.html) and the budgets you set.
+As designed, Pocket reads a relay and signs the kill on the device, but the relay it was built against was removed, so none of this runs today. [In the guide](https://it-rat.com/pocket-guide.html#heraldyx)
+
+Wardryx and the budgets you set decide what is enforced and the gateway enforces it; Pocket lets you watch that and pull the kill from somewhere else. [In the guide](https://it-rat.com/pocket-guide.html#where-it-sits)
 
 ## What is not proven yet.
 
-- Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet.
+### Built, not run here
 
-- That is a long way from shipped: no production hardening pass, no security review, no App Store.
+Both apps are built. The iPhone app's README says every screen was driven live against a real control plane on the simulator, and no run of ours is recorded for it yet.
 
-- The relay it was built against, genaryx-relay, was removed from genaryx on 2026-07-28, so today there is nothing to pair with and none of this runs end to end.
+### Not shipped
+
+No production hardening pass, no security review, no App Store.
+
+### Nothing to pair with
+
+The relay it was built against, genaryx-relay, was removed from genaryx on 2026-07-28, so today there is nothing to pair with and none of this runs end to end.
 
 ### The Pocket guide
