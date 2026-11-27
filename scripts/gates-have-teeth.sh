@@ -237,6 +237,17 @@ run_case "service-numbers: an unowned figure spelled out inside JSON-LD" fail \
      "Twenty-seven deterministic detectors in four families, plus Twelve checks,")')" \
 	"nothing in numbers.json owns it"
 
+# A version written without its leading v. On 2026-11-27 the verdryx room's
+# hero said "version = 0.2.0" while verdryx had released v0.4.0, and the gate
+# printed OK, because VERSION wanted the v and nothing in numbers.json named
+# the figure. The fact table is the line a stranger reads first.
+run_case "service-numbers: a bare version in a hero fact row that nothing owns" fail \
+	'./scripts/service-numbers.sh' \
+	"$(py 'edit("services/qryx.html",
+     "<span class=\"v\">latest &#183; prebuilt binaries</span>",
+     "<span class=\"v\">1.9.0 &#183; prebuilt binaries</span>")')" \
+	"nothing in numbers.json owns it"
+
 
 # Invariant 7. This case could not exist until 2026-08-10: the gate was red on
 # a clean tree here (the published demo was older than `apps/web`), so any case

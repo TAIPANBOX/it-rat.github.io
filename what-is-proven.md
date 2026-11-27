@@ -40,7 +40,7 @@ Not a fixture directory: an actual filesystem's worth of ELF binaries, a real co
 
 ### Proven on a five-node cluster, then attacked the same night
 
-Every plane answered, the shared event log bound across nodes, and an agent frozen from the browser stayed frozen after the policy plane's pod was restarted. Then the same cluster was attacked, and four real holes came out: a pod that labelled itself as the console deleted a freeze using a literal development bearer while the console still displayed the agent as frozen, secrets were readable in plaintext straight out of the datastore, the kubelet API was open to the internet on every node, and the gateway never asked the policy plane anything.
+Every plane answered, the shared event log bound across nodes, and an agent frozen from the browser stayed frozen after the policy plane's pod was restarted. Then the same cluster was attacked, and four real holes came out: a pod that labelled itself as the console deleted a freeze using a literal development bearer while the console still displayed the agent as frozen, secrets were readable in plaintext straight out of the datastore, the kubelet API was open to the internet on every node, and the gateway never asked the policy plane anything. On 2026-11-27 the current release, stack-k8s v1.19.0, went up again on five AWS nodes with every image pulled by digest: 28 security tests passed with none failed, and on the newest Ubuntu 26.04.1 image `verify.sh` passed 21 checks with none failed. A clean stack-single v1.15.0 beside it verified its signatures and installed in 5 minutes 12 seconds.
 
 ### A box behind a home router governed two clouds at once, then took sixteen failures
 
