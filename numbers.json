@@ -2309,32 +2309,6 @@
       "slow": false
     },
     {
-      "page": "services/wardryx.html",
-      "claim": "v2.7.0",
-      "occurrences": 1,
-      "repo": "TAIPANBOX/wardryx",
-      "command": "gh api repos/TAIPANBOX/wardryx/releases/tags/v2.7.0 --jq .tag_name; cited as history, the release that added the argument preview",
-      "status": "measured",
-      "measured_on": "2026-11-23",
-      "note": "Split out 2026-11-23: v2.7.0 is named as the release that added the argument preview, no longer the current one.",
-      "repo_dir": "wardryx",
-      "check": "gh api repos/TAIPANBOX/wardryx/releases/tags/v2.7.0 --jq .tag_name",
-      "slow": false
-    },
-    {
-      "page": "services/wardryx.md",
-      "claim": "v2.7.0",
-      "occurrences": 1,
-      "repo": "TAIPANBOX/wardryx",
-      "command": "gh api repos/TAIPANBOX/wardryx/releases/tags/v2.7.0 --jq .tag_name; cited as history, the release that added the argument preview",
-      "status": "measured",
-      "measured_on": "2026-11-23",
-      "note": "Re-pointed 2026-11-23: the twin carries no status line, only the sentence naming v2.7.0 as the release that added the argument preview, which is history now that v2.8.0 is out. Added 2026-11-14: the markdown twin of the room states the same status line.",
-      "repo_dir": "wardryx",
-      "check": "gh api repos/TAIPANBOX/wardryx/releases/tags/v2.7.0 --jq .tag_name",
-      "slow": false
-    },
-    {
       "page": "wardryx-guide.html",
       "claim": "v2.8.0",
       "occurrences": 2,
@@ -2794,13 +2768,13 @@
       "claim": "v0.7.0",
       "occurrences": 1,
       "repo": "TAIPANBOX/vouchryx",
-      "command": "gh api repos/TAIPANBOX/vouchryx/releases/latest --jq .tag_name",
+      "command": "gh api repos/TAIPANBOX/vouchryx/releases/tags/v0.7.0 --jq .tag_name",
       "status": "measured",
-      "measured_on": "2026-11-04",
+      "measured_on": "2026-11-27",
       "repo_dir": "vouchryx",
-      "check": "gh api repos/TAIPANBOX/vouchryx/releases/latest --jq .tag_name",
+      "check": "gh api repos/TAIPANBOX/vouchryx/releases/tags/v0.7.0 --jq .tag_name",
       "slow": false,
-      "note": ""
+      "note": "history row, checked by its own tag"
     },
     {
       "page": "idryx-guide.html",
@@ -2820,13 +2794,13 @@
       "claim": "v0.3.0",
       "occurrences": 2,
       "repo": "TAIPANBOX/verdryx",
-      "command": "gh api repos/TAIPANBOX/verdryx/releases/latest --jq .tag_name",
+      "command": "gh api repos/TAIPANBOX/verdryx/releases/tags/v0.3.0 --jq .tag_name",
       "status": "measured",
-      "measured_on": "2026-11-07",
+      "measured_on": "2026-11-27",
       "repo_dir": "verdryx",
-      "check": "gh api repos/TAIPANBOX/verdryx/releases/latest --jq .tag_name",
+      "check": "gh api repos/TAIPANBOX/verdryx/releases/tags/v0.3.0 --jq .tag_name",
       "slow": false,
-      "note": ""
+      "note": "history row, checked by its own tag"
     },
     {
       "page": "verdryx-guide.html",
@@ -3273,6 +3247,123 @@
       "repo_dir": null,
       "check": null,
       "slow": false
+    },
+    {
+      "page": "vouchryx-guide.html",
+      "claim": "v0.8.0",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/vouchryx",
+      "command": "gh api repos/TAIPANBOX/vouchryx/releases/tags/v0.8.0 --jq .tag_name",
+      "status": "measured",
+      "measured_on": "2026-11-27",
+      "repo_dir": "vouchryx",
+      "check": "gh api repos/TAIPANBOX/vouchryx/releases/tags/v0.8.0 --jq .tag_name",
+      "slow": false,
+      "note": "history row in the November table, checked by its own tag"
+    },
+    {
+      "page": "vouchryx-guide.html",
+      "claim": "v0.9.0",
+      "occurrences": 2,
+      "repo": "TAIPANBOX/vouchryx",
+      "command": "gh api repos/TAIPANBOX/vouchryx/releases/tags/v0.9.0 --jq .tag_name",
+      "status": "measured",
+      "measured_on": "2026-11-27",
+      "repo_dir": "vouchryx",
+      "check": "gh api repos/TAIPANBOX/vouchryx/releases/tags/v0.9.0 --jq .tag_name",
+      "slow": false,
+      "note": "two rows in the November table name the release, checked by its own tag"
+    },
+    {
+      "page": "verdryx-guide.html",
+      "claim": "v0.4.0",
+      "occurrences": 3,
+      "repo": "TAIPANBOX/verdryx",
+      "command": "gh api repos/TAIPANBOX/verdryx/releases/tags/v0.4.0 --jq .tag_name",
+      "status": "measured",
+      "measured_on": "2026-11-27",
+      "repo_dir": "verdryx",
+      "check": "gh api repos/TAIPANBOX/verdryx/releases/tags/v0.4.0 --jq .tag_name",
+      "slow": false,
+      "note": "Two November rows name the release, and since 2026-11-27 the At a glance version line names it as the current one (it said 0.2.0 with no v); checked by its own tag."
+    },
+    {
+      "page": "services/verdryx.html",
+      "claim": "v0.4.0",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/verdryx",
+      "command": "gh api repos/TAIPANBOX/verdryx/releases/latest --jq .tag_name",
+      "status": "measured",
+      "measured_on": "2026-11-27",
+      "repo_dir": "verdryx",
+      "check": "gh api repos/TAIPANBOX/verdryx/releases/latest --jq .tag_name",
+      "slow": false,
+      "note": "Added 2026-11-27: the hero fact table names the current release; it said 0.2.0 with no v, which the version pattern did not see."
+    },
+    {
+      "page": "verdryx-guide.md",
+      "claim": "v0.3.0",
+      "occurrences": 2,
+      "repo": "TAIPANBOX/verdryx",
+      "command": "gh api repos/TAIPANBOX/verdryx/releases/tags/v0.3.0 --jq .tag_name",
+      "status": "measured",
+      "measured_on": "2026-11-27",
+      "repo_dir": "verdryx",
+      "check": "gh api repos/TAIPANBOX/verdryx/releases/tags/v0.3.0 --jq .tag_name",
+      "slow": false,
+      "note": "history row in the twin's November table, checked by its own tag"
+    },
+    {
+      "page": "verdryx-guide.md",
+      "claim": "v0.4.0",
+      "occurrences": 3,
+      "repo": "TAIPANBOX/verdryx",
+      "command": "gh api repos/TAIPANBOX/verdryx/releases/tags/v0.4.0 --jq .tag_name",
+      "status": "measured",
+      "measured_on": "2026-11-27",
+      "repo_dir": "verdryx",
+      "check": "gh api repos/TAIPANBOX/verdryx/releases/tags/v0.4.0 --jq .tag_name",
+      "slow": false,
+      "note": "the twin carries the two November rows and the At a glance version line; checked by its own tag"
+    },
+    {
+      "page": "vouchryx-guide.md",
+      "claim": "v0.7.0",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/vouchryx",
+      "command": "gh api repos/TAIPANBOX/vouchryx/releases/tags/v0.7.0 --jq .tag_name",
+      "status": "measured",
+      "measured_on": "2026-11-27",
+      "repo_dir": "vouchryx",
+      "check": "gh api repos/TAIPANBOX/vouchryx/releases/tags/v0.7.0 --jq .tag_name",
+      "slow": false,
+      "note": "history row in the twin's November table, checked by its own tag"
+    },
+    {
+      "page": "vouchryx-guide.md",
+      "claim": "v0.8.0",
+      "occurrences": 1,
+      "repo": "TAIPANBOX/vouchryx",
+      "command": "gh api repos/TAIPANBOX/vouchryx/releases/tags/v0.8.0 --jq .tag_name",
+      "status": "measured",
+      "measured_on": "2026-11-27",
+      "repo_dir": "vouchryx",
+      "check": "gh api repos/TAIPANBOX/vouchryx/releases/tags/v0.8.0 --jq .tag_name",
+      "slow": false,
+      "note": "history row in the twin's November table, checked by its own tag"
+    },
+    {
+      "page": "vouchryx-guide.md",
+      "claim": "v0.9.0",
+      "occurrences": 2,
+      "repo": "TAIPANBOX/vouchryx",
+      "command": "gh api repos/TAIPANBOX/vouchryx/releases/tags/v0.9.0 --jq .tag_name",
+      "status": "measured",
+      "measured_on": "2026-11-27",
+      "repo_dir": "vouchryx",
+      "check": "gh api repos/TAIPANBOX/vouchryx/releases/tags/v0.9.0 --jq .tag_name",
+      "slow": false,
+      "note": "two rows in the twin's November table name the release, checked by its own tag"
     }
   ]
 }

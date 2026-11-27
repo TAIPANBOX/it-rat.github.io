@@ -16,35 +16,17 @@ The PEP posts the proposed action: agent, tools, declared domains, step count, e
 
 ## Rules in one fixed order. No moods.
 
-### Three verdicts, zero improvisation
+Rules run in one fixed order and the first deny wins, so deny_above_usd is checked before any hold and no approval can pass it. [In the guide](https://it-rat.com/wardryx-guide.html#how-it-works)
 
-Every answer is allow, deny or hold. A decision you can replay in a test is a decision you can defend in an audit.
+A hold ends the call; a person decides out of band, reading the arguments sealed to the console's key, and the agent returns with a signed token that works once. [In the guide](https://it-rat.com/wardryx-guide.html#hold)
 
-### Hold means a human
-
-A big spend becomes a hold, not a guess. A human grants it out of band and the agent resubmits with a signed token. Since v2.7.0 the approver can read the call's arguments before granting, sealed to the console's key, with secrets and personal data hidden by fixed rules. stack-single 1.10.0 and stack-k8s 1.13.0 turn it on.
-
-### A hard ceiling that outranks approvals
-
-deny_above_usd is the rule no token can talk past. It is checked before the hold logic ever runs, so even a granted approval cannot authorize a spend over the ceiling.
-
-### Attestation as a first-class gate
-
-deny_if_unattested demands a live attestation before an agent touches the sensitive rules.
-
-### A spent error budget puts the agent to a person
-
-The quality plane writes an slo_burn event when an agent's error budget is exhausted or burning fast. A hold_if_signal rule on it holds that agent's calls for a person, model calls included, and a granted approval lets one call through. Both launchers set this up, so a spent budget waits for a person out of the box. On its own, wardryx stays off until WARDRYX_SIGNAL_EVENTS names the event file.
-
-### A DPoP proof is accepted once
-
-With WARDRYX_DB set, the record of accepted proofs is shared by every instance on that database and survives a restart, so a replay at a second instance is refused. A record that cannot be asked refuses the decide instead of passing the proof.
+With WARDRYX_SIGNAL_EVENTS set, a spent error budget from Verdryx becomes an slo_burn signal, which a hold_if_signal rule turns into a hold, never a deny. [In the guide](https://it-rat.com/wardryx-guide.html#signal)
 
 ### The desk every expensive idea stops at.
 
 [TokenFuse](https://it-rat.com/services/tokenfuse.html)'s PEP hook asks Wardryx on every request and stamps the verdict on the response. Each decision lands on the bus as a source: wardryx event, which [Idryx](https://it-rat.com/services/idryx.html) correlates into the identity graph.
 
-`make serve` boots it on `127.0.0.1:8090` with an in-memory store; `wardryx serve` with no address listens on `:8090`, every interface. `serve` refuses to start without `WARDRYX_KEYS`, so `make serve` opts in to the dev key on loopback only: allow-all until you load a policy, and it logs that choice. Then dry-run a policy offline against a directory of Agent Passports:
+`make serve` boots it on `127.0.0.1:8090` with the dev key on loopback, allowing all until you load a policy. Then dry-run a policy against a directory of Agent Passports:
 
 ## A decision is only as good as the identity under it.
 
@@ -52,13 +34,17 @@ This plane answers about an action. What it cannot answer is whether the caller 
 
 ## What is open by default, and what is not proven yet.
 
-- When the decision point is unreachable, the TokenFuse gateway closes under enforce when its failure mode is unset, and stays open in shadow mode, where it blocks nothing. The unset default under enforce became closed on 2026-10-17. All three launchers set the failure mode to closed on purpose.
+### When it cannot be reached
 
-- With no shared database, an approval token's single-use guarantee is per process, and the server says so at startup.
+Unset, the TokenFuse gateway closes under enforce and stays open in shadow mode; all three launchers set it closed. [In the guide](https://it-rat.com/wardryx-guide.html#limits)
 
-- With no database, the record of accepted DPoP proofs is per process too, and serve says so at start.
+### Once, per process
 
-- The typed risk signal from Typryx is an opt-in the launchers leave off by default.
+With no shared database, an approval token is single-use per process and so is the record of accepted DPoP proofs, and serve says so at start. [In the guide](https://it-rat.com/wardryx-guide.html#limits)
+
+### The Typryx signal is opt-in
+
+The typed risk signal from Typryx is an opt-in the launchers leave off by default. [In the guide](https://it-rat.com/wardryx-guide.html#limits)
 
 ### The Wardryx guide
 

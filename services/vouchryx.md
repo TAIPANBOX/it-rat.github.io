@@ -6,31 +6,17 @@
 
 An RFC 8693 token exchange that mints a short-lived token carrying nested `act`, sender-constrained with RFC 9449 DPoP so a lifted token is useless to whoever lifted it. A revocation list enforcement points poll, and public keys anybody can verify against offline.
 
-## The record said who acted for whom. Nothing proved it.
-
-### Proof of possession, per request
-
-The minted token carries `cnf.jkt`, the thumbprint of the caller's own key. Spending it needs a fresh DPoP proof from that same key on every call.
-
-### Revocation an incident can use
-
-By one token id, or by subject for every token an agent already holds. The list carries `as_of`, so an empty answer and an unreachable service are never the same answer to a machine reading it.
-
-### Verification without a round trip
-
-Public keys at a JWKS endpoint, so an enforcement point verifies offline. That is also why there is no introspection endpoint, on purpose.
-
-### It refuses to start rather than start permissive
-
-Three values are required and have no default: VOUCHRYX_ISSUER, VOUCHRYX_SIGNING_KEY (for the file signer; the Keyryx signer needs its own four values instead) and VOUCHRYX_TRUSTED_ISSUERS (unless VOUCHRYX_AGENTS enrols an agent). A missing or malformed value aborts the process and names the variable.
-
-### Run against a real provider
-
-A live run with a real OpenID provider found that a provider which rotated its signing key was refused until the service restarted. The key set files are now read again while the service runs (VOUCHRYX_JWKS_RELOAD_SECONDS), and a file that cannot be used never replaces the keys held.
-
 ## Mint, prove, verify, end.
 
-Two signed tokens and a proof go in, a short-lived one comes out, and the enforcement point verifies it without asking anybody. The dotted path is the one that matters in an incident: a revocation reaches the poller and the same token stops working before it expires.
+Two signed tokens and a proof go in, and a short-lived token comes out. The dotted path is a revocation stopping that token before it expires. [In the guide](https://it-rat.com/vouchryx-guide.html#how-it-works)
+
+## The record said who acted for whom. Nothing proved it.
+
+The minted token carries cnf.jkt, the thumbprint of the caller's own key, so spending it needs a fresh DPoP proof from that key on every call. Enforcement points verify it offline against the published keys, which is why there is no introspection endpoint. [In the guide](https://it-rat.com/vouchryx-guide.html#how-it-works)
+
+A person revokes one token by its id, or every token an agent holds by subject, naming an actor and a reason. The list carries as_of, so an empty answer and an unreachable service never read the same. [In the guide](https://it-rat.com/vouchryx-guide.html#surface)
+
+Without its issuer, a signing key and the issuers it trusts (or an enrolled agent), the process aborts and names the variable. Key set files are read again while it runs, so a provider's rotated key is followed without a restart. [In the guide](https://it-rat.com/vouchryx-guide.html#configuration)
 
 ## One stops the money. This one stops the authority.
 
@@ -42,11 +28,17 @@ The client ships with the service: `vouchryx-demo` makes the keys, performs the 
 
 ## What is not proven yet.
 
-- The TokenFuse gateway polls that list, and so does Wardryx from 2.3.0; no other enforcement point does yet.
+### Two enforcement points poll
 
-- Revoking ends the right to act at every enforcement point on its next poll of the list, 12 seconds by default at the gateway; a call admitted before that poll is not pulled back.
+The TokenFuse gateway polls the list, and so does Wardryx from 2.3.0; no other enforcement point does yet. [In the guide](https://it-rat.com/vouchryx-guide.html#limits)
 
-- The revocation timing was measured on 2026-09-27 on the forge lab, with a lab image of vouchryx rather than a published release.
+### On the next poll
+
+Revoking takes effect at each enforcement point on its next poll, 12 seconds by default at the gateway, and a call admitted before it is not pulled back. [In the guide](https://it-rat.com/vouchryx-guide.html#limits)
+
+### Timed on a lab image
+
+The revocation timing was measured on 2026-09-27 on the forge lab, with a lab image rather than a published release. [In the guide](https://it-rat.com/vouchryx-guide.html#limits)
 
 ### The Vouchryx guide
 
