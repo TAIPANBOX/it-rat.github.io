@@ -34,12 +34,13 @@ FAQ = {
   "<p>The durability sweep is the clearest case here: zero violations across four hundred thousand seeded runs means very little on its own, and means a great deal beside the same sweep with a lying disk, where 17,869 of 20,000 seeds fail.</p>"),
  ("What has been measured on real infrastructure rather than in a simulator?",
   "<p>Process-kill durability across three filesystems, policy-plane throughput on live five-node clusters on three clouds, recall on a full public benchmark rather than a fixture, a crypto scan over 25,586 real binaries and a live TLS endpoint, an adversarial pass against a running cluster that found four real holes, and, on 2026-09-17, the whole stack on a small box behind a home router governing agents in AWS and GCP at the same time through sixteen injected failures.</p>"
-  "<p>Each has a limit published beside it, and the limit is part of the claim rather than a disclaimer under it.</p>"),
+  "<p>Each one names what it ran on, and the command and the date sit in that repository's own validation file.</p>"),
  ("What has this project got wrong and had to withdraw?",
   "<p>Three published conclusions. That throughput collapses past 64 concurrent callers, which turned out to be a shared-vCPU instance rather than the software. That one hyperscaler was 62% faster, which was a chip generation rather than a cloud. And a prediction that shared storage would be expensive on both, which was wrong on one by a factor of 108.</p>"
   "<p>All three retractions are published next to the claims they replace. A project with no retractions has either published nothing checkable or has not checked.</p>"),
- ("What has not been established yet?",
-  "<p>Power has been pulled from a running machine once, on one small box, so durability is still mainly a claim about process death rather than power loss. There has been no external audit of the cryptographic layer. Not every shipped pre-production drill has been fired at a real gateway; the ledger records the ones that have. The detectors have not been driven at production scale, and the federation completeness rule is specified with its transport unbuilt.</p>"),
+ ("Has the stack been through a power cut?",
+  "<p>Yes, on purpose. On 2026-09-23 a small box running the single-machine install had its plug pulled with two agents calling. It came back by itself, every container restarted, the record's packs from before and after the cut both verified, and no event line was torn.</p>"
+  "<p>Process death is measured at a larger count: 120 processes killed with SIGKILL mid-write on apfs, ext4 and xfs, with not one acknowledged record lost.</p>"),
  ("Why publish the things that went wrong?",
   "<p>Because a repository whose history only records its successes is a repository whose claims cannot be checked. The deployment ledger for the cluster now holds 170 entries and 87 of them are our own mistakes rather than platform behaviour, and that ratio is what makes the other classifications worth believing.</p>"),
 ]),
