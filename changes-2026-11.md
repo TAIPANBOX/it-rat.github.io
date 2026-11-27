@@ -28,7 +28,7 @@ What changed in the services in the six weeks after [the October page](https://i
 
 ## Six weeks, in five numbers.
 
-*158*
+*159*
 
 release tags
 
@@ -46,7 +46,7 @@ first releases: Keyryx, Verdryx and the Genaryx console
 
 security tests passed on AWS on 27 November, none failed
 
-Across 19 repositories we cut 158 release tags between 16 October and 27 November. TokenFuse moved from v1.14.0 to v1.27.0, Wardryx from v1.5.0 to v2.8.0 and Vouchryx from v0.2.0 to v0.9.0. Keyryx and Verdryx shipped their first releases, the console became a release of its own, and the two launchers released 58 times between them to carry those versions to real machines.
+Across 19 repositories we cut 159 release tags between 16 October and 27 November. TokenFuse moved from v1.14.0 to v1.27.1, Wardryx from v1.5.0 to v2.8.0 and Vouchryx from v0.2.0 to v0.9.0. Keyryx and Verdryx shipped their first releases, the console became a release of its own, and the two launchers released 58 times between them to carry those versions to real machines.
 
 **How these were counted.** A release counts when GitHub published it between 16 October and 27 November. Ranges run from the latest release before 16 October to the latest on 27 November. Counts were read from each repository's releases on 27 November.
 

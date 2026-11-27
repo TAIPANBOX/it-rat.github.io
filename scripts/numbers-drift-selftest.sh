@@ -91,6 +91,23 @@ clean_manifest='{"entries": [
 check_case "a clean count is left alone" \
 	"$clean_manifest" "agrees" "COULD NOT MEASURE"
 
+# A claim that names several values has a check that prints one per line
+# (added 2026-11-27): it agrees when every printed line is in the claim, and
+# drifts when one of them is not. Thousands separators are ignored.
+multi_manifest='{"entries": [
+  {"page": "services/fake.html", "claim": "v1.14.0 to v1.27.1, 1,024 records", "repo_dir": null,
+   "check": "printf '"'"'v1.14.0\\nv1.27.1\\n1024 records\\n'"'"'"}
+]}'
+check_case "a claim naming several values agrees with each printed line" \
+	"$multi_manifest" "agrees" "DRIFTED"
+
+multi_drift_manifest='{"entries": [
+  {"page": "services/fake.html", "claim": "v1.14.0 to v1.27.0", "repo_dir": null,
+   "check": "printf '"'"'v1.14.0\\nv1.27.1\\n'"'"'"}
+]}'
+check_case "a claim naming several values drifts when one line is not in it" \
+	"$multi_drift_manifest" "DRIFTED" "agrees"
+
 echo
 if [ "$failures" -gt 0 ]; then
 	printf '%d of %d cases failed.\n' "$failures" "$cases"

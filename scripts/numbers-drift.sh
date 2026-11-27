@@ -170,8 +170,14 @@ for e in entries:
     # The claim is prose around a figure ("1,178 tests / 31 crates"), so the
     # test is whether the measured value appears in it, with thousands
     # separators allowed for.
+    # A claim that names several values ("v1.14.0 to v1.27.0") has a check that
+    # prints one per line; it agrees when every printed line appears in it.
     normalised = claim.replace(",", "")
-    if out in normalised or out.lstrip("v") in normalised:
+    lines = [ln.strip() for ln in out.splitlines() if ln.strip()]
+    flat = out.replace(",", "")
+    if out in normalised or flat in normalised or out.lstrip("v") in normalised or (
+        len(lines) > 1 and all(ln.replace(",", "") in normalised for ln in lines)
+    ):
         print(f"  agrees      {label}   ({out})")
         agreed += 1
     else:

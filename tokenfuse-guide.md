@@ -126,7 +126,7 @@ Want more than the gateway? [Run the live services locally](https://it-rat.com/s
 
 ### TokenFuse ships as an image, and since v0.4.3 as binaries
 
-The current release is v1.27.0. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
+The current release is v1.27.1. The image is the way to run it in front of traffic; the binaries, since v0.4.3, are for a laptop and a first look: one file, `TOKENFUSE_UPSTREAM` set, and it listens. Each address always serves the newest release: the asset names carry no version, so a link saved today still works after the next one. No Windows build yet, and saying so is cheaper than a broken link.
 
 ## What the gateway gained from 1 to 15 October
 
@@ -162,6 +162,7 @@ The whole stack's fortnight, TokenFuse among it, is in [the October changelog](h
 | v1.22.0 | A response that stopped short is charged the input as reported and the output at the request's cap, under the cost basis PartialUsage. |
 | v1.26.0 | Every door judges a tool call's own arguments: the check, the MCP broker and the streamed judge each read the arguments of the call they are deciding, never an argument carried from another call. |
 | v1.26.0 | The trace and the FOCUS export carry cache and reasoning tokens, and the FOCUS export can be written to specification 1.5. |
+| v1.27.1 | The Cloud's published contract caps the replay event's delegation chain at 32 entries, as agent-passport SPEC 5.1 requires; nothing in the gateway's or the Cloud's behaviour changes. |
 | v1.27.0 | Per-key rate and concurrency limits, off until set. A call over a limit gets a 429 with Retry-After, and nothing is reserved for it. |
 | v1.27.0 | Two more agent-event types, rate_limited and price_fallback, and one incident per caller when a provider keeps refusing the gateway's credential. |
 | v1.27.0 | Each MCP upstream can have a credential of its own, and the caller's own credential is never sent to an upstream. |
